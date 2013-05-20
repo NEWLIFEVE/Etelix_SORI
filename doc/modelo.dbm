@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel>
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<database name="sori">
+</database>
+
+<table name="carrier" oids="true">
+	<schema name="public"/>
+	<position x="46" y="94"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="address">
+		<type name="text"/>
+	</column>
+	<column name="fecha_registro" not-null="true">
+		<type name="date"/>
+	</column>
+	<constraint name="id_carrier" type="pk-constr" factor="10" table="public.carrier">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="balance" oids="true">
+	<schema name="public"/>
+	<position x="541" y="20"/>
+	<column name="id" not-null="true">
+		<type name="bigserial"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="minutes" not-null="true">
+		<type name="double precision" length="4" precision="6"/>
+	</column>
+	<column name="acd" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="asr" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="margin_percentage" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="margin_per_minute" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="cost_per_minute" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="revenue_per_min" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="pdd" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="incomplete_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="complete_calls_ner" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="complete_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="calls_attempts" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="duration_real" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="duration_cost" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="ner02_efficient" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="ner02_seizure" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="pdd_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="revenue" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="cost" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="margin" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="date_change">
+		<type name="date"/>
+	</column>
+	<constraint name="id_balance" type="pk-constr" factor="10" table="public.balance">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="destination" oids="true">
+	<schema name="public"/>
+	<position x="306" y="317"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_destination" type="pk-constr" factor="10" table="public.destination">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="carrier_has_many_balance"
+	 type="rel1n"
+	 src-table="public.carrier"
+	 dst-table="public.balance"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<relationship name="destination_has_many_balance"
+	 type="rel1n"
+	 src-table="public.destination"
+	 dst-table="public.balance"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<table name="users" oids="true">
+	<schema name="public"/>
+	<position x="61" y="481"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="128"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="varchar" length="128"/>
+	</column>
+	<column name="activkey" not-null="true">
+		<type name="varchar" length="128"/>
+	</column>
+	<column name="superuser" not-null="true">
+		<type name="boolean"/>
+	</column>
+	<column name="status" not-null="true">
+		<type name="boolean"/>
+	</column>
+	<column name="create_at" not-null="true">
+		<type name="timestamp"/>
+	</column>
+	<column name="lastvisit_at" not-null="true">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="id_users" type="pk-constr" factor="10" table="public.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="type_of_user" oids="true">
+	<schema name="public"/>
+	<position x="548" y="430"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="45"/>
+	</column>
+	<constraint name="id_type_of_user" type="pk-constr" factor="10" table="public.type_of_user">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="type_of_user_has_many_users"
+	 type="rel1n"
+	 src-table="public.type_of_user"
+	 dst-table="public.users"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<table name="history" oids="true">
+	<schema name="public"/>
+	<position x="967" y="31"/>
+	<column name="id" not-null="true">
+		<type name="bigserial"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="minutes" not-null="true">
+		<type name="double precision" length="4" precision="6"/>
+	</column>
+	<column name="acd" not-null="true">
+		<type name="double precision"/>
+		<comment><![CDATA[Average Call Duration]]></comment>
+	</column>
+	<column name="asr" not-null="true">
+		<type name="double precision"/>
+		<comment><![CDATA[Average Assure Rating]]></comment>
+	</column>
+	<column name="margin_percentage" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="margin_per_minute" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="cost_per_minute" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="revenue_per_min" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="pdd" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="incomplete_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="complete_calls_ner" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="complete_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="calls_attempts" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="duration_real" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="duration_cost" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="ner02_efficient" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="ner02_seizure" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="pdd_calls" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="revenue" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="cost" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="margin" not-null="true">
+		<type name="double precision"/>
+	</column>
+	<column name="date_change">
+		<type name="date"/>
+	</column>
+	<constraint name="id_history" type="pk-constr" factor="10" table="public.history">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="profiles" oids="true">
+	<schema name="public"/>
+	<position x="531" y="532"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="first_name">
+		<type name="varchar" length="128"/>
+	</column>
+	<column name="last_name">
+		<type name="varchar" length="128"/>
+	</column>
+	<constraint name="id_profiles" type="pk-constr" factor="10" table="public.profiles">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="profiles_has_one_users"
+	 type="rel11"
+	 src-table="public.users"
+	 dst-table="public.profiles"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<relationship name="balance_has_many_history"
+	 type="rel1n"
+	 src-table="public.balance"
+	 dst-table="public.history"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<table name="carrier_managers" oids="true">
+	<schema name="public"/>
+	<position x="85" y="302"/>
+	<column name="start_date">
+		<type name="date"/>
+	</column>
+	<column name="end_date">
+		<type name="date"/>
+	</column>
+</table>
+
+<relationship name="carrier_has_many_carrier_managers"
+	 type="rel1n"
+	 src-table="public.carrier"
+	 dst-table="public.carrier_managers"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<relationship name="users_has_many_carrier_managers"
+	 type="rel1n"
+	 src-table="public.users"
+	 dst-table="public.carrier_managers"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+</dbmodel>
