@@ -1,33 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "destination".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table 'destination':
  * @property integer $id
- * @property string $username
- * @property string $password
- * @property string $email
- * @property string $activkey
- * @property boolean $superuser
- * @property boolean $status
- * @property string $create_at
- * @property string $lastvisit_at
- * @property integer $id_type_of_user
+ * @property string $nombre
  *
  * The followings are the available model relations:
- * @property Profiles[] $profiles
- * @property TypeOfUser $idTypeOfUser
- * @property CarrierManagers[] $carrierManagers
+ * @property Balance[] $balances
  */
-class Users extends CActiveRecord
+class Destination extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'destination';
 	}
 
 	/**
@@ -38,13 +28,11 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, email, activkey, superuser, status, create_at, lastvisit_at', 'required'),
-			array('id_type_of_user', 'numerical', 'integerOnly'=>true),
-			array('username', 'length', 'max'=>20),
-			array('password, email, activkey', 'length', 'max'=>128),
+			array('nombre', 'required'),
+			array('nombre', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, password, email, activkey, superuser, status, create_at, lastvisit_at, id_type_of_user', 'safe', 'on'=>'search'),
+			array('id, nombre', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,9 +44,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'profiles' => array(self::HAS_MANY, 'Profiles', 'id_users'),
-			'idTypeOfUser' => array(self::BELONGS_TO, 'TypeOfUser', 'id_type_of_user'),
-			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_users'),
+			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination'),
 		);
 	}
 
@@ -69,15 +55,7 @@ class Users extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'username' => 'Username',
-			'password' => 'Password',
-			'email' => 'Email',
-			'activkey' => 'Activkey',
-			'superuser' => 'Superuser',
-			'status' => 'Status',
-			'create_at' => 'Create At',
-			'lastvisit_at' => 'Lastvisit At',
-			'id_type_of_user' => 'Id Type Of User',
+			'nombre' => 'Nombre',
 		);
 	}
 
@@ -100,15 +78,7 @@ class Users extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('username',$this->username,true);
-		$criteria->compare('password',$this->password,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('activkey',$this->activkey,true);
-		$criteria->compare('superuser',$this->superuser);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('create_at',$this->create_at,true);
-		$criteria->compare('lastvisit_at',$this->lastvisit_at,true);
-		$criteria->compare('id_type_of_user',$this->id_type_of_user);
+		$criteria->compare('nombre',$this->nombre,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -119,7 +89,7 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Destination the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

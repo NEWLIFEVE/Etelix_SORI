@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "balance".
+ * This is the model class for table "history".
  *
- * The followings are the available columns in table 'balance':
+ * The followings are the available columns in table 'history':
  * @property string $id
  * @property string $date
  * @property double $minutes
@@ -27,22 +27,19 @@
  * @property double $cost
  * @property double $margin
  * @property string $date_change
- * @property integer $id_carrier
- * @property integer $id_destination
+ * @property string $id_balance
  *
  * The followings are the available model relations:
- * @property Carrier $idCarrier
- * @property Destination $idDestination
- * @property History[] $histories
+ * @property Balance $idBalance
  */
-class Balance extends CActiveRecord
+class History extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'balance';
+		return 'history';
 	}
 
 	/**
@@ -54,12 +51,11 @@ class Balance extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'required'),
-			array('id_carrier, id_destination', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
-			array('date_change', 'safe'),
+			array('date_change, id_balance', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier, id_destination', 'safe', 'on'=>'search'),
+			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_balance', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,9 +67,7 @@ class Balance extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
-			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
-			'histories' => array(self::HAS_MANY, 'History', 'id_balance'),
+			'idBalance' => array(self::BELONGS_TO, 'Balance', 'id_balance'),
 		);
 	}
 
@@ -106,8 +100,7 @@ class Balance extends CActiveRecord
 			'cost' => 'Cost',
 			'margin' => 'Margin',
 			'date_change' => 'Date Change',
-			'id_carrier' => 'Id Carrier',
-			'id_destination' => 'Id Destination',
+			'id_balance' => 'Id Balance',
 		);
 	}
 
@@ -152,8 +145,7 @@ class Balance extends CActiveRecord
 		$criteria->compare('cost',$this->cost);
 		$criteria->compare('margin',$this->margin);
 		$criteria->compare('date_change',$this->date_change,true);
-		$criteria->compare('id_carrier',$this->id_carrier);
-		$criteria->compare('id_destination',$this->id_destination);
+		$criteria->compare('id_balance',$this->id_balance,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -164,7 +156,7 @@ class Balance extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Balance the static model class
+	 * @return History the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
