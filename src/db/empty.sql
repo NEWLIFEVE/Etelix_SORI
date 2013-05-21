@@ -144,8 +144,8 @@ ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
 
--- object: users_30264_uq | type: CONSTRAINT -- 
-ALTER TABLE public.profiles ADD CONSTRAINT users_30264_uq UNIQUE (id_users);
+-- object: users_30164_uq | type: CONSTRAINT -- 
+ALTER TABLE public.profiles ADD CONSTRAINT users_30164_uq UNIQUE (id_users);
 -- ddl-end --
 
 

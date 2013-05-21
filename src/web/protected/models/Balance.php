@@ -26,12 +26,15 @@
  * @property double $revenue
  * @property double $cost
  * @property double $margin
+ * @property string $date_change
  * @property integer $id_carrier
  * @property integer $id_destination
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
  * @property Destination $idDestination
+
+ * @property History[] $histories
  */
 class Balance extends CActiveRecord
 {
@@ -54,9 +57,11 @@ class Balance extends CActiveRecord
 			array('date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'required'),
 			array('id_carrier, id_destination', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
+			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, id_carrier, id_destination', 'safe', 'on'=>'search'),
+			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier, id_destination', 'safe', 'on'=>'search'),
+
 		);
 	}
 
@@ -70,6 +75,8 @@ class Balance extends CActiveRecord
 		return array(
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
 			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
+			'histories' => array(self::HAS_MANY, 'History', 'id_balance'),
+
 		);
 	}
 
@@ -101,6 +108,7 @@ class Balance extends CActiveRecord
 			'revenue' => 'Revenue',
 			'cost' => 'Cost',
 			'margin' => 'Margin',
+			'date_change' => 'Date Change',
 			'id_carrier' => 'Id Carrier',
 			'id_destination' => 'Id Destination',
 		);
@@ -146,6 +154,7 @@ class Balance extends CActiveRecord
 		$criteria->compare('revenue',$this->revenue);
 		$criteria->compare('cost',$this->cost);
 		$criteria->compare('margin',$this->margin);
+		$criteria->compare('date_change',$this->date_change,true);
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
 
