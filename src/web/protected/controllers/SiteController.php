@@ -2,7 +2,6 @@
 
 class SiteController extends Controller
 {
-	public $defaultAction = 'login';
 	/**
 	 * Declares class-based actions.
 	 */
@@ -30,7 +29,30 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		if(!Yii::app()->user->isGuest)
+		{
+			$this->render('index');
+		}
+		else
+		{
+			$model=new LoginForm;
+			// if it is ajax validation request
+			if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+			{
+				echo CActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			// collect user input data
+			if(isset($_POST['LoginForm']))
+			{
+				$model->attributes=$_POST['LoginForm'];
+				// validate user input and redirect to the previous page if valid
+				if($model->validate() && $model->login())
+					$this->redirect(Yii::app()->user->returnUrl);
+			}
+			// display the login form
+			$this->render('login',array('model'=>$model));	
+		}
 	}
 
 	/**
@@ -76,9 +98,8 @@ class SiteController extends Controller
 	/**
 	 * Displays the login page
 	 */
-	public function actionLogin()
+	/*public function actionLogin()
 	{
-		$mensaje=null;
 		$model=new LoginForm;
 
 		// if it is ajax validation request
@@ -98,7 +119,7 @@ class SiteController extends Controller
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
-	}
+	}*/
 
 	/**
 	 * Logs out the current user and redirect to homepage.
