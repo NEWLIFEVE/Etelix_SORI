@@ -8,7 +8,6 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Web Application',
-	'defaultController'=>'main',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -58,7 +57,7 @@ return array(
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
-			'errorAction'=>'main/error',
+			'errorAction'=>'site/error',
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',
