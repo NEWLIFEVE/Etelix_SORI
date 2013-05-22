@@ -54,6 +54,21 @@ $this->widget('zii.widgets.grid.CGridView',array(
 			'name'=>'duration_real',
 			),
 		array(
+			'name'=>'duration_real',
+			),
+		array(
+			'name'=>'duration_real',
+			),
+		array(
+			'name'=>'duration_real',
+			),
+		array(
+			'name'=>'duration_real',
+			),
+		array(
+			'name'=>'duration_real',
+			),
+		array(
 			'header'=>'Detalle',
 			'class'=>'CButtonColumn',
 			'template'=>'{view}',

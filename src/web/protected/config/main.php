@@ -7,7 +7,11 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'SORI',
+	'name'=>'S O R I',
+        'language'=>'es',
+        'theme'=>'designa',
+        //'theme'=>'newssourcefinal',
+        
 
 	// preloading 'log' component
 	'preload'=>array('log'),
