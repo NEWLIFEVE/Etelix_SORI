@@ -29,14 +29,15 @@ class BalanceController extends Controller
 		);
 	}
 	*/
-	public function actionVentas()
-	{
-		$model=new Balance;
-		$this->render('ventas',array('model'=>$model));
-	}
 	public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
 	}
+	public function actionVentas()
+	{
+		$model=new Balance;
+		$this->render('ventas',array('model'=>$model));
+	}
+	
 }
