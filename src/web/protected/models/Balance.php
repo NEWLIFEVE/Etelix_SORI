@@ -33,6 +33,7 @@
  * The followings are the available model relations:
  * @property Carrier $idCarrier
  * @property Destination $idDestination
+
  * @property History[] $histories
  */
 class Balance extends CActiveRecord
@@ -60,6 +61,7 @@ class Balance extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier, id_destination', 'safe', 'on'=>'search'),
+
 		);
 	}
 
@@ -74,6 +76,7 @@ class Balance extends CActiveRecord
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
 			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
 			'histories' => array(self::HAS_MANY, 'History', 'id_balance'),
+
 		);
 	}
 

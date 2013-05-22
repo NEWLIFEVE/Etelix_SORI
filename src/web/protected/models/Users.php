@@ -41,6 +41,7 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+
 			array('username, password, email, activkey, superuser, status, create_at, lastvisit_at', 'required'),
 			array('id_type_of_user', 'numerical', 'integerOnly'=>true),
 			array('username', 'length', 'max'=>20),
@@ -59,6 +60,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
 			'profiles' => array(self::HAS_MANY, 'Profiles', 'id_users'),
 			'idTypeOfUser' => array(self::BELONGS_TO, 'TypeOfUser', 'id_type_of_user'),
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_users'),
