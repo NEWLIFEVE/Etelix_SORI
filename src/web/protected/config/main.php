@@ -7,7 +7,11 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'SORI',
+	'name'=>'S O R I',
+        'language'=>'es',
+        'theme'=>'designa',
+        //'theme'=>'newssourcefinal',
+        
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -49,7 +53,7 @@ return array(
 		),*/
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
+			'connectionString' => 'pgsql:host=192.168.1.130;port=5432;dbname=sori',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
 			'password' => '123',
