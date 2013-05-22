@@ -31,7 +31,7 @@ class Carrier extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, fecha_registro', 'required'),
+			array('name, fecha_registro', 'required', 'on'=>'create'),
 			array('name', 'length', 'max'=>50),
 			array('address', 'safe'),
 			// The following rule is used by search().
@@ -60,8 +60,8 @@ class Carrier extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'address' => 'Address',
+			'name' => 'Nombre',
+			'address' => 'Direccion',
 			'fecha_registro' => 'Fecha Registro',
 		);
 	}
@@ -91,6 +91,7 @@ class Carrier extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array('defaultOrder'=>'name ASC'),
 		));
 	}
 

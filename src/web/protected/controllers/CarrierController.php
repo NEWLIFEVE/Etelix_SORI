@@ -63,13 +63,14 @@ class CarrierController extends Controller
 	public function actionCreate()
 	{
 		$model=new Carrier;
-
+		$model->scenario="create";
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Carrier']))
 		{
 			$model->attributes=$_POST['Carrier'];
+			$model->fecha_registro=date("Y-m-d", time());
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

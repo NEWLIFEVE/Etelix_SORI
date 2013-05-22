@@ -31,12 +31,6 @@
 		<?php echo $form->error($model,'address'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'fecha_registro'); ?>
-		<?php echo $form->textField($model,'fecha_registro'); ?>
-		<?php echo $form->error($model,'fecha_registro'); ?>
-	</div>
-
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
