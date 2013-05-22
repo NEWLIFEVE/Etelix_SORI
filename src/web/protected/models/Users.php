@@ -22,6 +22,9 @@
  */
 class Users extends CActiveRecord
 {
+	const STATUS_NOACTIVE=0;
+	const STATUS_ACTIVE=1;
+	const STATUS_BANNED=-1;
 	/**
 	 * @return string the associated database table name
 	 */
