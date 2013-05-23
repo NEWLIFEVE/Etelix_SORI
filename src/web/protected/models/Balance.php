@@ -29,6 +29,7 @@
  * @property string $date_change
  * @property integer $id_carrier
  * @property integer $id_destination
+ * @property integer $type
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
@@ -109,7 +110,7 @@ class Balance extends CActiveRecord
 			'cost' => 'Cost',
 			'margin' => 'Margin',
 			'date_change' => 'Fecha de Cambio',
-			'id_carrier' => 'Id Carrier',
+			'id_carrier' => 'Carrier',
 			'id_destination' => 'Id Destination',
 		);
 	}
@@ -126,7 +127,7 @@ class Balance extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($vista=null)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -157,8 +158,20 @@ class Balance extends CActiveRecord
 		$criteria->compare('date_change',$this->date_change,true);
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
+		$criteria->compare('type',$this->type);
 
-		return new CActiveDataProvider($this, array(
+		
+                                
+          if ($vista == 'ventas') {
+           // $criteria->addCondition('type =:tipo', array(':tipo'=>FALSE));
+            $criteria->addCondition('type is FALSE');
+            
+	}
+          if ($vista == 'compras') {
+            $criteria->addCondition('type is TRUE');
+            
+	}
+        return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

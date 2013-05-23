@@ -122,9 +122,17 @@ class CarrierController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Carrier');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+//		$dataProvider=new CActiveDataProvider('Carrier');
+//		$this->render('index',array(
+//			'dataProvider'=>$dataProvider,
+//		));
+            		$model=new Carrier('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Carrier']))
+			$model->attributes=$_GET['Carrier'];
+
+		$this->render('admin',array(
+			'model'=>$model,
 		));
 	}
 

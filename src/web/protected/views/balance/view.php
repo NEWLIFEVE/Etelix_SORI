@@ -22,6 +22,11 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
+                array(
+                'name'=>'Carrier',
+                'value'=>$model->idCarrier->name,
+                ),
+		'id_destination',
 		'date',
 		'minutes',
 		'acd',
@@ -44,7 +49,6 @@ $this->menu=array(
 		'cost',
 		'margin',
 		'date_change',
-		'id_carrier',
-		'id_destination',
+		
 	),
 )); ?>
