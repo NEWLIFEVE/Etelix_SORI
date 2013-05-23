@@ -18,17 +18,17 @@
      * @return string the formatted result
      * @see numberFormat
      */
-    public function formatDecimal($value) {
+    public static function formatDecimal($value) {
         if($value === null) return '0.00';    // new
         if($value === '') return '0.00';        // new
         
         if(strpos($value,'.')==true)
-                return substr($value, 0 , strpos($value,".")).$this->numberFormat['decimalSeparator'].substr($value, strpos($value,'.')+1 , 2);
+                return substr($value, 0 , strpos($value,".")).",".substr($value, strpos($value,'.')+1 , 2);
         
         if(strpos($value,'.')==false)
 
                 //return $value;
-                return $value.$this->numberFormat['decimalSeparator'].'00';
+                return $value.",".'00';
         
     }
  
