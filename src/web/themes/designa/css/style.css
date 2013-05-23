@@ -618,6 +618,11 @@ ul.page-numbers{float: right;overflow:hidden; display:block;}
 	background: rgba(141,181,192,1) !important;
 	color:white;
 }
+.grid-view table.items tbody tr.selected
+{
+	background: rgba(111,204,187,1) !important;
+	color:white;
+}
 /* -------------------------------------------------------------
 ======	END
 ------------------------------------------------------------- */
