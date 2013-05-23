@@ -61,8 +61,14 @@ class BalanceController extends Controller
 	}
 	public function actionView($id)
 	{
+		$tipo=Balance::model()->findByPk($id)->type;
+		if($tipo==TRUE)
+			$nombre="Compra";
+		else
+			$nombre="Venta";
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+			'nombre'=>$nombre,
 		));
 	}
 
