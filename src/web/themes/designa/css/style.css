@@ -623,6 +623,10 @@ ul.page-numbers{float: right;overflow:hidden; display:block;}
 	background: rgba(111,204,187,1) !important;
 	color:white;
 }
+.grid-view table.items thead tr td input
+{
+	height: 10px;
+}
 /* -------------------------------------------------------------
 ======	END
 ------------------------------------------------------------- */
