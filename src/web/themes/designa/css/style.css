@@ -595,8 +595,24 @@ ul.page-numbers{float: right;overflow:hidden; display:block;}
 	h2, h3{page-break-after:avoid} 
 }
  
- 
- 
+.gridviewmod table.items thead tr th
+{
+	background: rgba(133,152,149,1) !important;
+}
+.grid-view table.items tr.even
+{
+	background: #F8F8F8;
+}
+
+.grid-view table.items tr.odd
+{
+	background: #E5F1F4;
+}
+.grid-view table.items tbody tr:hover
+{
+	background: rgba(141,181,192,1) !important;
+	color:white;
+}
 /* -------------------------------------------------------------
 ======	END
 ------------------------------------------------------------- */
