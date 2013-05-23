@@ -45,8 +45,8 @@ a { color: #0078CF; font-weight: normal;
 
 a:hover { color: #000; text-decoration: underline; background: rgba(0, 0, 0, .025);} 
 
-::-moz-selection { background: #0078CF; color: #fff; text-shadow: none; }
-::selection { background: #0078CF; color: #fff; text-shadow: none; }	
+::-moz-selection { background: rgba(111,204,187,1); color: #fff; text-shadow: none; }
+::selection { background: rgba(111,204,187,1); color: #fff; text-shadow: none; }	
 
 p{margin: 0 0 1em;}
 p:last-child {margin-bottom: 0;}
