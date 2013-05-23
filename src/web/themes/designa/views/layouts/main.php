@@ -45,7 +45,7 @@
 				<?php $this->widget('zii.widgets.CMenu',array(
 					'items'=>array(
 						array('label'=>'Home', 'url'=>array('/site/index')),
-                                                array('label'=>'Carrier', 'url'=>array('/carrier'), 'visible'=>!Yii::app()->user->isGuest),
+                                                array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),
                                                 array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
                                                 array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
                                                 array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),
@@ -64,7 +64,7 @@
 				'links'=>$this->breadcrumbs,
 			)); ?><!-- breadcrumbs -->
 
-			<a href="#" class="arrow fright">see more infos</a>
+			<!--<a href="#" class="arrow fright">see more infos</a>-->
 		</header>
 		
 		<div class="grid col-one-half mq2-col-full">
@@ -185,18 +185,18 @@
 <div class="divide-top">
 	<footer class="grid-wrap">
 		<ul class="grid col-one-third social">
-			<li><a href="#">RSS</a></li>
-			<li><a href="#">Facebook</a></li>
-			<li><a href="#">Twitter</a></li>
-			<li><a href="#">Google+</a></li>
-			<li><a href="#">Flickr</a></li>
+			<li><a href="#"> </a></li>
+			<li><a href="#"> </a></li>
+			<li><a href="#"> </a></li>
+			<li><a href="#"> </a></li>
+			<li><a href="#"> </a></li>
 		</ul>
 	
-		<div class="up grid col-one-third ">
+		<div style="padding-left: 557px;" class="up grid col-one-third ">
 			<a href="#navtop" title="Go back up">&uarr;</a>
 		</div>
 		
-		<nav class="grid col-one-third ">
+		<nav  class="grid col-one-third ">
 				<?php $this->widget('zii.widgets.CMenu',array(
 					'items'=>array(
 						array('label'=>'Home', 'url'=>array('/site/index')),

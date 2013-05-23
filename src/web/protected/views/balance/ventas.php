@@ -2,13 +2,13 @@
 /* @var $this BalanceController */
 
 $this->breadcrumbs=array(
-	'Balance',
+	'Ventas',
 );
 ?>
-<h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
+<h1><?php echo $this->id . ' de ' . $this->action->id; ?></h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView',array(
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->search('ventas'),
 	'htmlOptions'=>array(
 		'class'=>'grid-view gridviewmod'
 		),
@@ -17,6 +17,15 @@ $this->widget('zii.widgets.grid.CGridView',array(
 		array(
 			'name'=>'date',
 			),
+            
+             array(
+                    'name' => 'id_carrier',
+                    'value' => '$data->idCarrier->name',
+                    'type' => 'text',
+//                    'filter' => Cabina::getListCabina(),
+//                    'htmlOptions' => array(
+//                    'style' => 'text-align: center;',
+                    ),
 		array(
 			'name'=>'minutes',
 			'value'=>'Formatter::formatDecimal($data->minutes)',
