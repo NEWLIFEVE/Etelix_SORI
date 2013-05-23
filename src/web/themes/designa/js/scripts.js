@@ -99,7 +99,9 @@ $(document).ready(function() {
 	    	$("#contact_form").validate();	 
 	};   
 	
-	
+	$('tr.odd, tr.even').on('click','td',function(){
+		$(this).addClass('selected');
+	});
 	
 // END
 });

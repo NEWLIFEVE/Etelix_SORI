@@ -16,7 +16,8 @@ $this->breadcrumbs=array(
 //);
 ?>
 
-<h1>Balance #<?php echo $model->id; ?></h1>
+
+<h1><?php echo $nombre." #".$model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
