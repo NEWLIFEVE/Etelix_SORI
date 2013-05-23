@@ -9,6 +9,9 @@ $this->breadcrumbs=array(
 <?php
 $this->widget('zii.widgets.grid.CGridView',array(
 	'dataProvider'=>$model->search(),
+	'htmlOptions'=>array(
+		'class'=>'grid-view gridviewmod'
+		),
 	'filter'=>$model,
 	'columns'=>array(
 		array(
@@ -16,6 +19,7 @@ $this->widget('zii.widgets.grid.CGridView',array(
 			),
 		array(
 			'name'=>'minutes',
+			'value'=>'Formatter::formatDecimal($data->minutes)',
 			),
 		array(
 			'name'=>'acd',
