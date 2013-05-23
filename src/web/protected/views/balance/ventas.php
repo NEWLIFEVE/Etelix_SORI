@@ -82,14 +82,14 @@ $this->widget('zii.widgets.grid.CGridView',array(
 			'name'=>'duration_cost',
 			'value'=>'Formatter::formatDecimal($data->duration_cost)',
 			),
-		array(
-			'name'=>'ner02_efficient',
-			'value'=>'Formatter::formatDecimal($data->ner02_efficient)',
-			),
-		array(
-			'name'=>'ner02_seizure',
-			'value'=>'Formatter::formatDecimal($data->ner02_seizure)',
-			),
+//		array(
+//			'name'=>'ner02_efficient',
+//			'value'=>'Formatter::formatDecimal($data->ner02_efficient)',
+//			),
+//		array(
+//			'name'=>'ner02_seizure',
+//			'value'=>'Formatter::formatDecimal($data->ner02_seizure)',
+//			),
 		array(
 			'name'=>'pdd_calls',
 			'value'=>'Formatter::formatDecimal($data->pdd_calls)',
