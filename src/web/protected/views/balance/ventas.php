@@ -10,22 +10,18 @@ $this->breadcrumbs=array(
 $this->widget('zii.widgets.grid.CGridView',array(
 	'dataProvider'=>$model->search('ventas'),
 	'htmlOptions'=>array(
-		'class'=>'grid-view gridviewmod'
+		'class'=>'grid-view gridviewmod scroll'
 		),
 	'filter'=>$model,
 	'columns'=>array(
 		array(
 			'name'=>'date',
 			),
-            
-             array(
-                    'name' => 'id_carrier',
-                    'value' => '$data->idCarrier->name',
-                    'type' => 'text',
-//                    'filter' => Cabina::getListCabina(),
-//                    'htmlOptions' => array(
-//                    'style' => 'text-align: center;',
-                    ),
+        array(
+            'name' => 'id_carrier',
+            'value' => '$data->idCarrier->name',
+            'type' => 'text',
+            ),
 		array(
 			'name'=>'minutes',
 			'value'=>'Formatter::formatDecimal($data->minutes)',
