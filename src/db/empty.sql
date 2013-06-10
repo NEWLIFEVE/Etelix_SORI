@@ -141,6 +141,7 @@ CREATE TABLE public.balance(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
+	type boolean NOT NULL,
 	date_change date,
 	id_carrier integer,
 	id_destination integer,
@@ -201,6 +202,7 @@ CREATE TABLE public.history(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
+	type boolean NOT NULL,
 	date_change date,
 	id_balance integer,
 	CONSTRAINT id_history PRIMARY KEY (id)
@@ -242,6 +244,7 @@ CREATE TABLE public.balance_time(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
+	type boolean NOT NULL,
 	date_change date NOT NULL,
 	time_change time NOT NULL,
 	name_carrier varchar(50) NOT NULL,
