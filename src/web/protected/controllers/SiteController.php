@@ -129,4 +129,24 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	public function actionUpload()
+	{
+		Yii::import("ext.EAjaxUpload.qqFileUploader");
+		$folder='uploads/';
+		$allowedExtensions=array("xls", "xlsx");
+		$sizeLimit=1*1024*1024;
+		$uploader=new qqFileUploader($allowedExtensions, $sizeLimit);
+		$result=$uploader->handleUpload($folder);
+		$return=htmlspecialchars(json_encode($result),ENT_NOQUOTES);
+
+		$fileSize=filesize($folder.$result['filename']);
+		$fileName=$result['filename'];
+
+		echo $return;
+	}
+	public function actionSubirarchivo()
+	{
+		$this->render('upload');
+	}
 }
