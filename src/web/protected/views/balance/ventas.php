@@ -15,7 +15,7 @@ $this->widget('zii.widgets.grid.CGridView',array(
 	'filter'=>$model,
 	'columns'=>array(
 		array(
-			'name'=>'date',
+			'name'=>'date_balance',
 			),
         array(
             'name' => 'id_carrier',

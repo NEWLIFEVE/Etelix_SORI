@@ -7,7 +7,7 @@
  * @property integer $id
  * @property string $name
  * @property string $address
- * @property string $fecha_registro
+ * @property string $record_date
  *
  * The followings are the available model relations:
  * @property Balance[] $balances
@@ -31,12 +31,12 @@ class Carrier extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, fecha_registro', 'required', 'on'=>'create'),
+			array('name, record_date', 'required', 'on'=>'create'),
 			array('name', 'length', 'max'=>50),
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, address, fecha_registro', 'safe', 'on'=>'search'),
+			array('id, name, address, record_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +62,7 @@ class Carrier extends CActiveRecord
 			'id' => 'ID',
 			'name' => 'Nombre',
 			'address' => 'Direccion',
-			'fecha_registro' => 'Fecha Registro',
+			'record_date' => 'Fecha Registro',
 		);
 	}
 
@@ -87,7 +87,7 @@ class Carrier extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('address',$this->address,true);
-		$criteria->compare('fecha_registro',$this->fecha_registro,true);
+		$criteria->compare('record_date',$this->record_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

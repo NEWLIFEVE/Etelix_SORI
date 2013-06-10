@@ -17,8 +17,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'date'); ?>
-		<?php echo $form->textField($model,'date'); ?>
+		<?php echo $form->label($model,'date_balance'); ?>
+		<?php echo $form->textField($model,'date_balance'); ?>
 	</div>
 
 	<div class="row">

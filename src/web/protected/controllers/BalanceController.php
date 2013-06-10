@@ -49,7 +49,7 @@ class BalanceController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-        	public function actionCompras()
+    public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
