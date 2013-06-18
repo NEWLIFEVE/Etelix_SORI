@@ -22,5 +22,12 @@ Class Utility{
             return $fechaFinal;
         }
     }
+    public static function notNull($valor)
+    {
+        if($valor===null)
+            $valor="0.00";
+
+        return $valor;
+    }
 }
 ?>
