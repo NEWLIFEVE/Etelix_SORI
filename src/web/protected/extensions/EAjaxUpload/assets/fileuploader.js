@@ -17,7 +17,8 @@ var qq = qq || {};
  * Adds all missing properties from second obj to first obj
  */
 qq.extend = function(first, second){
-    for (var prop in second){
+    for (var prop in second)
+    {
         first[prop] = second[prop];
     }
 };
@@ -34,8 +35,10 @@ qq.indexOf = function(arr, elt, from){
 
     if (from < 0) from += len;
 
-    for (; from < len; from++){
-        if (from in arr && arr[from] === elt){
+    for (; from < len; from++)
+    {
+        if(from in arr && arr[from] === elt)
+        {
             return from;
         }
     }
@@ -485,8 +488,8 @@ qq.FileUploader = function(o){
         listElement: null,
 
         template: '<div class="qq-uploader">' +
-                '<div class="qq-upload-drop-area"><span>Arroje los archivos para subir</span></div>' +
-                '<div class="qq-upload-button">Subir archivo</div>' +
+                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                '<div class="qq-upload-button">Upload a file</div>' +
                 '<ul class="qq-upload-list"></ul>' +
              '</div>',
 
@@ -495,8 +498,8 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-                '<a class="qq-upload-cancel" href="#">Cancelar</a>' +
-                '<span class="qq-upload-failed-text">Falló</span>' +
+                '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+                '<span class="qq-upload-failed-text">Failed</span>' +
             '</li>',
 
         classes: {
@@ -542,7 +545,7 @@ qq.extend(qq.FileUploader.prototype, {
     _find: function(parent, type){
         var element = qq.getByClass(parent, this._options.classes[type])[0];
         if (!element){
-            throw new Error('elemento no encontrado ' + type);
+            throw new Error('element not found ' + type);
         }
 
         return element;
