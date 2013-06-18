@@ -105,4 +105,26 @@ class Carrier extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public static function getId($nombre=null)
+	{
+		if($nombre != null)
+		{
+			$model=self::model()->find('name=:nombre',array(':nombre'=>$nombre));
+			if($model == null)
+			{
+				$model=new Carrier;
+				$model->name=$nombre;
+				$model->record_date=date("Y-m-d");
+				if($model->save())
+				{
+					return $model->id;
+				}
+			}
+			else
+			{
+				return $model->id;
+			}
+		}
+	}
 }
