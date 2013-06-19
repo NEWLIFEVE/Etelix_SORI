@@ -196,7 +196,7 @@
 			<a href="#navtop" title="Go back up">&uarr;</a>
 		</div>
 		
-		<nav  class="grid col-one-third ">
+<!--		<nav  class="grid col-one-third ">
 				<?php $this->widget('zii.widgets.CMenu',array(
 					'items'=>array(
 						array('label'=>'Home', 'url'=>array('/site/index')),
@@ -206,7 +206,7 @@
 						array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 					),
 				)); ?>
-		</nav>
+		</nav>-->
 	</footer>
 </div>
 

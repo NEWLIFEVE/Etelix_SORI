@@ -26,6 +26,14 @@ $this->widget('zii.widgets.grid.CGridView',array(
 //                    'htmlOptions' => array(
 //                    'style' => 'text-align: center;',
                     ),
+                        array(
+                    'name' => 'id_destination',
+                    'value' => '$data->idDestination->nombre',
+                    'type' => 'text',
+//                    'filter' => Cabina::getListCabina(),
+//                    'htmlOptions' => array(
+//                    'style' => 'text-align: center;',
+                    ),
 		array(
 			'name'=>'minutes',
 			'value'=>'Formatter::formatDecimal($data->minutes)',
@@ -90,10 +98,10 @@ $this->widget('zii.widgets.grid.CGridView',array(
 //			'name'=>'ner02_seizure',
 //			'value'=>'Formatter::formatDecimal($data->ner02_seizure)',
 //			),
-		array(
-			'name'=>'pdd_calls',
-			'value'=>'Formatter::formatDecimal($data->pdd_calls)',
-			),
+//		array(
+//			'name'=>'pdd_calls',
+//			'value'=>'Formatter::formatDecimal($data->pdd_calls)',
+//			),
 		array(
 			'name'=>'revenue',
 			'value'=>'Formatter::formatDecimal($data->revenue)',

@@ -25,6 +25,14 @@ $this->widget('zii.widgets.grid.CGridView',array(
 //                    'htmlOptions' => array(
 //                    'style' => 'text-align: center;',
                     ),
+            array(
+                    'name' => 'id_destination',
+                    'value' => '$data->idDestination->nombre',
+                    'type' => 'text',
+//                    'filter' => Cabina::getListCabina(),
+//                    'htmlOptions' => array(
+//                    'style' => 'text-align: center;',
+                    ),
 		array(
 			'name'=>'minutes',
 			'value'=>'Formatter::formatDecimal($data->minutes)',
@@ -76,6 +84,26 @@ $this->widget('zii.widgets.grid.CGridView',array(
 		array(
 			'name'=>'duration_real',
 			'value'=>'Formatter::formatDecimal($data->duration_real)',
+			),
+		array(
+			'name'=>'duration_cost',
+			'value'=>'Formatter::formatDecimal($data->duration_cost)',
+			),
+//		array(
+//			'name'=>'ner02_efficient',
+//			'value'=>'Formatter::formatDecimal($data->ner02_efficient)',
+//			),
+//		array(
+//			'name'=>'ner02_seizure',
+//			'value'=>'Formatter::formatDecimal($data->ner02_seizure)',
+//			),
+//		array(
+//			'name'=>'pdd_calls',
+//			'value'=>'Formatter::formatDecimal($data->pdd_calls)',
+//			),
+		array(
+			'name'=>'revenue',
+			'value'=>'Formatter::formatDecimal($data->revenue)',
 			),
 		array(
 			'header'=>'Detalle',
