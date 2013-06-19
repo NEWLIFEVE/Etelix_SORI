@@ -31,7 +31,7 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		if(!Yii::app()->user->isGuest)
 		{
-			$this->render('index');
+			$this->render('upload');
 		}
 		else
 		{
@@ -152,13 +152,17 @@ class SiteController extends Controller
 	}
 	public function actionGuardar()
 	{
-		ini_set('max_execution_time', 900);
+		ini_set('max_execution_time', 1200);
 		ini_set('memory_limit', '256M');
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
-		$ruta="C:/Users/Manuel Zambrano/proyectos/sori/src/web/uploads/ruta venta internal.xls";
-		$data = new Spreadsheet_Excel_Reader();
-		$data->setOutputEncoding('UTF-8');
-		$data->read($ruta);
+		$archivo="ruta venta internal.xls";
+		$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo;
+        if($_POST['tipo']=="dia" && file_exists($ruta))
+        {
+        	$data = new Spreadsheet_Excel_Reader();
+			$data->setOutputEncoding('UTF-8');
+			$data->read($ruta);
+        }
 		error_reporting(E_ALL ^ E_NOTICE);
 		$date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
 		$fecha = date('Y-m-j');
@@ -306,10 +310,10 @@ class SiteController extends Controller
  						{
  							if($total)
  							{
- 								$cant=$model->count('date_balance=:fecha AND id_carrier=:carrier AND id_destination=:destino',array(':fecha'=>Utility::formatDate($date_balance), ':carrier'=>$id_carrier, ':destino'=>$id_destination));
+ 								$cant=$model->count('date_balance=:fecha AND id_carrier=:carrier AND id_destination=:destino',array(':fecha'=>$date_balance, ':carrier'=>$id_carrier, ':destino'=>$id_destination));
  								if($cant>0)
  								{
- 									$model=Balance::model()->find('date_balance=:fecha AND id_carrier=:carrier AND id_destination=:destino',array(':fecha'=>Utility::formatDate($date_balance), ':carrier'=>$id_carrier, ':destino'=>$id_destination));
+ 									$model=Balance::model()->find('date_balance=:fecha AND id_carrier=:carrier AND id_destination=:destino',array(':fecha'=>$date_balance, ':carrier'=>$id_carrier, ':destino'=>$id_destination));
  									$model->date_change=date("Y-m-d");
  									$model->minutes=$minutes;
  									$model->acd=$acd;
@@ -336,6 +340,7 @@ class SiteController extends Controller
  								}
  								else
  								{
+ 									$model->date_balance=$date_balance;
  									$model->minutes=$minutes;
  									$model->acd=$acd;
  									$model->asr=$asr;
