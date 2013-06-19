@@ -51,8 +51,10 @@ class CarrierController extends Controller
 	 */
 	public function actionView($id)
 	{
+                $nombre =  Carrier::model()->findByPk($id)->name;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+                        'nombre'=>$nombre,
 		));
 	}
 
