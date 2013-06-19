@@ -120,7 +120,7 @@ input, textarea {
  transition: border .25s;}
 input:hover, textarea:hover, input:focus, textarea:focus,input:active, textarea:active { border: 1px solid #999;}
 input[type="text"],textarea{cursor: text;}
-input[type="radio"], input[type="checkbox"] { display: inline; width:auto; height: auto; margin-right: 1em; }
+input[type="radio"], input[type="checkbox"] { float: left; width:auto; height: auto; margin-right: 1em; }
 input[type="checkbox"] + label, input[type="radio"] + label { display: inline;}
 input[type="file"]{ border: none;}
 input[type="date"]{ width: auto;}
@@ -666,4 +666,11 @@ div.flash-error, div.flash-notice, div.flash-success
 	background:#E6EFC2 !important;
 	color:#264409 !important;
 	border-color:#C6D880 !important;
+}
+div#archivo ul li
+{
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 15px;
+	font-size: 1.2em;
 }
