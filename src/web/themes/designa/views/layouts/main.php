@@ -31,10 +31,10 @@
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'url'=>array('/site/index')),
-					array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),
+					/*array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),*/
 					array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
-					array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),
+					/*array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),*/
 					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 					),
 				)); 
@@ -85,11 +85,11 @@
 			<nav  class="grid col-one-third ">
 				<?php $this->widget('zii.widgets.CMenu',array(
 					'items'=>array(
-						array('label'=>'Home', 'url'=>array('/site/index')),
+						/*array('label'=>'Home', 'url'=>array('/site/index')),
 						array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 						array('label'=>'Contact', 'url'=>array('/site/contact')),
 						array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-						array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+						array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)*/
 						),
 					)); 
 				?>
