@@ -4,8 +4,7 @@ Class Utility{
 	{
         if($fecha==NULL)
         {
-        	$fecha=date("Y-m-d");
-        	return $fecha;
+        	$fechaFinal=date("Y-m-d");
         }
         else
         {   
@@ -19,8 +18,8 @@ Class Utility{
                 $arrayFecha[1]="0".$arrayFecha[1];
             }
             $fechaFinal=$arrayFecha[2]."-".$arrayFecha[0]."-".$arrayFecha[1];
-            return $fechaFinal;
         }
+        return $fechaFinal;
     }
     public static function notNull($valor)
     {
