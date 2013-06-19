@@ -46,43 +46,18 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-                array(
-                    'name' => 'id_carrier',
-                    'value' => '$data->idCarrier->name',
-                    'type' => 'text',
-//                    'filter' => Cabina::getListCabina(),
-//                    'htmlOptions' => array(
-//                    'style' => 'text-align: center;',
-                    ),
-                ),
-		'date',
+		array(
+			'name'=>'id_carrier',
+			'value'=>'$data->idCarrier->name',
+			'type'=>'text',
+			),
+		'date_balance',
 		'minutes',
 		'acd',
 		'asr',
 		'margin_percentage',
-		/*
-		'margin_per_minute',
-		'cost_per_minute',
-		'revenue_per_min',
-		'pdd',
-		'incomplete_calls',
-		'complete_calls_ner',
-		'complete_calls',
-		'calls_attempts',
-		'duration_real',
-		'duration_cost',
-		'ner02_efficient',
-		'ner02_seizure',
-		'pdd_calls',
-		'revenue',
-		'cost',
-		'margin',
-		'date_change',
-		'id_carrier',
-		'id_destination',
-		*/
-		array(
-			'class'=>'CButtonColumn',
 		),
 
-)); ?>
+	)
+); 
+?>

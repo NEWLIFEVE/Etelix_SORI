@@ -10,11 +10,12 @@ $this->breadcrumbs=array(
 $this->widget('zii.widgets.grid.CGridView',array(
 	'dataProvider'=>$model->search('ventas'),
 	'htmlOptions'=>array(
-		'class'=>'grid-view gridviewmod'
+		'class'=>'grid-view gridviewmod scroll'
 		),
 	'filter'=>$model,
 	'columns'=>array(
 		array(
+
 			'name'=>'date',
 			),
             
@@ -34,6 +35,7 @@ $this->widget('zii.widgets.grid.CGridView',array(
 //                    'htmlOptions' => array(
 //                    'style' => 'text-align: center;',
                     ),
+
 		array(
 			'name'=>'minutes',
 			'value'=>'Formatter::formatDecimal($data->minutes)',

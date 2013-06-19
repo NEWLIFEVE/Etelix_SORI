@@ -11,7 +11,7 @@ class UserIdentity extends CUserIdentity
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_INACTIV=4;
 	/**
-	 * Authenticates a user.
+	 * Autentica un usuario.
 	 * The example implementation makes sure if the username and password
 	 * are both 'demo'.
 	 * In practical applications, this should be changed to authenticate
@@ -35,9 +35,6 @@ class UserIdentity extends CUserIdentity
 		else if(UserHelp::encrypting($this->password)!==$user->password)
 		{
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-			/*$this->_id=$user->id;
-			$this->username=$user->username;
-			$this->errorCode=self::ERROR_NONE;*/
 		}
 		else if($user->status!==true){
 			$this->errorCode=self::ERROR_STATUS_INACTIV;
