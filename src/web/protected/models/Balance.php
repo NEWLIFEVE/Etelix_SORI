@@ -164,11 +164,11 @@ class Balance extends CActiveRecord
                                 
           if ($vista == 'ventas') {
            // $criteria->addCondition('type =:tipo', array(':tipo'=>FALSE));
-            $criteria->addCondition('type is FALSE');
+            $criteria->addCondition('type=1');
             
 	}
           if ($vista == 'compras') {
-            $criteria->addCondition('type is TRUE');
+            $criteria->addCondition('type=0');
             
 	}
         return new CActiveDataProvider($this, array(
