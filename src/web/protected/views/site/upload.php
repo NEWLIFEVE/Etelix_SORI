@@ -1,5 +1,14 @@
 <?php
-echo CHtml::radioButtonList('Archivo','',array('Venta', 'Venta Internal', 'Compra', 'Compra Internal'));
+echo CHtml::beginForm('/site/guardar','post',array('name'=>'monto'));
+?>
+<div id="archivo">
+  <ul>
+    <li><input type="radio" name="tipo" value="dia">Por Día</li>
+    <li><input type="radio" name="tipo" value="hora">Por Hora</li>
+    <li><input type="radio" name="tipo" value="rerate">Re-Rate</li>
+  </ul>
+</div>
+<?php
 $this->widget('ext.EAjaxUpload.EAjaxUpload',
 array(
         'id'=>'uploadFile',
@@ -19,4 +28,6 @@ array(
                //'showMessage'=>"js:function(message){ alert(message); }"
               )
 ));
+echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos'></div>";
+echo CHtml::endForm();
 ?>
