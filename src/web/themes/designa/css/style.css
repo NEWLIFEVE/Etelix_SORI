@@ -638,3 +638,32 @@ overflow-x: auto;
 /* -------------------------------------------------------------
 ======	END
 ------------------------------------------------------------- */
+/**
+ * Flash Messages
+ */
+div.flash-error, div.flash-notice, div.flash-success
+{
+	padding:.8em;
+	margin-bottom:1em;
+	border:2px solid #ddd;
+}
+.info ul.flashes div.flash-error
+{
+	background:#FBE3E4 !important;
+	color:#8a1f11 !important;
+	border-color:#FBC2C4 !important;
+}
+
+.info ul.flashes div.flash-notice
+{
+	background:#FFF6BF !important;
+	color:#514721 !important;
+	border-color:#FFD324 !important;
+}
+
+.info ul.flashes div.flash-success
+{
+	background:#E6EFC2 !important;
+	color:#264409 !important;
+	border-color:#C6D880 !important;
+}
