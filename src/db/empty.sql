@@ -72,8 +72,8 @@ ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
 
--- object: users_30367_uq | type: CONSTRAINT -- 
-ALTER TABLE public.profiles ADD CONSTRAINT users_30367_uq UNIQUE (id_users);
+-- object: users_30375_uq | type: CONSTRAINT -- 
+ALTER TABLE public.profiles ADD CONSTRAINT users_30375_uq UNIQUE (id_users);
 -- ddl-end --
 
 
@@ -141,10 +141,10 @@ CREATE TABLE public.balance(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
-	type boolean NOT NULL,
 	date_change date,
 	id_carrier integer,
 	id_destination integer,
+	id_destination_int integer,
 	CONSTRAINT id_balance PRIMARY KEY (id)
 )
 WITH (OIDS=TRUE);
@@ -202,7 +202,6 @@ CREATE TABLE public.history(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
-	type boolean NOT NULL,
 	date_change date,
 	id_balance integer,
 	CONSTRAINT id_history PRIMARY KEY (id)
@@ -215,6 +214,24 @@ WITH (OIDS=TRUE);
 -- object: balance_fk | type: CONSTRAINT -- 
 ALTER TABLE public.history ADD CONSTRAINT balance_fk FOREIGN KEY (id_balance)
 REFERENCES public.balance (id) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
+-- ddl-end --
+
+
+-- object: public.destination_int | type: TABLE -- 
+CREATE TABLE public.destination_int(
+	id serial NOT NULL,
+	name varchar(50) NOT NULL,
+	CONSTRAINT id_destination_1 PRIMARY KEY (id)
+)
+WITH (OIDS=TRUE);
+-- ddl-end --
+
+-- ddl-end --
+
+-- object: destination_int_fk | type: CONSTRAINT -- 
+ALTER TABLE public.balance ADD CONSTRAINT destination_int_fk FOREIGN KEY (id_destination_int)
+REFERENCES public.destination_int (id) MATCH FULL
 ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
@@ -244,7 +261,6 @@ CREATE TABLE public.balance_time(
 	revenue double precision NOT NULL,
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
-	type boolean NOT NULL,
 	date_change date NOT NULL,
 	time_change time NOT NULL,
 	name_carrier varchar(50) NOT NULL,
