@@ -29,6 +29,7 @@
  * @property string $date_change
  * @property integer $id_carrier
  * @property integer $id_destination
+ * @property integer $id_destination_int
  * @property integer $type
  *
  * The followings are the available model relations:
@@ -56,7 +57,7 @@ class Balance extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
-			array('id_carrier, id_destination', 'numerical', 'integerOnly'=>true),
+			array('id_carrier, id_destination', 'id_destination_int', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'numerical'),
 			array('date_change', 'safe'),
 			// The following rule is used by search().
@@ -76,6 +77,7 @@ class Balance extends CActiveRecord
 		return array(
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
 			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
+			'idDestinationInternal' => array(self::BELONGS_TO, 'DestinationInt', 'id_destination_int'),
 			'histories' => array(self::HAS_MANY, 'History', 'id_balance'),
 
 		);
@@ -112,6 +114,7 @@ class Balance extends CActiveRecord
 			'date_change' => 'Fecha de Cambio',
 			'id_carrier' => 'Carrier',
 			'id_destination' => 'Id Destination',
+			'id_destination_int'=> 'Id Destination Internal',
 		);
 	}
 
@@ -158,6 +161,7 @@ class Balance extends CActiveRecord
 		$criteria->compare('date_change',$this->date_change,true);
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
+		$criteria->compare('id_destination_int',$this->id_destination_int);
 		$criteria->compare('type',$this->type);
 
 		
