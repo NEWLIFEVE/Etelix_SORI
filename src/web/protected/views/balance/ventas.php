@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 	'Ventas',
 );
 ?>
-<h1><?php echo $this->id . ' de ' . $this->action->id; ?></h1>
+<h1><?php echo $this->id.' de '.$this->action->id; ?></h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView',array(
 	'dataProvider'=>$model->search('ventas'),
