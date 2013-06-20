@@ -128,32 +128,35 @@ class qqFileUploader
     /**
      * Returns array('success'=>true) or array('error'=>'error message')
      */
-    function handleUpload($uploadDirectory, $replaceOldFile = FALSE)
+    function handleUpload($uploadDirectory, $replaceOldFile = true)
     {
+        //puedo escribir en el directorio?
         if (!is_writable($uploadDirectory))
         {
             return array('error' => "Error del servidor. Directorio de carga no se puede escribir.");
         }
-
+        //Hay archivos?
         if (!$this->file)
         {
             return array('error' => 'No hay archivos subidos.');
         }
-
+        //Asigno el tamaño
         $size = $this->file->getSize();
-
+        //El tamaño esta vacio?
         if($size == 0)
         {
             return array('error' => 'El archivo está vacío');
         }
-
+        //Es muy grande el archivo
         if($size > $this->sizeLimit)
         {
             return array('error' => 'El archivo es demasiado grande');
         }
-
+        //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
-        $filename = $pathinfo['filename'];
+        //Nombre del archivo
+        $filename = Reader::nombre($pathinfo['filename']);
+
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
 
