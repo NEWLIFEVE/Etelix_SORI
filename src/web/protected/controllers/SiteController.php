@@ -2,6 +2,7 @@
 
 class SiteController extends Controller
 {
+	public $lector;
 	/**
 	 * Declares class-based actions.
 	 */
@@ -153,36 +154,26 @@ class SiteController extends Controller
 	public function actionGuardar()
 	{
 		$diarios= array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal');
+		//$diarios= array(1=>'VentaInternal');
 		$horarios= array(1=>'ruta venta internal hora', 2=>'ruta venta hora', 3=>'ruta compra internal hora', 4=>'ruta compra hora');
 		$rerates= array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
 		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
-		$texto="Archivos: ";
+		$resultado="";
 		if(isset($_POST['tipo']))
 		{
 			if($_POST['tipo']=="dia")
 			{
 				foreach($diarios as $key => $diario)
 				{
-					$tipo=Reader::tipo($diario);
-					$vencom=Reader::vencom($diario);
-					$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
-					$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
-					if(file_exists($minuscula))
+					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
+					$this->lector=new Reader;
+					$this->lector->define($diario);
+					if(!file_exists($ruta))
 					{
-						$resultado=Reader::diario($minuscula,$vencom,$tipo);
-						if($resultado!=false)
-						{
-							$this->render('guardar',array('data'=>$resultado));
-						}
+						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
 					}
-					elseif(file_exists($mayuscula))
-					{
-						$resultado=Reader::diario($mayuscula,$vencom,$tipo);
-						if($resultado!=false)
-						{
-							$this->render('guardar',array('data'=>$resultado));
-						}
-					}
+						$this->lector->diario($ruta);
+							$resultado.=$this->lector->mensaje;
 				}
 				$variable="diarios";
 			}
@@ -247,5 +238,6 @@ class SiteController extends Controller
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
 			$this->redirect('/site/subirarchivo');
 		}
+		$this->render('guardar',array('data'=>$resultado));
 	}
 }
