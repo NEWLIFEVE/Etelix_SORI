@@ -3,9 +3,9 @@ echo CHtml::beginForm('/site/guardar','post',array('name'=>'monto'));
 ?>
 <div id="archivo">
   <ul>
-    <li><input type="radio" name="tipo" value="dia">Por Día</li>
-    <li><input type="radio" name="tipo" value="hora">Por Hora</li>
-    <li><input type="radio" name="tipo" value="rerate">Re-Rate</li>
+    <li><input type="radio" name="tipo" value="dia" <?php echo Log::disabledDiario(date("Y-m-d")); ?>/>Por Día</li>
+    <li><input type="radio" name="tipo" value="hora" />Por Hora</li>
+    <li><input type="radio" name="tipo" value="rerate" />Re-Rate</li>
   </ul>
 </div>
 <?php
