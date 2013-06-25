@@ -235,7 +235,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="history" oids="true">
 	<schema name="public"/>
-	<position x="675" y="36"/>
+	<position x="733" y="41"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -422,6 +422,28 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 type="rel1n"
 	 src-table="public.balance"
 	 dst-table="public.history"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<table name="destination_int" oids="true">
+	<schema name="public"/>
+	<position x="506" y="27"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_destination_1" type="pk-constr" factor="10" table="public.destination_int">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="destination_int_has_many_balance"
+	 type="rel1n"
+	 src-table="public.destination_int"
+	 dst-table="public.balance"
 	 src-required="false" dst-required="false"
 	 auto-sufix="true"
 />
