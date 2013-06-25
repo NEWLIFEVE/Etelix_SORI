@@ -39,11 +39,20 @@ class UserIdentity extends CUserIdentity
 		else if($user->status!==true){
 			$this->errorCode=self::ERROR_STATUS_INACTIV;
 		}
-		else {
+		else 
+		{
 			$this->_id=$user->id;
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
 		}
 		return $this->errorCode;
+	}
+
+	/**
+    * @return integer el ID del usuario autenticado
+    */
+	public function getId()
+	{
+		return $this->_id;
 	}
 }
