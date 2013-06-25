@@ -105,9 +105,14 @@ class Log extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public static function registrarLog()
+	public static function registrarLog($id)
 	{
-
+        $model=new self;
+        $model->id_users=Yii::app()->user->id;
+        $model->id_log_action=$id;
+        $model->date=date("Y-m-d ");
+        $model->hour=date("H:i:s");
+        $model->save();
 	}
 
 	/*
