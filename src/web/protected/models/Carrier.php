@@ -108,9 +108,11 @@ class Carrier extends CActiveRecord
 
 	public static function getId($nombre=null)
 	{
-		if($nombre != null)
+		if($nombre != null && $nombre != 'Total')
 		{
-			$model=self::model()->find('name=:nombre',array(':nombre'=>$nombre));
+			$sql="SELECT id FROM carrier WHERE name='{$nombre}'";
+			//$model=self::model()->find('name=:nombre',array(':nombre'=>$nombre));
+			$model=self::model()->findBySql($sql);
 			if($model == null)
 			{
 				$model=new Carrier;
@@ -123,7 +125,7 @@ class Carrier extends CActiveRecord
 			}
 			else
 			{
-				return $model->id;
+				return $model->getAttribute('id');
 			}
 		}
 	}
