@@ -72,8 +72,8 @@ ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
 
--- object: users_30375_uq | type: CONSTRAINT -- 
-ALTER TABLE public.profiles ADD CONSTRAINT users_30375_uq UNIQUE (id_users);
+-- object: users_30272_uq | type: CONSTRAINT -- 
+ALTER TABLE public.profiles ADD CONSTRAINT users_30272_uq UNIQUE (id_users);
 -- ddl-end --
 
 
@@ -232,6 +232,45 @@ WITH (OIDS=TRUE);
 -- object: destination_int_fk | type: CONSTRAINT -- 
 ALTER TABLE public.balance ADD CONSTRAINT destination_int_fk FOREIGN KEY (id_destination_int)
 REFERENCES public.destination_int (id) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
+-- ddl-end --
+
+
+-- object: public.log_action | type: TABLE -- 
+CREATE TABLE public.log_action(
+	id serial NOT NULL,
+	name varchar(50),
+	CONSTRAINT id_log_action PRIMARY KEY (id)
+)
+WITH (OIDS=TRUE);
+-- ddl-end --
+
+-- ddl-end --
+
+-- object: public.log | type: TABLE -- 
+CREATE TABLE public.log(
+	id serial NOT NULL,
+	date date NOT NULL,
+	hour time NOT NULL,
+	id_log_action integer,
+	id_users integer,
+	CONSTRAINT id_log PRIMARY KEY (id)
+)
+WITH (OIDS=TRUE);
+-- ddl-end --
+
+-- ddl-end --
+
+-- object: log_action_fk | type: CONSTRAINT -- 
+ALTER TABLE public.log ADD CONSTRAINT log_action_fk FOREIGN KEY (id_log_action)
+REFERENCES public.log_action (id) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
+-- ddl-end --
+
+
+-- object: users_fk | type: CONSTRAINT -- 
+ALTER TABLE public.log ADD CONSTRAINT users_fk FOREIGN KEY (id_users)
+REFERENCES public.users (id) MATCH FULL
 ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
