@@ -1,0 +1,31 @@
+.diario
+{
+	background: rgba(0,0,0,0.03);
+	display: inline-block;
+	width: 15%;
+	position: absolute;
+	float: left;
+	font-size: 0.9em;
+	left: 750px;
+	top: 240px;
+	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+	padding-left: 1em;
+	padding-top: 1em;
+	padding-right: 1em;
+	border-radius: 5px;
+}
+.diario ul li.cargados
+{
+	padding-left: 2em;
+	color:rgba(111,204,187,1);
+	/*color: #20D532;*/
+}
+.diario ul li.nocargados
+{
+	padding-left: 2em;
+	color:#8a1f11;
+}
+.oculta
+{
+	display: none;
+}

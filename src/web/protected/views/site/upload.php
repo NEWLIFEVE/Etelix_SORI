@@ -1,5 +1,5 @@
 <?php
-echo CHtml::beginForm('/site/guardar','post',array('name'=>'monto'));
+echo CHtml::beginForm('/balance/guardar','post',array('name'=>'monto'));
 ?>
 <div id="archivo">
   <ul>
@@ -28,6 +28,52 @@ array(
                //'showMessage'=>"js:function(message){ alert(message); }"
               )
 ));
+?>
+<div class="diario oculta">
+  <p>Archivos Cargados:</p>
+  <ul>
+      <?php
+      if(Log::existe(1))
+      {
+        echo "<li class='cargados'>Ruta Compra</li>";
+      }
+      if(Log::existe(2))
+      {
+        echo "<li class='cargados'>Ruta Venta</li>";
+      }
+      if(Log::existe(3))
+      {
+        echo "<li class='cargados'>Ruta Compra Internal</li>";
+      }
+      if(Log::existe(4))
+      {
+        echo "<li class='cargados'>Ruta Venta Internal</li>";
+      }
+      ?>
+  </ul>
+  <p>Archivos Faltantes:</p>
+  <ul>
+      <?php
+      if(!Log::existe(1))
+      {
+        echo "<li class='nocargados'>Ruta Compra</li>";
+      }
+      if(!Log::existe(2))
+      {
+        echo "<li class='nocargados'>Ruta Venta</li>";
+      }
+      if(!Log::existe(3))
+      {
+        echo "<li class='nocargados'>Ruta Compra Internal</li>";
+      }
+      if(!Log::existe(4))
+      {
+        echo "<li class='nocargados'>Ruta Venta Internal</li>";
+      }
+      ?>
+  </ul>
+</div>
+<?php
 echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos'></div>";
 echo CHtml::endForm();
 ?>

@@ -36,7 +36,8 @@ html, button, input, select, textarea {
 	font-smooth:always;
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);}
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
 
 body { margin: 0; font-size: 13px; line-height: 1.6; }
 
@@ -146,6 +147,7 @@ label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font
 	border: solid 1px #ddd;
 	text-decoration: none;
 	cursor: pointer;
+	width: 42em;
 	
 	background: #efefef; /* Old browsers */
 	background: -moz-linear-gradient(top,  #f6f6f6 0%, #efefef 100%); /* FF3.6+ */
