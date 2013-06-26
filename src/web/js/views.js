@@ -3,5 +3,19 @@ $(document).on('ready',function()
 	$('input[value="dia"]').on('click',function()
 	{
 		$("div.diario").removeClass("oculta");
+		$("div.horas").addClass("oculta");
+		$("div.rerate").addClass("oculta");
+	});
+	$('input[value="hora"]').on('click',function()
+	{
+		$("div.horas").removeClass("oculta");
+		$("div.diario").addClass("oculta");
+		$("div.rerate").addClass("oculta");
+	});
+	$('input[value="rerate"]').on('click',function()
+	{
+		$("div.rerate").removeClass("oculta");
+		$("div.diario").addClass("oculta");
+		$("div.horas").addClass("oculta");
 	});
 });

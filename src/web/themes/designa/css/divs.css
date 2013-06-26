@@ -1,4 +1,6 @@
-.diario
+.diario,
+.horas,
+.rerate
 {
 	background: rgba(0,0,0,0.03);
 	display: inline-block;
@@ -14,13 +16,17 @@
 	padding-right: 1em;
 	border-radius: 5px;
 }
-.diario ul li.cargados
+.diario ul li.cargados,
+.horas ul li.cargados,
+.rerate ul li.cargados
 {
 	padding-left: 2em;
 	color:rgba(111,204,187,1);
 	/*color: #20D532;*/
 }
-.diario ul li.nocargados
+.diario ul li.nocargados,
+.horas ul li.nocargados,
+.rerate ul li.nocargados
 {
 	padding-left: 2em;
 	color:#8a1f11;

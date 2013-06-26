@@ -73,6 +73,94 @@ array(
       ?>
   </ul>
 </div>
+<div class="horas oculta">
+  <p>Archivos Cargados:</p>
+  <ul>
+      <?php
+      if(Log::existe(5))
+      {
+        echo "<li class='cargados'>Ruta Compra Horas</li>";
+      }
+      if(Log::existe(6))
+      {
+        echo "<li class='cargados'>Ruta Venta Horas</li>";
+      }
+      if(Log::existe(7))
+      {
+        echo "<li class='cargados'>Ruta Compra Internal Horas</li>";
+      }
+      if(Log::existe(8))
+      {
+        echo "<li class='cargados'>Ruta Venta Internal Horas</li>";
+      }
+      ?>
+  </ul>
+  <p>Archivos Faltantes:</p>
+  <ul>
+      <?php
+      if(!Log::existe(5))
+      {
+        echo "<li class='nocargados'>Ruta Compra Horas</li>";
+      }
+      if(!Log::existe(6))
+      {
+        echo "<li class='nocargados'>Ruta Venta Horas</li>";
+      }
+      if(!Log::existe(7))
+      {
+        echo "<li class='nocargados'>Ruta Compra Internal Horas</li>";
+      }
+      if(!Log::existe(8))
+      {
+        echo "<li class='nocargados'>Ruta Venta Internal Horas</li>";
+      }
+      ?>
+  </ul>
+</div>
+<div class="rerate oculta">
+  <p>Archivos Cargados:</p>
+  <ul>
+      <?php
+      if(Log::existe(9))
+      {
+        echo "<li class='cargados'>Ruta Compra ReRate</li>";
+      }
+      if(Log::existe(10))
+      {
+        echo "<li class='cargados'>Ruta Venta ReRate</li>";
+      }
+      if(Log::existe(11))
+      {
+        echo "<li class='cargados'>Ruta Compra Internal ReRate</li>";
+      }
+      if(Log::existe(12))
+      {
+        echo "<li class='cargados'>Ruta Venta Internal ReRate</li>";
+      }
+      ?>
+  </ul>
+  <p>Archivos Faltantes:</p>
+  <ul>
+      <?php
+      if(!Log::existe(9))
+      {
+        echo "<li class='nocargados'>Ruta Compra ReRate</li>";
+      }
+      if(!Log::existe(10))
+      {
+        echo "<li class='nocargados'>Ruta Venta ReRate</li>";
+      }
+      if(!Log::existe(11))
+      {
+        echo "<li class='nocargados'>Ruta Compra Internal ReRate</li>";
+      }
+      if(!Log::existe(12))
+      {
+        echo "<li class='nocargados'>Ruta Venta Internal ReRate</li>";
+      }
+      ?>
+  </ul>
+</div>
 <?php
 echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos'></div>";
 echo CHtml::endForm();
