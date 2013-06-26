@@ -677,3 +677,7 @@ div#archivo ul li
 	padding-right: 15px;
 	font-size: 1.2em;
 }
+.login input
+{
+	width: 30%;
+}
