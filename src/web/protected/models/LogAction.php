@@ -94,4 +94,19 @@ class LogAction extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/*
+	*Funcion que devuelve el id del log_action consultado
+	*/
+	public static function getId($nombre)
+	{
+		$model=self::model()->find('name=:nombre',array('nombre'=>$nombre));
+		if($model!=null)
+		{
+			return $model->id;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
