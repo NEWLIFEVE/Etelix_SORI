@@ -1,13 +1,17 @@
 <?php
 class Reader
 {
-	public $mensaje;
 	private $nuevos=0;
 	private $actualizados=0;
 	private $fallas=0;
 	public $model;
 	public $tipo;
 	public $vencom;
+	public $error;
+	const ERROR_FILE=3;
+	const ERROR_EXISTS=2;
+	const ERROR_DATE=1;
+	const ERROR_NONE=0;
 
 	public function diario($ruta)
 	{
@@ -21,10 +25,16 @@ class Reader
 		if(file_exists($ruta))
         {
         	$data = new Spreadsheet_Excel_Reader();
-        	//uso esta codificacion ya que dio problemas usadno utf-8 directamente
+        	//uso esta codificacion ya que dio problemas usando utf-8 directamente
 			$data->setOutputEncoding('ISO-8859-1');
 			$data->read($ruta);
         }
+        else
+        {
+        	$this->error=self::ERROR_FILE;
+			return false;
+        }
+        //verifico que los archivos tengan la fecha correcta
 		$date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
 		$fecha = date('Y-m-j');
 		$nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
@@ -191,11 +201,12 @@ class Reader
  					}//fin del multiple if
 				}//fin de for de $j
 			}//fin de for de $i
-			$this->mensaje="Numero de exitos: Nuevos".$this->nuevos.", actualizados ".$this->actualizados." y fallas: ".$this->fallas." son del tipo ".$this->tipo." y vencom: ".$this->vencom."<br>";
+			$this->error=self::ERROR_NONE;
 			return true;
 		}
 		else
 		{
+			$this->error=self::ERROR_DATE;
 			return false;
 		}
 	}
