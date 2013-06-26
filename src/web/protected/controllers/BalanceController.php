@@ -220,6 +220,7 @@ class BalanceController extends Controller
 						if($this->lector->diario($ruta))
 						{
 							Log::registrarLog(LogAction::getId($key));
+							unlink($ruta);
 						}
 						if($this->lector->error==0)
 						{
