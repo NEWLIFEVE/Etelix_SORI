@@ -28,8 +28,7 @@ class LogAction extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, name', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name', 'safe', 'on'=>'search'),
@@ -94,20 +93,5 @@ class LogAction extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-	/*
-	* Funcion que se encarga de regresar el id del accion solicitada, retorna falso de no existir
-	*/
-	public static function getId($nombre)
-	{
-		$model=self::model()->find("name=:nombre",array(':nombre'=>$nombre));
-		if($model!=null)
-		{
-			return $model->id;
-		}
-		else
-		{
-			return false;
-		}
 	}
 }

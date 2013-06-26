@@ -12,6 +12,7 @@
  *
  * The followings are the available model relations:
  * @property LogAction $idLogAction
+ * @property Users $idUsers
  */
 class Log extends CActiveRecord
 {
@@ -31,8 +32,8 @@ class Log extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, date, hour, id_log_action, id_users', 'required'),
-			array('id, id_log_action, id_users', 'numerical', 'integerOnly'=>true),
+			array('date, hour', 'required'),
+			array('id_log_action, id_users', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, date, hour, id_log_action, id_users', 'safe', 'on'=>'search'),
@@ -48,6 +49,7 @@ class Log extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idLogAction' => array(self::BELONGS_TO, 'LogAction', 'id_log_action'),
+			'idUsers' => array(self::BELONGS_TO, 'Users', 'id_users'),
 		);
 	}
 
@@ -107,12 +109,19 @@ class Log extends CActiveRecord
 
 	public static function registrarLog($id)
 	{
-        $model=new self;
-        $model->id_users=Yii::app()->user->id;
-        $model->id_log_action=$id;
-        $model->date=date("Y-m-d ");
-        $model->hour=date("H:i:s");
-        $model->save();
+		$model=new self;
+		$model->hour=date("H:i:s");
+		$model->date=date("Y-m-d");
+		$model->id_log_action=$id;
+		$model->id_users=Yii::app()->user->id;
+		if($model->save())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/*
