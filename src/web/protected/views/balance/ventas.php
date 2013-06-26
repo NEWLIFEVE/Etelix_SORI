@@ -24,7 +24,7 @@ $this->widget('zii.widgets.grid.CGridView',array(
 			),
 		array(
 			'name'=>'id_destination',
-			'value'=>'$data->idDestination->name',
+			'value'=>'$data->idDestinationInt->name',
 			'type'=>'text',
 			),
 		array(
