@@ -228,6 +228,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="date_change">
 		<type name="date"/>
 	</column>
+	<column name="type" not-null="true">
+		<type name="integer"/>
+	</column>
 	<constraint name="id_balance" type="pk-constr" factor="10" table="public.balance">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>

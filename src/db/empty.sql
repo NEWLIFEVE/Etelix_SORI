@@ -72,8 +72,8 @@ ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 -- ddl-end --
 
 
--- object: users_30272_uq | type: CONSTRAINT -- 
-ALTER TABLE public.profiles ADD CONSTRAINT users_30272_uq UNIQUE (id_users);
+-- object: users_30102_uq | type: CONSTRAINT -- 
+ALTER TABLE public.profiles ADD CONSTRAINT users_30102_uq UNIQUE (id_users);
 -- ddl-end --
 
 
@@ -142,6 +142,7 @@ CREATE TABLE public.balance(
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
 	date_change date,
+	type integer NOT NULL,
 	id_carrier integer,
 	id_destination integer,
 	id_destination_int integer,
@@ -203,6 +204,7 @@ CREATE TABLE public.history(
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
 	date_change date,
+	type integer NOT NULL,
 	id_balance integer,
 	CONSTRAINT id_history PRIMARY KEY (id)
 )
@@ -301,6 +303,7 @@ CREATE TABLE public.balance_time(
 	cost double precision NOT NULL,
 	margin double precision NOT NULL,
 	date_change date NOT NULL,
+	type integer NOT NULL,
 	time_change time NOT NULL,
 	name_carrier varchar(50) NOT NULL,
 	name_destination varchar(50) NOT NULL,
