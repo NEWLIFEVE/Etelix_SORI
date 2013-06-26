@@ -46,7 +46,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="users" oids="true">
 	<schema name="public"/>
-	<position x="12" y="366"/>
+	<position x="19" y="324"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -128,7 +128,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="carrier_managers" oids="true">
 	<schema name="public"/>
-	<position x="19" y="170"/>
+	<position x="56" y="181"/>
 	<column name="start_date">
 		<type name="date"/>
 	</column>
@@ -235,7 +235,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="history" oids="true">
 	<schema name="public"/>
-	<position x="733" y="41"/>
+	<position x="672" y="23"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -428,7 +428,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="destination_int" oids="true">
 	<schema name="public"/>
-	<position x="506" y="27"/>
+	<position x="469" y="20"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -444,6 +444,53 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 type="rel1n"
 	 src-table="public.destination_int"
 	 dst-table="public.balance"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<table name="log" oids="true">
+	<schema name="public"/>
+	<position x="281" y="573"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="date"/>
+	</column>
+	<column name="hour" not-null="true">
+		<type name="time"/>
+	</column>
+	<constraint name="id_log" type="pk-constr" factor="10" table="public.log">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="log_action" oids="true">
+	<schema name="public"/>
+	<position x="278" y="735"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_log_action" type="pk-constr" factor="10" table="public.log_action">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="log_action_has_many_log"
+	 type="rel1n"
+	 src-table="public.log_action"
+	 dst-table="public.log"
+	 src-required="false" dst-required="false"
+	 auto-sufix="true"
+/>
+
+<relationship name="users_has_many_log"
+	 type="rel1n"
+	 src-table="public.users"
+	 dst-table="public.log"
 	 src-required="false" dst-required="false"
 	 auto-sufix="true"
 />
