@@ -15,6 +15,9 @@
 	<link rel="shortcut icon" type="image/png" href="favicon.png">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
+ 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/views.js"></script>
+
 	<!--[if lt IE 9]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -65,7 +68,7 @@
 				?><!-- breadcrumbs -->
 				<!--<a href="#" class="arrow fright">see more infos</a>-->
 			</header>
-			<div class="grid col-one-half mq2-col-full">
+			<div class="grid col-full mq2-col-full">
 				<?php echo $content; ?>
 			</div>
 		</section>
