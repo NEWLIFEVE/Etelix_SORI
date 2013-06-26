@@ -130,4 +130,24 @@ class Users extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	/*
+	* funcion que retorna un array con los nombres segun el tipo de usuario
+	*/
+	public static function usersByType($tipo)
+	{
+		$usuarios=self::model()->findAll('id_type_of_user=:tipo',array('tipo'=>$tipo));
+		if($usuarios!=null)
+		{
+			foreach ($usuarios as $key => $usuario)
+			{
+				$arreglo[$key] = $usuario->username;
+			}
+		}
+		else
+		{
+			$arreglo = false;
+		}
+		return $arreglo;
+	}
 }
