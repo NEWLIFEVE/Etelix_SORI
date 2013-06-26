@@ -2,7 +2,6 @@
 
 class SiteController extends Controller
 {
-	public $lector;
 	/**
 	 * Declares class-based actions.
 	 */
@@ -146,9 +145,5 @@ class SiteController extends Controller
         $fileName=$result['filename'];//GETTING FILE NAME
  
         echo $return;// it's array
-	}
-	public function actionSubirarchivo()
-	{
-		$this->render('upload');
 	}
 }
