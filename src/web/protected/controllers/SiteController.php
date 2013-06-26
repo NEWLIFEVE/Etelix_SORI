@@ -153,12 +153,18 @@ class SiteController extends Controller
 	}
 	public function actionGuardar()
 	{
-		$diarios= array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal');
-		//$diarios= array(1=>'VentaInternal');
+		$model=Log::registrarLog(1);
+
+			$this->render('guardar',array('data'=>$model));
+   		/*$diarios= array('Carga Venta Internal'=>'VentaInternal', 'Carga Venta External'=>'VentaExternal', 'Carga Compra Internal'=>'CompraInternal', 'Carga Compra External'=>'CompraExternal');
+		$logs=array();
 		$horarios= array(1=>'ruta venta internal hora', 2=>'ruta venta hora', 3=>'ruta compra internal hora', 4=>'ruta compra hora');
 		$rerates= array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
 		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
 		$resultado="";
+		$prueba=true;
+		$exito="Se grabaron con exito los siguientes archivos: ";
+		$fallas=" Estos archivos tienen la fecha incorrecta: ";
 		if(isset($_POST['tipo']))
 		{
 			if($_POST['tipo']=="dia")
@@ -172,9 +178,32 @@ class SiteController extends Controller
 					{
 						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
 					}
-						$this->lector->diario($ruta);
-							$resultado.=$this->lector->mensaje;
+					//if($this->lector->diario($ruta))
+					if($prueba)
+					{
+						if(Log::registrarLog(1))
+						{
+							$resultado.="En teoria Grabo";
+						}
+						else
+						{
+							$resultado.="se fue a la mierda";
+						}
+					}
+					if($this->lector->error==0)
+					{
+						$exito.=$diario.", ";
+					}
+					elseif($this->lector->error==1)
+					{
+						$fallas.=$diario.", ";
+					}
+					else
+					{
+						$resultado="ni el primero ni el segundo";
+					}
 				}
+				$resultado.=$exito.$fallas;
 				$variable="diarios";
 			}
 			elseif($_POST['tipo']=="hora")
@@ -238,6 +267,6 @@ class SiteController extends Controller
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
 			$this->redirect('/site/subirarchivo');
 		}
-		$this->render('guardar',array('data'=>$resultado));
+		$this->render('guardar',array('data'=>$resultado));*/
 	}
 }
