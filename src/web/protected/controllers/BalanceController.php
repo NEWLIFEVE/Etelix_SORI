@@ -2,6 +2,10 @@
 
 class BalanceController extends Controller
 {
+	/*
+	* Atributo para instanciar el componente reader
+	*/
+	public $lector;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -36,8 +40,8 @@ class BalanceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras'),
-				'users'=>array('admin'),
+				'actions'=>array('admin','delete','ventas','compras', 'guardar'),
+				'users'=>array_merge(Users::usersByType(1)),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -185,5 +189,111 @@ class BalanceController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	public function actionGuardar()
+	{
+   		$diarios= array('Carga Venta Internal'=>'VentaInternal', 'Carga Venta External'=>'VentaExternal', 'Carga Compra Internal'=>'CompraInternal', 'Carga Compra External'=>'CompraExternal');
+		$logs=array();
+		$horarios= array(1=>'ruta venta internal hora', 2=>'ruta venta hora', 3=>'ruta compra internal hora', 4=>'ruta compra hora');
+		$rerates= array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
+		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
+		$resultado="";
+		if(isset($_POST['tipo']))
+		{
+			if($_POST['tipo']=="dia")
+			{
+				foreach($diarios as $key => $diario)
+				{
+					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
+					$this->lector=new Reader;
+					$this->lector->define($diario);
+					if(!file_exists($ruta))
+					{
+						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
+					}
+					if(Log::existe(LogAction::getId($key)))
+					{
+						$resultado.=" El archivo ".$diario." ya fue cargado en base de datos, ";
+					}
+					else
+					{
+						if($this->lector->diario($ruta))
+						{
+							Log::registrarLog(LogAction::getId($key));
+						}
+						if($this->lector->error==0)
+						{
+							$resultado.=" El arhivo ".$diario." se guardo con exito, ";
+						}
+						elseif($this->lector->error==1)
+						{
+							$resultado.=" El archivo ".$diario." tiene una fecha incorrecta, ";
+						}
+					}
+				}
+				$variable="diarios";
+			}
+			elseif($_POST['tipo']=="hora")
+			{
+				foreach($horarios as $key => $hora)
+				{
+					$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".xls";
+					$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".XLS";
+					if(file_exists($minuscula))
+					{
+						$texto.=$hora." existe, ";
+					}
+					elseif(file_exists($mayuscula))
+					{
+						$texto.=$hora." existe, ";
+					}
+					else
+					{
+						$texto.=$hora." no existe, ";
+					}
+				}
+				$variable="horarios";
+			}
+			elseif($_POST['tipo']=="rerate")
+			{
+				foreach($rerates as $key => $rerate)
+				{
+					$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
+					$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".XLS";
+					if(file_exists($minuscula))
+					{
+						$texto.=$rerate." existe, ";
+					}
+					elseif(file_exists($mayuscula))
+					{
+						$texto.=$rerate." existe, ";
+					}
+					else
+					{
+						$texto.=$rerate." no existe, ";
+					}
+				}
+				$variable="rerates";
+			}
+		}
+		else
+		{
+			foreach($todos as $key => $var)
+			{
+				$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$var.".xls";
+				$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$var.".XLS";
+				if(file_exists($minuscula))
+				{
+					unlink($minuscula);
+				}
+				if(file_exists($mayuscula))
+				{
+					unlink($mayuscula);
+				}
+			}
+			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
+			$this->redirect('/site/subirarchivo');
+		}
+		$this->render('guardar',array('data'=>$resultado));
 	}
 }
