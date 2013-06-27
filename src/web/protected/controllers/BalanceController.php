@@ -293,7 +293,7 @@ class BalanceController extends Controller
 				}
 			}
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
-			$this->redirect('/site/subirarchivo');
+			$this->redirect('/site/');
 		}
 		$this->render('guardar',array('data'=>$resultado));
 	}
