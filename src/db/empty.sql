@@ -281,6 +281,7 @@ ON DELETE SET NULL ON UPDATE CASCADE NOT DEFERRABLE;
 CREATE TABLE public.balance_time(
 	id serial NOT NULL,
 	date_balance_time date NOT NULL,
+	time integer NOT NULL,
 	minutes double precision NOT NULL,
 	acd double precision NOT NULL,
 	asr double precision NOT NULL,

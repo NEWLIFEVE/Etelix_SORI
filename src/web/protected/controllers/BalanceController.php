@@ -214,12 +214,20 @@ class BalanceController extends Controller
 					if(Log::existe(LogAction::getId($key)))
 					{
 						$resultado.=" El archivo ".$diario." ya fue cargado en base de datos, ";
+						if(file_exists($ruta))
+						{
+							unlink($ruta);
+						}
 					}
 					else
 					{
 						if($this->lector->diario($ruta))
 						{
 							Log::registrarLog(LogAction::getId($key));
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
 						}
 						if($this->lector->error==0)
 						{
@@ -292,7 +300,7 @@ class BalanceController extends Controller
 				}
 			}
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
-			$this->redirect('/site/subirarchivo');
+			$this->redirect('/site/');
 		}
 		$this->render('guardar',array('data'=>$resultado));
 	}

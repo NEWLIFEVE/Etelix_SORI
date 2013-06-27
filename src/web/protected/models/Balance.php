@@ -131,7 +131,7 @@ class Balance extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($tipo=null)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -166,6 +166,17 @@ class Balance extends CActiveRecord
 		$criteria->compare('id_destination',$this->id_destination);
 		$criteria->compare('id_destination_int',$this->id_destination_int);
 
+		if($tipo!=null)
+		{
+			if($tipo=="compras")
+			{
+				$criteria->addCondition('type=0');
+			}
+			elseif($tipo=="ventas")
+			{
+				$criteria->addCondition('type=1');
+			}
+		}
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
