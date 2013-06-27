@@ -9,8 +9,8 @@
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('date')); ?>:</b>
-	<?php echo CHtml::encode($data->date); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('date_balance')); ?>:</b>
+	<?php echo CHtml::encode($data->date_balance); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('minutes')); ?>:</b>
