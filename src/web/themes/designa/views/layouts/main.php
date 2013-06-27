@@ -11,7 +11,8 @@
 	<meta name="description" content="Designa Studio, a HTML5 / CSS3 template.">
 	<meta name="author" content="Sylvain Lafitte, Web Designer, sylvainlafitte.com">
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+         <link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/favicon.ico" type="image/x-icon" />
+<!--	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">-->
 	<link rel="shortcut icon" type="image/png" href="favicon.png">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
