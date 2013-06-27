@@ -21,8 +21,8 @@ $(document).on('ready',function()
 		$("div.horas").fadeOut('slow');
 		console.log("Funciona rerate");
 	});
-	/*$('form[namer="monto"]').on('submit',function()
+	$('form[name="monto"]').on('submit',function()
 	{
-		alert("Funciona");
-	});*/
+		$("div.transparente, div.loading").fadeIn('slow').removeClass('oculta');
+	});
 });

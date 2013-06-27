@@ -119,7 +119,7 @@
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
 	<div class="transparente oculta"></div>
-	<div class="loading oculta"></div>
+	<div class="loading oculta"><img src="<?php echo Yii::app()->baseUrl; ?>/images/image_464753.gif"></div>
 </body>
 </html>
 <?php

@@ -50,7 +50,12 @@
 	min-height: 350px;
 	background: white;
 	content: "";
-	margin: -40% auto;
+	margin: -45% auto;
 	position: relative;
 	border-radius:10px;
+	border:10px rgba(10,31,38,0.7) solid;
+}
+.loading img
+{
+	margin: 25% auto auto 28%;
 }
