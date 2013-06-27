@@ -7,8 +7,11 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
-	'defaultController'=>'main',
+	'name'=>'S O R I',
+        'language'=>'es',
+        'theme'=>'designa',
+        //'theme'=>'newssourcefinal',
+        
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -50,7 +53,9 @@ return array(
 		),*/
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
+
+			'connectionString' => 'pgsql:host=192.168.1.239;port=5432;dbname=sori',
+
 			'emulatePrepare' => true,
 			'username' => 'postgres',
 			'password' => '123',
@@ -58,7 +63,7 @@ return array(
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
-			'errorAction'=>'main/error',
+			'errorAction'=>'site/error',
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',

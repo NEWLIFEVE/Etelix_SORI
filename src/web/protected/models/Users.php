@@ -16,10 +16,15 @@
  * @property integer $id_type_of_user
  *
  * The followings are the available model relations:
+ * @property Profiles[] $profiles
  * @property TypeOfUser $idTypeOfUser
+ * @property CarrierManagers[] $carrierManagers
  */
 class Users extends CActiveRecord
 {
+	const STATUS_NOACTIVE=0;
+	const STATUS_ACTIVE=1;
+	const STATUS_BANNED=-1;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -36,11 +41,10 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password', 'required', 'on'=>'login'),
-			array('email','email'),
+
+			array('username, password, email, activkey, superuser, status, create_at, lastvisit_at', 'required'),
 			array('id_type_of_user', 'numerical', 'integerOnly'=>true),
 			array('username', 'length', 'max'=>20),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => "Simbolo incorrecto (A-z0-9).")
 			array('password, email, activkey', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -56,7 +60,10 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
+			'profiles' => array(self::HAS_MANY, 'Profiles', 'id_users'),
 			'idTypeOfUser' => array(self::BELONGS_TO, 'TypeOfUser', 'id_type_of_user'),
+			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_users'),
 		);
 	}
 
@@ -122,5 +129,25 @@ class Users extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	/*
+	* funcion que retorna un array con los nombres segun el tipo de usuario
+	*/
+	public static function usersByType($tipo)
+	{
+		$usuarios=self::model()->findAll('id_type_of_user=:tipo',array('tipo'=>$tipo));
+		if($usuarios!=null)
+		{
+			foreach ($usuarios as $key => $usuario)
+			{
+				$arreglo[$key] = $usuario->username;
+			}
+		}
+		else
+		{
+			$arreglo = false;
+		}
+		return $arreglo;
 	}
 }

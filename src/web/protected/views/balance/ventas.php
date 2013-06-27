@@ -1,0 +1,97 @@
+<?php
+/* @var $this BalanceController */
+
+$this->breadcrumbs=array(
+	'Ventas',
+);
+?>
+<h1><?php echo $this->id.' de '.$this->action->id; ?></h1>
+<?php
+$this->widget('zii.widgets.grid.CGridView',array(
+	'dataProvider'=>$model->search('ventas'),
+	'htmlOptions'=>array(
+		'class'=>'grid-view gridviewmod scroll'
+		),
+	'filter'=>$model,
+	'columns'=>array(
+		array(
+			'name'=>'date_balance',
+			),
+		array(
+			'name'=>'id_carrier',
+			'value'=>'$data->idCarrier->name',
+			'type'=>'text',
+			),
+		array(
+			'name'=>'id_destination',
+			'value'=>'$data->idDestinationInt->name',
+			'type'=>'text',
+			),
+		array(
+			'name'=>'minutes',
+			'value'=>'Formatter::formatDecimal($data->minutes)',
+			),
+		array(
+			'name'=>'acd',
+			'value'=>'Formatter::formatDecimal($data->acd)',
+			),
+		array(
+			'name'=>'asr',
+			'value'=>'Formatter::formatDecimal($data->asr)',
+			),
+		array(
+			'name'=>'margin_percentage',
+			'value'=>'Formatter::formatDecimal($data->margin_percentage)',
+			),
+		array(
+			'name'=>'margin_per_minute',
+			'value'=>'Formatter::formatDecimal($data->margin_per_minute)',
+			),
+		array(
+			'name'=>'cost_per_minute',
+			'value'=>'Formatter::formatDecimal($data->cost_per_minute)',
+			),
+		array(
+			'name'=>'revenue_per_min',
+			'value'=>'Formatter::formatDecimal($data->revenue_per_min)',
+			),
+		array(
+			'name'=>'pdd',
+			'value'=>'Formatter::formatDecimal($data->pdd)',
+			),
+		array(
+			'name'=>'incomplete_calls',
+			'value'=>'Formatter::formatDecimal($data->incomplete_calls)',
+			),
+		array(
+			'name'=>'complete_calls_ner',
+			'value'=>'Formatter::formatDecimal($data->complete_calls_ner)',
+			),
+		array(
+			'name'=>'complete_calls',
+			'value'=>'Formatter::formatDecimal($data->complete_calls)',
+			),
+		array(
+			'name'=>'calls_attempts',
+			'value'=>'Formatter::formatDecimal($data->calls_attempts)',
+			),
+		array(
+			'name'=>'duration_real',
+			'value'=>'Formatter::formatDecimal($data->duration_real)',
+			),
+		array(
+			'name'=>'duration_cost',
+			'value'=>'Formatter::formatDecimal($data->duration_cost)',
+			),
+		array(
+			'name'=>'revenue',
+			'value'=>'Formatter::formatDecimal($data->revenue)',
+			),
+		array(
+			'header'=>'Detalle',
+			'class'=>'CButtonColumn',
+			'template'=>'{view}',
+			),
+		),
+	));
+?>

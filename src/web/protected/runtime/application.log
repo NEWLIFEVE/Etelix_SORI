@@ -819,3 +819,233 @@ Stack trace:
 #3 {main}
 REQUEST_URI=/favicon.ico
 ---
+2013/06/27 12:30:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.ico"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2013/06/27 12:30:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.png"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.png
+---
+2013/06/27 12:33:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.ico
+---
+2013/06/27 12:33:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.png
+---
+2013/06/27 12:33:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.ic...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.ico
+---
+2013/06/27 12:33:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.pn...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.png
+---
+2013/06/27 12:35:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.ico"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2013/06/27 12:35:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.png"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.png
+---
+2013/06/27 12:35:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.ico"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2013/06/27 12:35:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.png"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.png
+---
+2013/06/27 12:35:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.ico
+---
+2013/06/27 12:35:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.png
+---
+2013/06/27 12:35:12 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sori\src\web\yii\framework\base\CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\grid\CGridColumn.php(151): CDataColumn->renderDataCellContent()
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\grid\CGridView.php(616): CDataColumn->renderDataCell()
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\grid\CGridView.php(572): CGridView->renderTableRow()
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\grid\CGridView.php(482): CGridView->renderTableBody()
+#4 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\CBaseListView.php(160): CGridView->renderItems()
+#5 unknown(0): CGridView->renderSection()
+#6 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\CBaseListView.php(143): preg_replace_callback()
+#7 C:\xampp\htdocs\sori\src\web\yii\framework\zii\widgets\CBaseListView.php(128): CGridView->renderContent()
+#8 C:\xampp\htdocs\sori\src\web\yii\framework\web\CBaseController.php(173): CGridView->run()
+#9 C:\xampp\htdocs\sori\src\web\protected\views\balance\compras.php(114): BalanceController->widget()
+#10 C:\xampp\htdocs\sori\src\web\yii\framework\web\CBaseController.php(126): require()
+#11 C:\xampp\htdocs\sori\src\web\yii\framework\web\CBaseController.php(95): BalanceController->renderInternal()
+#12 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(869): BalanceController->renderFile()
+#13 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(782): BalanceController->renderPartial()
+#14 C:\xampp\htdocs\sori\src\web\protected\controllers\BalanceController.php(59): BalanceController->render()
+#15 C:\xampp\htdocs\sori\src\web\yii\framework\web\actions\CInlineAction.php(49): BalanceController->actionCompras()
+#16 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#17 C:\xampp\htdocs\sori\src\web\yii\framework\web\filters\CFilterChain.php(133): BalanceController->runAction()
+#18 C:\xampp\htdocs\sori\src\web\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#19 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#20 C:\xampp\htdocs\sori\src\web\yii\framework\web\filters\CInlineFilter.php(58): BalanceController->filterAccessControl()
+#21 C:\xampp\htdocs\sori\src\web\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#22 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(291): CFilterChain->run()
+#23 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(265): BalanceController->runActionWithFilters()
+#24 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): BalanceController->run()
+#25 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#26 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\sori\src\web\index.php(13): CWebApplication->run()
+REQUEST_URI=/balance/compras
+in C:\xampp\htdocs\sori\src\web\protected\views\balance\compras.php (114)
+in C:\xampp\htdocs\sori\src\web\protected\controllers\BalanceController.php (59)
+in C:\xampp\htdocs\sori\src\web\index.php (13)
+2013/06/27 12:35:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "favicon.ico"' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/favicon.ico
+---
+2013/06/27 12:35:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.ico
+---
+2013/06/27 12:35:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.png
+---
+2013/06/27 12:35:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.ic...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.ico
+---
+2013/06/27 12:35:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.pn...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.png
+---
+2013/06/27 12:35:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.ico
+---
+2013/06/27 12:35:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('balance/favicon...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/balance/favicon.png
+---
+2013/06/27 12:35:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.ico" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.ico')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.ico')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.ic...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.ico
+---
+2013/06/27 12:35:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "favicon.png" solicitada.' in C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\sori\src\web\yii\framework\web\CController.php(270): CController->missingAction('favicon.png')
+#1 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(282): CController->run('favicon.png')
+#2 C:\xampp\htdocs\sori\src\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/favicon.pn...')
+#3 C:\xampp\htdocs\sori\src\web\yii\framework\base\CApplication.php(169): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\sori\src\web\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/site/favicon.png
+---
