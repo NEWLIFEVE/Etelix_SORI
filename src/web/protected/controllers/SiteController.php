@@ -136,7 +136,7 @@ class SiteController extends Controller
  
         $folder='uploads/';// folder for uploaded files
         $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
-        $sizeLimit = 10 * 1024 * 1024;// maximum file size in bytes
+        $sizeLimit = 9 * 1024 * 1024;// maximum file size in bytes
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
         $result = $uploader->handleUpload($folder);
         $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);

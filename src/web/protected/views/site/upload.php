@@ -15,7 +15,7 @@ array(
         'config'=>array(
                'action'=>Yii::app()->createUrl('site/upload'),
                'allowedExtensions'=>array("xls", "xlsx"),//array("jpg","jpeg","gif","exe","mov" and etc...
-               'sizeLimit'=>8*1024*1024,// maximum file size in bytes
+               'sizeLimit'=>9*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>1*1024,// minimum file size in bytes
                //'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
                //'messages'=>array(
