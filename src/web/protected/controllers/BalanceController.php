@@ -235,7 +235,7 @@ class BalanceController extends Controller
 						}
 						elseif($this->lector->error==1)
 						{
-							$resultado.=" El archivo ".$diario." tiene una fecha incorrecta, ";
+							$errorFecha.=" El archivo ".$diario." tiene una fecha incorrecta, ";
 						}
 					}
 				}
@@ -301,6 +301,10 @@ class BalanceController extends Controller
 			}
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
 			$this->redirect('/site/');
+		}
+		if($errorFecha)
+		{
+			Yii::app()->user->setFlash('error', $errorFecha);
 		}
 		$this->render('guardar',array('data'=>$resultado));
 	}
