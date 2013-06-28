@@ -6,6 +6,7 @@ class BalanceController extends Controller
 	* Atributo para instanciar el componente reader
 	*/
 	public $lector;
+	private $nombre;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -40,7 +41,7 @@ class BalanceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar'),
+				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
 			array('deny',  // deny all users
@@ -142,6 +143,7 @@ class BalanceController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->nombre="Hola";
 		$dataProvider=new CActiveDataProvider('Balance');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -192,10 +194,23 @@ class BalanceController extends Controller
 	}
 	public function actionGuardar()
 	{
-   		$diarios= array('Carga Venta Internal'=>'VentaInternal', 'Carga Venta External'=>'VentaExternal', 'Carga Compra Internal'=>'CompraInternal', 'Carga Compra External'=>'CompraExternal');
-		$logs=array();
-		$horarios= array(1=>'ruta venta internal hora', 2=>'ruta venta hora', 3=>'ruta compra internal hora', 4=>'ruta compra hora');
-		$rerates= array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
+   		$diarios=array(
+   			'Carga Venta Internal'=>'VentaInternal',
+   			'Carga Venta External'=>'VentaExternal',
+   			'Carga Compra Internal'=>'CompraInternal',
+   			'Carga Compra External'=>'CompraExternal'
+   			);
+		/*$horarios=array(
+			'Carga Venta Internal 6GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 12GMT'=>'RutaVentaInternal12GMT',
+			'Carga Venta Internal 18GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 24GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 6GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 6GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 6GMT'=>'RutaVentaInternal6GMT',
+			'Carga Venta Internal 6GMT'=>'RutaVentaInternal6GMT'
+			);*/
+		$rerates=array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
 		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
 		$resultado="";
 		if(isset($_POST['tipo']))
@@ -303,5 +318,9 @@ class BalanceController extends Controller
 			$this->redirect('/site/');
 		}
 		$this->render('guardar',array('data'=>$resultado));
+	}
+	public function actionVer()
+	{
+		$this->render('guardar',array('data'=>$this->nombre));
 	}
 }

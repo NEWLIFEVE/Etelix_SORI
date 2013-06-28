@@ -134,11 +134,4 @@ Yii::app()->clientScript->registerScript(
         '$(".info").animate({opacity: 1.0}, 5000).slideUp("slow");',
         CClientScript::POS_READY
         );
-
-      $this->widget('ext.scrolltop.ScrollTop', array(
-    //Default values
-    'fadeTransitionStart'=>10,
-    'fadeTransitionEnd'=>200,
-    'speed' => 'slow'
-    ));
 ?>
