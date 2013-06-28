@@ -57,5 +57,15 @@
 }
 .loading img
 {
-	margin: 25% auto auto 28%;
+	margin-left: 29.5%;
+}
+.loading h1
+{
+	margin-top: 10%;
+	text-align: center;
+	font-size: 3em;
+}
+.loading p
+{
+	text-align: center;
 }
