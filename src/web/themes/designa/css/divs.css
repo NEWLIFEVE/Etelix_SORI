@@ -18,7 +18,8 @@
 }
 .diario ul li.cargados,
 .horas ul li.cargados,
-.rerate ul li.cargados
+.rerate ul li.cargados,
+ h5.cargados
 {
 	padding-left: 2em;
 	color:rgba(111,204,187,1);
@@ -26,10 +27,14 @@
 }
 .diario ul li.nocargados,
 .horas ul li.nocargados,
-.rerate ul li.nocargados
+.rerate ul li.nocargados,
+ h5.nocargados
 {
 	padding-left: 2em;
 	color:#8a1f11;
+}
+.detallecarga{
+    margin-left: 25px;
 }
 .oculta
 {

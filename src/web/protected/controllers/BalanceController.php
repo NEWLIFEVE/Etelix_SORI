@@ -212,7 +212,9 @@ class BalanceController extends Controller
 			);*/
 		$rerates=array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
 		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
-		$resultado="";
+		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
+                $exitos="<h3> Exitos</h3>";
+                $fallas="<h3> Fallas</h3>";
 		if(isset($_POST['tipo']))
 		{
 			if($_POST['tipo']=="dia")
@@ -228,7 +230,7 @@ class BalanceController extends Controller
 					}
 					if(Log::existe(LogAction::getId($key)))
 					{
-						$resultado.=" El archivo ".$diario." ya fue cargado en base de datos, ";
+						$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya fue cargado en base de datos </h5> <br/> ";
 						if(file_exists($ruta))
 						{
 							unlink($ruta);
@@ -246,11 +248,11 @@ class BalanceController extends Controller
 						}
 						if($this->lector->error==0)
 						{
-							$resultado.=" El arhivo ".$diario." se guardo con exito, ";
+							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
 						elseif($this->lector->error==1)
 						{
-							$resultado.=" El archivo ".$diario." tiene una fecha incorrecta, ";
+							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
 						}
 					}
 				}
@@ -317,6 +319,7 @@ class BalanceController extends Controller
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
 			$this->redirect('/site/');
 		}
+                $resultado.=$exitos."</br>".$fallas."</div>";
 		$this->render('guardar',array('data'=>$resultado));
 	}
 	public function actionVer()

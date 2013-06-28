@@ -35,7 +35,7 @@
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'url'=>array('/site/index')),
-					/*array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),*/
+					array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
 					/*array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),*/
@@ -134,4 +134,5 @@ Yii::app()->clientScript->registerScript(
         '$(".info").animate({opacity: 1.0}, 5000).slideUp("slow");',
         CClientScript::POS_READY
         );
+
 ?>

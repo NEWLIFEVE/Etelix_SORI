@@ -13,6 +13,9 @@ class Reader
 	const ERROR_DATE=1;
 	const ERROR_NONE=0;
 
+	/*
+	* Funcion de carga de archivos diarios
+	*/
 	public function diario($ruta)
 	{
 		//Aumento el tiempo de ejecucion
@@ -210,6 +213,194 @@ class Reader
 			return false;
 		}
 	}
+
+	/*
+	* Funcion de carga de archivos hora
+	*/
+	public function hora($ruta)
+	{
+		//Aumento el tiempo de ejecucion
+		ini_set('max_execution_time', 1200);
+		//Aumento la cantidad de memoria 
+		ini_set('memory_limit', '256M');
+		//importo la extension
+		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+		error_reporting(E_ALL ^ E_NOTICE);
+		//Verifico si el archivo existe en el servidor
+		if(file_exists($ruta))
+        {
+        	$data = new Spreadsheet_Excel_Reader();
+        	//uso esta codificacion ya que dio problemas usando utf-8 directamente
+			$data->setOutputEncoding('ISO-8859-1');
+			$data->read($ruta);
+        }
+        else
+        {
+        	$this->error=self::ERROR_FILE;
+			return false;
+        }
+        $date_balance=Utility::formatDate($data->sheets[0]['cells'][1][4]);
+        $fecha=date('Y-m-j');
+        if($fecha == $date_balance)
+        {
+        	//Comienzo a leer el archivo
+        	for($i=5;$i<$data->sheets[0]['numRows'];$i++)
+        	{
+        		$model=new BalanceTime;
+        		$total=true;
+				for($j=1;$j<=$data->sheets[0]['numCols'];$j++)
+				{
+					if($j==1)
+ 					{
+ 						//Obtengo la hora del registro
+ 						if($data->sheets[0]['cells'][$i][$j]=='Total')
+ 						{
+ 							break 2;
+ 						}
+ 						else
+ 						{
+ 							$time=$data->sheets[0]['cells'][$i][$j];
+ 						}
+ 					}
+ 					elseif($j==2)
+ 					{
+ 						//Obtengo el nombre del destino
+ 						if($data->sheets[0]['cells'][$i][$j]=='Total')
+ 						{
+ 							break 2;
+ 						}
+ 						else
+ 						{
+ 							$name_destination=$data->sheets[0]['cells'][$i][$j];
+ 						}
+ 					}
+ 					elseif($j==3)
+ 					{
+ 						//Obtengo el nombre del carrier
+ 						if($data->sheets[0]['cells'][$i][$j]=='Total')
+ 						{
+ 							$total=false;
+ 						}
+ 						else
+ 						{
+ 							$name_carrier=$data->sheets[0]['cells'][$i][$j];
+ 						}
+ 					}
+ 					elseif($j==4)
+ 					{
+ 						//minutos
+ 						$minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==5)
+ 					{
+ 						//ACD
+ 						$acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==6)
+ 					{
+ 						//ASR
+						$asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==7)
+ 					{
+ 						//Margin %
+						$margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==8)
+ 					{
+ 						//Margin per Min
+ 						$margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==9)
+ 					{
+ 						//Cost per Min
+ 						$cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==10)
+ 					{
+ 						//Revenue per Min
+ 						$revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==11)
+ 					{
+ 						//PDD
+ 						$pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==12)
+ 					{
+ 						//Imcomplete Calls
+ 						$incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==13)
+ 					{
+ 						//Imcomplete Calls Ner
+ 						$incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==14)
+ 					{
+ 						//Complete Calls Ner
+ 						$complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==15)
+ 					{
+ 						//Complete Calls
+ 						$complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==16)
+ 					{
+ 						//Calls Attempts
+ 						$calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==17)
+ 					{
+ 						//Duration Real
+ 						$duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==18)
+ 					{
+ 						//Duration Cost
+ 						$duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==19)
+ 					{
+ 						//NER02 Efficient
+ 						$ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==20)
+ 					{
+ 						//NER02 Seizure
+ 						$ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==21)
+ 					{
+ 						//PDDCalls
+ 						$pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==22)
+ 					{
+ 						//Revenue
+ 						$revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==23)
+ 					{
+ 						//Cost
+ 						$cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+ 					elseif($j==24)
+ 					{
+ 						//Margin
+ 						$margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+ 					}
+				}
+        	}
+        }
+        else
+		{
+			$this->error=self::ERROR_DATE;
+			return false;
+		}
+	}
+
 	public static function nombre($nombre)
 	{
 		if(stripos($nombre,"internal"))
@@ -236,6 +427,7 @@ class Reader
     	}
     	return $nuevoNombre;
 	}
+
 	public function define($nombre)
 	{
 		if(stripos($nombre,"internal"))
