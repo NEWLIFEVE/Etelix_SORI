@@ -120,7 +120,12 @@
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
 	<div class="transparente oculta"></div>
-	<div class="loading oculta"><img src="<?php echo Yii::app()->baseUrl; ?>/images/image_464753.gif"></div>
+	<div class="loading oculta">
+		<h1>CARGANDO ARCHIVOS</h1>
+		<p>Este proceso puede tardar unos minutos</p>
+		<p>Por favor</p>
+		<img src="<?php echo Yii::app()->baseUrl; ?>/images/image_464753.gif">
+	</div>
 </body>
 </html>
 <?php
