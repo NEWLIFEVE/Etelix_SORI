@@ -402,31 +402,47 @@ class Reader
 	}
 
 	public static function nombre($nombre)
-	{
-		if(stripos($nombre,"internal"))
-		{
-			if(stripos($nombre,"compra"))
-    		{
-    			$nuevoNombre="CompraInternal";
-    		}
-    		else
-    		{
-    			$nuevoNombre="VentaInternal";
-    		}
-    	}
-    	else
-    	{
-    		if(stripos($nombre,"compra"))
-    		{
-    			$nuevoNombre="CompraExternal";
-    		}
-    		else
-    		{
-    			$nuevoNombre="VentaExternal";
-    		}
-    	}
-    	return $nuevoNombre;
-	}
+    {
+      $posicion=strpos($nombre,'GMT');
+      if($posicion)
+      {
+        if(substr($nombre, strpos($nombre,'GMT')-2, 1)==" ")
+        {
+          $valor=substr($nombre, strpos($nombre,'GMT')-1, 1);
+        }
+        else
+        {
+          $valor=substr($nombre, strpos($nombre,'GMT')-2, 2);
+        }
+      }
+      else
+      {
+        $valor="";
+      }
+      if(stripos($nombre,"internal"))
+      {
+        if(stripos($nombre,"compra"))
+        {
+          $nuevoNombre="CompraInternal";
+        }
+        else
+        {
+          $nuevoNombre="VentaInternal";
+        }
+      }
+      else
+      {
+        if(stripos($nombre,"compra"))
+        {
+          $nuevoNombre="CompraExternal";
+        }
+        else
+        {
+          $nuevoNombre="VentaExternal";
+        }
+      }
+      return $nuevoNombre.$valor;
+    }
 
 	public function define($nombre)
 	{
