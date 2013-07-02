@@ -43,34 +43,38 @@
 .transparente
 {
 	width: 100%;
-	height: 1300px;
-	margin-top: -100%;
+	height: 100%;
 	background: rgba(0,0,0,0.5);
-	content: "";
-	position: relative;
+	top: 0px;
+	position: fixed;
+	text-align: center;
 }
 .loading
 {
-	width: 45%;
-	min-height: 350px;
+	margin: 10% auto;
+	padding: 5em 5em;
 	background: white;
-	content: "";
-	margin: -45% auto;
-	position: relative;
+	display: inline-block;
 	border-radius:10px;
 	border:10px rgba(10,31,38,0.7) solid;
-}
-.loading img
-{
-	margin-left: 29.5%;
+	text-align: center;
 }
 .loading h1
 {
-	margin-top: 10%;
-	text-align: center;
 	font-size: 3em;
 }
-.loading p
+.cerrar
 {
+	margin: 15% auto;
+	display: inline-block;
+	padding: 5em 5em;
+	background: #FBE3E4;
+	border-radius:10px;
+	border:10px #FBC2C4 solid;
+	color:#8a1f11;
+}
+.cerrar p
+{
+	font-size: 1.2em;
 	text-align: center;
 }
