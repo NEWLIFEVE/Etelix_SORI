@@ -55,5 +55,7 @@ function lightbox(html,cerrar)
 }
 function elimina()
 {
-	$('div.cerrar').parent('div.transparente').remove();
+	$('div.transparente').fadeOut('slow',function(){
+		$('div.transparente').remove();
+	});	
 }
