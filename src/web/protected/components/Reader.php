@@ -245,8 +245,10 @@ class Reader
         //Verifico si la fecha es correcta
         if($fecha == $date_balance)
         {
+        	/**
+        	* Valido la estructura de horas
+        	*/
         	$actual=-1;
-        	//valido la estructura de horas
         	for ($i=0; $i<$data->sheets[0]['numRows']; $i++)
         	{ 
         		if($data->sheets[0]['cells'][$i][1]!="Total" && $data->sheets[0]['cells'][$i][1]!="Date" && $data->sheets[0]['cells'][$i][1]!="Hour")
@@ -270,17 +272,17 @@ class Reader
         			}
         		}
         	}
+        	//Valido que la mayor hora sea igual al nombre del archivo
         	if($actual<>$validador)
         	{
         		$this->error=self::ERROR_ESTRUC;
         		return false;
         	}
-        	
-        	/*
-        	//Comienzo a leer el archivo
+        	/**
+        	* Comienzo a leer el archivo
+        	*/
         	for($i=5;$i<$data->sheets[0]['numRows'];$i++)
         	{
-        		$model=new BalanceTime;
         		$total=true;
 				for($j=1;$j<=$data->sheets[0]['numCols'];$j++)
 				{
@@ -289,6 +291,7 @@ class Reader
  						//Obtengo la hora del registro
  						if($data->sheets[0]['cells'][$i][$j]=='Total')
  						{
+ 							//si es total es que se termino el archivo
  							break 2;
  						}
  						else
@@ -301,7 +304,8 @@ class Reader
  						//Obtengo el nombre del destino
  						if($data->sheets[0]['cells'][$i][$j]=='Total')
  						{
- 							break 2;
+ 							//no lo voy a guardar en base de datos
+ 							$total=false;
  						}
  						else
  						{
@@ -313,11 +317,12 @@ class Reader
  						//Obtengo el nombre del carrier
  						if($data->sheets[0]['cells'][$i][$j]=='Total')
  						{
+ 							//no lo voy a guardar en base de datos
  							$total=false;
  						}
  						else
  						{
- 							$name_carrier=$data->sheets[0]['cells'][$i][$j];
+ 							$name_carrier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
  						}
  					}
  					elseif($j==4)
@@ -425,8 +430,91 @@ class Reader
  						//Margin
  						$margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
  					}
+ 					else
+ 					{
+ 						if($total)
+ 						{
+ 							$model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND type=:tipo AND name_carrier=:carrier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance,':tipo'=>$this->vencom,':carrier'=>$name_carrier,':destination'=>$name_destination));
+ 							if($model!=null)
+ 							{
+ 								$model->minutes=$minutes;
+ 								$model->acd=$acd;
+ 								$model->asr=$asr;
+ 								$model->margin_percentage=$margin_percentage;
+ 								$model->margin_per_minute=$margin_per_minute;
+ 								$model->cost_per_minute=$cost_per_minute;
+ 								$model->revenue_per_min=$revenue_per_min;
+ 								$model->pdd=$pdd;
+ 								$model->incomplete_calls=$incomplete_calls;
+ 								$model->incomplete_calls_ner=$incomplete_calls_ner;
+ 								$model->complete_calls_ner=$complete_calls_ner;
+ 								$model->complete_calls=$complete_calls;
+ 								$model->calls_attempts=$calls_attempts;
+ 								$model->duration_real=$duration_real;
+ 								$model->duration_cost=$duration_cost;
+ 								$model->ner02_efficient=$ner02_efficient;
+ 								$model->ner02_seizure=$ner02_seizure;
+ 								$model->pdd_calls=$pdd_calls;
+ 								$model->revenue=$revenue;
+ 								$model->cost=$cost;
+ 								$model->margin=$margin;
+ 								$model->date_change=date("Y-m-d");
+ 								$model->time_change=date("H:i:s");
+ 								if($model->save())
+ 								{
+ 									$this->nuevos=$this->nuevos+1;
+ 									$model->unsetAttributes();
+ 								}
+ 								else
+ 								{
+ 									$this->fallas=$this->fallas+1;
+ 								}
+ 							}
+ 							else
+ 							{
+ 								$model=new BalanceTime;
+ 								$model->date_balance_time=$date_balance;
+ 								$model->time=$time;
+ 								$model->minutes=$minutes;
+ 								$model->acd=$acd;
+ 								$model->asr=$asr;
+ 								$model->margin_percentage=$margin_percentage;
+ 								$model->margin_per_minute=$margin_per_minute;
+ 								$model->cost_per_minute=$cost_per_minute;
+ 								$model->revenue_per_min=$revenue_per_min;
+ 								$model->pdd=$pdd;
+ 								$model->incomplete_calls=$incomplete_calls;
+ 								$model->incomplete_calls_ner=$incomplete_calls_ner;
+ 								$model->complete_calls_ner=$complete_calls_ner;
+ 								$model->complete_calls=$complete_calls;
+ 								$model->calls_attempts=$calls_attempts;
+ 								$model->duration_real=$duration_real;
+ 								$model->duration_cost=$duration_cost;
+ 								$model->ner02_efficient=$ner02_efficient;
+ 								$model->ner02_seizure=$ner02_seizure;
+ 								$model->pdd_calls=$pdd_calls;
+ 								$model->revenue=$revenue;
+ 								$model->cost=$cost;
+ 								$model->margin=$margin;
+ 								$model->date_change=date("Y-m-d");
+ 								$model->type=$this->vencom;
+ 								$model->time_change=date("H:i:s");
+ 								$model->name_carrier=$name_carrier;
+ 								$model->name_destination=$name_destination;
+ 								if($model->save())
+ 								{
+ 									$this->actualizados=$this->actualizados+1;
+ 									$model->unsetAttributes();
+ 								}
+ 								else
+ 								{
+ 									$this->fallas=$this->fallas+1;
+ 								}
+ 							}
+ 						}
+ 					}
 				}
-        	}*/
+        	}
         	$this->error=self::ERROR_NONE;
 			return true;
         }
@@ -492,10 +580,12 @@ class Reader
     	}
     	if(stripos($nombre,"enta"))
     	{
+    		//Venta
     		$this->vencom=1;
     	}
     	else
     	{
+    		//Compra
     		$this->vencom=0;
     	}
 	}

@@ -281,8 +281,7 @@ class BalanceController extends Controller
 							else
 							{
 								//procedo a leerlo
-								$resul=$this->lector->hora($ruta,$i);
-								/*if($this->lector->hora($ruta,$i))
+								if($this->lector->hora($ruta,$i))
 								{
 									//si guardo con exito registro en log
 									Log::registrarLog(LogAction::getLikeId($key."%".$i."%"));
@@ -290,7 +289,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
-								}*/
+								}
 								//Verifico si hubo algun tipo de error
 								if($this->lector->error==0)
 								{
