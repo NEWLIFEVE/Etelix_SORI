@@ -8,6 +8,7 @@ class Reader
 	public $tipo;
 	public $vencom;
 	public $error;
+	const ERROR_ESTRUC=4;
 	const ERROR_FILE=3;
 	const ERROR_EXISTS=2;
 	const ERROR_DATE=1;
@@ -217,7 +218,7 @@ class Reader
 	/*
 	* Funcion de carga de archivos hora
 	*/
-	public function hora($ruta)
+	public function hora($ruta,$validador)
 	{
 		//Aumento el tiempo de ejecucion
 		ini_set('max_execution_time', 1200);
@@ -240,9 +241,42 @@ class Reader
 			return false;
         }
         $date_balance=Utility::formatDate($data->sheets[0]['cells'][1][4]);
-        $fecha=date('Y-m-j');
+        $fecha=date('Y-m-d');
+        //Verifico si la fecha es correcta
         if($fecha == $date_balance)
         {
+        	$actual=-1;
+        	//valido la estructura de horas
+        	for ($i=0; $i<$data->sheets[0]['numRows']; $i++)
+        	{ 
+        		if($data->sheets[0]['cells'][$i][1]!="Total" && $data->sheets[0]['cells'][$i][1]!="Date" && $data->sheets[0]['cells'][$i][1]!="Hour")
+        		{
+        			//Verifico que sean secuenciales las horas
+        			if($actual <= $data->sheets[0]['cells'][$i][1])
+        			{
+  						if($actual==$data->sheets[0]['cells'][$i][1]-1)
+        				{
+        					$actual=$data->sheets[0]['cells'][$i][1];
+        				}
+        				elseif($actual==$data->sheets[0]['cells'][$i][1])
+        				{
+        					$actual=$actual;
+        				}
+        				else
+        				{
+        					$this->error=self::ERROR_ESTRUC;
+        					return false;
+        				}
+        			}
+        		}
+        	}
+        	if($actual<>$validador)
+        	{
+        		$this->error=self::ERROR_ESTRUC;
+        		return false;
+        	}
+        	
+        	/*
         	//Comienzo a leer el archivo
         	for($i=5;$i<$data->sheets[0]['numRows'];$i++)
         	{
@@ -392,7 +426,9 @@ class Reader
  						$margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
  					}
 				}
-        	}
+        	}*/
+        	$this->error=self::ERROR_NONE;
+			return true;
         }
         else
 		{

@@ -109,4 +109,16 @@ class LogAction extends CActiveRecord
 			return false;
 		}
 	}
+	public static function getLikeId($nombre)
+	{
+		$model=self::model()->find('name like :nombre',array(':nombre'=>$nombre));
+		if($model!=null)
+		{
+			return $model->id;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
