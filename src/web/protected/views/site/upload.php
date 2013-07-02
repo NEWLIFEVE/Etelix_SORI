@@ -77,42 +77,12 @@ array(
   <p>Archivos Cargados:</p>
   <ul>
       <?php
-      if(Log::existe(5))
-      {
-        echo "<li class='cargados'>Ruta Compra Horas</li>";
-      }
-      if(Log::existe(6))
-      {
-        echo "<li class='cargados'>Ruta Venta Horas</li>";
-      }
-      if(Log::existe(7))
-      {
-        echo "<li class='cargados'>Ruta Compra Internal Horas</li>";
-      }
-      if(Log::existe(8))
-      {
-        echo "<li class='cargados'>Ruta Venta Internal Horas</li>";
-      }
-      ?>
-  </ul>
-  <p>Archivos Faltantes:</p>
-  <ul>
-      <?php
-      if(!Log::existe(5))
-      {
-        echo "<li class='nocargados'>Ruta Compra Horas</li>";
-      }
-      if(!Log::existe(6))
-      {
-        echo "<li class='nocargados'>Ruta Venta Horas</li>";
-      }
-      if(!Log::existe(7))
-      {
-        echo "<li class='nocargados'>Ruta Compra Internal Horas</li>";
-      }
-      if(!Log::existe(8))
-      {
-        echo "<li class='nocargados'>Ruta Venta Internal Horas</li>";
+      for ($i=5; $i<=52; $i++)
+      { 
+        if(Log::existe($i))
+        {
+          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
+        }
       }
       ?>
   </ul>
