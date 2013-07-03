@@ -119,13 +119,6 @@
 			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
-	<div class="transparente oculta"></div>
-	<div class="loading oculta">
-		<h1>CARGANDO ARCHIVOS</h1>
-		<p>Este proceso puede tardar unos minutos</p>
-		<p>Por favor espere</p>
-		<img src="<?php echo Yii::app()->baseUrl; ?>/images/image_464753.gif">
-	</div>
 </body>
 </html>
 <?php
@@ -135,10 +128,4 @@ Yii::app()->clientScript->registerScript(
         CClientScript::POS_READY
         );
 
-//      $this->widget('ext.scrolltop.ScrollTop', array(
-//    //Default values
-//    'fadeTransitionStart'=>10,
-//    'fadeTransitionEnd'=>200,
-//    'speed' => 'slow'
-//    ));
 ?>

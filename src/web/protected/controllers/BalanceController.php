@@ -6,6 +6,7 @@ class BalanceController extends Controller
 	* Atributo para instanciar el componente reader
 	*/
 	public $lector;
+	private $nombre;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -40,7 +41,7 @@ class BalanceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar'),
+				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
 			array('deny',  // deny all users
@@ -142,6 +143,7 @@ class BalanceController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->nombre="Hola";
 		$dataProvider=new CActiveDataProvider('Balance');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -192,10 +194,13 @@ class BalanceController extends Controller
 	}
 	public function actionGuardar()
 	{
-   		$diarios= array('Carga Venta Internal'=>'VentaInternal', 'Carga Venta External'=>'VentaExternal', 'Carga Compra Internal'=>'CompraInternal', 'Carga Compra External'=>'CompraExternal');
-		$logs=array();
-		$horarios= array(1=>'ruta venta internal hora', 2=>'ruta venta hora', 3=>'ruta compra internal hora', 4=>'ruta compra hora');
-		$rerates= array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
+   		$diarios=array(
+   			'Carga Venta Internal'=>'VentaInternal',
+   			'Carga Venta External'=>'VentaExternal',
+   			'Carga Compra Internal'=>'CompraInternal',
+   			'Carga Compra External'=>'CompraExternal'
+   			);
+		$rerates=array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
 		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
                 $exitos="<h3> Exitos</h3>";
@@ -245,23 +250,64 @@ class BalanceController extends Controller
 			}
 			elseif($_POST['tipo']=="hora")
 			{
-				foreach($horarios as $key => $hora)
+				/**
+				* Recorro los nombres en array y agregando los numeros
+				*/
+				$this->lector=new Reader;
+				foreach($diarios as $key => $diario)
 				{
-					$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".xls";
-					$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".XLS";
-					if(file_exists($minuscula))
-					{
-						$texto.=$hora." existe, ";
-					}
-					elseif(file_exists($mayuscula))
-					{
-						$texto.=$hora." existe, ";
-					}
-					else
-					{
-						$texto.=$hora." no existe, ";
-					}
-				}
+					$this->lector->define($diario);
+					for ($i=0; $i <= 23 ; $i++)
+					{ 
+						//Defino la ruta
+						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.$i.".xls";
+						if(!file_exists($ruta))
+						{
+							//Si no existe la cambio
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.$i.".XLS";
+						}
+						if(file_exists($ruta))
+						{
+							//antes de leer el archivo verifico si ya no se cargo antes
+							if(Log::existe(LogAction::getLikeId($key."%".$i."%")))
+							{
+								//si ya se guardo antes
+								$fallas.="<h5 class='nocargados'> El archivo '".$diario." ".$i."GMT' ya fue cargado en base de datos </h5> <br/> ";
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+							else
+							{
+								//procedo a leerlo
+								if($this->lector->hora($ruta,$i))
+								{
+									//si guardo con exito registro en log
+									Log::registrarLog(LogAction::getLikeId($key."%".$i."%"));
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+								}
+								//Verifico si hubo algun tipo de error
+								if($this->lector->error==0)
+								{
+									$exitos.="<h5 class='cargados'> El arhivo '".$diario." ".$i."GMT' se guardo con exito </h5> <br/>";
+								}
+								elseif($this->lector->error==1)
+								{
+									$fallas.="<h5 class='nocargados'> El archivo '".$diario." ".$i."GMT' tiene una fecha incorrecta </h5> <br/> ";
+									//$fallas.="<h5 class='nocargados'> El archivo '".$diario." ".$i."GMT' tiene una fecha incorrecta </h5> <br/> ";
+								}
+								elseif ($this->lector->error==4)
+								{
+									$fallas.="<h5 class='nocargados'> El archivo '".$diario." ".$i."GMT' tiene un orden de horas incorrecto </h5> <br/> ";
+								}
+							}
+						}
+					}//fin for
+				}//fin foreach
 				$variable="horarios";
 			}
 			elseif($_POST['tipo']=="rerate")
@@ -306,5 +352,9 @@ class BalanceController extends Controller
 		}
                 $resultado.=$exitos."</br>".$fallas."</div>";
 		$this->render('guardar',array('data'=>$resultado));
+	}
+	public function actionVer()
+	{
+		$this->render('guardar',array('data'=>$this->nombre));
 	}
 }
