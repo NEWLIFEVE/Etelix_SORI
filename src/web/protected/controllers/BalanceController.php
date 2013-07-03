@@ -242,7 +242,9 @@ class BalanceController extends Controller
 						}
 						elseif($this->lector->error==1)
 						{
+
 							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
+
 						}
 					}
 				}
@@ -350,7 +352,9 @@ class BalanceController extends Controller
 			Yii::app()->user->setFlash('error', "Debe escoger una opción.");
 			$this->redirect('/site/');
 		}
+
                 $resultado.=$exitos."</br>".$fallas."</div>";
+
 		$this->render('guardar',array('data'=>$resultado));
 	}
 	public function actionVer()
