@@ -40,9 +40,9 @@ class Reader
         }
         //verifico que los archivos tengan la fecha correcta
 		$date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
-		$fecha = date('Y-m-j');
+		$fecha = date('Y-m-d');
 		$nuevafecha = strtotime ( '-1 day' , strtotime ( $fecha ) ) ;
-		$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+		$nuevafecha = date ( 'Y-m-d' , $nuevafecha );
 		if($nuevafecha == $date_balance)
 		{
 			for($i=5;$i<$data->sheets[0]['numRows'];$i++)

@@ -40,7 +40,7 @@
 {
 	display: none;
 }
-.transparente
+/*.transparente
 {
 	width: 100%;
 	height: 100%;
@@ -48,7 +48,7 @@
 	top: 0px;
 	position: fixed;
 	text-align: center;
-}
+}*/
 .loading
 {
 	margin: 10% auto;
@@ -63,7 +63,7 @@
 {
 	font-size: 3em;
 }
-.cerrar
+.error
 {
 	margin: 15% auto;
 	display: inline-block;
@@ -73,8 +73,29 @@
 	border:10px #FBC2C4 solid;
 	color:#8a1f11;
 }
-.cerrar p
+.interna p
 {
+	font-size: 1.2em;
+	text-align: center;
+}
+.alerta
+{
+	margin: 15% auto;
+	display: inline-block;
+	padding: 5em 5em;
+	background: #FFF6BF;
+	border-radius:10px;
+	border:10px #FFD324 solid;
+	color:#514721;
+}
+.alerta p
+{
+	font-size: 1.2em;
+	text-align: center;
+}
+.alerta button
+{
+	max-width: 10%;
 	font-size: 1.2em;
 	text-align: center;
 }
