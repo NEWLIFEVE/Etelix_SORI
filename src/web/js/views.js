@@ -28,6 +28,7 @@ $(document).on('ready',function()
 		$("div.horas").fadeIn("slow").css({'display':'block'});
 		$("div.diario").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
+		$('input[type="file"], input[type="submit"]').removeAttr('disabled');
 	});
 	//Muestra mensaje con el nombre de los archivos rerates guardados
 	$('input[value="rerate"]').on('click',function()
@@ -35,6 +36,7 @@ $(document).on('ready',function()
 		$("div.rerate").fadeIn("slow").css({'display':'block'});
 		$("div.diario").fadeOut("slow");
 		$("div.horas").fadeOut('slow');
+		$('input[type="file"], input[type="submit"]').removeAttr('disabled');
 	});
 	valForm(msj);
 	
