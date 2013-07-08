@@ -47,27 +47,29 @@ function valForm(objeto)
 		{
 			var html="<p>Debe seleccionar una opcion</p>";
 			var estilo={
-				'background':'#FBE3E4',
-				'border':'10px #FBC2C4 solid',
-				'color':'#8a1f11'
+//				'background':'#FBE3E4',
+//				'border':'10px #FBC2C4 solid',
+//				'color':'#8a1f11'
 			};
+                        objeto.interna="error";
 			objeto.lightbox(html,estilo,3000);
 		}
 		else
 		{
-			var html="<p>Esta seguro?</p><button name='aceptar'>Aceptar</button><button name='cancelar'>Cancelar</button>";
+			var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'>Aceptar</button><button name='cancelar'>Cancelar</button>";
 			var estilo={
-				'background':'#FFF6BF',
-				'border':'10px #FFD324 solid',
-				'color':'#514721'
+//				'background':'#FFF6BF',
+//				'border':'10px #FFD324 solid',
+//				'color':'#514721'
 			};
+                        objeto.interna="confirm";
 			objeto.lightbox(html,estilo);
 			$('button').on('click',function()
 			{
 				if($(this).attr('name')=="aceptar")
 				{
 					var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='/images/image_464753.gif'>";
-					objeto.lightbox(html);
+                                        objeto.lightbox(html);
 					$('form[name="monto"]').submit();
 				}
 				else
