@@ -17,6 +17,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
+ 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/class.js"></script>
  	<script src="<?php echo Yii::app()->baseUrl; ?>/js/views.js"></script>
 
 	<!--[if lt IE 9]>
@@ -35,7 +36,7 @@
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					array('label'=>'Home', 'url'=>array('/site/index')),
-					/*array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),*/
+					array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
 					/*array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),*/
@@ -119,13 +120,6 @@
 			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
-	<div class="transparente oculta"></div>
-	<div class="loading oculta">
-		<h1>CARGANDO ARCHIVOS</h1>
-		<p>Este proceso puede tardar unos minutos</p>
-		<p>Por favor espere</p>
-		<img src="<?php echo Yii::app()->baseUrl; ?>/images/image_464753.gif">
-	</div>
 </body>
 </html>
 <?php
@@ -135,10 +129,4 @@ Yii::app()->clientScript->registerScript(
         CClientScript::POS_READY
         );
 
-      $this->widget('ext.scrolltop.ScrollTop', array(
-    //Default values
-    'fadeTransitionStart'=>10,
-    'fadeTransitionEnd'=>200,
-    'speed' => 'slow'
-    ));
 ?>

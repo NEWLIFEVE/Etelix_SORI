@@ -3,7 +3,7 @@ echo CHtml::beginForm('/balance/guardar','post',array('name'=>'monto'));
 ?>
 <div id="archivo">
   <ul>
-    <li><input type="radio" name="tipo" value="dia" <?php echo Log::disabledDiario(date("Y-m-d")); ?>/>Por Día</li>
+    <li><input type="radio" name="tipo" value="dia"/>Por Día</li>
     <li><input type="radio" name="tipo" value="hora" />Por Hora</li>
     <li><input type="radio" name="tipo" value="rerate" />Re-Rate</li>
   </ul>
@@ -30,24 +30,25 @@ array(
 ));
 ?>
 <div class="diario oculta">
+  
   <p>Archivos Cargados:</p>
   <ul>
       <?php
       if(Log::existe(1))
       {
-        echo "<li class='cargados'>Ruta Compra</li>";
+        echo "<li class='cargados' name='diario'>Ruta Compra</li>";
       }
       if(Log::existe(2))
       {
-        echo "<li class='cargados'>Ruta Venta</li>";
+        echo "<li class='cargados' name='diario'>Ruta Venta</li>";
       }
       if(Log::existe(3))
       {
-        echo "<li class='cargados'>Ruta Compra Internal</li>";
+        echo "<li class='cargados' name='diario'>Ruta Compra Internal</li>";
       }
       if(Log::existe(4))
       {
-        echo "<li class='cargados'>Ruta Venta Internal</li>";
+        echo "<li class='cargados' name='diario'>Ruta Venta Internal</li>";
       }
       ?>
   </ul>
@@ -77,42 +78,12 @@ array(
   <p>Archivos Cargados:</p>
   <ul>
       <?php
-      if(Log::existe(5))
-      {
-        echo "<li class='cargados'>Ruta Compra Horas</li>";
-      }
-      if(Log::existe(6))
-      {
-        echo "<li class='cargados'>Ruta Venta Horas</li>";
-      }
-      if(Log::existe(7))
-      {
-        echo "<li class='cargados'>Ruta Compra Internal Horas</li>";
-      }
-      if(Log::existe(8))
-      {
-        echo "<li class='cargados'>Ruta Venta Internal Horas</li>";
-      }
-      ?>
-  </ul>
-  <p>Archivos Faltantes:</p>
-  <ul>
-      <?php
-      if(!Log::existe(5))
-      {
-        echo "<li class='nocargados'>Ruta Compra Horas</li>";
-      }
-      if(!Log::existe(6))
-      {
-        echo "<li class='nocargados'>Ruta Venta Horas</li>";
-      }
-      if(!Log::existe(7))
-      {
-        echo "<li class='nocargados'>Ruta Compra Internal Horas</li>";
-      }
-      if(!Log::existe(8))
-      {
-        echo "<li class='nocargados'>Ruta Venta Internal Horas</li>";
+      for ($i=5; $i<=52; $i++)
+      { 
+        if(Log::existe($i))
+        {
+          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
+        }
       }
       ?>
   </ul>
@@ -162,6 +133,6 @@ array(
   </ul>
 </div>
 <?php
-echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos'></div>";
+echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos' name='grabar'></div>";
 echo CHtml::endForm();
 ?>

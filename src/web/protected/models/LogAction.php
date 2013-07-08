@@ -109,4 +109,34 @@ class LogAction extends CActiveRecord
 			return false;
 		}
 	}
+	/**
+	* Funcion que devuelve el id del log_action consultado pero por like
+	*/
+	public static function getLikeId($nombre)
+	{
+		$model=self::model()->find('name like :nombre',array(':nombre'=>$nombre));
+		if($model!=null)
+		{
+			return $model->id;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	/**
+	* Funcion que devuelve el nombre del id consultado
+	*/
+	public static function getName($id)
+	{
+		$model=self::model()->find('id=:id',array(':id'=>$id));
+		if($model!=null)
+		{
+			return $model->name;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
