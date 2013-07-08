@@ -192,21 +192,27 @@ class BalanceController extends Controller
 			Yii::app()->end();
 		}
 	}
+	/**
+	* Action encargada de guardar en base de datos los archivos cargados
+	*/
 	public function actionGuardar()
 	{
+		//Nombres opcionales para los archivos
    		$diarios=array(
    			'Carga Venta Internal'=>'VentaInternal',
    			'Carga Venta External'=>'VentaExternal',
    			'Carga Compra Internal'=>'CompraInternal',
    			'Carga Compra External'=>'CompraExternal'
    			);
-		$rerates=array(1=>'ruta venta internal rr', 2=>'ruta venta rr', 3=>'ruta compra internal rr', 4=>'ruta compra rr');
-		$todos=array(1=>'VentaInternal', 2=>'VentaExternal', 3=>'CompraInternal', 4=>'CompraExternal',5=>'ruta venta internal hora', 6=>'ruta venta hora', 7=>'ruta compra internal hora', 8=>'ruta compra hora',9=>'ruta venta internal rr', 10=>'ruta venta rr', 11=>'ruta compra internal rr', 12=>'ruta compra rr');
+   		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
-                $exitos="<h3> Exitos</h3>";
-                $fallas="<h3> Fallas</h3>";
+		$exitos="<h3> Exitos</h3>";
+        $fallas="<h3> Fallas</h3>";
+        //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
+			//Verifico la opcion del usuario a través del post
+			//si la opcion es dia
 			if($_POST['tipo']=="dia")
 			{
 				foreach($diarios as $key => $diario)
@@ -246,8 +252,8 @@ class BalanceController extends Controller
 						}
 					}
 				}
-				$variable="diarios";
 			}
+			//Si la opcion es hora
 			elseif($_POST['tipo']=="hora")
 			{
 				/**
@@ -308,28 +314,20 @@ class BalanceController extends Controller
 						}
 					}//fin for
 				}//fin foreach
-				$variable="horarios";
 			}
+			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
 			{
-				foreach($rerates as $key => $rerate)
+				foreach($diarios as $key => $rerate)
 				{
-					$minuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
-					$mayuscula = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".XLS";
-					if(file_exists($minuscula))
+					//Defino la ruta
+					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
+					if(!file_exists($ruta))
 					{
-						$texto.=$rerate." existe, ";
-					}
-					elseif(file_exists($mayuscula))
-					{
-						$texto.=$rerate." existe, ";
-					}
-					else
-					{
-						$texto.=$rerate." no existe, ";
+						//Si no existe la cambio
+						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".XLS";
 					}
 				}
-				$variable="rerates";
 			}
 		}
 		else
