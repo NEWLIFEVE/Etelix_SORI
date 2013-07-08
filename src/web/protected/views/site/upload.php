@@ -133,6 +133,6 @@ array(
   </ul>
 </div>
 <?php
-echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos'></div>";
+echo "<div class='row buttons'><input type='submit' value='Grabar en Base de Datos' name='grabar'></div>";
 echo CHtml::endForm();
 ?>
