@@ -2,9 +2,20 @@ $(document).on('ready',function()
 {
 	$('input[value="dia"]').on('click',function()
 	{
+		var diario=new mensajes();
+		//Cuento cuantos archivos ya se han cargado
+		diario.contar('li[name="diario"]');
 		$("div.diario").fadeIn("slow").css({'display':'block'});
 		$("div.horas").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
+		if(diario.acumulador>=4)
+		{
+			$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
+		}
+		else
+		{
+			$('input[type="file"], input[type="submit"]').removeAttr('disabled');
+		}
 	});
 	$('input[value="hora"]').on('click',function()
 	{

@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
  	<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.sori.js"></script>
+ 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/class.js"></script>
  	<script src="<?php echo Yii::app()->baseUrl; ?>/js/views.js"></script>
 
 	<!--[if lt IE 9]>
