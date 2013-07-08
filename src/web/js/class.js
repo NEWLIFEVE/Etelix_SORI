@@ -4,20 +4,25 @@
 var mensajes=function()
 {
 	var contenido="";
-	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body');
+	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body'), men=this;
 }
 mensajes.prototype.contar=function(objeto)
 {
 	console.log("Contar");
+	console.log(objeto);
 	$(objeto).each(function()
 	{
-		this.acumulador=this.acumulador+1;
+		men.acumulador=men.acumulador+parseFloat(1);
+		console.log(men.acumulador);
 	});
 }
 
 mensajes.prototype.lightbox=function(html,estilo,tiempo)
 {
-	$(this.cuerpo).append("<div class='"+this.transparente+" oculta'></div>");
+	if($("div."+this.transparente).length<=0)
+	{
+		$(this.cuerpo).append("<div class='"+this.transparente+" oculta'></div>");
+	}
 	capa=$("div."+this.transparente).append("<div class='"+this.interna+" oculta'>"+html+"</div>");
 	if(estilo)
 	{
@@ -35,6 +40,7 @@ mensajes.prototype.elimina=function()
 	{
 		this.remove();
 	});
+	return true;
 }
 mensajes.prototype.enviar=function()
 {

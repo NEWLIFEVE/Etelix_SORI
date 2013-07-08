@@ -12,6 +12,7 @@ $(document).on('ready',function()
 		$("div.diario").fadeIn("slow").css({'display':'block'});
 		$("div.horas").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
+		console.log(msj.acumulador);
 		if(msj.acumulador>=4)
 		{
 			$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
@@ -66,9 +67,12 @@ function valForm(objeto)
 			{
 				if($(this).attr('name')=="aceptar")
 				{
-					var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='/images/image_464753.gif'>";
-					objeto.lightbox(html);
-					$('form[name="monto"]').submit();
+					if($('div.interna').remove())
+					{
+						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='images/image_464753.gif'>";
+						objeto.lightbox(html);
+						$('form[name="monto"]').submit();
+					}
 				}
 				else
 				{
