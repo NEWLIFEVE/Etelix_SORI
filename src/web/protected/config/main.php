@@ -58,7 +58,7 @@ return array(
 
 			'emulatePrepare' => true,
 			'username' => 'postgres',
-			'password' => 'Nsusfd8263',
+			'password' => 'Nsusfd826',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(
