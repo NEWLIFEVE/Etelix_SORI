@@ -74,10 +74,10 @@
 {
 	margin: 10% auto;
 	padding: 5em 5em;
-	background: white;
+	background: rgba(111,204,187,1);
 	display: inline-block;
 	border-radius:10px;
-	border:10px rgba(111,204,187,1) solid;
+	border:10px rgba(10,31,38,0.7) solid;
 	text-align: center;
 
 }

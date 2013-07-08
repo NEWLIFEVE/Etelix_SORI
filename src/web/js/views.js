@@ -12,6 +12,7 @@ $(document).on('ready',function()
 		$("div.diario").fadeIn("slow").css({'display':'block'});
 		$("div.horas").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
+		console.log(msj.acumulador);
 		if(msj.acumulador>=4)
 		{
 			$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
@@ -27,6 +28,7 @@ $(document).on('ready',function()
 		$("div.horas").fadeIn("slow").css({'display':'block'});
 		$("div.diario").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
+		$('input[type="file"], input[type="submit"]').removeAttr('disabled');
 	});
 	//Muestra mensaje con el nombre de los archivos rerates guardados
 	$('input[value="rerate"]').on('click',function()
@@ -34,6 +36,7 @@ $(document).on('ready',function()
 		$("div.rerate").fadeIn("slow").css({'display':'block'});
 		$("div.diario").fadeOut("slow");
 		$("div.horas").fadeOut('slow');
+		$('input[type="file"], input[type="submit"]').removeAttr('disabled');
 	});
 	valForm(msj);
 	
@@ -52,7 +55,7 @@ function valForm(objeto)
 //				'color':'#8a1f11'
 			};
                         objeto.interna="error";
-			objeto.lightbox(html,estilo,3000);
+			objeto.lightbox(html,estilo,2000);
 		}
 		else
 		{
@@ -68,9 +71,14 @@ function valForm(objeto)
 			{
 				if($(this).attr('name')=="aceptar")
 				{
-					var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='/images/image_464753.gif'>";
-                                        objeto.lightbox(html);
-					$('form[name="monto"]').submit();
+					if($('div.'+objeto.interna).remove())
+					{
+						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='/images/image_464753.gif'>";
+						objeto.interna="interna";
+                                                objeto.lightbox(html);
+						$('form[name="monto"]').submit();
+					}
+
 				}
 				else
 				{

@@ -78,12 +78,18 @@ array(
   <p>Archivos Cargados:</p>
   <ul>
       <?php
+      $existe=false;
       for ($i=5; $i<=52; $i++)
       { 
         if(Log::existe($i))
         {
           echo "<li class='cargados'>".LogAction::getName($i)."</li>";
+          $existe=true;
         }
+      }
+      if(!$existe)
+      {
+        echo "<li class='cargados'>No se han cargado archivos</li>";
       }
       ?>
   </ul>
