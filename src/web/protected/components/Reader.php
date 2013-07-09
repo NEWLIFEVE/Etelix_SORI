@@ -229,7 +229,7 @@ class Reader
 		//Aumento el tiempo de ejecucion
 		ini_set('max_execution_time', 2000);
 		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '256M');
+		ini_set('memory_limit', '512M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -267,7 +267,7 @@ class Reader
         $numRows=$data->sheets[0]['numRows'];
         $numRows=$numRows-1;
         $this->horas=$data->sheets[0]['cells'][$numRows][1];
-        for($i=$this->horas; $i <= 24 ; $i++)
+        for($i=$this->horas; $i <= 23 ; $i++)
         { 
             if(Log::existe(LogAction::getLikeId($key."%".$i."%")))
             {
