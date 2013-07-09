@@ -4,7 +4,7 @@
 var mensajes=function()
 {
 	var contenido="";
-	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body'), men=this, this.servidor=location.href;
+	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body'), men=this, this.servidor=location.protocol+"//"+location.host+"/";
 }
 mensajes.prototype.contar=function(objeto)
 {
@@ -24,6 +24,7 @@ mensajes.prototype.lightbox=function(html,estilo,tiempo)
 		$(this.cuerpo).append("<div class='"+this.transparente+" oculta'></div>");
 	}
 	capa=$("div."+this.transparente).append("<div class='"+this.interna+" oculta'>"+html+"</div>");
+	$("div."+this.interna).append()
 	if(estilo)
 	{
 		$("div."+this.interna).css(estilo);

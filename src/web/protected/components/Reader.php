@@ -524,50 +524,70 @@ class Reader
 			return false;
 		}
 	}
-
+    /**
+    * esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
+    */
 	public static function nombre($nombre)
     {
-      $posicion=strpos($nombre,'GMT');
-      if($posicion)
-      {
-        if(substr($nombre, strpos($nombre,'GMT')-2, 1)==" ")
+        //primero obtengo el numero de la frase GMT
+        $posicion=strpos($nombre,'GMT');
+        if($posicion)
         {
-          $valor=substr($nombre, strpos($nombre,'GMT')-1, 1);
+            if(substr($nombre, strpos($nombre,'GMT')-2, 1)==" ")
+            {
+                $valor=substr($nombre, strpos($nombre,'GMT')-1, 1);
+            }
+            else
+            {
+                $valor=substr($nombre, strpos($nombre,'GMT')-2, 2);
+            }
         }
         else
         {
-          $valor=substr($nombre, strpos($nombre,'GMT')-2, 2);
+            $valor=false;
         }
-      }
-      else
-      {
-        $valor="";
-      }
-      if(stripos($nombre,"internal"))
-      {
-        if(stripos($nombre,"compra"))
+        if(stripos($nombre,"internal"))
         {
-          $nuevoNombre="CompraInternal";
+            if(stripos($nombre,"compra"))
+            {
+                $nuevoNombre="CompraInternal";
+            }
+            elseif(stripos($nombre,"venta"))
+            {
+                $nuevoNombre="VentaInternal";
+            }
+            else
+            {
+                $nuevoNombre=false;
+            }
         }
         else
         {
-          $nuevoNombre="VentaInternal";
+            if(stripos($nombre,"compra"))
+            {
+                $nuevoNombre="CompraExternal";
+            }
+            elseif(stripos($nombre,"venta"))
+            {
+                $nuevoNombre="VentaExternal";
+            }
+            else
+            {
+                $nuevoNombre=false;
+            }
         }
-      }
-      else
-      {
-        if(stripos($nombre,"compra"))
+        if($valor)
         {
-          $nuevoNombre="CompraExternal";
+            return $nuevoNombre.$valor;
         }
         else
         {
-          $nuevoNombre="VentaExternal";
+            return $nuevoNombre;
         }
-      }
-      return $nuevoNombre.$valor;
     }
-
+    /**
+    * Encargada de definir atributos para proceder a la lectura del archivo
+    */
 	public function define($nombre)
 	{
 		if(stripos($nombre,"internal"))

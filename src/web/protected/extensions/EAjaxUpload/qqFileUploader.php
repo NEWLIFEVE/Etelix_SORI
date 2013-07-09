@@ -155,7 +155,16 @@ class qqFileUploader
         //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
         //Nombre del archivo
-        $filename = Reader::nombre($pathinfo['filename']);
+        $borrar=false;
+        if(Reader::nombre($pathinfo['filename']))
+        {
+            $filename = Reader::nombre($pathinfo['filename']);
+        }
+        else
+        {
+            $filename="Error";
+            $borrar=true;
+        }       
 
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
@@ -175,15 +184,20 @@ class qqFileUploader
             }
         }
 
-        if ($this->file->save($uploadDirectory . $filename . '.' . $ext))
+        if(!$borrar==true)
         {
-            return array('success'=>true,'filename'=>$filename.'.'.$ext);
+            if ($this->file->save($uploadDirectory . $filename . '.' . $ext))
+            {
+                return array('success'=>true,'filename'=>$filename.'.'.$ext);
+            }
+            else
+            {
+                return array('error'=> 'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
+            }
         }
         else
         {
-            return array('error'=> 'No se pudo guardar el  archivo.' .
-                'La subida fue cancelada, o se encontró un error en el servidor');
+            return array('error'=> 'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
         }
-
     }
 }
