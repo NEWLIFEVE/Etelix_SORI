@@ -59,11 +59,37 @@
 	border:10px rgba(10,31,38,0.7) solid;
 	text-align: center;
 }
+.error
+{
+	margin: 10% auto;
+	padding: 5em 5em;
+	background:#FBE3E4;
+        display: inline-block;
+        border-radius:10px;
+        border:10px #FBC2C4 solid;
+        text-align: center;
+	color:#8a1f11;
+}
+.confirm
+{
+	margin: 10% auto;
+	padding: 5em 5em;
+	background: white;
+	display: inline-block;
+	border-radius:10px;
+	border:10px rgba(10,31,38,0.7) solid;
+	text-align: center;
+
+}
 .interna h1
 {
 	font-size: 3em;
 }
 .interna button
+{
+	width: 100px;
+}
+.confirm button
 {
 	width: 100px;
 }
