@@ -4,7 +4,7 @@
 var mensajes=function()
 {
 	var contenido="";
-	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body'), men=this;
+	this.acumulador=0, this.transparente="transparente", this.interna="interna", this.cuerpo=$('body'), men=this, this.servidor=location.href;
 }
 mensajes.prototype.contar=function(objeto)
 {

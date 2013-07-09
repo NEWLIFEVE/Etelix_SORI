@@ -73,7 +73,8 @@ function valForm(objeto)
 				{
 					if($('div.'+objeto.interna).remove())
 					{
-						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='/images/image_464753.gif'>";
+
+						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='"+objeto.servidor+"images/image_464753.gif'>";
 						objeto.interna="interna";
                                                 objeto.lightbox(html);
 						$('form[name="monto"]').submit();
