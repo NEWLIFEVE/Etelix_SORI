@@ -3,37 +3,37 @@
 .rerate
 {
 	background: rgba(0,0,0,0.03);
+	border-radius: 5px;
 	display: inline-block;
-	width: 15%;
-	position: absolute;
 	float: left;
+	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
 	font-size: 0.9em;
 	left: 750px;
-	top: 240px;
-	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
 	padding-left: 1em;
-	padding-top: 1em;
 	padding-right: 1em;
-	border-radius: 5px;
+	padding-top: 1em;
+	position: absolute;
+	top: 240px;
+	width: 15%;
 }
 .diario ul li.cargados,
 .horas ul li.cargados,
 .rerate ul li.cargados,
  h5.cargados
 {
-	padding-left: 2em;
 	color:rgba(111,204,187,1);
-	/*color: #20D532;*/
+	padding-left: 2em;
 }
 .diario ul li.nocargados,
 .horas ul li.nocargados,
 .rerate ul li.nocargados,
  h5.nocargados
 {
-	padding-left: 2em;
 	color:#8a1f11;
+	padding-left: 2em;
 }
-.detallecarga{
+.detallecarga
+{
     margin-left: 25px;
 }
 .oculta
@@ -42,38 +42,57 @@
 }
 .transparente
 {
-	width: 100%;
-	height: 100%;
 	background: rgba(0,0,0,0.5);
-	top: 0px;
+	height: 100%;
 	position: fixed;
 	text-align: center;
+	top: 0px;
+	width: 100%;
 }
-.loading
+.interna
 {
-	margin: 10% auto;
-	padding: 5em 5em;
 	background: white;
-	display: inline-block;
 	border-radius:10px;
 	border:10px rgba(10,31,38,0.7) solid;
+	display: inline-block;
+	margin: 10% auto;
+	padding: 5em 5em;
 	text-align: center;
 }
-.loading h1
+.error
 {
-	font-size: 3em;
-}
-.cerrar
-{
-	margin: 15% auto;
-	display: inline-block;
-	padding: 5em 5em;
-	background: #FBE3E4;
+	background:#FBE3E4;
 	border-radius:10px;
 	border:10px #FBC2C4 solid;
 	color:#8a1f11;
+	display: inline-block;
+	margin: 10% auto;
+	padding: 5em 5em;
+	text-align: center;
 }
-.cerrar p
+.confirm
+{
+	background: white;
+	border-radius:10px;
+	border:10px rgba(10,31,38,0.7) solid;
+	display: inline-block;
+	margin: 10% auto;
+	padding: 5em 5em;
+	text-align: center;
+}
+.interna h1
+{
+	font-size: 3em;
+}
+.interna button
+{
+	width: 100px;
+}
+.confirm button
+{
+	width: 100px;
+}
+.interna p
 {
 	font-size: 1.2em;
 	text-align: center;
