@@ -208,6 +208,7 @@ class BalanceController extends Controller
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
+        $siguiente=false;
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
@@ -217,22 +218,38 @@ class BalanceController extends Controller
 			{
 				foreach($diarios as $key => $diario)
 				{
+					//variables para validaciones
+					$is=false;
+					$log=false;
 					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
 					$this->lector=new Reader;
 					$this->lector->define($diario);
+					//Verifico la existencia del archivo
 					if(!file_exists($ruta))
 					{
 						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
-					}
-					if(Log::existe(LogAction::getId($key)))
-					{
-						$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya fue cargado en base de datos </h5> <br/> ";
 						if(file_exists($ruta))
 						{
-							unlink($ruta);
+							$is=true;
 						}
 					}
 					else
+					{
+						$is=true;
+					}
+					//verifico que no este en el log
+					if($is)
+					{
+						if(Log::existe(LogAction::getId($key)))
+						{
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							$log=true;
+						}				
+					}
+					if($is==true && $log==false)
 					{
 						if($this->lector->diario($ruta))
 						{
@@ -241,6 +258,7 @@ class BalanceController extends Controller
 							{
 								unlink($ruta);
 							}
+							$siguiente=true;
 						}
 						if($this->lector->error==0)
 						{
@@ -352,8 +370,15 @@ class BalanceController extends Controller
 		}
 
                 $resultado.=$exitos."</br>".$fallas."</div>";
-
-		$this->render('guardar',array('data'=>$resultado));
+        if($siguiente)
+        {
+        	$this->render('guardar',array('data'=>$resultado));
+        }
+        else
+        {
+        	Yii::app()->user->setFlash('error', "No hay archivos en el sevidor.");
+			$this->redirect('/site/');
+        }
 	}
 	public function actionVer()
 	{

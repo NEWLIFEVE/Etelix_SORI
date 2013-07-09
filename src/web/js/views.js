@@ -54,7 +54,7 @@ function valForm(objeto)
 //				'border':'10px #FBC2C4 solid',
 //				'color':'#8a1f11'
 			};
-                        objeto.interna="error";
+            objeto.interna="error";
 			objeto.lightbox(html,estilo,2000);
 		}
 		else
@@ -65,7 +65,7 @@ function valForm(objeto)
 //				'border':'10px #FFD324 solid',
 //				'color':'#514721'
 			};
-                        objeto.interna="confirm";
+            objeto.interna="confirm";
 			objeto.lightbox(html,estilo);
 			$('button').on('click',function()
 			{
@@ -76,7 +76,7 @@ function valForm(objeto)
 
 						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='"+objeto.servidor+"images/image_464753.gif'>";
 						objeto.interna="interna";
-                                                objeto.lightbox(html);
+                        objeto.lightbox(html);
 						$('form[name="monto"]').submit();
 					}
 
