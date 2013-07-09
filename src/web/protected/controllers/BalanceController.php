@@ -373,7 +373,7 @@ class BalanceController extends Controller
 					}
 					else
 					{
-						if($is>=2)
+						if($is<1)
 						{
 							$fallas="No hay archivos en el servidor";
 						}
