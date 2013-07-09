@@ -525,22 +525,14 @@ class Reader
 		}
 	}
     /**
-    * esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
+    * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
 	public static function nombre($nombre)
     {
         //primero obtengo el numero de la frase GMT
-        $posicion=strpos($nombre,'GMT');
-        if($posicion)
+        if(strpos($nombre,'GMT'))
         {
-            if(substr($nombre, strpos($nombre,'GMT')-2, 1)==" ")
-            {
-                $valor=substr($nombre, strpos($nombre,'GMT')-1, 1);
-            }
-            else
-            {
-                $valor=substr($nombre, strpos($nombre,'GMT')-2, 2);
-            }
+            $valor="Hora";
         }
         else
         {
