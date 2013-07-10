@@ -84,6 +84,11 @@
 {
 	font-size: 3em;
 }
+.interna img
+{
+	max-width: 256px;
+	max-height: 51px;
+}
 .interna button
 {
 	width: 100px;

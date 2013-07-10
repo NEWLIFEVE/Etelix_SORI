@@ -226,10 +226,8 @@ class Reader
 	*/
 	public function hora($ruta,$nombreLog)
 	{
-		//Aumento el tiempo de ejecucion
-		ini_set('max_execution_time', 2000);
 		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '512M');
+		ini_set('memory_limit', '256M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -269,7 +267,7 @@ class Reader
         $this->horas=$data->sheets[0]['cells'][$numRows][1];
         for($i=$this->horas; $i <= 23 ; $i++)
         { 
-            if(Log::existe(LogAction::getLikeId($key."%".$i."%")))
+            if(Log::existe(LogAction::getLikeId($nombreLog."%".$i."%")))
             {
                 $this->error=self::ERROR_EXISTS;
                 return false;
@@ -302,6 +300,12 @@ class Reader
                 }
             }
         }
+        //Cuantos segundos
+        $regAprox=1500*$data->sheets[0]['cells'][$numRows][1];
+        $segundos=$regAprox/2.8;
+        $segundos=substr($segundos,0,4);
+        //Aumento el tiempo de ejecucion
+        ini_set('max_execution_time', $segundos);
         /**
         * Comienzo a leer el archivo
         */
@@ -309,234 +313,210 @@ class Reader
         {
             for($j=1;$j<=$data->sheets[0]['numCols'];$j++)
             {
-                if($j==1)
+                switch($j)
                 {
-                    //Obtengo la hora del registro
-                    if($data->sheets[0]['cells'][$i][$j]=='Total')
-                    {
-                        //si es total es que se termino el archivo
-                        break 2;
-                    }
-                    else
-                    {
-                        $time=$data->sheets[0]['cells'][$i][$j];
-                    }
-                }
-                elseif($j==2)
-                {
-                    //Obtengo el nombre del destino
-                    if($data->sheets[0]['cells'][$i][$j]=='Total')
-                    {
-                        //si es total no lo voy a guardar en base de datos
-                        break 1;
-                    }
-                    else
-                    {
-                        $name_destination=$data->sheets[0]['cells'][$i][$j];
-                    }
-                }
-                elseif($j==3)
-                {
-                    //Obtengo el nombre del carrier
-                    if($data->sheets[0]['cells'][$i][$j]=='Total')
-                    {
-                        //si es total no lo voy a guardar en base de datos
-                        break 1;
-                    }
-                    else
-                    {
-                        //Aqui encodeo el nombre del carrier a utf-8
-                        $name_carrier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
-                    }
-                }
-                elseif($j==4)
-                {
-                    //minutos
-                    $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==5)
-                {
-                    //ACD
-                    $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==6)
-                {
-                    //ASR
-                    $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==7)
-                {
-                    //Margin %
-                    $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==8)
-                {
-                    //Margin per Min
-                    $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==9)
-                {
-                    //Cost per Min
-                    $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==10)
-                {
-                    //Revenue per Min
-                    $revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==11)
-                {
-                    //PDD
-                    $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==12)
-                {
-                    //Imcomplete Calls
-                    $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==13)
-                {
-                    //Imcomplete Calls Ner
-                    $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==14)
-                {
-                    //Complete Calls Ner
-                    $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==15)
-                {
-                    //Complete Calls
-                    $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==16)
-                {
-                    //Calls Attempts
-                    $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==17)
-                {
-                    //Duration Real
-                    $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==18)
-                {
-                    //Duration Cost
-                    $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==19)
-                {
-                    //NER02 Efficient
-                    $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==20)
-                {
-                    //NER02 Seizure
-                    $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==21)
-                {
-                    //PDDCalls
-                    $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==22)
-                {
-                    //Revenue
-                    $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==23)
-                {
-                    //Cost
-                    $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                elseif($j==24)
-                {
-                    //Margin
-                    $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                }
-                else
-                {
-                    /**
-                    * luego de tener la fila completa la grabo en base de datos
-                    */
-                    //primero reviso si existe en base de datos
-                    $model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND type=:tipo AND name_carrier=:carrier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance,':tipo'=>$this->vencom,':carrier'=>$name_carrier,':destination'=>$name_destination));
-                    if($model!=null)
-                    {
-                        $model->minutes=$minutes;
-                        $model->acd=$acd;
-                        $model->asr=$asr;
-                        $model->margin_percentage=$margin_percentage;
-                        $model->margin_per_minute=$margin_per_minute;
-                        $model->cost_per_minute=$cost_per_minute;
-                        $model->revenue_per_min=$revenue_per_min;
-                        $model->pdd=$pdd;
-                        $model->incomplete_calls=$incomplete_calls;
-                        $model->incomplete_calls_ner=$incomplete_calls_ner;
-                        $model->complete_calls_ner=$complete_calls_ner;
-                        $model->complete_calls=$complete_calls;
-                        $model->calls_attempts=$calls_attempts;
-                        $model->duration_real=$duration_real;
-                        $model->duration_cost=$duration_cost;
-                        $model->ner02_efficient=$ner02_efficient;
-                        $model->ner02_seizure=$ner02_seizure;
-                        $model->pdd_calls=$pdd_calls;
-                        $model->revenue=$revenue;
-                        $model->cost=$cost;
-                        $model->margin=$margin;
-                        $model->date_change=date("Y-m-d");
-                        $model->time_change=date("H:i:s");
-                        if($model->save())
+                    case 1:
+                        //Obtengo la hora del registro
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
                         {
-                            $this->nuevos=$this->nuevos+1;
-                            $model->unsetAttributes();
+                            //si es total es que se termino el archivo
+                            break 3;
                         }
                         else
                         {
-                            $this->fallas=$this->fallas+1;
+                            $time=$data->sheets[0]['cells'][$i][$j];
                         }
-                    }
-                    else
-                    {
-                        $model=new BalanceTime;
-                        $model->date_balance_time=$date_balance;
-                        $model->time=$time;
-                        $model->minutes=$minutes;
-                        $model->acd=$acd;
-                        $model->asr=$asr;
-                        $model->margin_percentage=$margin_percentage;
-                        $model->margin_per_minute=$margin_per_minute;
-                        $model->cost_per_minute=$cost_per_minute;
-                        $model->revenue_per_min=$revenue_per_min;
-                        $model->pdd=$pdd;
-                        $model->incomplete_calls=$incomplete_calls;
-                        $model->incomplete_calls_ner=$incomplete_calls_ner;
-                        $model->complete_calls_ner=$complete_calls_ner;
-                        $model->complete_calls=$complete_calls;
-                        $model->calls_attempts=$calls_attempts;
-                        $model->duration_real=$duration_real;
-                        $model->duration_cost=$duration_cost;
-                        $model->ner02_efficient=$ner02_efficient;
-                        $model->ner02_seizure=$ner02_seizure;
-                        $model->pdd_calls=$pdd_calls;
-                        $model->revenue=$revenue;
-                        $model->cost=$cost;
-                        $model->margin=$margin;
-                        $model->date_change=date("Y-m-d");
-                        $model->type=$this->vencom;
-                        $model->time_change=date("H:i:s");
-                        $model->name_carrier=$name_carrier;
-                        $model->name_destination=$name_destination;
-                        if($model->save())
+                        break;
+                    case 2:
+                        //Obtengo el nombre del destino
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
                         {
-                            $this->actualizados=$this->actualizados+1;
-                            $model->unsetAttributes();
+                            //si es total no lo voy a guardar en base de datos
+                            break 2;
                         }
                         else
                         {
-                            $this->fallas=$this->fallas+1;
+                            $name_destination=$data->sheets[0]['cells'][$i][$j];
                         }
-                    }
+                        break;
+                    case 3:
+                        //Obtengo el nombre del carrier
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total no lo voy a guardar en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            //Aqui encodeo el nombre del carrier a utf-8
+                            $name_carrier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
+                        }
+                        break;
+                    case 4;
+                        //minutos
+                        $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                    case 5;
+                        //ACD
+                        $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 6;
+                        //ASR
+                        $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 7;
+                        //Margin %
+                        $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 8;
+                        //Margin per Min
+                        $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 9;
+                        //Cost per Min
+                        $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 10;
+                        //Revenue per Min
+                        $revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 11;
+                        //PDD
+                        $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 12;
+                        //Imcomplete Calls
+                        $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 13;
+                        //Imcomplete Calls Ner
+                        $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 14;
+                        //Complete Calls Ner
+                        $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 15;
+                        //Complete Calls
+                        $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 16;
+                        //Calls Attempts
+                        $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 17;
+                        //Duration Real
+                        $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 18;
+                        //Duration Cost
+                        $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 19;
+                        //NER02 Efficient
+                        $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 20;
+                        //NER02 Seizure
+                        $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 21;
+                        //PDDCalls
+                        $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 22;
+                        //Revenue
+                        $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 23;
+                        //Cost
+                        $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 24;
+                        //Margin
+                        $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    default:
+                        /**
+                        * luego de tener la fila completa la grabo en base de datos
+                        */
+                        //primero reviso si existe en base de datos
+                        $model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND type=:tipo AND name_carrier=:carrier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance,':tipo'=>$this->vencom,':carrier'=>$name_carrier,':destination'=>$name_destination));
+                        if($model!=null)
+                        {
+                            $model->minutes=$minutes;
+                            $model->acd=$acd;
+                            $model->asr=$asr;
+                            $model->margin_percentage=$margin_percentage;
+                            $model->margin_per_minute=$margin_per_minute;
+                            $model->cost_per_minute=$cost_per_minute;
+                            $model->revenue_per_min=$revenue_per_min;
+                            $model->pdd=$pdd;
+                            $model->incomplete_calls=$incomplete_calls;
+                            $model->incomplete_calls_ner=$incomplete_calls_ner;
+                            $model->complete_calls_ner=$complete_calls_ner;
+                            $model->complete_calls=$complete_calls;
+                            $model->calls_attempts=$calls_attempts;
+                            $model->duration_real=$duration_real;
+                            $model->duration_cost=$duration_cost;
+                            $model->ner02_efficient=$ner02_efficient;
+                            $model->ner02_seizure=$ner02_seizure;
+                            $model->pdd_calls=$pdd_calls;
+                            $model->revenue=$revenue;
+                            $model->cost=$cost;
+                            $model->margin=$margin;
+                            $model->date_change=date("Y-m-d");
+                            $model->time_change=date("H:i:s");
+                            if($model->save())
+                            {
+                                $this->nuevos=$this->nuevos+1;
+                                $model->unsetAttributes();
+                            }
+                            else
+                            {
+                                $this->fallas=$this->fallas+1;
+                            }
+                        }
+                        else
+                        {
+                            $model=new BalanceTime;
+                            $model->date_balance_time=$date_balance;
+                            $model->time=$time;
+                            $model->minutes=$minutes;
+                            $model->acd=$acd;
+                            $model->asr=$asr;
+                            $model->margin_percentage=$margin_percentage;
+                            $model->margin_per_minute=$margin_per_minute;
+                            $model->cost_per_minute=$cost_per_minute;
+                            $model->revenue_per_min=$revenue_per_min;
+                            $model->pdd=$pdd;
+                            $model->incomplete_calls=$incomplete_calls;
+                            $model->incomplete_calls_ner=$incomplete_calls_ner;
+                            $model->complete_calls_ner=$complete_calls_ner;
+                            $model->complete_calls=$complete_calls;
+                            $model->calls_attempts=$calls_attempts;
+                            $model->duration_real=$duration_real;
+                            $model->duration_cost=$duration_cost;
+                            $model->ner02_efficient=$ner02_efficient;
+                            $model->ner02_seizure=$ner02_seizure;
+                            $model->pdd_calls=$pdd_calls;
+                            $model->revenue=$revenue;
+                            $model->cost=$cost;
+                            $model->margin=$margin;
+                            $model->date_change=date("Y-m-d");
+                            $model->type=$this->vencom;
+                            $model->time_change=date("H:i:s");
+                            $model->name_carrier=$name_carrier;
+                            $model->name_destination=$name_destination;
+                            if($model->save())
+                            {
+                                $this->actualizados=$this->actualizados+1;
+                                $model->unsetAttributes();
+                            }
+                            else
+                            {
+                                $this->fallas=$this->fallas+1;
+                            }
+                        }
                 }
             }
         }
