@@ -227,7 +227,7 @@ class Reader
 	public function hora($ruta,$nombreLog)
 	{
 		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '256M');
+		ini_set('memory_limit', '512M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
