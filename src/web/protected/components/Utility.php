@@ -70,9 +70,16 @@ Class Utility{
         {
             $unixFin=mktime(0, 0, 0, $arrayFechaFin[1], $arrayFechaFin[2], $arrayFechaFin[0]);
         }
-        $segundos_diferencia=$unixFin-$unixInicio;
-        $dias_diferencia=$segundos_diferencia / (60 * 60 * 24);
-        return $dias_diferencia+1;
+        if($unixFin>=$unixInicio)
+        {
+            $segundos_diferencia=$unixFin-$unixInicio;
+            $dias_diferencia=$segundos_diferencia / (60 * 60 * 24);
+            return $dias_diferencia+1;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 ?>
