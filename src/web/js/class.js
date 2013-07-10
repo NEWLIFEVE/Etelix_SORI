@@ -24,7 +24,6 @@ mensajes.prototype.lightbox=function(html,estilo,tiempo)
 		$(this.cuerpo).append("<div class='"+this.transparente+" oculta'></div>");
 	}
 	capa=$("div."+this.transparente).append("<div class='"+this.interna+" oculta'>"+html+"</div>");
-	$("div."+this.interna).append()
 	if(estilo)
 	{
 		$("div."+this.interna).css(estilo);

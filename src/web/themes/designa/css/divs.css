@@ -40,7 +40,7 @@
 {
 	display: none;
 }
-.transparente
+.transparente, .transparente2
 {
 	background: rgba(0,0,0,0.5);
 	height: 100%;
@@ -49,7 +49,7 @@
 	top: 0px;
 	width: 100%;
 }
-.interna
+.interna, .interna2
 {
 	background: white;
 	border-radius:10px;
@@ -80,11 +80,11 @@
 	padding: 5em 5em;
 	text-align: center;
 }
-.interna h1
+.interna h1, .interna2 h1
 {
 	font-size: 3em;
 }
-.interna img
+.interna img, .interna2 img
 {
 	max-width: 256px;
 	max-height: 51px;
