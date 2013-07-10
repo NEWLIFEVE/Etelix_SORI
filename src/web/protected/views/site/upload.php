@@ -138,9 +138,9 @@ array(
   <p>Rango del Re-Rate:</p>
   <ul>
     <li  class='cargados rangoDesde'>Desde</li>
-    <input type="text" class="datepicker" id="desde" name="formFecha" readonly/>
+    <input type="text" class="datepicker" id="desde" name="fechaInicio" readonly/>
     <li  class='cargados rangoHasta'>Hasta</li>
-    <input type="text" class="datepicker" id="hasta" name="formFecha" size="30" readonly/>
+    <input type="text" class="datepicker" id="hasta" name="fechaFin" size="30" readonly/>
     <li class='nocargados'></li>
   </ul>
   <p>Ultimo Rango Cargado:</p>
