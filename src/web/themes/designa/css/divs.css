@@ -2,6 +2,7 @@
 .horas,
 .rerate
 {
+        margin-top: 14px;
 	background: rgba(0,0,0,0.03);
 	display: inline-block;
 	width: 15%;
@@ -24,6 +25,16 @@
 	padding-left: 2em;
 	color:rgba(111,204,187,1);
 	/*color: #20D532;*/
+}
+
+.rerate ul li.rangoDesde{
+    margin-right: 1em;
+    float: left;
+}
+
+.rerate ul li.rangoHasta{
+    margin-right: 1.21em;
+    float: left;
 }
 .diario ul li.nocargados,
 .horas ul li.nocargados,
