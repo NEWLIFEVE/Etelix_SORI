@@ -128,29 +128,29 @@ class qqFileUploader
     /**
      * Returns array('success'=>true) or array('error'=>'error message')
      */
-    function handleUpload($uploadDirectory, $replaceOldFile = true)
+    function handleUpload($uploadDirectory, $replaceOldFile=false)
     {
         //puedo escribir en el directorio?
         if (!is_writable($uploadDirectory))
         {
-            return array('error' => "Error del servidor. Directorio de carga no se puede escribir.");
+            return array('error'=>"Error del servidor. Directorio de carga no se puede escribir.");
         }
         //Hay archivos?
         if (!$this->file)
         {
-            return array('error' => 'No hay archivos subidos.');
+            return array('error'=>'No hay archivos subidos.');
         }
         //Asigno el tamaño
         $size = $this->file->getSize();
         //El tamaño esta vacio?
-        if($size == 0)
+        if($size==0)
         {
-            return array('error' => 'El archivo está vacío');
+            return array('error'=>'El archivo está vacío');
         }
         //Es muy grande el archivo
-        if($size > $this->sizeLimit)
+        if($size>$this->sizeLimit)
         {
-            return array('error' => 'El archivo es demasiado grande');
+            return array('error'=>'El archivo es demasiado grande');
         }
         //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
@@ -172,32 +172,63 @@ class qqFileUploader
         if($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions))
         {
             $these = implode(', ', $this->allowedExtensions);
-            return array('error' => 'El archivo tiene una extensión inválida, debería ser una de '. $these . '.');
+            return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
 
         if(!$replaceOldFile)
         {
-            /// don't overwrite previous files that were uploaded
-            while (file_exists($uploadDirectory . $filename . '.' . $ext))
+            //Si el archivo tiene RR en su nombre
+            if(strpos($filename,"RR"))
             {
-                $filename .= rand(10, 99);
+                //Verifico si ya existe
+                if(file_exists($uploadDirectory.$filename.'.'.$ext))
+                {
+                    //Si ya existe reviso que tipo de nombre es
+                    if(strpos($filename,"ompra"))
+                    {
+                        //Si tiene compra extraigo
+                        $incremento=substr($filename,16,1);
+                        if($incremento)
+                        {
+                            $nuevo=$incremento+1;
+                            $filename=str_replace($incremento,$nuevo,$filename);
+                        }
+                        else
+                        {
+                            $filename.="1";
+                        }
+                    }
+                    elseif(stripos($filename,"enta"))
+                    {
+                        $incremento=substr($filename,15,1);
+                        if($incremento)
+                        {
+                            $nuevo=$incremento+1;
+                            $filename=str_replace($incremento,$nuevo,$filename);
+                        }
+                        else
+                        {
+                            $filename.="1";
+                        }
+                    }
+                }
             }
         }
 
         if(!$borrar==true)
         {
-            if ($this->file->save($uploadDirectory . $filename . '.' . $ext))
+            if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
             {
                 return array('success'=>true,'filename'=>$filename.'.'.$ext);
             }
             else
             {
-                return array('error'=> 'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
+                return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
             }
         }
         else
         {
-            return array('error'=> 'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
+            return array('error'=>'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
         }
     }
 }
