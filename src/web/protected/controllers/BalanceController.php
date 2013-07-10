@@ -384,8 +384,18 @@ class BalanceController extends Controller
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
 			{
-				foreach($diarios as $key => $rerate)
+				//Instancio el componente
+				$this->lector=new Reader;
+				//array con los posibles nombres en el archivo del rerate
+				$archivos=array(
+					'Carga Venta Internal'=>'VentaInternal',
+					'Carga Venta External'=>'VentaExternal',
+					'Carga Compra Internal'=>'CompraInternal',
+					'Carga Compra External'=>'CompraExternal'
+					);
+				foreach($archivos as $key => $rerate)
 				{
+					
 					//Defino la ruta
 					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
 					if(!file_exists($ruta))
