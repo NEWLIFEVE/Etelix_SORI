@@ -384,26 +384,53 @@ class BalanceController extends Controller
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
 			{
+				//saco cuenta de la cantidad de dias en el rango introducido
+				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
 				//Instancio el componente
 				$this->lector=new Reader;
 				//array con los posibles nombres en el archivo del rerate
 				$archivos=array(
-					'Carga Venta Internal'=>'VentaInternal',
-					'Carga Venta External'=>'VentaExternal',
-					'Carga Compra Internal'=>'CompraInternal',
-					'Carga Compra External'=>'CompraExternal'
+					'Carga Venta Internal Rerate'=>'VentaInternalRR',
+					'Carga Venta External Rerate'=>'VentaExternalRR',
+					'Carga Compra Internal Rerate'=>'CompraInternalRR',
+					'Carga Compra External Rerate'=>'CompraExternalRR'
 					);
-				foreach($archivos as $key => $rerate)
+				if($dias)
 				{
-					
-					//Defino la ruta
-					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
-					if(!file_exists($ruta))
+					foreach($archivos as $key => $rerate)
 					{
-						//Si no existe la cambio
-						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".XLS";
+						for($i=1; $i<=$dias; $i++)
+						{
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".xls";
+							if(!file_exists($ruta))
+							{
+								//Si no existe la cambio
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".XLS";
+								if(file_exists($ruta))
+								{
+									$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+								}
+								else
+								{
+									$fallas.="<h5 class='nocargados'> El archivo '".$rerate.$i."' No esta en el servidor </h5> <br/> ";
+								}
+							}
+							else
+							{
+								$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+						}	
 					}
 				}
+				$siguiente=true;
 			}
 		}
 		$resultado.=$exitos."</br>".$fallas."</div>";
