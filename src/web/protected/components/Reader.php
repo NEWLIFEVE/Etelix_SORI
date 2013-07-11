@@ -529,13 +529,14 @@ class Reader
 	public static function nombre($nombre)
     {
         $valor=false;
-        //Verifico que tipo de nombre es
-        if(strpos($nombre," "))
-        {
             //primero obtengo el numero de la frase GMT
             if(stripos($nombre,'GMT'))
             {
                 $valor="Hora";
+            }
+            elseif(stripos($nombre, 'rerate'))
+            {
+                $valor="RR1";
             }
             if(stripos($nombre,"internal"))
             {
@@ -567,20 +568,6 @@ class Reader
                     $nuevoNombre=false;
                 }
             }
-        }
-        else
-        {
-            $incremento=substr($nombre,17,1);
-            if($incremento)
-            {
-                $incremento=$incremento+1;
-            }
-            else
-            {
-                $incremento=1;
-            }
-            $nuevoNombre=$nombre.$incremento;
-        }
         if($valor)
         {
             return $nuevoNombre.$valor;
