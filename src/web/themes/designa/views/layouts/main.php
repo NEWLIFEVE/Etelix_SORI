@@ -120,6 +120,14 @@
 			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 	</script>
+	<div class="transparente2 oculta">
+		<div class="interna2">
+			<h1>CARGANDO ARCHIVOS</h1>
+			<p>Este proceso puede tardar unos minutos</p>
+			<p>Por favor espere</p>
+			<img src="/images/image_464753.gif">
+		</div>
+	</div>
 </body>
 </html>
 <?php

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "history".
+ * This is the model class for table "rrhistory".
  *
- * The followings are the available columns in table 'history':
- * @property string $id
- * @property string $date
+ * The followings are the available columns in table 'rrhistory':
+ * @property integer $id
+ * @property string $date_balance
  * @property double $minutes
  * @property double $acd
  * @property double $asr
@@ -15,8 +15,9 @@
  * @property double $revenue_per_min
  * @property double $pdd
  * @property double $incomplete_calls
- * @property double $complete_calls_ner
+ * @property double $incomplete_calls_ner
  * @property double $complete_calls
+ * @property double $complete_calls_ner
  * @property double $calls_attempts
  * @property double $duration_real
  * @property double $duration_cost
@@ -27,19 +28,23 @@
  * @property double $cost
  * @property double $margin
  * @property string $date_change
- * @property string $id_balance
+ * @property integer $type
+ * @property integer $id_balance
+ * @property integer $id_carrier
+ * @property integer $id_destination
+ * @property integer $id_destination_int
  *
  * The followings are the available model relations:
  * @property Balance $idBalance
  */
-class History extends CActiveRecord
+class Rrhistory extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'history';
+		return 'rrhistory';
 	}
 
 	/**
@@ -50,12 +55,13 @@ class History extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'required'),
-			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
-			array('date_change, id_balance', 'safe'),
+			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
+			array('type, id_balance, id_carrier, id_destination, id_destination_int', 'numerical', 'integerOnly'=>true),
+			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
+			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, complete_calls_ner, complete_calls, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_balance', 'safe', 'on'=>'search'),
+			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_balance, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,7 +84,7 @@ class History extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date' => 'Date',
+			'date_balance' => 'Date Balance',
 			'minutes' => 'Minutes',
 			'acd' => 'Acd',
 			'asr' => 'Asr',
@@ -88,8 +94,9 @@ class History extends CActiveRecord
 			'revenue_per_min' => 'Revenue Per Min',
 			'pdd' => 'Pdd',
 			'incomplete_calls' => 'Incomplete Calls',
-			'complete_calls_ner' => 'Complete Calls Ner',
+			'incomplete_calls_ner' => 'Incomplete Calls Ner',
 			'complete_calls' => 'Complete Calls',
+			'complete_calls_ner' => 'Complete Calls Ner',
 			'calls_attempts' => 'Calls Attempts',
 			'duration_real' => 'Duration Real',
 			'duration_cost' => 'Duration Cost',
@@ -100,7 +107,11 @@ class History extends CActiveRecord
 			'cost' => 'Cost',
 			'margin' => 'Margin',
 			'date_change' => 'Date Change',
+			'type' => 'Type',
 			'id_balance' => 'Id Balance',
+			'id_carrier' => 'Id Carrier',
+			'id_destination' => 'Id Destination',
+			'id_destination_int' => 'Id Destination Int',
 		);
 	}
 
@@ -122,8 +133,8 @@ class History extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('date',$this->date,true);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('date_balance',$this->date_balance,true);
 		$criteria->compare('minutes',$this->minutes);
 		$criteria->compare('acd',$this->acd);
 		$criteria->compare('asr',$this->asr);
@@ -133,8 +144,9 @@ class History extends CActiveRecord
 		$criteria->compare('revenue_per_min',$this->revenue_per_min);
 		$criteria->compare('pdd',$this->pdd);
 		$criteria->compare('incomplete_calls',$this->incomplete_calls);
-		$criteria->compare('complete_calls_ner',$this->complete_calls_ner);
+		$criteria->compare('incomplete_calls_ner',$this->incomplete_calls_ner);
 		$criteria->compare('complete_calls',$this->complete_calls);
+		$criteria->compare('complete_calls_ner',$this->complete_calls_ner);
 		$criteria->compare('calls_attempts',$this->calls_attempts);
 		$criteria->compare('duration_real',$this->duration_real);
 		$criteria->compare('duration_cost',$this->duration_cost);
@@ -145,7 +157,11 @@ class History extends CActiveRecord
 		$criteria->compare('cost',$this->cost);
 		$criteria->compare('margin',$this->margin);
 		$criteria->compare('date_change',$this->date_change,true);
-		$criteria->compare('id_balance',$this->id_balance,true);
+		$criteria->compare('type',$this->type);
+		$criteria->compare('id_balance',$this->id_balance);
+		$criteria->compare('id_carrier',$this->id_carrier);
+		$criteria->compare('id_destination',$this->id_destination);
+		$criteria->compare('id_destination_int',$this->id_destination_int);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -156,7 +172,7 @@ class History extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return History the static model class
+	 * @return Rrhistory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

@@ -32,9 +32,10 @@
  * @property integer $id_carrier
  * @property integer $id_destination
  * @property integer $id_destination_int
+ * @property integer $status
  *
  * The followings are the available model relations:
- * @property History[] $histories
+ * @property Rrhistory[] $rrhistories
  * @property Carrier $idCarrier
  * @property Destination $idDestination
  * @property DestinationInt $idDestinationInt
@@ -58,12 +59,12 @@ class Balance extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
-			array('type, id_carrier, id_destination, id_destination_int', 'numerical', 'integerOnly'=>true),
+			array('type, id_carrier, id_destination, id_destination_int, status', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
 			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
+			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,7 +76,7 @@ class Balance extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'histories' => array(self::HAS_MANY, 'History', 'id_balance'),
+			'rrhistories' => array(self::HAS_MANY, 'Rrhistory', 'id_balance'),
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
 			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
 			'idDestinationInt' => array(self::BELONGS_TO, 'DestinationInt', 'id_destination_int'),
@@ -85,7 +86,7 @@ class Balance extends CActiveRecord
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
-	public function attributeLabels()
+	public function attributeLabels($tipo=null)
 	{
 		return array(
 			'id' => 'ID',
@@ -116,6 +117,7 @@ class Balance extends CActiveRecord
 			'id_carrier' => 'Id Carrier',
 			'id_destination' => 'Id Destination',
 			'id_destination_int' => 'Id Destination Int',
+			'status' => 'Status',
 		);
 	}
 
@@ -131,7 +133,7 @@ class Balance extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search($tipo=null)
+	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -165,7 +167,7 @@ class Balance extends CActiveRecord
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
 		$criteria->compare('id_destination_int',$this->id_destination_int);
-
+		$criteria->compare('status',$this->status);
 		if($tipo!=null)
 		{
 			if($tipo=="compras")

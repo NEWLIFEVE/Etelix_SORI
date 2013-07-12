@@ -1,6 +1,46 @@
 <?php
 echo CHtml::beginForm('/balance/guardar','post',array('name'=>'monto'));
 ?>
+<head>
+<meta charset="utf-8" />
+  <title>jQuery UI Datepicker - Format date</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" />
+<script>
+$(function() {
+        
+        $.noConflict();
+        $( ".datepicker" ).datepicker();
+        $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
+        $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
+        
+    });
+  
+    $(function($){
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd/mm/yy',
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+    });
+    
+</script>
+</head>
 <div id="archivo">
   <ul>
     <li><input type="radio" name="tipo" value="dia"/>Por Día</li>
@@ -89,51 +129,35 @@ array(
       }
       if(!$existe)
       {
-        echo "<li class='cargados'>No se han cargado archivos</li>";
+        echo "<li class='nocargados'>No se han cargado archivos</li>";
       }
       ?>
   </ul>
 </div>
 <div class="rerate oculta">
-  <p>Archivos Cargados:</p>
+  <p>Rango del Re-Rate:</p>
   <ul>
-      <?php
-      if(Log::existe(9))
-      {
-        echo "<li class='cargados'>Ruta Compra ReRate</li>";
-      }
-      if(Log::existe(10))
-      {
-        echo "<li class='cargados'>Ruta Venta ReRate</li>";
-      }
-      if(Log::existe(11))
-      {
-        echo "<li class='cargados'>Ruta Compra Internal ReRate</li>";
-      }
-      if(Log::existe(12))
-      {
-        echo "<li class='cargados'>Ruta Venta Internal ReRate</li>";
-      }
-      ?>
+    <li  class='cargados rangoDesde'>Desde</li>
+    <input type="text" class="datepicker" id="desde" name="fechaInicio" readonly/>
+    <li  class='cargados rangoHasta'>Hasta</li>
+    <input type="text" class="datepicker" id="hasta" name="fechaFin" size="30" readonly/>
+    <li class='nocargados'></li>
   </ul>
-  <p>Archivos Faltantes:</p>
+  <p>Ultimo Rango Cargado:</p>
   <ul>
       <?php
-      if(!Log::existe(9))
-      {
-        echo "<li class='nocargados'>Ruta Compra ReRate</li>";
+      $existe=false;
+      for ($i=5; $i<=52; $i++)
+      { 
+        if(Log::existe($i))
+        {
+          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
+          $existe=true;
+        }
       }
-      if(!Log::existe(10))
+      if(!$existe)
       {
-        echo "<li class='nocargados'>Ruta Venta ReRate</li>";
-      }
-      if(!Log::existe(11))
-      {
-        echo "<li class='nocargados'>Ruta Compra Internal ReRate</li>";
-      }
-      if(!Log::existe(12))
-      {
-        echo "<li class='nocargados'>Ruta Venta Internal ReRate</li>";
+        echo "<li class='nocargados'>No se ha cargado ningun rango</li>";
       }
       ?>
   </ul>
