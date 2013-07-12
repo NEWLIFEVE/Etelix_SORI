@@ -24,7 +24,7 @@ Class Utility{
             {
                 $arrayFecha[1]="0".$arrayFecha[1];
             }
-            $fechaFinal=$arrayFecha[2]."-".$arrayFecha[0]."-".$arrayFecha[1];
+            $fechaFinal=strval($arrayFecha[2]."-".$arrayFecha[0]."-".$arrayFecha[1]);
         }
         return $fechaFinal;
     }
