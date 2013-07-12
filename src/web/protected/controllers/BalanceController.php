@@ -408,28 +408,28 @@ class BalanceController extends Controller
 					/**
 					* Verifico que los archivos necesarios se encuentren en el servidor
 					*/
-					foreach($archivos as $key => $rerate)
+					foreach($archivos as $key => $archivo)
 					{
 						for($i=1; $i<=$dias; $i++)
 						{
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".xls";
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
 							if(!file_exists($ruta))
 							{
 								//Si no existe la cambio
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
 								if(file_exists($ruta))
 								{
-									$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
+									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
 								}
 								else
 								{
-									$fallas.="<h5 class='nocargados'> El archivo '".$rerate.$i."' No esta en el servidor </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' No esta en el servidor </h5> <br/> ";
 									$error=true;
 								}
 							}
 							else
 							{
-								$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
+								$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
 							}
 						}
 						/**
@@ -442,7 +442,7 @@ class BalanceController extends Controller
 							$nuevafecha=date('Y-m-d',$nuevafecha);
 							$fechas[$nuevafecha]=false;
 						}
-						$fechasArchivos[$rerate]=$fechas;
+						$fechasArchivos[$archivo]=$fechas;
 					}
 					if(!$error)
 					{
@@ -460,23 +460,23 @@ class BalanceController extends Controller
 						foreach($archivos as $key => $archivo)
 						{
 							//Oculto los errores
-							error_reporting(E_ALL & ~E_NOTICE);
-
-							ini_set('memory_limit', '320M');
-							//instancio la clase de lectura
-							$data = new Spreadsheet_Excel_Reader();
-							$data->setOutputEncoding('ISO-8859-1');
+							//error_reporting(E_ALL & ~E_NOTICE);
+							//Aumento el uso de memoria
+							ini_set('memory_limit', '256M');
 							for($i=1; $i<=$dias; $i++)
 							{
-								$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".xls";
+								//instancio la clase de lectura
+								$data = new Spreadsheet_Excel_Reader();
+								$data->setOutputEncoding('ISO-8859-1');
+								$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
 								if(!file_exists($ruta))
 								{
-									$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".XLS";
+									$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
 								}
 								$data->read($ruta);
-								$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][3])]='true';
+								$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][3])]=true;
+								unset($data);
 							}
-							unset($data);
 						}
 						foreach($archivos as $key => $archivo)
 						{
@@ -487,12 +487,12 @@ class BalanceController extends Controller
 								{
 									if(!$value)
 									{
-										$cuentaFechas.=" ".$fecha.",";
+										$cuentaFechas.=" ".$fecha." del archivo ".$archivo.",";
 									}
 								}
+								$fallas.="<h5 class='nocargados'> Faltan estas fechas '".$cuentaFechas."' entre los archivos </h5> <br/> ";
 							}
 						}
-						$fallas.="<h5 class='nocargados'> Faltan estas fechas '".$cuentaFechas."' entre los archivos </h5> <br/> ";
 					}
 				}
 				$siguiente=true;
