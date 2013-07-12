@@ -198,6 +198,7 @@ class Reader
  							$model->date_change=date("Y-m-d");
  							$model->type=$this->vencom;
  							$model->date_balance=$date_balance;
+                            $model->status=1;
  							if($model->save())
  							{
  								$this->nuevos=$this->nuevos+1;
