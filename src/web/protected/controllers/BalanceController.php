@@ -384,19 +384,30 @@ class BalanceController extends Controller
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
 			{
-				//saco cuenta de la cantidad de dias en el rango introducido
+				//variables para validacion
+				$error=false;
+				$ultimo=array();
+				$fechasArchivos=array();
+				/**
+				* saco cuenta de la cantidad de dias en el rango introducido
+				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
 				//Instancio el componente
 				$this->lector=new Reader;
-				//array con los posibles nombres en el archivo del rerate
+				/**
+				* array con los posibles nombres en el archivo del rerate
+				*/
 				$archivos=array(
 					'Carga Venta Internal Rerate'=>'VentaInternalRR',
 					'Carga Venta External Rerate'=>'VentaExternalRR',
 					'Carga Compra Internal Rerate'=>'CompraInternalRR',
 					'Carga Compra External Rerate'=>'CompraExternalRR'
 					);
-				if($dias)
+				if($dias>0)
 				{
+					/**
+					* Verifico que los archivos necesarios se encuentren en el servidor
+					*/
 					foreach($archivos as $key => $rerate)
 					{
 						for($i=1; $i<=$dias; $i++)
@@ -409,25 +420,79 @@ class BalanceController extends Controller
 								if(file_exists($ruta))
 								{
 									$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
-									if(file_exists($ruta))
-									{
-										unlink($ruta);
-									}
 								}
 								else
 								{
 									$fallas.="<h5 class='nocargados'> El archivo '".$rerate.$i."' No esta en el servidor </h5> <br/> ";
+									$error=true;
 								}
 							}
 							else
 							{
 								$exitos.="<h5 class='cargados'> El arhivo '".$rerate.$i."' esta en el servidor </h5> <br/>";
-								if(file_exists($ruta))
+							}
+						}
+						/**
+						* creo los arrays con las fechas indicadas
+						*/
+						$fechas=array();
+						for($i=0;$i<$dias;$i++)
+						{
+							$nuevafecha=strtotime('+'.$i.' day',strtotime(Utility::formatDate($_POST['fechaInicio'])));
+							$nuevafecha=date('Y-m-d',$nuevafecha);
+							$fechas[$nuevafecha]=false;
+						}
+						$fechasArchivos[$rerate]=$fechas;
+					}
+					if(!$error)
+					{
+						$cuentaFechas='';
+						function falsa($var)
+						{
+							return($var==false);
+						}
+						//importo la extension de lectura de archivos
+						Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+						/**
+						* Verifico si la fecha es la correcta en el archivo
+						*/
+						//primero extraigo las fechas
+						foreach($archivos as $key => $archivo)
+						{
+							//Oculto los errores
+							error_reporting(E_ALL & ~E_NOTICE);
+
+							ini_set('memory_limit', '320M');
+							//instancio la clase de lectura
+							$data = new Spreadsheet_Excel_Reader();
+							$data->setOutputEncoding('ISO-8859-1');
+							for($i=1; $i<=$dias; $i++)
+							{
+								$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".xls";
+								if(!file_exists($ruta))
 								{
-									unlink($ruta);
+									$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.$i.".XLS";
+								}
+								$data->read($ruta);
+								$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][3])]='true';
+							}
+							unset($data);
+						}
+						foreach($archivos as $key => $archivo)
+						{
+							$valoresFalse=array_filter($fechasArchivos[$archivo],'falsa');
+							if(count($valoresFalse)>=1)
+							{
+								foreach($fechasArchivos[$archivo] as $fecha => $value)
+								{
+									if(!$value)
+									{
+										$cuentaFechas.=" ".$fecha.",";
+									}
 								}
 							}
-						}	
+						}
+						$fallas.="<h5 class='nocargados'> Faltan estas fechas '".$cuentaFechas."' entre los archivos </h5> <br/> ";
 					}
 				}
 				$siguiente=true;
@@ -436,7 +501,7 @@ class BalanceController extends Controller
 		$resultado.=$exitos."</br>".$fallas."</div>";
         if($siguiente)
         {
-        	$this->render('guardar',array('data'=>$resultado));
+        	$this->render('guardar',array('data'=>$resultado, 'arreglo'=>$fechasArchivos));
         }
         else
         {
