@@ -9,6 +9,8 @@ class Reader
 	public $vencom;
 	public $error;
     public $horas;
+    //errores guardando en base de datos
+    const ERROR_SAVE_DB=5;
     //el archivo no esta en el servidor
 	const ERROR_FILE=4;
 	//la fecha del archivo es incorrecta
@@ -524,6 +526,310 @@ class Reader
         $this->error=self::ERROR_NONE;
         return true;
 	}
+
+    /*
+    * Funcion de carga de archivos de rerate
+    */
+    public function rerate($ruta,$accionLog)
+    {
+        $errorRr=false;
+        $errorBl=false;
+        //Aumento el tiempo de ejecucion
+        ini_set('max_execution_time', 1200);
+        //Aumento la cantidad de memoria
+        ini_set('memory_limit', '256M');
+        //importo la extension
+        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        //Oculto los errores
+        error_reporting(E_ALL ^ E_NOTICE);
+        //instancio la clase de lector
+        //Verifico la existencia del archivo
+        if(file_exists($ruta))
+        {
+            $data = new Spreadsheet_Excel_Reader();
+            //uso esta codificacion ya que dio problemas usando utf-8 directamente
+            $data->setOutputEncoding('ISO-8859-1');
+            $data->read($ruta);
+        }
+        else
+        {
+            $this->error=self::ERROR_FILE;
+            return false;
+        }
+        //Obtengo la fecha
+        $date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
+        //Comienza la lectura
+        for($i=5; $i<$data->sheets[0]['numRows']; $i++)
+        { 
+            for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
+            { 
+                switch($j)
+                {
+                    case 1:
+                        //Obtengo el id del destino
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            break 3;
+                        }
+                        if($this->tipo=="external")
+                        {
+                            $id_destination=Destination::getId($data->sheets[0]['cells'][$i][$j]);
+                            $id_destination_int=NULL;
+                        }
+                        else
+                        {
+                            $id_destination_int=DestinationInt::getId($data->sheets[0]['cells'][$i][$j]);
+                            $id_destination=NULL;
+                        }
+                        break;
+                    case 2:
+                        //obtengo el id del carrier y antes lo codifico a utf-8 para no dar problemas con la funcion
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //Si es total no lo guardo en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $id_carrier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                        }
+                        break;
+                    case 3:
+                        //minutos
+                        $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 4:
+                        //ACD
+                        $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 5:
+                        //ASR
+                        $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 6:
+                        //Margin %
+                        $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 7:
+                        //Margin per Min
+                        $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 8:
+                        //Cost per Min
+                        $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 9:
+                        //Revenue per Min
+                        $revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 10:
+                        //PDD
+                        $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 11:
+                        //Imcomplete Calls
+                        $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 12:
+                        //Imcomplete Calls Ner
+                        $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 13:
+                        //Complete Calls Ner
+                        $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 14:
+                        //Complete Calls
+                        $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 15:
+                        //Calls Attempts
+                        $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 16:
+                        //Duration Real
+                        $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 17:
+                        //Duration Cost
+                        $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 18:
+                        //NER02 Efficient
+                        $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 19:
+                        //NER02 Seizure
+                        $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 20:
+                        //PDDCalls
+                        $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 21:
+                        //Revenue
+                        $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 22:
+                        //Cost
+                        $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 23:
+                        //Margin
+                        $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    default:
+                        if($this->tipo=="external")
+                        {
+                            $balance=Balance::model()->find(
+                                'date_balance=:date_balance AND id_destination=:id_destination AND id_carrier=:id_carrier AND type=:type AND status=1',array(
+                                    ':date_balance'=>$date_balance,
+                                    ':id_destination'=>$id_destination,
+                                    ':id_carrier'=>$id_carrier,
+                                    ':type'=>$this->vencom
+                                    )
+                                );
+                        }
+                        else
+                        {
+                            $balance=Balance::model()->find(
+                                'date_balance=:date_balance AND id_destination_int=:id_destination_int AND id_carrier=:id_carrier AND type=:type AND status=1',array(
+                                    ':date_balance'=>$date_balance,
+                                    ':id_destination_int'=>$id_destination_int,
+                                    ':id_carrier'=>$id_carrier,
+                                    ':type'=>$this->vencom
+                                    )
+                                );
+                        }
+                        if($balance!=null)
+                        {
+                            //Si ya existe un registro
+
+                            //Creo un registro en rrhistory con su contenido
+                            $rrhistory=new Rrhistory;
+                            $rrhistory->data_balance=$balance->data_balance;
+                            $rrhistory->minutes=$balance->minutes;
+                            $rrhistory->acd=$balance->acd;
+                            $rrhistory->asr=$balance->asr;
+                            $rrhistory->margin_percentage=$balance->margin_percentage;
+                            $rrhistory->margin_per_minute=$balance->margin_per_minute;
+                            $rrhistory->cost_per_minute=$balance->cost_per_minute;
+                            $rrhistory->revenue_per_min=$balance->revenue_per_min;
+                            $rrhistory->pdd=$balance->pdd;
+                            $rrhistory->incomplete_calls=$balance->incomplete_calls;
+                            $rrhistory->incomplete_calls_ner=$balance->incomplete_calls_ner;
+                            $rrhistory->complete_calls=$balance->complete_calls;
+                            $rrhistory->complete_calls_ner=$balance->complete_calls_ner;
+                            $rrhistory->calls_attempts=$balance->calls_attempts;
+                            $rrhistory->duration_real=$balance->duration_real;
+                            $rrhistory->duration_cost=$balance->duration_cost;
+                            $rrhistory->ner02_efficient=$balance->ner02_efficient;
+                            $rrhistory->ner02_seizure=$balance->ner02_seizure;
+                            $rrhistory->pdd_calls=$balance->pdd_calls;
+                            $rrhistory->revenue=$balance->revenue;
+                            $rrhistory->cost=$balance->cost;
+                            $rrhistory->margin=$balance->margin;
+                            $rrhistory->date_change=$balance->date_change;
+                            $rrhistory->type=$balance->type;
+                            $rrhistory->id_balance=$balance->id;
+                            $rrhistory->id_carrier=$balance->id_carrier;
+                            $rrhistory->id_destination=$balance->id_destination;
+                            $rrhistory->id_destination_int=$balance->id_destination_int;
+                            if(!$rrhistory->save())
+                            {
+                                $errorRr=true;
+                            }
+                            else
+                            {
+                                $errorRr=false;
+                            }
+
+                            //y al registro actual le actualizo los datos
+                            $balance->minutes=$minutes;
+                            $balance->acd=$acd;
+                            $balance->asr=$asr;
+                            $balance->margin_percentage=$margin_percentage;
+                            $balance->margin_per_minute=$margin_per_minute;
+                            $balance->cost_per_minute=$cost_per_minute;
+                            $balance->revenue_per_min=$revenue_per_min;
+                            $balance->pdd=$pdd;
+                            $balance->incomplete_calls=$incomplete_calls;
+                            $balance->incomplete_calls_ner=$incomplete_calls_ner;
+                            $balance->complete_calls=$complete_calls;
+                            $balance->complete_calls_ner=$complete_calls_ner;
+                            $balance->calls_attempts=$calls_attempts;
+                            $balance->duration_real=$duration_real;
+                            $balance->duration_cost=$duration_cost;
+                            $balance->ner02_efficient=$ner02_efficient;
+                            $balance->ner02_seizure=$ner02_seizure;
+                            $balance->ppd_calls=$pdd_calls;
+                            $balance->revenue=$revenue;
+                            $balance->cost=$cost;
+                            $balance->margin=$margin;
+                            $balance->date_change=date('Y-m-d');
+                            if(!$balance->save())
+                            {
+                                $errorBl=true;
+                            }
+                            else
+                            {
+                                $errorBl=false;
+                            }
+                        }
+                        else
+                        {
+                            $balance=new Balance;
+                            $balance->data_balance=$data_balance;
+                            $balance->minutes=$minutes;
+                            $balance->acd=$acd;
+                            $balance->asr=$asr;
+                            $balance->margin_percentage=$margin_percentage;
+                            $balance->margin_per_minute=$margin_per_minute;
+                            $balance->cost_per_minute=$cost_per_minute;
+                            $balance->revenue_per_min=$revenue_per_min;
+                            $balance->pdd=$pdd;
+                            $balance->incomplete_calls=$incomplete_calls;
+                            $balance->incomplete_calls_ner=$incomplete_calls_ner;
+                            $balance->complete_calls=$complete_calls;
+                            $balance->complete_calls_ner=$complete_calls_ner;
+                            $balance->calls_attempts=$calls_attempts;
+                            $balance->duration_real=$duration_real;
+                            $balance->duration_cost=$duration_cost;
+                            $balance->ner02_efficient=$ner02_efficient;
+                            $balance->ner02_seizure=$ner02_seizure;
+                            $balance->pdd_calls=$pdd_calls;
+                            $balance->revenue=$revenue;
+                            $balance->cost=$cost;
+                            $balance->margin=$margin;
+                            $balance->date_change=$date_change;
+                            $balance->type=$this->vencom;
+                            $balance->id_carrier=$id_carrier;
+                            $balance->id_destination=$id_destination;
+                            $balance->id_destination_int=$id_destination_int;
+                            if(!$balance->save())
+                            {
+                                $errorBl=true;
+                            }
+                            else
+                            {
+                                $errorBl=false;
+                            }
+                        }
+                }
+            }
+        }
+        if($errorRr && $errorBl)
+        {
+            $this->error=ERROR_SAVE_DB;
+            return false;
+        }
+        else
+        {
+            Log::registrarLog(LogAction::getId($key),$date_balance);
+            $this->error=ERROR_NONE;
+            return true;
+        }                   
+    }
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
