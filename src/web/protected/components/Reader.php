@@ -532,7 +532,6 @@ class Reader
     */
     public function rerate($ruta,$accionLog)
     {
-        $errorRr=false;
         $errorBl=false;
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', 1200);
@@ -556,11 +555,12 @@ class Reader
             $this->error=self::ERROR_FILE;
             return false;
         }
-        //Obtengo la fecha
-        $date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
         //Comienza la lectura
         for($i=5; $i<$data->sheets[0]['numRows']; $i++)
-        { 
+        {
+            $balancetemp=new BalanceTemp;
+            //Obtengo la fecha
+            $balancetemp->data_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
             for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
             { 
                 switch($j)
@@ -573,13 +573,13 @@ class Reader
                         }
                         if($this->tipo=="external")
                         {
-                            $id_destination=Destination::getId($data->sheets[0]['cells'][$i][$j]);
-                            $id_destination_int=NULL;
+                            $balancetemp->id_destination=Destination::getId($data->sheets[0]['cells'][$i][$j]);
+                            $balancetemp->id_destination_int=NULL;
                         }
                         else
                         {
-                            $id_destination_int=DestinationInt::getId($data->sheets[0]['cells'][$i][$j]);
-                            $id_destination=NULL;
+                            $balancetemp->id_destination_int=DestinationInt::getId($data->sheets[0]['cells'][$i][$j]);
+                            $balancetemp->id_destination=NULL;
                         }
                         break;
                     case 2:
@@ -591,95 +591,103 @@ class Reader
                         }
                         else
                         {
-                            $id_carrier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                            $balancetemp->id_carrier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
                         }
                         break;
                     case 3:
                         //minutos
-                        $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 4:
                         //ACD
-                        $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 5:
                         //ASR
-                        $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 6:
                         //Margin %
-                        $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 7:
                         //Margin per Min
-                        $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 8:
                         //Cost per Min
-                        $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 9:
                         //Revenue per Min
-                        $revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->revenue_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 10:
                         //PDD
-                        $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 11:
                         //Imcomplete Calls
-                        $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 12:
                         //Imcomplete Calls Ner
-                        $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 13:
                         //Complete Calls Ner
-                        $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 14:
                         //Complete Calls
-                        $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 15:
                         //Calls Attempts
-                        $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 16:
                         //Duration Real
-                        $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 17:
                         //Duration Cost
-                        $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 18:
                         //NER02 Efficient
-                        $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 19:
                         //NER02 Seizure
-                        $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 20:
                         //PDDCalls
-                        $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 21:
                         //Revenue
-                        $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 22:
                         //Cost
-                        $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 23:
                         //Margin
-                        $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $balancetemp->margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     default:
-                        if($this->tipo=="external")
+                        if(!$balancetemp->save())
+                        {
+                            $errorBl=true;
+                        }
+                        else
+                        {
+                            $errorBl=false;
+                        }
+                        /*if($this->tipo=="external")
                         {
                             $balance=Balance::model()->find(
                                 'date_balance=:date_balance AND id_destination=:id_destination AND id_carrier=:id_carrier AND type=:type AND status=1',array(
@@ -814,11 +822,11 @@ class Reader
                             {
                                 $errorBl=false;
                             }
-                        }
+                        }*/
                 }
             }
         }
-        if($errorRr && $errorBl)
+        if($errorBl)
         {
             $this->error=ERROR_SAVE_DB;
             return false;
@@ -835,54 +843,28 @@ class Reader
     */
 	public static function nombre($nombre)
     {
-        $valor=false;
-            //primero obtengo el numero de la frase GMT
-            if(stripos($nombre,'GMT'))
-            {
-                $valor="Hora";
-            }
-            elseif(stripos($nombre, 'rerate'))
-            {
-                $valor="RR1";
-            }
-            if(stripos($nombre,"internal"))
-            {
-                if(stripos($nombre,"compra"))
-                {
-                    $nuevoNombre="CompraInternal";
-                }
-                elseif(stripos($nombre,"venta"))
-                {
-                    $nuevoNombre="VentaInternal";
-                }
-                else
-                {
-                    $nuevoNombre=false;
-                }
-            }
-            else
-            {
-                if(stripos($nombre,"compra"))
-                {
-                    $nuevoNombre="CompraExternal";
-                }
-                elseif(stripos($nombre,"venta"))
-                {
-                    $nuevoNombre="VentaExternal";
-                }
-                else
-                {
-                    $nuevoNombre=false;
-                }
-            }
-        if($valor)
+        $primero="Compra";
+        $segundo="External";
+        $tercero="";
+        $valor="";
+        if(stripos($nombre,"internal"))
         {
-            return $nuevoNombre.$valor;
+            $segundo="Internal";
         }
-        else
+        if(stripos($nombre,"venta"))
         {
-            return $nuevoNombre;
+            $primero="Compra";
         }
+        if(stripos($nombre,'rerate'))
+        {
+            $tercero="RR";
+        }
+        if(stripos($nombre,'GMT'))
+        {
+            $tercero="Hora";
+        }
+        $nuevoNombre=$primero.$segundo.$tercero.$valor;
+        return $nuevoNombre;     
     }
     /**
     * Encargada de definir atributos para proceder a la lectura del archivo

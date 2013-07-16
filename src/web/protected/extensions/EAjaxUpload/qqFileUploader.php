@@ -175,7 +175,7 @@ class qqFileUploader
             return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
 
-        if(!$replaceOldFile)
+        /*if(!$replaceOldFile)
         {
             //Si el archivo tiene RR en su nombre
             if(strpos($filename,"RR"))
@@ -213,7 +213,13 @@ class qqFileUploader
                     }
                 }
             }
-        }
+        }*/
+         if(!$replaceOldFile){
+                /// don't overwrite previous files that were uploaded
+                while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
+                    $filename .= rand(10, 99);
+                }
+            }
 
         if(!$borrar==true)
         {
