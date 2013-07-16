@@ -582,9 +582,6 @@ class BalanceController extends Controller
 											unlink($ruta);
 										}
 										break;
-									default:
-										# code...
-									break;
 								}
 							}
 						}
