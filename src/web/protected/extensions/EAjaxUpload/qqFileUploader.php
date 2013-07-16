@@ -170,27 +170,19 @@ class qqFileUploader
         if(!$replaceOldFile)
         {
             /// don't overwrite previous files that were uploaded
-            while (file_exists($uploadDirectory . $filename .$valor. '.' . $ext))
-            {
-                $valor=$valor+1;
+            while (file_exists($uploadDirectory . $filename .$valor. '.' . $ext)) {
+                $valor+=1;
             }
             $filename.=$valor;
         }
 
-        if(!$borrar==true)
+        if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
         {
-            if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
-            {
-                return array('success'=>true,'filename'=>$filename.'.'.$ext);
-            }
-            else
-            {
-                return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
-            }
+            return array('success'=>true,'filename'=>$filename.'.'.$ext);
         }
         else
         {
-            return array('error'=>'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
+            return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
         }
     }
 }
