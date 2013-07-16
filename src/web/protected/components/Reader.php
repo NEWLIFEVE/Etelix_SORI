@@ -573,12 +573,12 @@ class Reader
                         }
                         if($this->tipo=="external")
                         {
-                            $balancetemp->id_destination=Destination::getId($data->sheets[0]['cells'][$i][$j]);
+                            $balancetemp->id_destination=Destination::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
                             $balancetemp->id_destination_int=NULL;
                         }
                         else
                         {
-                            $balancetemp->id_destination_int=DestinationInt::getId($data->sheets[0]['cells'][$i][$j]);
+                            $balancetemp->id_destination_int=DestinationInt::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
                             $balancetemp->id_destination=NULL;
                         }
                         break;
@@ -687,142 +687,6 @@ class Reader
                         {
                             $errorBl=false;
                         }
-                        /*if($this->tipo=="external")
-                        {
-                            $balance=Balance::model()->find(
-                                'date_balance=:date_balance AND id_destination=:id_destination AND id_carrier=:id_carrier AND type=:type AND status=1',array(
-                                    ':date_balance'=>$date_balance,
-                                    ':id_destination'=>$id_destination,
-                                    ':id_carrier'=>$id_carrier,
-                                    ':type'=>$this->vencom
-                                    )
-                                );
-                        }
-                        else
-                        {
-                            $balance=Balance::model()->find(
-                                'date_balance=:date_balance AND id_destination_int=:id_destination_int AND id_carrier=:id_carrier AND type=:type AND status=1',array(
-                                    ':date_balance'=>$date_balance,
-                                    ':id_destination_int'=>$id_destination_int,
-                                    ':id_carrier'=>$id_carrier,
-                                    ':type'=>$this->vencom
-                                    )
-                                );
-                        }
-                        if($balance!=null)
-                        {
-                            //Si ya existe un registro
-
-                            //Creo un registro en rrhistory con su contenido
-                            $rrhistory=new Rrhistory;
-                            $rrhistory->data_balance=$balance->data_balance;
-                            $rrhistory->minutes=$balance->minutes;
-                            $rrhistory->acd=$balance->acd;
-                            $rrhistory->asr=$balance->asr;
-                            $rrhistory->margin_percentage=$balance->margin_percentage;
-                            $rrhistory->margin_per_minute=$balance->margin_per_minute;
-                            $rrhistory->cost_per_minute=$balance->cost_per_minute;
-                            $rrhistory->revenue_per_min=$balance->revenue_per_min;
-                            $rrhistory->pdd=$balance->pdd;
-                            $rrhistory->incomplete_calls=$balance->incomplete_calls;
-                            $rrhistory->incomplete_calls_ner=$balance->incomplete_calls_ner;
-                            $rrhistory->complete_calls=$balance->complete_calls;
-                            $rrhistory->complete_calls_ner=$balance->complete_calls_ner;
-                            $rrhistory->calls_attempts=$balance->calls_attempts;
-                            $rrhistory->duration_real=$balance->duration_real;
-                            $rrhistory->duration_cost=$balance->duration_cost;
-                            $rrhistory->ner02_efficient=$balance->ner02_efficient;
-                            $rrhistory->ner02_seizure=$balance->ner02_seizure;
-                            $rrhistory->pdd_calls=$balance->pdd_calls;
-                            $rrhistory->revenue=$balance->revenue;
-                            $rrhistory->cost=$balance->cost;
-                            $rrhistory->margin=$balance->margin;
-                            $rrhistory->date_change=$balance->date_change;
-                            $rrhistory->type=$balance->type;
-                            $rrhistory->id_balance=$balance->id;
-                            $rrhistory->id_carrier=$balance->id_carrier;
-                            $rrhistory->id_destination=$balance->id_destination;
-                            $rrhistory->id_destination_int=$balance->id_destination_int;
-                            if(!$rrhistory->save())
-                            {
-                                $errorRr=true;
-                            }
-                            else
-                            {
-                                $errorRr=false;
-                            }
-
-                            //y al registro actual le actualizo los datos
-                            $balance->minutes=$minutes;
-                            $balance->acd=$acd;
-                            $balance->asr=$asr;
-                            $balance->margin_percentage=$margin_percentage;
-                            $balance->margin_per_minute=$margin_per_minute;
-                            $balance->cost_per_minute=$cost_per_minute;
-                            $balance->revenue_per_min=$revenue_per_min;
-                            $balance->pdd=$pdd;
-                            $balance->incomplete_calls=$incomplete_calls;
-                            $balance->incomplete_calls_ner=$incomplete_calls_ner;
-                            $balance->complete_calls=$complete_calls;
-                            $balance->complete_calls_ner=$complete_calls_ner;
-                            $balance->calls_attempts=$calls_attempts;
-                            $balance->duration_real=$duration_real;
-                            $balance->duration_cost=$duration_cost;
-                            $balance->ner02_efficient=$ner02_efficient;
-                            $balance->ner02_seizure=$ner02_seizure;
-                            $balance->ppd_calls=$pdd_calls;
-                            $balance->revenue=$revenue;
-                            $balance->cost=$cost;
-                            $balance->margin=$margin;
-                            $balance->date_change=date('Y-m-d');
-                            if(!$balance->save())
-                            {
-                                $errorBl=true;
-                            }
-                            else
-                            {
-                                $errorBl=false;
-                            }
-                        }
-                        else
-                        {
-                            $balance=new Balance;
-                            $balance->data_balance=$data_balance;
-                            $balance->minutes=$minutes;
-                            $balance->acd=$acd;
-                            $balance->asr=$asr;
-                            $balance->margin_percentage=$margin_percentage;
-                            $balance->margin_per_minute=$margin_per_minute;
-                            $balance->cost_per_minute=$cost_per_minute;
-                            $balance->revenue_per_min=$revenue_per_min;
-                            $balance->pdd=$pdd;
-                            $balance->incomplete_calls=$incomplete_calls;
-                            $balance->incomplete_calls_ner=$incomplete_calls_ner;
-                            $balance->complete_calls=$complete_calls;
-                            $balance->complete_calls_ner=$complete_calls_ner;
-                            $balance->calls_attempts=$calls_attempts;
-                            $balance->duration_real=$duration_real;
-                            $balance->duration_cost=$duration_cost;
-                            $balance->ner02_efficient=$ner02_efficient;
-                            $balance->ner02_seizure=$ner02_seizure;
-                            $balance->pdd_calls=$pdd_calls;
-                            $balance->revenue=$revenue;
-                            $balance->cost=$cost;
-                            $balance->margin=$margin;
-                            $balance->date_change=$date_change;
-                            $balance->type=$this->vencom;
-                            $balance->id_carrier=$id_carrier;
-                            $balance->id_destination=$id_destination;
-                            $balance->id_destination_int=$id_destination_int;
-                            if(!$balance->save())
-                            {
-                                $errorBl=true;
-                            }
-                            else
-                            {
-                                $errorBl=false;
-                            }
-                        }*/
                 }
             }
         }
@@ -841,19 +705,18 @@ class Reader
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
-	public static function nombre($nombre,$num)
+	public static function nombre($nombre)
     {
         $primero="Compra";
         $segundo="External";
         $tercero="";
-        $valor=false;
         if(stripos($nombre,"internal"))
         {
             $segundo="Internal";
         }
-        if(stripos($nombre,"venta"))
+        if(stripos($nombre,"enta"))
         {
-            $primero="Compra";
+            $primero="Venta";
         }
         if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
         {
@@ -863,11 +726,7 @@ class Reader
         {
             $tercero="Hora";
         }
-        if($num!=null)
-        {
-            $valor=$num;
-        }
-        $nuevoNombre=$primero.$segundo.$tercero.$valor;
+        $nuevoNombre=$primero.$segundo.$tercero;
         return $nuevoNombre;     
     }
     /**
