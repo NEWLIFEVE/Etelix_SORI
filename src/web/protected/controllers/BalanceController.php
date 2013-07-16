@@ -213,10 +213,10 @@ class BalanceController extends Controller
 				$this->lector=new Reader;
 				//Nombres opcionales para los archivos diarios
 				$diarios=array(
-					'Carga Venta Internal'=>'VentaInternal',
-					'Carga Venta External'=>'VentaExternal',
-					'Carga Compra Internal'=>'CompraInternal',
-					'Carga Compra External'=>'CompraExternal'
+					'Carga Venta Internal'=>'VentaInternal1',
+					'Carga Venta External'=>'VentaExternal1',
+					'Carga Compra Internal'=>'CompraInternal1',
+					'Carga Compra External'=>'CompraExternal1'
 					);
 				//recorro el array de nombres
 				foreach($diarios as $key => $diario)
