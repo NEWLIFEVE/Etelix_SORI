@@ -154,17 +154,9 @@ class qqFileUploader
         }
         //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
+
         //Nombre del archivo
-        $borrar=false;
-        if(Reader::nombre($pathinfo['filename']))
-        {
-            $filename = Reader::nombre($pathinfo['filename']);
-        }
-        else
-        {
-            $filename="Error";
-            $borrar=true;
-        }       
+        $filename = Reader::nombre($pathinfo['filename']);      
 
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
@@ -174,52 +166,16 @@ class qqFileUploader
             $these = implode(', ', $this->allowedExtensions);
             return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
-
-        /*if(!$replaceOldFile)
+        $valor=false;
+        if(!$replaceOldFile)
         {
-            //Si el archivo tiene RR en su nombre
-            if(strpos($filename,"RR"))
+            /// don't overwrite previous files that were uploaded
+            while (file_exists($uploadDirectory . $filename .$valor. '.' . $ext))
             {
-                //Verifico si ya existe
-                if(file_exists($uploadDirectory.$filename.'.'.$ext))
-                {
-                    //Si ya existe reviso que tipo de nombre es
-                    if(strpos($filename,"ompra"))
-                    {
-                        //Si tiene compra extraigo
-                        $incremento=substr($filename,16,1);
-                        if($incremento)
-                        {
-                            $nuevo=$incremento+1;
-                            $filename=str_replace($incremento,$nuevo,$filename);
-                        }
-                        else
-                        {
-                            $filename.="1";
-                        }
-                    }
-                    elseif(stripos($filename,"enta"))
-                    {
-                        $incremento=substr($filename,15,1);
-                        if($incremento)
-                        {
-                            $nuevo=$incremento+1;
-                            $filename=str_replace($incremento,$nuevo,$filename);
-                        }
-                        else
-                        {
-                            $filename.="1";
-                        }
-                    }
-                }
+                $valor=$valor+1;
             }
-        }*/
-         if(!$replaceOldFile){
-                /// don't overwrite previous files that were uploaded
-                while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
-                    $filename .= rand(10, 99);
-                }
-            }
+            $filename.=$valor;
+        }
 
         if(!$borrar==true)
         {

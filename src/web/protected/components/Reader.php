@@ -841,12 +841,12 @@ class Reader
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
-	public static function nombre($nombre)
+	public static function nombre($nombre,$num)
     {
         $primero="Compra";
         $segundo="External";
         $tercero="";
-        $valor="";
+        $valor=false;
         if(stripos($nombre,"internal"))
         {
             $segundo="Internal";
@@ -855,13 +855,17 @@ class Reader
         {
             $primero="Compra";
         }
-        if(stripos($nombre,'rerate'))
+        if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
         {
             $tercero="RR";
         }
         if(stripos($nombre,'GMT'))
         {
             $tercero="Hora";
+        }
+        if($num!=null)
+        {
+            $valor=$num;
         }
         $nuevoNombre=$primero.$segundo.$tercero.$valor;
         return $nuevoNombre;     
