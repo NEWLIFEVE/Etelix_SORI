@@ -3,5 +3,4 @@
 	echo $value."<br>";# code...
 }*/
 echo $data;
-var_dump($arreglo);
 ?>

@@ -498,4 +498,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 auto-sufix="true"
 />
 
+<table name="temp" oids="true">
+	<schema name="public"/>
+	<position x="533" y="574"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+</table>
+
 </dbmodel>

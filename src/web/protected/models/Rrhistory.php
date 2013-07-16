@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "balance".
+ * This is the model class for table "rrhistory".
  *
- * The followings are the available columns in table 'balance':
+ * The followings are the available columns in table 'rrhistory':
  * @property integer $id
  * @property string $date_balance
  * @property double $minutes
@@ -29,25 +29,22 @@
  * @property double $margin
  * @property string $date_change
  * @property integer $type
+ * @property integer $id_balance
  * @property integer $id_carrier
  * @property integer $id_destination
  * @property integer $id_destination_int
- * @property integer $status
  *
  * The followings are the available model relations:
- * @property Rrhistory[] $rrhistories
- * @property Carrier $idCarrier
- * @property Destination $idDestination
- * @property DestinationInt $idDestinationInt
+ * @property Balance $idBalance
  */
-class Balance extends CActiveRecord
+class Rrhistory extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'balance';
+		return 'rrhistory';
 	}
 
 	/**
@@ -59,12 +56,12 @@ class Balance extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
-			array('type, id_carrier, id_destination, id_destination_int, status', 'numerical', 'integerOnly'=>true),
+			array('type, id_balance, id_carrier, id_destination, id_destination_int', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
 			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int, status', 'safe', 'on'=>'search'),
+			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_balance, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,17 +73,14 @@ class Balance extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'rrhistories' => array(self::HAS_MANY, 'Rrhistory', 'id_balance'),
-			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
-			'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
-			'idDestinationInt' => array(self::BELONGS_TO, 'DestinationInt', 'id_destination_int'),
+			'idBalance' => array(self::BELONGS_TO, 'Balance', 'id_balance'),
 		);
 	}
 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
-	public function attributeLabels($tipo=null)
+	public function attributeLabels()
 	{
 		return array(
 			'id' => 'ID',
@@ -114,10 +108,10 @@ class Balance extends CActiveRecord
 			'margin' => 'Margin',
 			'date_change' => 'Date Change',
 			'type' => 'Type',
+			'id_balance' => 'Id Balance',
 			'id_carrier' => 'Id Carrier',
 			'id_destination' => 'Id Destination',
 			'id_destination_int' => 'Id Destination Int',
-			'status' => 'Status',
 		);
 	}
 
@@ -164,21 +158,11 @@ class Balance extends CActiveRecord
 		$criteria->compare('margin',$this->margin);
 		$criteria->compare('date_change',$this->date_change,true);
 		$criteria->compare('type',$this->type);
+		$criteria->compare('id_balance',$this->id_balance);
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
 		$criteria->compare('id_destination_int',$this->id_destination_int);
-		$criteria->compare('status',$this->status);
-		if($tipo!=null)
-		{
-			if($tipo=="compras")
-			{
-				$criteria->addCondition('type=0');
-			}
-			elseif($tipo=="ventas")
-			{
-				$criteria->addCondition('type=1');
-			}
-		}
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -188,7 +172,7 @@ class Balance extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Balance the static model class
+	 * @return Rrhistory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
