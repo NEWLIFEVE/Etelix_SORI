@@ -388,10 +388,12 @@ class BalanceController extends Controller
 				$error=false;
 				$ultimo=array();
 				$fechasArchivos=array();
+
 				/**
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
+
 				/**
 				* array con los posibles nombres en el archivo del rerate
 				*/
@@ -401,6 +403,7 @@ class BalanceController extends Controller
 					'Carga Compra Internal Rerate'=>'CompraInternalRR',
 					'Carga Compra External Rerate'=>'CompraExternalRR'
 					);
+				
 				if($dias>0)
 				{
 					/**
