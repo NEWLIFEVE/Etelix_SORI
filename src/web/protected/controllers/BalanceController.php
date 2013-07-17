@@ -421,6 +421,7 @@ class BalanceController extends Controller
 								if(file_exists($ruta))
 								{
 									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
+									$error=false;
 								}
 								else
 								{
@@ -431,6 +432,7 @@ class BalanceController extends Controller
 							else
 							{
 								$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
+								$error=false;
 							}
 						}
 						/**
@@ -445,6 +447,10 @@ class BalanceController extends Controller
 						}
 						$fechasArchivos[$archivo]=$fechas;
 					}
+
+					/**
+					* Si no hay errores procedo a verificar las fechas
+					*/
 					if(!$error)
 					{
 						$cuentaFechas='';
@@ -461,7 +467,7 @@ class BalanceController extends Controller
 						foreach($archivos as $key => $archivo)
 						{
 							//Oculto los errores
-							error_reporting(E_ALL & ~E_NOTICE);
+							//error_reporting(E_ALL & ~E_NOTICE);
 							//Aumento el uso de memoria
 							ini_set('memory_limit', '256M');
 							for($i=1; $i<=$dias; $i++)
@@ -479,6 +485,7 @@ class BalanceController extends Controller
 								unset($data);
 							}
 						}
+						//Reviso si alguna de las fechas ya creadas tiene false
 						foreach($archivos as $key => $archivo)
 						{
 							$valoresFalse=array_filter($fechasArchivos[$archivo],'falsa');
