@@ -753,9 +753,5 @@ class Reader
     		$this->vencom=0;
     	}
 	}
-    public static function sumar($nombre)
-    {
-
-    }
 }
 ?>
