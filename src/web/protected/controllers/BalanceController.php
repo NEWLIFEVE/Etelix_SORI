@@ -201,7 +201,6 @@ class BalanceController extends Controller
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
-        $siguiente=false;
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
@@ -260,23 +259,26 @@ class BalanceController extends Controller
 							{
 								unlink($ruta);
 							}
-							$siguiente=true;
 						}
 						if($this->lector->error==0)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						elseif($this->lector->error==1)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una estructura incorrecta </h5> <br/> ";
-						}
 						elseif($this->lector->error==2)
 						{
 							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
 						}
 						elseif($this->lector->error==3)
 						{
 							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
 						}
 						elseif($this->lector->error==4)
 						{
@@ -328,7 +330,6 @@ class BalanceController extends Controller
 							{
 								unlink($ruta);
 							}
-							$siguiente=true;
 						}
 						switch($this->lector->error)
 						{
@@ -374,7 +375,7 @@ class BalanceController extends Controller
 					}
 					else
 					{
-						if(strlen($fallas)<=16 && $siguiente==false)
+						if(strlen($fallas)<=16)
 						{
 							$fallas="No hay archivos en el servidor";
 						}
@@ -547,7 +548,6 @@ class BalanceController extends Controller
 								{
 									unlink($ruta);
 								}
-								$siguiente=true;
 							}
 							switch($this->lector->error)
 							{
@@ -600,15 +600,7 @@ class BalanceController extends Controller
 			}
 		}
 		$resultado.=$exitos."</br>".$fallas."</div>";
-        if($siguiente)
-        {
-        	$this->render('guardar',array('data'=>$resultado));
-        }
-        else
-        {
-        	Yii::app()->user->setFlash('error', $fallas);
-			$this->redirect('/site/');
-        }
+       	$this->render('guardar',array('data'=>$resultado));
 	}
 
 	public function actionVer()
