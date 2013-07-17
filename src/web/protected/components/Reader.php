@@ -560,7 +560,7 @@ class Reader
         {
             $balancetemp=new BalanceTemp;
             //Obtengo la fecha
-            $balancetemp->data_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
+            $balancetemp->date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
             for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
             { 
                 switch($j)
@@ -679,13 +679,15 @@ class Reader
                         $balancetemp->margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     default:
-                        if(!$balancetemp->save())
+                        $balancetemp->date_change=date("Y-m-d");
+                        $balancetemp->type=$this->vencom;
+                        if($balancetemp->save())
                         {
-                            $errorBl=true;
+                            $errorBl=false;
                         }
                         else
                         {
-                            $errorBl=false;
+                            $errorBl=true;
                         }
                 }
             }
