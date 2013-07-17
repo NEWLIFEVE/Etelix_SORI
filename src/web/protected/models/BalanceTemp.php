@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'balance_temp':
  * @property integer $id
- * @property string $data_balance
+ * @property string $date_balance
  * @property double $minutes
  * @property double $acd
  * @property double $asr
@@ -51,13 +51,13 @@ class BalanceTemp extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('data_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
+			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
 			array('type, id_carrier, id_destination, id_destination_int', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
 			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, data_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
+			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +79,7 @@ class BalanceTemp extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'data_balance' => 'Data Balance',
+			'date_balance' => 'Data Balance',
 			'minutes' => 'Minutes',
 			'acd' => 'Acd',
 			'asr' => 'Asr',
@@ -128,7 +128,7 @@ class BalanceTemp extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('data_balance',$this->data_balance,true);
+		$criteria->compare('date_balance',$this->date_balance,true);
 		$criteria->compare('minutes',$this->minutes);
 		$criteria->compare('acd',$this->acd);
 		$criteria->compare('asr',$this->asr);
