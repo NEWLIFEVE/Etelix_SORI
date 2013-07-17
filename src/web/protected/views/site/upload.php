@@ -70,7 +70,7 @@ array(
 ));
 ?>
 <div class="diario oculta">
-  
+  <h3>ESTATUS CARGA</h3>
   <p>Archivos Cargados:</p>
   <ul>
       <?php
@@ -115,6 +115,7 @@ array(
   </ul>
 </div>
 <div class="horas oculta">
+  <h3>ESTATUS CARGA</h3>
   <p>Archivos Cargados:</p>
   <ul>
       <?php
@@ -135,6 +136,7 @@ array(
   </ul>
 </div>
 <div class="rerate oculta">
+  <h3>ESTATUS CARGA</h3>
   <p>Rango del Re-Rate:</p>
   <ul>
     <li  class='cargados rangoDesde'>Desde</li>

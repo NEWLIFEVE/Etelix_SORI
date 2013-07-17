@@ -9,6 +9,8 @@ class Reader
 	public $vencom;
 	public $error;
     public $horas;
+    //errores de log
+    const ERROR_SAVE_LOG=6;
     //errores guardando en base de datos
     const ERROR_SAVE_DB=5;
     //el archivo no esta en el servidor
@@ -532,7 +534,6 @@ class Reader
     */
     public function rerate($ruta,$accionLog)
     {
-        $errorBl=false;
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', 1200);
         //Aumento la cantidad de memoria
@@ -560,7 +561,7 @@ class Reader
         {
             $balancetemp=new BalanceTemp;
             //Obtengo la fecha
-            $balancetemp->data_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
+            $balancetemp->date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
             for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
             { 
                 switch($j)
@@ -679,27 +680,36 @@ class Reader
                         $balancetemp->margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     default:
-                        if(!$balancetemp->save())
+                        $balancetemp->date_change=date("Y-m-d");
+                        $balancetemp->type=$this->vencom;
+                        if($balancetemp->save())
                         {
-                            $errorBl=true;
+                            $this->error=ERROR_NONE;
                         }
                         else
                         {
-                            $errorBl=false;
+                            $this->error=ERROR_SAVE_DB;
                         }
                 }
             }
         }
-        if($errorBl)
+        if($this->error>0)
         {
-            $this->error=ERROR_SAVE_DB;
             return false;
         }
         else
         {
-            Log::registrarLog(LogAction::getId($key),$date_balance);
-            $this->error=ERROR_NONE;
-            return true;
+            if(Log::registrarLog(LogAction::getId($accionLog),$balancetemp->date_balance))
+            {
+                $this->error=ERROR_NONE;
+                return true;
+            }
+            else
+            {
+                $this->error=ERROR_SAVE_LOG;
+                return false;
+            }
+            
         }                   
     }
     /**
