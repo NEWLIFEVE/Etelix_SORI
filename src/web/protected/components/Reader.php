@@ -9,6 +9,8 @@ class Reader
 	public $vencom;
 	public $error;
     public $horas;
+    //errores de log
+    const ERROR_SAVE_LOG=6;
     //errores guardando en base de datos
     const ERROR_SAVE_DB=5;
     //el archivo no esta en el servidor
@@ -532,7 +534,6 @@ class Reader
     */
     public function rerate($ruta,$accionLog)
     {
-        $errorBl=false;
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', 1200);
         //Aumento la cantidad de memoria
@@ -683,25 +684,32 @@ class Reader
                         $balancetemp->type=$this->vencom;
                         if($balancetemp->save())
                         {
-                            $errorBl=false;
+                            $this->error=ERROR_NONE;
                         }
                         else
                         {
-                            $errorBl=true;
+                            $this->error=ERROR_SAVE_DB;
                         }
                 }
             }
         }
-        if($errorBl)
+        if($this->error>0)
         {
-            $this->error=ERROR_SAVE_DB;
             return false;
         }
         else
         {
-            Log::registrarLog(LogAction::getId($key),$date_balance);
-            $this->error=ERROR_NONE;
-            return true;
+            if(Log::registrarLog(LogAction::getId($accionLog),$balancetemp->date_balance))
+            {
+                $this->error=ERROR_NONE;
+                return true;
+            }
+            else
+            {
+                $this->error=ERROR_SAVE_LOG;
+                return false;
+            }
+            
         }                   
     }
     /**
