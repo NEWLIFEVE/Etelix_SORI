@@ -174,4 +174,31 @@ class Log extends CActiveRecord
 		else
 			return false;
 	}
+
+	/*
+	* Funcion que retorna los ultimos rangos de fechas cargados en rerate
+	*/
+	public static function getRerate()
+	{
+		error_reporting(E_ALL & ~E_NOTICE);
+		$fechas=array();
+		$retorna=array();
+		$resultados=self::model()->findAll("date<=current_date and date>=current_date - interval '1 week' and description_date is not null order by description_date asc");
+		if($resultados!=null)
+		{
+			foreach ($resultados as $key => $fecha)
+			{
+				$fechas[$fecha->description_date]=true;
+			}
+			foreach ($fechas as $key => $value)
+			{
+				$retorna[]=$key;
+			}
+			return $retorna[0]."/".$retorna[count($retorna)-1];
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
