@@ -154,17 +154,9 @@ class qqFileUploader
         }
         //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
+
         //Nombre del archivo
-        $borrar=false;
-        if(Reader::nombre($pathinfo['filename']))
-        {
-            $filename = Reader::nombre($pathinfo['filename']);
-        }
-        else
-        {
-            $filename="Error";
-            $borrar=true;
-        }       
+        $filename = Reader::nombre($pathinfo['filename']);      
 
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
@@ -174,61 +166,23 @@ class qqFileUploader
             $these = implode(', ', $this->allowedExtensions);
             return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
-
+        $valor=1;
         if(!$replaceOldFile)
         {
-            //Si el archivo tiene RR en su nombre
-            if(strpos($filename,"RR"))
-            {
-                //Verifico si ya existe
-                if(file_exists($uploadDirectory.$filename.'.'.$ext))
-                {
-                    //Si ya existe reviso que tipo de nombre es
-                    if(strpos($filename,"ompra"))
-                    {
-                        //Si tiene compra extraigo
-                        $incremento=substr($filename,16,1);
-                        if($incremento)
-                        {
-                            $nuevo=$incremento+1;
-                            $filename=str_replace($incremento,$nuevo,$filename);
-                        }
-                        else
-                        {
-                            $filename.="1";
-                        }
-                    }
-                    elseif(stripos($filename,"enta"))
-                    {
-                        $incremento=substr($filename,15,1);
-                        if($incremento)
-                        {
-                            $nuevo=$incremento+1;
-                            $filename=str_replace($incremento,$nuevo,$filename);
-                        }
-                        else
-                        {
-                            $filename.="1";
-                        }
-                    }
-                }
+            /// don't overwrite previous files that were uploaded
+            while (file_exists($uploadDirectory . $filename .$valor. '.' . $ext)) {
+                $valor+=1;
             }
+            $filename.=$valor;
         }
 
-        if(!$borrar==true)
+        if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
         {
-            if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
-            {
-                return array('success'=>true,'filename'=>$filename.'.'.$ext);
-            }
-            else
-            {
-                return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
-            }
+            return array('success'=>true,'filename'=>$filename.'.'.$ext);
         }
         else
         {
-            return array('error'=>'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
+            return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
         }
     }
 }

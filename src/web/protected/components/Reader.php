@@ -9,6 +9,10 @@ class Reader
 	public $vencom;
 	public $error;
     public $horas;
+    //errores de log
+    const ERROR_SAVE_LOG=6;
+    //errores guardando en base de datos
+    const ERROR_SAVE_DB=5;
     //el archivo no esta en el servidor
 	const ERROR_FILE=4;
 	//la fecha del archivo es incorrecta
@@ -524,59 +528,216 @@ class Reader
         $this->error=self::ERROR_NONE;
         return true;
 	}
+
+    /*
+    * Funcion de carga de archivos de rerate
+    */
+    public function rerate($ruta,$accionLog)
+    {
+        //Aumento el tiempo de ejecucion
+        ini_set('max_execution_time', 1200);
+        //Aumento la cantidad de memoria
+        ini_set('memory_limit', '256M');
+        //importo la extension
+        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        //Oculto los errores
+        error_reporting(E_ALL ^ E_NOTICE);
+        //instancio la clase de lector
+        //Verifico la existencia del archivo
+        if(file_exists($ruta))
+        {
+            $data = new Spreadsheet_Excel_Reader();
+            //uso esta codificacion ya que dio problemas usando utf-8 directamente
+            $data->setOutputEncoding('ISO-8859-1');
+            $data->read($ruta);
+        }
+        else
+        {
+            $this->error=self::ERROR_FILE;
+            return false;
+        }
+        //Comienza la lectura
+        for($i=5; $i<$data->sheets[0]['numRows']; $i++)
+        {
+            $balancetemp=new BalanceTemp;
+            //Obtengo la fecha
+            $balancetemp->date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
+            for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
+            { 
+                switch($j)
+                {
+                    case 1:
+                        //Obtengo el id del destino
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            break 3;
+                        }
+                        if($this->tipo=="external")
+                        {
+                            $balancetemp->id_destination=Destination::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                            $balancetemp->id_destination_int=NULL;
+                        }
+                        else
+                        {
+                            $balancetemp->id_destination_int=DestinationInt::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                            $balancetemp->id_destination=NULL;
+                        }
+                        break;
+                    case 2:
+                        //obtengo el id del carrier y antes lo codifico a utf-8 para no dar problemas con la funcion
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //Si es total no lo guardo en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $balancetemp->id_carrier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                        }
+                        break;
+                    case 3:
+                        //minutos
+                        $balancetemp->minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 4:
+                        //ACD
+                        $balancetemp->acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 5:
+                        //ASR
+                        $balancetemp->asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 6:
+                        //Margin %
+                        $balancetemp->margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 7:
+                        //Margin per Min
+                        $balancetemp->margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 8:
+                        //Cost per Min
+                        $balancetemp->cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 9:
+                        //Revenue per Min
+                        $balancetemp->revenue_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 10:
+                        //PDD
+                        $balancetemp->pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 11:
+                        //Imcomplete Calls
+                        $balancetemp->incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 12:
+                        //Imcomplete Calls Ner
+                        $balancetemp->incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 13:
+                        //Complete Calls Ner
+                        $balancetemp->complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 14:
+                        //Complete Calls
+                        $balancetemp->complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 15:
+                        //Calls Attempts
+                        $balancetemp->calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 16:
+                        //Duration Real
+                        $balancetemp->duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 17:
+                        //Duration Cost
+                        $balancetemp->duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 18:
+                        //NER02 Efficient
+                        $balancetemp->ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 19:
+                        //NER02 Seizure
+                        $balancetemp->ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 20:
+                        //PDDCalls
+                        $balancetemp->pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 21:
+                        //Revenue
+                        $balancetemp->revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 22:
+                        //Cost
+                        $balancetemp->cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 23:
+                        //Margin
+                        $balancetemp->margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    default:
+                        $balancetemp->date_change=date("Y-m-d");
+                        $balancetemp->type=$this->vencom;
+                        if($balancetemp->save())
+                        {
+                            $this->error=ERROR_NONE;
+                        }
+                        else
+                        {
+                            $this->error=ERROR_SAVE_DB;
+                        }
+                }
+            }
+        }
+        if($this->error>0)
+        {
+            return false;
+        }
+        else
+        {
+            if(Log::registrarLog(LogAction::getId($accionLog),$balancetemp->date_balance))
+            {
+                $this->error=ERROR_NONE;
+                return true;
+            }
+            else
+            {
+                $this->error=ERROR_SAVE_LOG;
+                return false;
+            }
+            
+        }                   
+    }
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
 	public static function nombre($nombre)
     {
-        $valor=false;
-            //primero obtengo el numero de la frase GMT
-            if(stripos($nombre,'GMT'))
-            {
-                $valor="Hora";
-            }
-            elseif(stripos($nombre, 'rerate'))
-            {
-                $valor="RR1";
-            }
-            if(stripos($nombre,"internal"))
-            {
-                if(stripos($nombre,"compra"))
-                {
-                    $nuevoNombre="CompraInternal";
-                }
-                elseif(stripos($nombre,"venta"))
-                {
-                    $nuevoNombre="VentaInternal";
-                }
-                else
-                {
-                    $nuevoNombre=false;
-                }
-            }
-            else
-            {
-                if(stripos($nombre,"compra"))
-                {
-                    $nuevoNombre="CompraExternal";
-                }
-                elseif(stripos($nombre,"venta"))
-                {
-                    $nuevoNombre="VentaExternal";
-                }
-                else
-                {
-                    $nuevoNombre=false;
-                }
-            }
-        if($valor)
+        $primero="Compra";
+        $segundo="External";
+        $tercero="";
+        if(stripos($nombre,"internal"))
         {
-            return $nuevoNombre.$valor;
+            $segundo="Internal";
         }
-        else
+        if(stripos($nombre,"enta"))
         {
-            return $nuevoNombre;
+            $primero="Venta";
         }
+        if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
+        {
+            $tercero="RR";
+        }
+        if(stripos($nombre,'GMT'))
+        {
+            $tercero="Hora";
+        }
+        $nuevoNombre=$primero.$segundo.$tercero;
+        return $nuevoNombre;     
     }
     /**
     * Encargada de definir atributos para proceder a la lectura del archivo
