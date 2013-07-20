@@ -148,16 +148,12 @@ array(
   <p>Ultimo Rango Cargado:</p>
   <ul>
       <?php
-      $existe=false;
-      for ($i=5; $i<=52; $i++)
-      { 
-        if(Log::existe($i))
-        {
-          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
-          $existe=true;
-        }
+      $fechas=Log::getRerate();
+      if($fechas)
+      {
+        echo "<li class='cargados'>".$fechas."</li>";
       }
-      if(!$existe)
+      else
       {
         echo "<li class='nocargados'>No se ha cargado ningun rango</li>";
       }

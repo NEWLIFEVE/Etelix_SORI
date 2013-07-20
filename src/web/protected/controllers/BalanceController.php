@@ -599,6 +599,32 @@ class BalanceController extends Controller
 						}
 					}
 				}
+				else
+				{
+					//Elimino los archivos
+					foreach($archivos as $key => $archivo)
+					{
+						for($i=1; $i<=$dias; $i++)
+						{
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							if(!file_exists($ruta))
+							{
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+							else
+							{
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		$resultado.=$exitos."</br>".$fallas."</div>";
