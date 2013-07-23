@@ -201,4 +201,27 @@ class Log extends CActiveRecord
 			return false;
 		}
 	}
+	/**
+	* Funcion que se encarga de mostrar si un rerate ya esta listo
+	*/
+	public static function getListo()
+	{
+		$rerate=self::model()->find("date=current_date AND hour<=current_time AND description_date IS NOT NULL");
+		if($rerate->id)
+		{
+			$completado=self::model()->find("date=current_date AND hour<=current_time AND id_log_action=57");
+			if($completado->id)
+			{
+				return "completado";
+			}
+			else
+			{
+				return "procesando";
+			}
+		}
+		else
+		{
+			return "no";
+		}
+	}
 }
