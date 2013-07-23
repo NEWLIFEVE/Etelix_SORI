@@ -1,67 +1,98 @@
-CREATE OR REPLACE function busca_balance(fecha date,tipo integer, carrier integer, destination integer, destination) returns boolean
+﻿/*Funcion para cambiar a status cero de la tabla balance*/
+CREATE OR REPLACE function statuscero(fecha date) RETURNS boolean
 AS $$
 DECLARE
-#variables para tabla balance
-fecha_balance date;
-tipo_balance integer;
-carrier_balance integer;
-destino_balance integer;
-destino_interno_balance integer;
-#variables para tabla balance_temp
-fecha_balance_temp date;
-tipo_balance_temp integer;
-carrier_balance_temp integer;
-destino_balance_temp integer;
-destino_interno_balance_temp integer;
-BEGIN 
-	SELECT date_balance, type, id_carrier, id_destination, id_destination_int INTO fecha_balance_temp, tipo_balance_temp, carrier_balance_temp, destino_balance_interno_temp FROM balance_temp WHERE id=ide;
-	SELECT date_balance, type, id_carrier, id_destination, id_destination_int INTO fecha_balance, tipo_balance, carrier_balance, destino_balance, destino_interno_balance FROM balance WHERE 
-	IF fecha_balance<>fecha THEN
-		RETURN true;
+	dia date;
+BEGIN
+	dia := fecha;
+	UPDATE balance SET status=0 WHERE id IN (SELECT DISTINCT(id) FROM balance WHERE date_balance=dia AND id_destination NOT IN (SELECT x.balance FROM (SELECT DISTINCT(id_destination) AS Balance FROM balance WHERE date_balance=dia ORDER BY id_destination ASC) x, (SELECT DISTINCT(id_destination) AS Temporal FROM balance_temp WHERE date_balance=dia ORDER BY id_destination ASC) y WHERE x.Balance = y.Temporal) ORDER BY id ASC);
+	UPDATE balance SET status=0 WHERE id IN (SELECT DISTINCT(id) FROM balance WHERE date_balance=dia AND id_destination_int NOT IN (SELECT x.balance FROM (SELECT DISTINCT(id_destination_int) AS Balance FROM balance WHERE date_balance=dia ORDER BY id_destination_int ASC) x, (SELECT DISTINCT(id_destination_int) AS Temporal FROM balance_temp WHERE date_balance=dia ORDER BY id_destination_int ASC) y WHERE x.Balance = y.Temporal) ORDER BY id ASC);
+	RETURN true;
+END;
+$$ language 'plpgsql';
+
+/*Funcion que busca el id de un balance en la tabla balance*/
+CREATE OR REPLACE function getId(fecha date, tipo integer, carrier integer, destination integer, destination_int integer) RETURNS integer
+AS $$
+DECLARE
+	did integer;
+BEGIN
+	IF destination IS NOT NULL THEN
+		SELECT id INTO did FROM balance WHERE date_balance=fecha AND type=tipo AND id_carrier=carrier AND id_destination=destination AND status=1;
 	ELSE
-		RETURN false;
+		SELECT id INTO did FROM balance WHERE date_balance=fecha AND type=tipo AND id_carrier=carrier AND id_destination_int=destination_int AND status=1;
+	END IF;
+	IF did IS NOT NULL THEN
+		RETURN did;
+	ELSE
+		RETURN -1;
 	END IF;
 END;
+$$ language 'plpgsql';
 
-$$ language plpgsql;
+/*Funcion que se encarga de pasar un registro de la tabla temporal a la tabla de balance*/
+CREATE OR REPLACE function pasar_a_balance(iden integer) RETURNS boolean
+AS $$
+DECLARE
+	tid integer;
+	tdate_balance date;
+	tminutes double precision;
+	tacd double precision;
+	tasr double precision;
+	tmargin_percentage double precision;
+	tmargin_per_minute double precision; 
+	tcost_per_minute double precision;
+	trevenue_per_minute double precision;
+	tpdd double precision;
+	tincomplete_calls double precision;
+	tincomplete_calls_ner double precision;
+	tcomplete_calls double precision;
+	tcomplete_calls_ner double precision;
+	tcalls_attempts double precision;
+	tduration_real double precision;
+	tduration_cost double precision;
+	tner02_efficient double precision;
+	tner02_seizure double precision;
+	tpdd_calls double precision;
+	trevenue double precision;
+	tcost double precision;
+	tmargin double precision;
+	tdate_change date;
+	ttype integer;
+	tid_carrier integer;
+	tid_destination integer;
+	tid_destination_int integer;
+	bid integer;
+	result boolean;
+BEGIN
+	SELECT id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int INTO tid, tdate_balance, tminutes, tacd, tasr, tmargin_percentage, tmargin_per_minute, tcost_per_minute, trevenue_per_minute, tpdd, tincomplete_calls, tincomplete_calls_ner, tcomplete_calls, tcomplete_calls_ner, tcalls_attempts, tduration_real, tduration_cost, tner02_efficient, tner02_seizure, tpdd_calls, trevenue, tcost, tmargin, tdate_change, ttype, tid_carrier, tid_destination, tid_destination_int FROM balance_temp WHERE id=iden;
+	IF tid IS NOT NULL THEN
+		SELECT getid INTO bid FROM getId(tdate_balance, ttype, tid_carrier, tid_destination, tid_destination_int);
+		IF bid > 0 THEN
+			SELECT pasar_a_rrhistory(bid) INTO result;
+			UPDATE balance SET minutes=tminutes, acd=tacd, asr=tasr, margin_percentage=tmargin_percentage, margin_per_minute=tmargin_per_minute, cost_per_minute=tcost_per_minute, revenue_per_min=trevenue_per_minute, pdd=tpdd, incomplete_calls=tincomplete_calls, incomplete_calls_ner=tincomplete_calls_ner, complete_calls=tcomplete_calls, complete_calls_ner=tcomplete_calls_ner, calls_attempts=tcalls_attempts, duration_real=tduration_real, duration_cost=tduration_cost, ner02_efficient=tner02_efficient, ner02_seizure=tner02_seizure, pdd_calls=tpdd_calls, revenue=trevenue, cost=tcost, margin=tmargin, date_change=tdate_change WHERE id=bid;
+		ELSE
+			INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int, status) VALUES (tdate_balance, tminutes, tacd, tasr, tmargin_percentage, tmargin_per_minute, tcost_per_minute, trevenue_per_minute, tpdd, tincomplete_calls, tincomplete_calls_ner, tcomplete_calls, tcomplete_calls_ner, tcalls_attempts, tduration_real, tduration_cost, tner02_efficient, tner02_seizure, tpdd_calls, trevenue, tcost, tmargin, tdate_change, ttype, tid_carrier, tid_destination, tid_destination_int, 1);
+		END IF;
+	END IF;
+	RETURN true;
+END;
+$$ language 'plpgsql';
 
-/*Creo una tipo de variables*/
-CREATE TYPE demo AS (id integer, date_balance date, minutes double precision, acd double precision, asr double precision, margin_percentage double precision, margin_per_minute double precision, cost_per_minute double precision, revenue_per_minute double precision, pdd double precision, incomplete_calls double precision, incomplete_calls_ner double precision, complete_calls double precision, complete_calls_ner double precision, calls_attempts double precision, duration_real double precision, duration_cost double precision, ner02_efficient double precision, ner02_seizure double precision, pdd_calls double precision, revenue double precision, cost double precision, margin double precision, date_change date, type integer, id_carrier integer, id_destination integer, id_destination_int integer);
-
-/*funcion que verifica si existe un registro*/
-CREATE OR REPLACE function buscar_balance(fecha date, tipo integer, carrier integer, destination integer, destination_int integer) RETURNS boolean
+/*funcion para pasar registros desde balance a rrhistory*/
+CREATE OR REPLACE function pasar_a_rrhistory(iden integer) RETURNS boolean
 AS $$
 DECLARE
 --variables de tablas--
-bid integer;
-BEGIN
-	IF destination IS NOT NULL THEN
-		SELECT id INTO bid FROM balance WHERE date_balance=fecha AND type=tipo AND id_carrier=carrier AND id_destination=destination;
-	ELSE
-		SELECT id INTO bid FROM balance WHERE date_balance=fecha AND type=tipo AND id_carrier=carrier AND id_destination_int=destination_int;
-	END IF;
-	IF bid IS NOT NULL THEN
-		RETURN true;
-	ELSE
-		RETURN false;
-	END IF;
-END;
-$$ language plpgsql;
-
-/*funcion que se encarga de traer los valores de la tabla balance_temp*/
-CREATE OR REPLACE function buscar_balance_temp(uid integer) RETURNS demo
-AS $$ 
-DECLARE
-balance demo;
 bid integer;
 bdate_balance date;
 bminutes double precision;
 bacd double precision;
 basr double precision;
 bmargin_percentage double precision;
-bmargin_per_minute double precision; 
+bmargin_per_minute double precision;
 bcost_per_minute double precision;
-brevenue_per_minute double precision;
+brevenue_per_min double precision;
 bpdd double precision;
 bincomplete_calls double precision;
 bincomplete_calls_ner double precision;
@@ -81,9 +112,67 @@ btype integer;
 bid_carrier integer;
 bid_destination integer;
 bid_destination_int integer;
+bstatus integer;
 BEGIN
-	SELECT id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int INTO bid, bdate_balance, bminutes, bacd, basr, bmargin_percentage, bmargin_per_minute, brevenue_per_minute, bpdd, bincomplete_calls, bincomplete_calls_ner, bcomplete_calls, bcomplete_calls_ner, bcalls_attempts, bduration_real, bduration_cost, bner02_efficient, bner02_seizure, bpdd_calls, brevenue, bcost, bmargin, bdate_change, btype, bid_carrier, bid_destination, bid_destination_int WHERE id=uid;
-	balance := demo(bid, bdate_balance, bminutes, bacd, basr, bmargin_percentage, bmargin_per_minute, brevenue_per_minute, bpdd, bincomplete_calls, bincomplete_calls_ner, bcomplete_calls, bcomplete_calls_ner, bcalls_attempts, bduration_real, bduration_cost, bner02_efficient, bner02_seizure, bpdd_calls, brevenue, bcost, bmargin, bdate_change, btype, bid_carrier, bid_destination, bid_destination_int);
-	RETURN balance;
+	SELECT id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int, status INTO bid, bdate_balance, bminutes, bacd, basr, bmargin_percentage, bmargin_per_minute, bcost_per_minute, brevenue_per_min, bpdd, bincomplete_calls, bincomplete_calls_ner, bcomplete_calls, bcomplete_calls_ner, bcalls_attempts, bduration_real, bduration_cost, bner02_efficient, bner02_seizure, bpdd_calls, brevenue, bcost, bmargin, bdate_change, btype, bid_carrier, bid_destination, bid_destination_int, bstatus FROM balance WHERE id=iden;
+	INSERT INTO rrhistory(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_balance, id_carrier, id_destination, id_destination_int) VALUES (bdate_balance, bminutes, bacd, basr, bmargin_percentage, bmargin_per_minute, bcost_per_minute, brevenue_per_min, bpdd, bincomplete_calls, bincomplete_calls_ner, bcomplete_calls, bcomplete_calls_ner, bcalls_attempts, bduration_real, bduration_cost, bner02_efficient, bner02_seizure, bpdd_calls, brevenue, bcost, bmargin, bdate_change, btype, bid, bid_carrier, bid_destination, bid_destination_int);
+	RETURN true;
 END;
-$$ language plpgsql;
+$$ language 'plpgsql';
+
+/*Funcion encargada de actualizar registros*/
+CREATE OR REPLACE function compara_balances(fecha date) RETURNS void
+AS $$
+DECLARE
+	bid integer;
+	done boolean default true;
+	result boolean;
+	externa RECORD;
+BEGIN
+	FOR externa IN SELECT id FROM balance_temp WHERE date_balance=fecha LOOP
+		SELECT pasar_a_balance(externa.id) INTO result;
+	END LOOP;
+	SELECT statuscero(fecha) INTO result;
+	IF result = true THEN
+		DELETE FROM balance_temp;
+		INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, 57, 1, current_date);
+	END IF;
+END;
+$$ language 'plpgsql';
+/*
+PROBANDO FUNCIONES
+*/
+/*Funciona*/
+SELECT statuscero('2013-07-14');
+/*Funciona*/
+SELECT getId('2013-07-14', 0, 125, 387, null);
+/*Funciona*/
+SELECT pasar_a_rrhistory(109929);
+/*Funciona*/
+SELECT pasar_a_balance(18052);
+/*Funciona*/
+SELECT compara_balances('2013-07-20');
+
+
+
+
+
+SELECT date_balance, date_change FROM balance WHERE date_balance='2013-07-14' AND status=1;
+SELECT date_balance, date_change FROM balance WHERE date_balance='2013-07-14' AND status=0;
+
+SELECT * FROM rrhistory WHERE date_balance='2013-07-14' AND type=0 AND id_carrier=125 AND id_destination=387
+
+18052
+
+
+SELECT * FROM balance_temp WHERE id=18052
+
+UPDATE balance SET status=1 WHERE date_balance='2013-07-14'
+
+
+SELECT DISTINCT(balance.id) FROM(SELECT id, id_destination FROM balance WHERE date_balance='2013-07-14' AND status=0) balance, (SELECT id_destination FROM balance_temp WHERE date_balance='2013-07-14') temporal WHERE balance.id_destination != temporal.id_destination
+
+
+
+
+SELECT DISTINCT(balance.id) FROM(SELECT id, id_destination_int FROM balance WHERE date_balance='2013-07-14') balance, (SELECT id_destination_int FROM balance_temp WHERE date_balance='2013-07-14') temporal WHERE balance.id_destination_int != temporal.id_destination_int
