@@ -145,6 +145,7 @@ array(
     <input type="text" class="datepicker" id="hasta" name="fechaFin" size="30" readonly/>
     <li class='nocargados'></li>
   </ul>
+
   <p>Ultimo Rango Cargado:</p>
   <ul>
       <?php
@@ -158,6 +159,13 @@ array(
         echo "<li class='nocargados'>No se ha cargado ningun rango</li>";
       }
       ?>
+      <li><?php
+      $listo=Log::getListo();
+      if($listo == "procesando")
+      {
+        echo "Procesando <img src='/images/gif-load.gif'>";
+      }
+      ?></li>
   </ul>
 </div>
 <?php
