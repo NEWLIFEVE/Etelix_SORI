@@ -217,12 +217,11 @@ class BalanceController extends Controller
 					'Carga Compra Internal'=>'CompraInternal1',
 					'Carga Compra External'=>'CompraExternal1'
 					);
-				//recorro el array de nombres
+				//Primero verifico que esten todos los archivos
 				foreach($diarios as $key => $diario)
 				{
-					//variables para validaciones
-					$is=false;
-					$log=false;
+					//variable para validaciones
+					$error=true;
 					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
 					$this->lector->define($diario);
 					//Verifico la existencia del archivo
@@ -231,26 +230,35 @@ class BalanceController extends Controller
 						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
 						if(file_exists($ruta))
 						{
-							$is=true;
+							$error=false;
+						}
+						else
+						{
+							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
 						}
 					}
 					else
 					{
-						$is=true;
+						$error=false;
 					}
 					//verifico que no este en el log
-					if($is)
+					if(!$error)
 					{
 						if(Log::existe(LogAction::getId($key)))
 						{
 							if(file_exists($ruta))
 							{
+								$error=true;
+								$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
 								unlink($ruta);
 							}
-							$log=true;
-						}				
+						}
+						else
+						{
+							$error=false;
+						}			
 					}
-					if($is==true && $log==false)
+					if(!$error)
 					{
 						if($this->lector->diario($ruta))
 						{
@@ -264,14 +272,6 @@ class BalanceController extends Controller
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						elseif($this->lector->error==2)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
 						elseif($this->lector->error==3)
 						{
 							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
@@ -279,10 +279,6 @@ class BalanceController extends Controller
 							{
 								unlink($ruta);
 							}
-						}
-						elseif($this->lector->error==4)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
 						}
 					}
 				}
