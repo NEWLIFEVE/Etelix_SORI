@@ -166,7 +166,7 @@ class qqFileUploader
             $these = implode(', ', $this->allowedExtensions);
             return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
-        $valor=1;
+        $valor="";
         if(!$replaceOldFile)
         {
             /// don't overwrite previous files that were uploaded
