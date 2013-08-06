@@ -295,94 +295,84 @@ class BalanceController extends Controller
 			{
 				//Instancio el componente
 				$this->lector=new Reader;
-				//array con los posibles nombres en el archivo horas
-				$horarios=array(
-					'Carga Ruta Internal'=>'RutaInternalHora'
-					);
-				//Recorro los nombres en array
-				foreach($horarios as $key => $hora)
+				
+				//variables para validaciones
+				$is=false;
+				$this->lector->define($hora);
+				//Defino la ruta del archivo en el servidor
+				$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR."Ruta Internal Hora.xls";
+				//Verifico la existencia del archivo
+				if(!file_exists($ruta))
 				{
-					//variables para validaciones
-					$is=false;
-					$this->lector->define($hora);
-					//Defino la ruta del archivo en el servidor
-					$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".xls";
-					//Verifico la existencia del archivo
-					if(!file_exists($ruta))
-					{
-						//Si la extension en minuscula no funciona prueba la mayuscula
-						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".XLS";
-						if(file_exists($ruta))
-						{
-							$is=true;
-						}
-					}
-					else
+					//Si la extension en minuscula no funciona prueba la mayuscula
+					$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR."Ruta Internal Hora.XLS";
+					if(file_exists($ruta))
 					{
 						$is=true;
 					}
-					if($is)
+				}
+				else
+				{
+					$is=true;
+				}
+				if($is)
+				{
+					//procedo a leerlo
+					if($this->lector->hora($ruta))
 					{
-						//procedo a leerlo
-						if($this->lector->hora($ruta,$key))
+						//si guardo con exito registro en log
+						Log::registrarLog(LogAction::getLikeId("Ruta Internal ".$this->lector->horas."GMT"));
+						if(file_exists($ruta))
 						{
-							//si guardo con exito registro en log
-							Log::registrarLog(LogAction::getLikeId($key."%".$this->lector->horas."%"));
+							unlink($ruta);
+						}
+					}
+					switch($this->lector->error)
+					{
+						case 0:
+							$exitos.="<h5 class='cargados'> El arhivo 'Ruta Internal ".$this->lector->horas."GMT' se guardo con exito </h5> <br/>";
 							if(file_exists($ruta))
 							{
 								unlink($ruta);
 							}
-						}
-						switch($this->lector->error)
-						{
-							case 0:
-								$exitos.="<h5 class='cargados'> El arhivo '".$hora." ".$this->lector->horas."' se guardo con exito </h5> <br/>";
-								if(file_exists($ruta))
-								{
-									unlink($ruta);
-								}
-								break;
-							case 1:
-								$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' tiene una estructura incorrecta </h5> <br/> ";
-								if(file_exists($ruta))
-								{
-									unlink($ruta);
-								}
-								break;
-							case 2:
-								$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' ya esta almacenado </h5> <br/> ";
-								if(file_exists($ruta))
-								{
-									unlink($ruta);
-								}
-								break;
-							case 3:
-								$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' tiene una fecha incorrecta </h5> <br/> ";
-								if(file_exists($ruta))
-								{
-									unlink($ruta);
-								}
-								break;
-							case 4:
-								$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' no esta en el servidor </h5> <br/> ";
-								if(file_exists($ruta))
-								{
-									unlink($ruta);
-								}
-								break;
-							default:
-								# code...
-								break;
-						}
+							break;
+						case 1:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' tiene una estructura incorrecta </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 2:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' ya esta almacenado </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 3:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' tiene una fecha incorrecta </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 4:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' no esta en el servidor </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
 					}
-					else
+				}
+				else
+				{
+					if(strlen($fallas)<=16)
 					{
-						if(strlen($fallas)<=16)
-						{
-							$fallas="No hay archivos en el servidor";
-						}
+						$fallas="No hay archivos en el servidor";
 					}
-				}//fin foreach
+				}
 			}
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")

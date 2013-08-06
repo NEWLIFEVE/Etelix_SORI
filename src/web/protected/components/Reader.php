@@ -227,7 +227,7 @@ class Reader
     * @param string $ruta: ruta absoluta del archivo que va a ser leido
     * @return boolean
 	*/
-	public function hora($ruta,$nombreLog)
+	public function hora($ruta)
 	{
 		//Aumento la cantidad de memoria 
 		ini_set('memory_limit', '512M');
@@ -255,9 +255,9 @@ class Reader
         /**
         * Verifico que la fecha del archivo sea correcta
         */
-        $date_balance=Utility::formatDate($data->sheets[0]['cells'][1][4]);
+        $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
         $fecha=date('Y-m-d');
-        if($fecha!=$date_balance)
+        if($fecha!=$date_balance_time)
         {
             $this->error=self::ERROR_DATE;
             return false;
@@ -270,7 +270,7 @@ class Reader
         $this->horas=$data->sheets[0]['cells'][$numRows][1];
         for($i=$this->horas; $i <= 23 ; $i++)
         { 
-            if(Log::existe(LogAction::getLikeId($nombreLog."%".$i."%")))
+            if(Log::existe(LogAction::getLikeId("Ruta Internal ".$i."GMT")))
             {
                 $this->error=self::ERROR_EXISTS;
                 return false;
@@ -280,7 +280,8 @@ class Reader
         * Valido la estructura de horas
         */
         $actual=-1;
-        for ($i=0; $i<$data->sheets[0]['numRows']; $i++)
+        $contador=0;
+        for ($i=5; $i<$data->sheets[0]['numRows']; $i++)
         { 
             if($data->sheets[0]['cells'][$i][1]!="Total" && $data->sheets[0]['cells'][$i][1]!="Date" && $data->sheets[0]['cells'][$i][1]!="Hour")
             {
@@ -289,11 +290,20 @@ class Reader
                 {
                     if($actual==$data->sheets[0]['cells'][$i][1]-1)
                     {
-                        $actual=$data->sheets[0]['cells'][$i][1];
+                        if($contador<=1)
+                        {
+                            $this->error=self::ERROR_ESTRUC;
+                            return false;
+                        }
+                        else
+                        {
+                            $actual=$data->sheets[0]['cells'][$i][1];
+                        }
                     }
                     elseif($actual==$data->sheets[0]['cells'][$i][1])
                     {
                         $actual=$actual;
+                        $contador=$contador+1;
                     }
                     else
                     {
@@ -339,11 +349,11 @@ class Reader
                         }
                         else
                         {
-                            $name_destination=$data->sheets[0]['cells'][$i][$j];
+                            $name_destination=utf8_encode($data->sheets[0]['cells'][$i][$j]);
                         }
                         break;
                     case 3:
-                        //Obtengo el nombre del carrier
+                        //Obtengo el nombre del customer
                         if($data->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total no lo voy a guardar en base de datos
@@ -352,89 +362,100 @@ class Reader
                         else
                         {
                             //Aqui encodeo el nombre del carrier a utf-8
-                            $name_carrier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
+                            $name_customer=utf8_encode($data->sheets[0]['cells'][$i][$j]);
                         }
                         break;
-                    case 4;
+                    case 4:
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total no lo voy guardar en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $name_supplier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
+                        }
+                        break;
+                    case 5;
                         //minutos
                         $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                    case 5;
+                    case 6;
                         //ACD
                         $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 6;
+                    case 7;
                         //ASR
                         $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 7;
+                    case 8;
                         //Margin %
                         $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 8;
+                    case 9;
                         //Margin per Min
                         $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 9;
+                    case 10;
                         //Cost per Min
                         $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 10;
-                        //Revenue per Min
-                        $revenue_per_min=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-                        break;
                     case 11;
+                        //Revenue per Min
+                        $revenue_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 12;
                         //PDD
                         $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 12;
+                    case 13;
                         //Imcomplete Calls
                         $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 13;
+                    case 14;
                         //Imcomplete Calls Ner
                         $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 14;
+                    case 15;
                         //Complete Calls Ner
                         $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 15;
+                    case 16;
                         //Complete Calls
                         $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 16;
+                    case 17;
                         //Calls Attempts
                         $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 17;
+                    case 18;
                         //Duration Real
                         $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 18;
+                    case 19;
                         //Duration Cost
                         $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 19;
+                    case 20;
                         //NER02 Efficient
                         $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 20;
+                    case 21;
                         //NER02 Seizure
                         $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 21;
+                    case 22;
                         //PDDCalls
                         $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 22;
+                    case 23;
                         //Revenue
                         $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 23;
+                    case 24;
                         //Cost
                         $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 24;
+                    case 25;
                         //Margin
                         $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
@@ -443,7 +464,7 @@ class Reader
                         * luego de tener la fila completa la grabo en base de datos
                         */
                         //primero reviso si existe en base de datos
-                        $model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND type=:tipo AND name_carrier=:carrier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance,':tipo'=>$this->vencom,':carrier'=>$name_carrier,':destination'=>$name_destination));
+                        $model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND name_customer=:customer AND name_supplier=:supplier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance_time,':customer'=>$name_customer, ':supplier'=>$name_supplier, ':destination'=>$name_destination));
                         if($model!=null)
                         {
                             $model->minutes=$minutes;
@@ -452,7 +473,7 @@ class Reader
                             $model->margin_percentage=$margin_percentage;
                             $model->margin_per_minute=$margin_per_minute;
                             $model->cost_per_minute=$cost_per_minute;
-                            $model->revenue_per_min=$revenue_per_min;
+                            $model->revenue_per_minute=$revenue_per_minute;
                             $model->pdd=$pdd;
                             $model->incomplete_calls=$incomplete_calls;
                             $model->incomplete_calls_ner=$incomplete_calls_ner;
@@ -471,7 +492,7 @@ class Reader
                             $model->time_change=date("H:i:s");
                             if($model->save())
                             {
-                                $this->nuevos=$this->nuevos+1;
+                                $this->actualizados=$this->actualizados+1;
                                 $model->unsetAttributes();
                             }
                             else
@@ -482,7 +503,7 @@ class Reader
                         else
                         {
                             $model=new BalanceTime;
-                            $model->date_balance_time=$date_balance;
+                            $model->date_balance_time=$date_balance_time;
                             $model->time=$time;
                             $model->minutes=$minutes;
                             $model->acd=$acd;
@@ -490,7 +511,7 @@ class Reader
                             $model->margin_percentage=$margin_percentage;
                             $model->margin_per_minute=$margin_per_minute;
                             $model->cost_per_minute=$cost_per_minute;
-                            $model->revenue_per_min=$revenue_per_min;
+                            $model->revenue_per_minute=$revenue_per_minute;
                             $model->pdd=$pdd;
                             $model->incomplete_calls=$incomplete_calls;
                             $model->incomplete_calls_ner=$incomplete_calls_ner;
@@ -506,13 +527,13 @@ class Reader
                             $model->cost=$cost;
                             $model->margin=$margin;
                             $model->date_change=date("Y-m-d");
-                            $model->type=$this->vencom;
                             $model->time_change=date("H:i:s");
-                            $model->name_carrier=$name_carrier;
+                            $model->name_supplier=$name_supplier;
+                            $model->name_customer=$name_customer;
                             $model->name_destination=$name_destination;
                             if($model->save())
                             {
-                                $this->actualizados=$this->actualizados+1;
+                                $this->nuevos=$this->nuevos+1;
                                 $model->unsetAttributes();
                             }
                             else
