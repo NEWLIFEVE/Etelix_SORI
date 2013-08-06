@@ -79,14 +79,14 @@ class BalanceTemp extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date_balance' => 'Data Balance',
+			'date_balance' => 'Date Balance',
 			'minutes' => 'Minutes',
 			'acd' => 'Acd',
 			'asr' => 'Asr',
 			'margin_percentage' => 'Margin Percentage',
 			'margin_per_minute' => 'Margin Per Minute',
 			'cost_per_minute' => 'Cost Per Minute',
-			'revenue_per_minute' => 'Revenue Per Minute',
+			'revenue_per_minute' => 'Revenue Per Min',
 			'pdd' => 'Pdd',
 			'incomplete_calls' => 'Incomplete Calls',
 			'incomplete_calls_ner' => 'Incomplete Calls Ner',
