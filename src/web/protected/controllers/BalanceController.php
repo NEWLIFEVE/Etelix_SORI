@@ -221,8 +221,8 @@ class BalanceController extends Controller
 				$this->lector=new Reader;
 				//Nombres opcionales para los archivos diarios
 				$diarios=array(
-					'Carga Ruta Internal'=>'Ruta Internal',
-					'Carga Ruta External'=>'Ruta External'
+					'Carga Ruta Internal'=>'Ruta Internal Diario',
+					'Carga Ruta External'=>'Ruta External Diario'
 					);
 				//Primero verifico que esten todos los archivos
 				foreach($diarios as $key => $diario)
@@ -388,8 +388,8 @@ class BalanceController extends Controller
 				* array con los posibles nombres en el archivo del rerate
 				*/
 				$archivos=array(
-					'Carga Ruta Internal Rerate'=>'VentaInternalRR',
-					'Carga Ruta External Rerate'=>'VentaExternalRR'
+					'Carga Ruta Internal Rerate'=>'Ruta Internal RR',
+					'Carga Ruta External Rerate'=>'Ruta External RR'
 					);
 
 				if($dias>0)
@@ -401,25 +401,30 @@ class BalanceController extends Controller
 					{
 						for($i=1; $i<=$dias; $i++)
 						{
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
 							if(!file_exists($ruta))
 							{
 								//Si no existe la cambio
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 								if(file_exists($ruta))
 								{
-									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
+									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' esta en el servidor </h5> <br/>";
 									$error=false;
 								}
 								else
 								{
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' No esta en el servidor </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' No esta en el servidor </h5> <br/> ";
 									$error=true;
 								}
 							}
 							else
 							{
-								$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' esta en el servidor </h5> <br/>";
+								$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' esta en el servidor </h5> <br/>";
 								$error=false;
 							}
 						}
@@ -459,13 +464,18 @@ class BalanceController extends Controller
 						ini_set('memory_limit', '256M');
 						for($i=1; $i<=$dias; $i++)
 						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
 							//instancio la clase de lectura
 							$data = new Spreadsheet_Excel_Reader();
 							$data->setOutputEncoding('ISO-8859-1');
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
 							if(!file_exists($ruta))
 							{
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 							}
 							$data->read($ruta);
 							$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][3])]=true;
@@ -497,10 +507,15 @@ class BalanceController extends Controller
 					{
 						for($i=1; $i<=$dias; $i++)
 						{
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
 							if(!file_exists($ruta))
 							{
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 								if(file_exists($ruta))
 								{
 									unlink($ruta);
@@ -526,10 +541,15 @@ class BalanceController extends Controller
 						$this->lector->define($archivo);
 						for($i=1; $i<=$dias; $i++)
 						{
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
 							if(!file_exists($ruta))
 							{
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 							}
 							if($this->lector->rerate($ruta,$key))
 							{
@@ -542,42 +562,42 @@ class BalanceController extends Controller
 							switch($this->lector->error)
 							{
 								case 0:
-									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$i."' se guardo con exito </h5> <br/>";
+									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' se guardo con exito </h5> <br/>";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
 									break;
 								case 1:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' tiene una estructura incorrecta </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una estructura incorrecta </h5> <br/> ";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
 									break;
 								case 2:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' ya esta almacenado </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' ya esta almacenado </h5> <br/> ";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
 									break;
 								case 3:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' tiene una fecha incorrecta </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una fecha incorrecta </h5> <br/> ";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
 									break;
 								case 4:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' no esta en el servidor </h5> <br/> ";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' no esta en el servidor </h5> <br/> ";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
 									break;
 								case 6:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$i."' grabo en base de datos pero falló el log</h5><br>";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero falló el log</h5><br>";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
@@ -594,10 +614,15 @@ class BalanceController extends Controller
 					{
 						for($i=1; $i<=$dias; $i++)
 						{
-							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".xls";
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
 							if(!file_exists($ruta))
 							{
-								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$i.".XLS";
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 								if(file_exists($ruta))
 								{
 									unlink($ruta);

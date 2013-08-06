@@ -580,7 +580,7 @@ class Reader
         {
             $balancetemp=new BalanceTemp;
             //Obtengo la fecha
-            $balancetemp->date_balance=Utility::formatDate($data->sheets[0]['cells'][1][3]);
+            $balancetemp->date_balance=Utility::formatDate($data->sheets[0]['cells'][1][4]);
             for($j=1; $j<=$data->sheets[0]['numCols']; $j++)
             { 
                 switch($j)
@@ -591,15 +591,18 @@ class Reader
                         {
                             break 3;
                         }
-                        if($this->tipo=="external")
-                        {
-                            $balancetemp->id_destination=Destination::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
-                            $balancetemp->id_destination_int=NULL;
-                        }
                         else
                         {
-                            $balancetemp->id_destination_int=DestinationInt::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
-                            $balancetemp->id_destination=NULL;
+                           if($this->tipo=="external")
+                            {
+                                $balancetemp->id_destination=Destination::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                                $balancetemp->id_destination_int=NULL;
+                            }
+                            else
+                            {
+                                $balancetemp->id_destination_int=DestinationInt::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                                $balancetemp->id_destination=NULL;
+                            } 
                         }
                         break;
                     case 2:
@@ -611,96 +614,107 @@ class Reader
                         }
                         else
                         {
-                            $balancetemp->id_carrier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                            $balancetemp->id_carrier_customer=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
                         }
                         break;
                     case 3:
+                        //obtengo el id del carrier y antes lo codifico a utf-8 para no dar problemas con la funcion
+                        if($data->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //Si es total no lo guardo en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $balancetemp->id_carrier_supplier=Carrier::getId(utf8_encode($data->sheets[0]['cells'][$i][$j]));
+                        }
+                        break;
+                    case 4:
                         //minutos
                         $balancetemp->minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 4:
+                    case 5:
                         //ACD
                         $balancetemp->acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 5:
+                    case 6:
                         //ASR
                         $balancetemp->asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 6:
+                    case 7:
                         //Margin %
                         $balancetemp->margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 7:
+                    case 8:
                         //Margin per Min
                         $balancetemp->margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 8:
+                    case 9:
                         //Cost per Min
                         $balancetemp->cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 9:
+                    case 10:
                         //Revenue per Min
                         $balancetemp->revenue_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 10:
+                    case 11:
                         //PDD
                         $balancetemp->pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 11:
+                    case 12:
                         //Imcomplete Calls
                         $balancetemp->incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 12:
+                    case 13:
                         //Imcomplete Calls Ner
                         $balancetemp->incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 13:
+                    case 14:
                         //Complete Calls Ner
                         $balancetemp->complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 14:
+                    case 15:
                         //Complete Calls
                         $balancetemp->complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 15:
+                    case 16:
                         //Calls Attempts
                         $balancetemp->calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 16:
+                    case 17:
                         //Duration Real
                         $balancetemp->duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 17:
+                    case 18:
                         //Duration Cost
                         $balancetemp->duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 18:
+                    case 19:
                         //NER02 Efficient
                         $balancetemp->ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 19:
+                    case 20:
                         //NER02 Seizure
                         $balancetemp->ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 20:
+                    case 21:
                         //PDDCalls
                         $balancetemp->pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 21:
+                    case 22:
                         //Revenue
                         $balancetemp->revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 22:
+                    case 23:
                         //Cost
                         $balancetemp->cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
-                    case 23:
+                    case 24:
                         //Margin
                         $balancetemp->margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     default:
                         $balancetemp->date_change=date("Y-m-d");
-                        $balancetemp->type=$this->vencom;
                         if($balancetemp->save())
                         {
                             $this->error=ERROR_NONE;
@@ -737,11 +751,11 @@ class Reader
 	public static function nombre($nombre)
     {
         $primero="Ruta ";
-        $segundo="External";
-        $tercero="";
+        $segundo="External ";
+        $tercero="Diario";
         if(stripos($nombre,"internal"))
         {
-            $segundo="Internal";
+            $segundo="Internal ";
         }
         if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
         {
