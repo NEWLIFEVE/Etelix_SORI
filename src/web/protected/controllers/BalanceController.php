@@ -2,7 +2,7 @@
 
 class BalanceController extends Controller
 {
-	/*
+	/**
 	* Atributo para instanciar el componente reader
 	*/
 	public $lector;
@@ -51,19 +51,27 @@ class BalanceController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
+	* Muestra una vista con los balances especificados por compras
+	*/
     public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
 	}
+
+	/**
+	* Muestra una vista con los balances especificados por ventas
+	*/
 	public function actionVentas()
 	{
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
+
+	/**
+	* Muestra el detalle de un balance
+	* @param $id: el id del balance que va a mostrar
+	*/
 	public function actionView($id)
 	{
 		$tipo=Balance::model()->findByPk($id)->type;
@@ -192,6 +200,7 @@ class BalanceController extends Controller
 			Yii::app()->end();
 		}
 	}
+
 	/**
 	* Action encargada de guardar en base de datos los archivos cargados
 	*/
@@ -212,10 +221,8 @@ class BalanceController extends Controller
 				$this->lector=new Reader;
 				//Nombres opcionales para los archivos diarios
 				$diarios=array(
-					'Carga Venta Internal'=>'VentaInternal1',
-					'Carga Venta External'=>'VentaExternal1',
-					'Carga Compra Internal'=>'CompraInternal1',
-					'Carga Compra External'=>'CompraExternal1'
+					'Carga Ruta Internal'=>'Ruta Internal',
+					'Carga Ruta External'=>'Ruta External'
 					);
 				//Primero verifico que esten todos los archivos
 				foreach($diarios as $key => $diario)
@@ -290,8 +297,7 @@ class BalanceController extends Controller
 				$this->lector=new Reader;
 				//array con los posibles nombres en el archivo horas
 				$horarios=array(
-					'Carga Venta Internal'=>'VentaInternalHora',
-					'Carga Compra Internal'=>'CompraInternalHora'
+					'Carga Ruta Internal'=>'RutaInternalHora'
 					);
 				//Recorro los nombres en array
 				foreach($horarios as $key => $hora)
@@ -392,10 +398,8 @@ class BalanceController extends Controller
 				* array con los posibles nombres en el archivo del rerate
 				*/
 				$archivos=array(
-					'Carga Venta Internal Rerate'=>'VentaInternalRR',
-					'Carga Venta External Rerate'=>'VentaExternalRR',
-					'Carga Compra Internal Rerate'=>'CompraInternalRR',
-					'Carga Compra External Rerate'=>'CompraExternalRR'
+					'Carga Ruta Internal Rerate'=>'VentaInternalRR',
+					'Carga Ruta External Rerate'=>'VentaExternalRR'
 					);
 
 				if($dias>0)
