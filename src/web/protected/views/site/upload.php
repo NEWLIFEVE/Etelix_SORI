@@ -55,7 +55,7 @@ array(
         'config'=>array(
                'action'=>Yii::app()->createUrl('site/upload'),
                'allowedExtensions'=>array("xls", "xlsx"),//array("jpg","jpeg","gif","exe","mov" and etc...
-               'sizeLimit'=>9*1024*1024,// maximum file size in bytes
+               'sizeLimit'=>20*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>1*1024,// minimum file size in bytes
                //'onComplete'=>"js:function(id, fileName, responseJSON){ alert(fileName); }",
                //'messages'=>array(
@@ -74,42 +74,26 @@ array(
   <p>Archivos Cargados:</p>
   <ul>
       <?php
-      if(Log::existe(1))
-      {
-        echo "<li class='cargados' name='diario'>Ruta Compra</li>";
-      }
       if(Log::existe(2))
       {
-        echo "<li class='cargados' name='diario'>Ruta Venta</li>";
+        echo "<li class='cargados' name='diario'>Ruta Internal</li>";
       }
-      if(Log::existe(3))
+      if(Log::existe(1))
       {
-        echo "<li class='cargados' name='diario'>Ruta Compra Internal</li>";
-      }
-      if(Log::existe(4))
-      {
-        echo "<li class='cargados' name='diario'>Ruta Venta Internal</li>";
+        echo "<li class='cargados' name='diario'>Ruta Internal</li>";
       }
       ?>
   </ul>
   <p>Archivos Faltantes:</p>
   <ul>
       <?php
-      if(!Log::existe(1))
-      {
-        echo "<li class='nocargados'>Ruta Compra</li>";
-      }
       if(!Log::existe(2))
       {
-        echo "<li class='nocargados'>Ruta Venta</li>";
+        echo "<li class='nocargados'>Ruta Internal</li>";
       }
-      if(!Log::existe(3))
+      if(!Log::existe(1))
       {
-        echo "<li class='nocargados'>Ruta Compra Internal</li>";
-      }
-      if(!Log::existe(4))
-      {
-        echo "<li class='nocargados'>Ruta Venta Internal</li>";
+        echo "<li class='nocargados'>Ruta Internal</li>";
       }
       ?>
   </ul>
@@ -120,7 +104,7 @@ array(
   <ul>
       <?php
       $existe=false;
-      for ($i=5; $i<=52; $i++)
+      for ($i=5; $i<=28; $i++)
       { 
         if(Log::existe($i))
         {
