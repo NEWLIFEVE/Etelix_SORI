@@ -298,7 +298,7 @@ class BalanceController extends Controller
 				
 				//variables para validaciones
 				$is=false;
-				$this->lector->define($hora);
+				$this->lector->define("Ruta Internal Hora");
 				//Defino la ruta del archivo en el servidor
 				$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR."Ruta Internal Hora.xls";
 				//Verifico la existencia del archivo
@@ -321,7 +321,7 @@ class BalanceController extends Controller
 					if($this->lector->hora($ruta))
 					{
 						//si guardo con exito registro en log
-						Log::registrarLog(LogAction::getLikeId("Ruta Internal ".$this->lector->horas."GMT"));
+						Log::registrarLog(LogAction::getId("Carga Ruta Internal ".$this->lector->horas."GMT"));
 						if(file_exists($ruta))
 						{
 							unlink($ruta);
@@ -399,7 +399,7 @@ class BalanceController extends Controller
 					*/
 					foreach($archivos as $key => $archivo)
 					{
-						for($i=1; $i<=$dias; $i++)
+						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
 							if($i>0)
@@ -462,7 +462,7 @@ class BalanceController extends Controller
 						//error_reporting(E_ALL & ~E_NOTICE);
 						//Aumento el uso de memoria
 						ini_set('memory_limit', '256M');
-						for($i=1; $i<=$dias; $i++)
+						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
 							if($i>0)
@@ -470,6 +470,8 @@ class BalanceController extends Controller
 								$j=$i;
 							}
 							//instancio la clase de lectura
+							//Aumento el tiempo de ejecucion
+        					ini_set('max_execution_time', 1200);
 							$data = new Spreadsheet_Excel_Reader();
 							$data->setOutputEncoding('ISO-8859-1');
 							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
@@ -478,7 +480,7 @@ class BalanceController extends Controller
 								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
 							}
 							$data->read($ruta);
-							$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][3])]=true;
+							$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][4])]=true;
 							unset($data);
 						}
 					}
@@ -505,7 +507,7 @@ class BalanceController extends Controller
 					//Elimino los archivos
 					foreach($archivos as $key => $archivo)
 					{
-						for($i=1; $i<=$dias; $i++)
+						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
 							if($i>0)
@@ -539,7 +541,7 @@ class BalanceController extends Controller
 					foreach($archivos as $key => $archivo)
 					{
 						$this->lector->define($archivo);
-						for($i=1; $i<=$dias; $i++)
+						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
 							if($i>0)
@@ -612,7 +614,7 @@ class BalanceController extends Controller
 					//Elimino los archivos
 					foreach($archivos as $key => $archivo)
 					{
-						for($i=1; $i<=$dias; $i++)
+						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
 							if($i>0)

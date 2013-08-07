@@ -230,7 +230,7 @@ class Reader
 	public function hora($ruta)
 	{
 		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '512M');
+		ini_set('memory_limit', '768M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -270,7 +270,7 @@ class Reader
         $this->horas=$data->sheets[0]['cells'][$numRows][1];
         for($i=$this->horas; $i <= 23 ; $i++)
         { 
-            if(Log::existe(LogAction::getLikeId("Ruta Internal ".$i."GMT")))
+            if(Log::existe(LogAction::getId("Carga Ruta Internal ".$i."GMT")))
             {
                 $this->error=self::ERROR_EXISTS;
                 return false;
@@ -279,7 +279,7 @@ class Reader
         /**
         * Valido la estructura de horas
         */
-        $actual=-1;
+        $actual=0;
         $contador=0;
         for ($i=5; $i<$data->sheets[0]['numRows']; $i++)
         { 
@@ -288,7 +288,11 @@ class Reader
                 //Verifico que sean secuenciales las horas
                 if($actual <= $data->sheets[0]['cells'][$i][1])
                 {
-                    if($actual==$data->sheets[0]['cells'][$i][1]-1)
+                    if($actual==$data->sheets[0]['cells'][$i][1])
+                    {
+                        $contador=$contador+1;
+                    }
+                    elseif($actual==$data->sheets[0]['cells'][$i][1]-1)
                     {
                         if($contador<=1)
                         {
@@ -297,18 +301,14 @@ class Reader
                         }
                         else
                         {
+                            $contador=0;
                             $actual=$data->sheets[0]['cells'][$i][1];
                         }
-                    }
-                    elseif($actual==$data->sheets[0]['cells'][$i][1])
-                    {
-                        $actual=$actual;
-                        $contador=$contador+1;
                     }
                     else
                     {
                         $this->error=self::ERROR_ESTRUC;
-                        return false;
+                        return false; 
                     }
                 }
             }
