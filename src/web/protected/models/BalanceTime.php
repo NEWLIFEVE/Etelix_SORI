@@ -13,7 +13,7 @@
  * @property double $margin_percentage
  * @property double $margin_per_minute
  * @property double $cost_per_minute
- * @property double $revenue_per_min
+ * @property double $revenue_per_minute
  * @property double $pdd
  * @property double $incomplete_calls
  * @property double $incomplete_calls_ner
@@ -29,9 +29,9 @@
  * @property double $cost
  * @property double $margin
  * @property string $date_change
- * @property integer $type
  * @property string $time_change
- * @property string $name_carrier
+ * @property string $name_supplier
+ * @property string $name_customer
  * @property string $name_destination
  */
 class BalanceTime extends CActiveRecord
@@ -52,13 +52,13 @@ class BalanceTime extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('date_balance_time, time, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, time_change, name_carrier, name_destination', 'required'),
-			array('time, type', 'numerical', 'integerOnly'=>true),
-			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
-			array('name_carrier, name_destination', 'length', 'max'=>50),
+			array('date_balance_time, time, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, time_change', 'required'),
+			array('time', 'numerical', 'integerOnly'=>true),
+			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
+			array('name_supplier, name_customer, name_destination', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date_balance_time, time, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_min, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, time_change, name_carrier, name_destination', 'safe', 'on'=>'search'),
+			array('id, date_balance_time, time, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, time_change, name_supplier, name_customer, name_destination', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,7 +88,7 @@ class BalanceTime extends CActiveRecord
 			'margin_percentage' => 'Margin Percentage',
 			'margin_per_minute' => 'Margin Per Minute',
 			'cost_per_minute' => 'Cost Per Minute',
-			'revenue_per_min' => 'Revenue Per Min',
+			'revenue_per_minute' => 'Revenue Per Min',
 			'pdd' => 'Pdd',
 			'incomplete_calls' => 'Incomplete Calls',
 			'incomplete_calls_ner' => 'Incomplete Calls Ner',
@@ -104,9 +104,9 @@ class BalanceTime extends CActiveRecord
 			'cost' => 'Cost',
 			'margin' => 'Margin',
 			'date_change' => 'Date Change',
-			'type' => 'Type',
 			'time_change' => 'Time Change',
-			'name_carrier' => 'Name Carrier',
+			'name_supplier' => 'Name Supplier',
+			'name_customer' => 'Name Customer',
 			'name_destination' => 'Name Destination',
 		);
 	}
@@ -138,7 +138,7 @@ class BalanceTime extends CActiveRecord
 		$criteria->compare('margin_percentage',$this->margin_percentage);
 		$criteria->compare('margin_per_minute',$this->margin_per_minute);
 		$criteria->compare('cost_per_minute',$this->cost_per_minute);
-		$criteria->compare('revenue_per_min',$this->revenue_per_min);
+		$criteria->compare('revenue_per_minute',$this->revenue_per_minute);
 		$criteria->compare('pdd',$this->pdd);
 		$criteria->compare('incomplete_calls',$this->incomplete_calls);
 		$criteria->compare('incomplete_calls_ner',$this->incomplete_calls_ner);
@@ -154,9 +154,9 @@ class BalanceTime extends CActiveRecord
 		$criteria->compare('cost',$this->cost);
 		$criteria->compare('margin',$this->margin);
 		$criteria->compare('date_change',$this->date_change,true);
-		$criteria->compare('type',$this->type);
 		$criteria->compare('time_change',$this->time_change,true);
-		$criteria->compare('name_carrier',$this->name_carrier,true);
+		$criteria->compare('name_supplier',$this->name_supplier,true);
+		$criteria->compare('name_customer',$this->name_customer,true);
 		$criteria->compare('name_destination',$this->name_destination,true);
 
 		return new CActiveDataProvider($this, array(

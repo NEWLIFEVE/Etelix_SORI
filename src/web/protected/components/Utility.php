@@ -74,7 +74,7 @@ Class Utility{
         {
             $segundos_diferencia=$unixFin-$unixInicio;
             $dias_diferencia=$segundos_diferencia / (60 * 60 * 24);
-            return $dias_diferencia+1;
+            return $dias_diferencia;
         }
         else
         {

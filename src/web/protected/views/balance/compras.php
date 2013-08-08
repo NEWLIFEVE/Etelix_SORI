@@ -18,11 +18,6 @@ $this->widget('zii.widgets.grid.CGridView',array(
 			'name'=>'date_balance',
 			),
 		array(
-			'name'=>'id_carrier',
-			'value'=>'$data->idCarrier->name',
-			'type'=>'text',
-			),
-		array(
 			'name'=>'id_destination',
 			),
 		array(
