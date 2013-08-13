@@ -36,7 +36,7 @@ class Reader
 		//Aumento el tiempo de ejecucion
 		ini_set('max_execution_time', 1200);
 		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '256M');
+		ini_set('memory_limit', '512M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
