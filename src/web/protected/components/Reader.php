@@ -25,7 +25,7 @@ class Reader
     const ERROR_ESTRUC=1;
     //No hay errores
 	const ERROR_NONE=0;
-
+    
 	/**
 	* Funcion de carga de archivos diarios
     * @param string $ruta: ruta absoluta de archivo que va a ser leido
@@ -33,10 +33,6 @@ class Reader
 	*/
 	public function diario($ruta)
 	{
-		//Aumento el tiempo de ejecucion
-		ini_set('max_execution_time', 1200);
-		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '512M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -52,6 +48,7 @@ class Reader
         	$this->error=self::ERROR_FILE;
 			return false;
         }
+        ini_set('max_execution_time', 1200);
         //verifico que los archivos tengan la fecha correcta
 		$date_balance=Utility::formatDate($data->sheets[0]['cells'][1][4]);
 		$fecha = date('Y-m-d');
@@ -229,8 +226,6 @@ class Reader
 	*/
 	public function hora($ruta)
 	{
-		//Aumento la cantidad de memoria 
-		ini_set('memory_limit', '768M');
 		//importo la extension
 		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -555,8 +550,6 @@ class Reader
     {
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', 1200);
-        //Aumento la cantidad de memoria
-        ini_set('memory_limit', '256M');
         //importo la extension
         Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
         //Oculto los errores
