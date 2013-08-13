@@ -186,3 +186,4 @@ delete from balance_time;
 select * from carrier;
 
 SELECT * FROM log_action WHERE name='Carga Ruta Internal'
+INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, 57, 1, current_date);
