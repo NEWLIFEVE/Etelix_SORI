@@ -27,8 +27,19 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
+		//Cada vez que el usuario llegue al index se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		$archivos=@scandir($ruta);
+		if(count($archivos)>1)
+		{
+			foreach ($archivos as $key => $value)
+			{
+				if($key>1)
+				{
+					unlink($ruta.$value);
+				}
+			}
+		}
 		if(!Yii::app()->user->isGuest)
 		{
 			$this->render('upload');
