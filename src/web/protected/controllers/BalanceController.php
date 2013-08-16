@@ -388,6 +388,8 @@ class BalanceController extends Controller
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
+				$tiempo=$dias*2400;
+				ini_set('max_execution_time', $tiempo);
 				/**
 				* array con los posibles nombres en el archivo del rerate
 				*/

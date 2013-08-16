@@ -80,7 +80,7 @@ array(
       }
       if(Log::existe(1))
       {
-        echo "<li class='cargados' name='diario'>Ruta Internal</li>";
+        echo "<li class='cargados' name='diario'>Ruta External</li>";
       }
       ?>
   </ul>
@@ -93,7 +93,7 @@ array(
       }
       if(!Log::existe(1))
       {
-        echo "<li class='nocargados'>Ruta Internal</li>";
+        echo "<li class='nocargados'>Ruta External</li>";
       }
       ?>
   </ul>

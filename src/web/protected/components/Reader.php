@@ -549,7 +549,7 @@ class Reader
     public function rerate($ruta,$accionLog)
     {
         //Aumento el tiempo de ejecucion
-        ini_set('max_execution_time', 1200);
+        //ini_set('max_execution_time', 1200);
         //importo la extension
         Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
         //Oculto los errores
