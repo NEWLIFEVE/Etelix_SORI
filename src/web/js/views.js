@@ -73,13 +73,10 @@ function valForm(objeto)
 				{
 					if($('div.'+objeto.interna).remove())
 					{
-
-						var html="<h1>CARGANDO ARCHIVOS</h1><p>Este proceso puede tardar unos minutos</p><p>Por favor espere</p><img src='"+objeto.servidor+"images/image_464753.gif'>";
-						objeto.interna="interna";
-                        objeto.lightbox(html);
+						$('div.transparente').fadeOut('slow');
+						$('div.transparente2').fadeIn('slow');
 						$('form[name="monto"]').submit();
 					}
-
 				}
 				else
 				{

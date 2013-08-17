@@ -27,8 +27,25 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
+		//Cada vez que el usuario llegue al index se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		if(is_dir($ruta))
+		{
+			$archivos=@scandir($ruta);
+		}
+		if(count($archivos)>1)
+		{
+			foreach ($archivos as $key => $value)
+			{
+				if($key>1)
+				{ 
+					if($value!='index.html')
+					{
+						unlink($ruta.$value);
+					}
+				}
+			}
+		}
 		if(!Yii::app()->user->isGuest)
 		{
 			$this->render('upload');
@@ -136,7 +153,7 @@ class SiteController extends Controller
  
         $folder='uploads/';// folder for uploaded files
         $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
-        $sizeLimit = 9 * 1024 * 1024;// maximum file size in bytes
+        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
         $result = $uploader->handleUpload($folder);
         $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);

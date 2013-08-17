@@ -2,6 +2,7 @@
 .horas,
 .rerate
 {
+        margin-top: 14px;
 	background: rgba(0,0,0,0.03);
 	border-radius: 5px;
 	display: inline-block;
@@ -24,6 +25,16 @@
 	color:rgba(111,204,187,1);
 	padding-left: 2em;
 }
+
+.rerate ul li.rangoDesde{
+    margin-right: 1em;
+    float: left;
+}
+
+.rerate ul li.rangoHasta{
+    margin-right: 1.21em;
+    float: left;
+}
 .diario ul li.nocargados,
 .horas ul li.nocargados,
 .rerate ul li.nocargados,
@@ -40,7 +51,7 @@
 {
 	display: none;
 }
-.transparente
+.transparente, .transparente2
 {
 	background: rgba(0,0,0,0.5);
 	height: 100%;
@@ -49,7 +60,7 @@
 	top: 0px;
 	width: 100%;
 }
-.interna
+.interna, .interna2
 {
 	background: white;
 	border-radius:10px;
@@ -80,9 +91,14 @@
 	padding: 5em 5em;
 	text-align: center;
 }
-.interna h1
+.interna h1, .interna2 h1
 {
 	font-size: 3em;
+}
+.interna img, .interna2 img
+{
+	max-width: 256px;
+	max-height: 51px;
 }
 .interna button
 {

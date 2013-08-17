@@ -9,6 +9,7 @@
  * @property string $hour
  * @property integer $id_log_action
  * @property integer $id_users
+ * @property string $description_date
  *
  * The followings are the available model relations:
  * @property LogAction $idLogAction
@@ -34,9 +35,10 @@ class Log extends CActiveRecord
 		return array(
 			array('date, hour', 'required'),
 			array('id_log_action, id_users', 'numerical', 'integerOnly'=>true),
+			array('description_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date, hour, id_log_action, id_users', 'safe', 'on'=>'search'),
+			array('id, date, hour, id_log_action, id_users, description_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +66,7 @@ class Log extends CActiveRecord
 			'hour' => 'Hour',
 			'id_log_action' => 'Id Log Action',
 			'id_users' => 'Id Users',
+			'description_date' => 'Description Date',
 		);
 	}
 
@@ -90,6 +93,7 @@ class Log extends CActiveRecord
 		$criteria->compare('hour',$this->hour,true);
 		$criteria->compare('id_log_action',$this->id_log_action);
 		$criteria->compare('id_users',$this->id_users);
+		$criteria->compare('description_date',$this->description_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -107,13 +111,17 @@ class Log extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public static function registrarLog($id)
+	/**
+	* Encargada de registrar el evento pasado como id
+	*/
+	public static function registrarLog($id,$description_date=null)
 	{
 		$model=new self;
 		$model->hour=date("H:i:s");
 		$model->date=date("Y-m-d");
 		$model->id_log_action=$id;
 		$model->id_users=Yii::app()->user->id;
+		$model->description_date=$description_date;
 		if($model->save())
 		{
 			return true;
@@ -165,5 +173,55 @@ class Log extends CActiveRecord
 			return true;
 		else
 			return false;
+	}
+
+	/*
+	* Funcion que retorna los ultimos rangos de fechas cargados en rerate
+	*/
+	public static function getRerate()
+	{
+		error_reporting(E_ALL & ~E_NOTICE);
+		$fechas=array();
+		$retorna=array();
+		$resultados=self::model()->findAll("date<=current_date and date>=current_date - interval '1 week' and description_date is not null order by description_date asc");
+		if($resultados!=null)
+		{
+			foreach ($resultados as $key => $fecha)
+			{
+				$fechas[$fecha->description_date]=true;
+			}
+			foreach ($fechas as $key => $value)
+			{
+				$retorna[]=$key;
+			}
+			return $retorna[0]."/".$retorna[count($retorna)-1];
+		}
+		else
+		{
+			return false;
+		}
+	}
+	/**
+	* Funcion que se encarga de mostrar si un rerate ya esta listo
+	*/
+	public static function getListo()
+	{
+		$rerate=self::model()->find("date=current_date AND hour<=current_time AND description_date IS NOT NULL");
+		if($rerate->id)
+		{
+			$completado=self::model()->find("date=current_date AND hour<=current_time AND id_log_action=57");
+			if($completado->id)
+			{
+				return "completado";
+			}
+			else
+			{
+				return "procesando";
+			}
+		}
+		else
+		{
+			return "no";
+		}
 	}
 }

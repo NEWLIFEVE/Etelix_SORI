@@ -128,43 +128,35 @@ class qqFileUploader
     /**
      * Returns array('success'=>true) or array('error'=>'error message')
      */
-    function handleUpload($uploadDirectory, $replaceOldFile = true)
+    function handleUpload($uploadDirectory, $replaceOldFile=false)
     {
         //puedo escribir en el directorio?
         if (!is_writable($uploadDirectory))
         {
-            return array('error' => "Error del servidor. Directorio de carga no se puede escribir.");
+            return array('error'=>"Error del servidor. Directorio de carga no se puede escribir.");
         }
         //Hay archivos?
         if (!$this->file)
         {
-            return array('error' => 'No hay archivos subidos.');
+            return array('error'=>'No hay archivos subidos.');
         }
         //Asigno el tamaño
         $size = $this->file->getSize();
         //El tamaño esta vacio?
-        if($size == 0)
+        if($size==0)
         {
-            return array('error' => 'El archivo está vacío');
+            return array('error'=>'El archivo está vacío');
         }
         //Es muy grande el archivo
-        if($size > $this->sizeLimit)
+        if($size>$this->sizeLimit)
         {
-            return array('error' => 'El archivo es demasiado grande');
+            return array('error'=>'El archivo es demasiado grande');
         }
         //Direccion del archivo en el cliente
         $pathinfo = pathinfo($this->file->getName());
+
         //Nombre del archivo
-        $borrar=false;
-        if(Reader::nombre($pathinfo['filename']))
-        {
-            $filename = Reader::nombre($pathinfo['filename']);
-        }
-        else
-        {
-            $filename="Error";
-            $borrar=true;
-        }       
+        $filename = Reader::nombre($pathinfo['filename']);      
 
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
@@ -172,32 +164,25 @@ class qqFileUploader
         if($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions))
         {
             $these = implode(', ', $this->allowedExtensions);
-            return array('error' => 'El archivo tiene una extensión inválida, debería ser una de '. $these . '.');
+            return array('error'=>'El archivo tiene una extensión inválida, debería ser una de '.$these.'.');
         }
-
+        $valor="";
         if(!$replaceOldFile)
         {
             /// don't overwrite previous files that were uploaded
-            while (file_exists($uploadDirectory . $filename . '.' . $ext))
-            {
-                $filename .= rand(10, 99);
+            while (file_exists($uploadDirectory . $filename .$valor. '.' . $ext)) {
+                $valor+=1;
             }
+            $filename.=$valor;
         }
 
-        if(!$borrar==true)
+        if ($this->file->save($uploadDirectory.$filename.'.'.$ext))
         {
-            if ($this->file->save($uploadDirectory . $filename . '.' . $ext))
-            {
-                return array('success'=>true,'filename'=>$filename.'.'.$ext);
-            }
-            else
-            {
-                return array('error'=> 'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
-            }
+            return array('success'=>true,'filename'=>$filename.'.'.$ext);
         }
         else
         {
-            return array('error'=> 'No se guardo el  archivo.'.'La subida fue cancelada, el nombre de archivo no es correcto');
+            return array('error'=>'No se pudo guardar el  archivo.'.'La subida fue cancelada, o se encontró un error en el servidor');
         }
     }
 }

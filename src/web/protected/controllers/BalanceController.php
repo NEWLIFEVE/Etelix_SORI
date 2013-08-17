@@ -2,7 +2,7 @@
 
 class BalanceController extends Controller
 {
-	/*
+	/**
 	* Atributo para instanciar el componente reader
 	*/
 	public $lector;
@@ -41,9 +41,13 @@ class BalanceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver'),
+				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
+			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('guardar'),
+				'users'=>array_merge(Users::usersByType(2)),
+			),*/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -51,19 +55,31 @@ class BalanceController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
+	* Muestra una vista con los balances especificados por compras
+	*/
     public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
 	}
+
+	/**
+	* Muestra una vista con los balances especificados por ventas
+	*/
 	public function actionVentas()
 	{
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
+	public function actionMemoria()
+	{
+		echo ini_get("memory_limit");
+	}
+
+	/**
+	* Muestra el detalle de un balance
+	* @param $id: el id del balance que va a mostrar
+	*/
 	public function actionView($id)
 	{
 		$tipo=Balance::model()->findByPk($id)->type;
@@ -192,6 +208,7 @@ class BalanceController extends Controller
 			Yii::app()->end();
 		}
 	}
+
 	/**
 	* Action encargada de guardar en base de datos los archivos cargados
 	*/
@@ -201,7 +218,6 @@ class BalanceController extends Controller
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
-        $siguiente=false;
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
@@ -213,17 +229,14 @@ class BalanceController extends Controller
 				$this->lector=new Reader;
 				//Nombres opcionales para los archivos diarios
 				$diarios=array(
-					'Carga Venta Internal'=>'VentaInternal',
-					'Carga Venta External'=>'VentaExternal',
-					'Carga Compra Internal'=>'CompraInternal',
-					'Carga Compra External'=>'CompraExternal'
+					'Carga Ruta Internal'=>'Ruta Internal Diario',
+					'Carga Ruta External'=>'Ruta External Diario'
 					);
-				//recorro el array de nombres
+				//Primero verifico que esten todos los archivos
 				foreach($diarios as $key => $diario)
 				{
-					//variables para validaciones
-					$is=false;
-					$log=false;
+					//variable para validaciones
+					$error=true;
 					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
 					$this->lector->define($diario);
 					//Verifico la existencia del archivo
@@ -232,26 +245,35 @@ class BalanceController extends Controller
 						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
 						if(file_exists($ruta))
 						{
-							$is=true;
+							$error=false;
+						}
+						else
+						{
+							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
 						}
 					}
 					else
 					{
-						$is=true;
+						$error=false;
 					}
 					//verifico que no este en el log
-					if($is)
+					if(!$error)
 					{
 						if(Log::existe(LogAction::getId($key)))
 						{
 							if(file_exists($ruta))
 							{
+								$error=true;
+								$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
 								unlink($ruta);
 							}
-							$log=true;
-						}				
+						}
+						else
+						{
+							$error=false;
+						}			
 					}
-					if($is==true && $log==false)
+					if(!$error)
 					{
 						if($this->lector->diario($ruta))
 						{
@@ -260,27 +282,18 @@ class BalanceController extends Controller
 							{
 								unlink($ruta);
 							}
-							$siguiente=true;
 						}
 						if($this->lector->error==0)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						elseif($this->lector->error==1)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una estructura incorrecta </h5> <br/> ";
-						}
-						elseif($this->lector->error==2)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
-						}
 						elseif($this->lector->error==3)
 						{
 							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
-						}
-						elseif($this->lector->error==4)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
 						}
 					}
 				}
@@ -290,122 +303,353 @@ class BalanceController extends Controller
 			{
 				//Instancio el componente
 				$this->lector=new Reader;
-				//array con los posibles nombres en el archivo horas
-				$horarios=array(
-					'Carga Venta Internal'=>'VentaInternalHora',
-					'Carga Compra Internal'=>'CompraInternalHora'
-					);
-				//Recorro los nombres en array
-				foreach($horarios as $key => $hora)
+				
+				//variables para validaciones
+				$is=false;
+				$this->lector->define("Ruta Internal Hora");
+				//Defino la ruta del archivo en el servidor
+				$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR."Ruta Internal Hora.xls";
+				//Verifico la existencia del archivo
+				if(!file_exists($ruta))
 				{
-					//variables para validaciones
-					$is=0;
-					$this->lector->define($hora);
-					//Defino la ruta del archivo en el servidor
-					$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".xls";
-					//Verifico la existencia del archivo
-					if(!file_exists($ruta))
+					//Si la extension en minuscula no funciona prueba la mayuscula
+					$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR."Ruta Internal Hora.XLS";
+					if(file_exists($ruta))
 					{
-						//Si la extension en minuscula no funciona prueba la mayuscula
-						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$hora.".XLS";
+						$is=true;
+					}
+				}
+				else
+				{
+					$is=true;
+				}
+				if($is)
+				{
+					//procedo a leerlo
+					if($this->lector->hora($ruta))
+					{
+						//si guardo con exito registro en log
+						Log::registrarLog(LogAction::getId("Carga Ruta Internal ".$this->lector->horas."GMT"));
 						if(file_exists($ruta))
 						{
-							$is=$is+1;
+							unlink($ruta);
 						}
 					}
-					else
+					switch($this->lector->error)
 					{
-						$is=$is+1;
+						case 0:
+							$exitos.="<h5 class='cargados'> El arhivo 'Ruta Internal ".$this->lector->horas."GMT' se guardo con exito </h5> <br/>";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 1:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' tiene una estructura incorrecta </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 2:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' ya esta almacenado </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 3:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' tiene una fecha incorrecta </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
+						case 4:
+							$fallas.="<h5 class='nocargados'> El archivo 'Ruta Internal ".$this->lector->horas."GMT' no esta en el servidor </h5> <br/> ";
+							if(file_exists($ruta))
+							{
+								unlink($ruta);
+							}
+							break;
 					}
-					if($is>=1)
+				}
+				else
+				{
+					if(strlen($fallas)<=16)
 					{
-						//procedo a leerlo
-						if($this->lector->hora($ruta,$key))
-						{
-							//si guardo con exito registro en log
-							Log::registrarLog(LogAction::getLikeId($key."%".$this->lector->horas."%"));
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-							$siguiente=true;
-						}
-						if($this->lector->error==0)
-						{
-							$exitos.="<h5 class='cargados'> El arhivo '".$hora." ".$this->lector->horas."' se guardo con exito </h5> <br/>";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
-						elseif($this->lector->error==1)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' tiene una estructura incorrecta </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
-						elseif($this->lector->error==2)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' ya esta almacenado </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
-						elseif($this->lector->error==3)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' tiene una fecha incorrecta </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
-						elseif($this->lector->error==4)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$hora." ".$this->lector->horas."' no esta en el servidor </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
+						$fallas="No hay archivos en el servidor";
 					}
-					else
-					{
-						if($is>=2)
-						{
-							$fallas="No hay archivos en el servidor";
-						}
-					}
-				}//fin foreach
+				}
 			}
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
 			{
-				foreach($diarios as $key => $rerate)
+				//variables para validacion
+				$error=false;
+				$fechasArchivos=array();
+
+				/**
+				* saco cuenta de la cantidad de dias en el rango introducido
+				*/
+				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
+				$tiempo=$dias*2400;
+				ini_set('max_execution_time', $tiempo);
+				/**
+				* array con los posibles nombres en el archivo del rerate
+				*/
+				$archivos=array(
+					'Carga Ruta Internal Rerate'=>'Ruta Internal RR',
+					'Carga Ruta External Rerate'=>'Ruta External RR'
+					);
+				
+				if($dias>0)
 				{
-					//Defino la ruta
-					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".xls";
-					if(!file_exists($ruta))
+					/**
+					* Verifico que los archivos necesarios se encuentren en el servidor
+					*/
+					foreach($archivos as $key => $archivo)
 					{
-						//Si no existe la cambio
-						$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$rerate.".XLS";
+						for($i=0; $i<=$dias; $i++)
+						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
+							if(!file_exists($ruta))
+							{
+								//Si no existe la cambio
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
+								if(file_exists($ruta))
+								{
+									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' esta en el servidor </h5> <br/>";
+									$error=false;
+								}
+								else
+								{
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' No esta en el servidor </h5> <br/> ";
+									$error=true;
+								}
+							}
+							else
+							{
+								$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' esta en el servidor </h5> <br/>";
+								$error=false;
+							}
+						}
+						/**
+						* creo los arrays con las fechas indicadas
+						*/
+						$fechas=array();
+						for($i=0;$i<$dias;$i++)
+						{
+							$nuevafecha=strtotime('+'.$i.' day',strtotime(Utility::formatDate($_POST['fechaInicio'])));
+							$nuevafecha=date('Y-m-d',$nuevafecha);
+							$fechas[$nuevafecha]=false;
+						}
+						$fechasArchivos[$archivo]=$fechas;
+					}
+				}
+				if(!$error)
+				{
+					//inicializo la variable que contiene los errores
+					$cuentaFechas="";
+					//funcion para verificar el valor false
+					function falsa($var)
+					{
+						return($var==false);
+					}
+					//importo la extension de lectura de archivos
+					Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+					/**
+					* Verifico si la fecha es la correcta en el archivo
+					*/
+					//primero extraigo las fechas
+					foreach($archivos as $key => $archivo)
+					{
+						for($i=0; $i<=$dias; $i++)
+						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$data = new Spreadsheet_Excel_Reader();
+							$data->setOutputEncoding('ISO-8859-1');
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
+							if(!file_exists($ruta))
+							{
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
+							}
+							$data->read($ruta);
+							$fechasArchivos[$archivo][Utility::formatDate($data->sheets[0]['cells'][1][4])]=true;
+							unset($data);
+						}
+					}
+					//Reviso si alguna de las fechas ya creadas tiene false
+					foreach($archivos as $key => $archivo)
+					{
+						$valoresFalse=array_filter($fechasArchivos[$archivo],'falsa');
+						if(count($valoresFalse)>=1)
+						{
+							foreach($fechasArchivos[$archivo] as $fecha => $value)
+							{
+								if(!$value)
+								{
+									$cuentaFechas.=" ".$fecha." del archivo ".$archivo.",";
+									$error=true;
+								}
+							}
+							$fallas.="<h5 class='nocargados'> Faltan las fechas '".$cuentaFechas."'</h5> <br/> ";
+						}
+					}
+				}
+				else
+				{
+					//Elimino los archivos
+					foreach($archivos as $key => $archivo)
+					{
+						for($i=0; $i<=$dias; $i++)
+						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
+							if(!file_exists($ruta))
+							{
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+							else
+							{
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+						}
+					}
+				}
+
+				if(!$error)
+				{
+					//Instancio el componente
+					$this->lector=new Reader;
+					foreach($archivos as $key => $archivo)
+					{
+						$this->lector->define($archivo);
+						for($i=0; $i<=$dias; $i++)
+						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
+							if(!file_exists($ruta))
+							{
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
+							}
+							if($this->lector->rerate($ruta,$key))
+							{
+								//si guardo con exito registro en log
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+							switch($this->lector->error)
+							{
+								case 0:
+									$exitos.="<h5 class='cargados'> El arhivo '".$archivo.$j."' se guardo con exito </h5> <br/>";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+								case 1:
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una estructura incorrecta </h5> <br/> ";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+								case 2:
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' ya esta almacenado </h5> <br/> ";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+								case 3:
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una fecha incorrecta </h5> <br/> ";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+								case 4:
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' no esta en el servidor </h5> <br/> ";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+								case 6:
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero falló el log</h5><br>";
+									if(file_exists($ruta))
+									{
+										unlink($ruta);
+									}
+									break;
+							}
+						}
+					}
+				}
+				else
+				{
+					//Elimino los archivos
+					foreach($archivos as $key => $archivo)
+					{
+						for($i=0; $i<=$dias; $i++)
+						{
+							$j="";
+							if($i>0)
+							{
+								$j=$i;
+							}
+							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
+							if(!file_exists($ruta))
+							{
+								$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".XLS";
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+							else
+							{
+								if(file_exists($ruta))
+								{
+									unlink($ruta);
+								}
+							}
+						}
 					}
 				}
 			}
 		}
 		$resultado.=$exitos."</br>".$fallas."</div>";
-        if($siguiente)
-        {
-        	$this->render('guardar',array('data'=>$resultado));
-        }
-        else
-        {
-        	Yii::app()->user->setFlash('error', $fallas);
-			$this->redirect('/site/');
-        }
+       	$this->render('guardar',array('data'=>$resultado));
 	}
+
 	public function actionVer()
 	{
 		$this->render('guardar',array('data'=>$this->nombre));
