@@ -41,9 +41,13 @@ class BalanceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver'),
+				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
+			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('guardar'),
+				'users'=>array_merge(Users::usersByType(2)),
+			),*/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -66,6 +70,10 @@ class BalanceController extends Controller
 	{
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
+	}
+	public function actionMemoria()
+	{
+		echo ini_get("memory_limit");
 	}
 
 	/**
@@ -385,7 +393,8 @@ class BalanceController extends Controller
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
-
+				$tiempo=$dias*2400;
+				ini_set('max_execution_time', $tiempo);
 				/**
 				* array con los posibles nombres en el archivo del rerate
 				*/
@@ -460,10 +469,6 @@ class BalanceController extends Controller
 					//primero extraigo las fechas
 					foreach($archivos as $key => $archivo)
 					{
-						//Oculto los errores
-						//error_reporting(E_ALL & ~E_NOTICE);
-						//Aumento el uso de memoria
-						ini_set('memory_limit', '256M');
 						for($i=0; $i<=$dias; $i++)
 						{
 							$j="";
@@ -471,9 +476,6 @@ class BalanceController extends Controller
 							{
 								$j=$i;
 							}
-							//instancio la clase de lectura
-							//Aumento el tiempo de ejecucion
-        					ini_set('max_execution_time', 1200);
 							$data = new Spreadsheet_Excel_Reader();
 							$data->setOutputEncoding('ISO-8859-1');
 							$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$archivo.$j.".xls";
