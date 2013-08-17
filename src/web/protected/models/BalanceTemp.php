@@ -28,10 +28,10 @@
  * @property double $cost
  * @property double $margin
  * @property string $date_change
- * @property integer $type
- * @property integer $id_carrier
  * @property integer $id_destination
  * @property integer $id_destination_int
+ * @property integer $id_carrier_supplier
+ * @property integer $id_carrier_customer
  */
 class BalanceTemp extends CActiveRecord
 {
@@ -51,13 +51,13 @@ class BalanceTemp extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, type', 'required'),
-			array('type, id_carrier, id_destination, id_destination_int', 'numerical', 'integerOnly'=>true),
+			array('date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'required'),
+			array('id_destination, id_destination_int, id_carrier_supplier, id_carrier_customer', 'numerical', 'integerOnly'=>true),
 			array('minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin', 'numerical'),
 			array('date_change', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, type, id_carrier, id_destination, id_destination_int', 'safe', 'on'=>'search'),
+			array('id, date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_destination, id_destination_int, id_carrier_supplier, id_carrier_customer', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +79,7 @@ class BalanceTemp extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date_balance' => 'Data Balance',
+			'date_balance' => 'Date Balance',
 			'minutes' => 'Minutes',
 			'acd' => 'Acd',
 			'asr' => 'Asr',
@@ -102,10 +102,10 @@ class BalanceTemp extends CActiveRecord
 			'cost' => 'Cost',
 			'margin' => 'Margin',
 			'date_change' => 'Date Change',
-			'type' => 'Type',
-			'id_carrier' => 'Id Carrier',
 			'id_destination' => 'Id Destination',
 			'id_destination_int' => 'Id Destination Int',
+			'id_carrier_supplier' => 'Id Carrier Supplier',
+			'id_carrier_customer' => 'Id Carrier Customer',
 		);
 	}
 
@@ -151,10 +151,10 @@ class BalanceTemp extends CActiveRecord
 		$criteria->compare('cost',$this->cost);
 		$criteria->compare('margin',$this->margin);
 		$criteria->compare('date_change',$this->date_change,true);
-		$criteria->compare('type',$this->type);
-		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_destination',$this->id_destination);
 		$criteria->compare('id_destination_int',$this->id_destination_int);
+		$criteria->compare('id_carrier_supplier',$this->id_carrier_supplier);
+		$criteria->compare('id_carrier_customer',$this->id_carrier_customer);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
