@@ -29,14 +29,20 @@ class SiteController extends Controller
 	{
 		//Cada vez que el usuario llegue al index se verificaran si hay archivos en la carpeta uploads y se eliminaran
 		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
-		$archivos=@scandir($ruta);
+		if(is_dir($ruta))
+		{
+			$archivos=@scandir($ruta);
+		}
 		if(count($archivos)>1)
 		{
 			foreach ($archivos as $key => $value)
 			{
 				if($key>1)
-				{
-					unlink($ruta.$value);
+				{ 
+					if($value!='index.html')
+					{
+						unlink($ruta.$value);
+					}
 				}
 			}
 		}

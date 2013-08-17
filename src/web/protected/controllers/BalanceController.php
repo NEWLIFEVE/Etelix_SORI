@@ -44,10 +44,10 @@ class BalanceController extends Controller
 				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('guardar'),
 				'users'=>array_merge(Users::usersByType(2)),
-			),
+			),*/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -388,6 +388,7 @@ class BalanceController extends Controller
 				//variables para validacion
 				$error=false;
 				$fechasArchivos=array();
+
 				/**
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
@@ -401,7 +402,7 @@ class BalanceController extends Controller
 					'Carga Ruta Internal Rerate'=>'Ruta Internal RR',
 					'Carga Ruta External Rerate'=>'Ruta External RR'
 					);
-
+				
 				if($dias>0)
 				{
 					/**
