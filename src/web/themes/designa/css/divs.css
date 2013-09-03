@@ -113,3 +113,51 @@
 	font-size: 1.2em;
 	text-align: center;
 }
+.divCarrier
+{
+  margin-left: 8.6%;
+  width:auto;
+  height:400px;
+  margin-top: 2em;
+}
+
+#botAsignar
+{
+  margin-left:240px;
+}
+.divVendedor
+{
+  margin-left:300px;
+}
+.izquierda
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -110px;
+    border-radius:250px 250px 250px 250px;
+}
+.derecha
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -80px;
+    border-radius:250px 250px 250px 250px;
+}
+/*.tapa
+{
+  background-color:red;
+  height:200px;
+  margin-left:407px;
+  margin-top:-192px;
+  width:50px;
+}*/
+#options_right_all
+{
+    display:none;
+}
+#options_left_all
+{
+    display:none;
+}
