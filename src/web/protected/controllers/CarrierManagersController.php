@@ -28,7 +28,7 @@ class CarrierManagersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicAsignados', 'DynamicNoAsignados'),
+				'actions'=>array('index','view','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -189,41 +189,77 @@ class CarrierManagersController extends Controller
             echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
         }
     }
-        
-      public function actionDynamicNoAsignados()
-    {
+
+                
+        public function actionDynamicNoAsignados()
+    {         
+    
+        $data = Managers::getListCarriersNOAsignados();
+        foreach($data as $value=>$name)
+        {
+            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+        }
+    }
+    
+    public function actionUpdateDistComercial(){
+        $manager = $_GET['manager'];
+        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+        $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.          
+  
+        if ($manager>0){
             
-             $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
-             $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.
-             $manager = $_GET['manager'];
-             echo "Manager: ".$manager;
-//                for ($i = 0; $i < count($seleccionados); $i++) {
-//                    echo "
-//         Numero Seleccionado " . $i . ": " . $seleccionados[$i];
-//                }
-//        $data = Managers::getListCarriersNOAsignados();
-//        foreach($data as $value=>$name)
-//        {
-//            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
-//        }
+        if (count($asignados)==0){
+            //echo "No hay Carriers que ASIGNAR";
+        }else{
+            
+        foreach ($asignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
+            
+            if ($model){
+                //echo "Ya existe: ".$asignados[$key];
+            }else{
+                $modelAsignar = new CarrierManagers;
+                $modelAsignar->start_date = date("Y-m-d");
+                $modelAsignar->id_carrier = $asignados[$key];
+                $modelAsignar->id_managers = $manager;
+                
+                $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
+                $modelDesasignar->end_date = date("Y-m-d");
+                //echo "Asignar: ".$asignados[$key];
+                
+                if($modelAsignar->save() && $modelDesasignar->save()){
+                    echo "SE PUDO ASIGNAR A: ".$noasignados[$key]." ";
+                }else{
+                    //echo "NOOOOOO PUDO ASIGNAR A: ".$noasignados[$key]." ";
+                }
+                
+                
+            }
+        }
+
+        foreach ($noasignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
+            
+            if ($model){
+                //DESASIGNAR
+                $modelSinAsignar = new CarrierManagers;
+                $model->end_date = date("Y-m-d");
+                $modelSinAsignar->start_date = date("Y-m-d");
+                $modelSinAsignar->id_carrier = $noasignados[$key];
+                $modelSinAsignar->id_managers = 8;
+                
+                if($model->save() && $modelSinAsignar->save()){
+                    echo "SE PUDO DESASIGNAR A: ".$noasignados[$key]." ";
+                }else{
+                    echo "NOOOOOO PUDO DESASIGNAR A: ".$noasignados[$key]." ";
+                }
+                
+            }
+        }
+        }
+        }else{
+            echo "Debe seleccionar un Manager";
+        }
     }
-    public function actionPrueba()
-    {
-        $asignados=$_POST[asignados];
-        
-    }
 
-
-
-
-//        public function actionDynamicNoAsignados()
-//    {
-//          
-////        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
-//        $data = Managers::getListCarriersNOAsignados();
-//        foreach($data as $value=>$name)
-//        {
-//            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
-//        }
-//    }
 }
