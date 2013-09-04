@@ -69,10 +69,17 @@ class CarrierManagersController extends Controller
 
 		if(isset($_POST['CarrierManagers']))
 		{
+                    
 			$model->attributes=$_POST['CarrierManagers'];
+                        $Asignados = $_POST['Asignados'];
+                        $carriers = " ";
+                        foreach ($Asignados as $value) {
+                            $carriers = $carriers." - ".$value;
+                        }
+                        //$noAsignados = $_POST['No_Asignados'];
                         
 			//if($model->save())
-				$this->redirect(array('view','id'=>$model->id_managers));
+				$this->redirect(array('view','id'=>1,'id_managers'=>$_POST['CarrierManagers']['id_managers'],'id_carrier'=>$carriers));
 		}
 
 		$this->render('create',array(
@@ -103,7 +110,7 @@ class CarrierManagersController extends Controller
 			'model'=>$model,
 		));
 	}
-
+ 
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -182,15 +189,41 @@ class CarrierManagersController extends Controller
             echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
         }
     }
-                
-        public function actionDynamicNoAsignados()
+        
+      public function actionDynamicNoAsignados()
     {
-          
-//        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
-        $data = Managers::getListCarriersNOAsignados();
-        foreach($data as $value=>$name)
-        {
-            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
-        }
+            
+             $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+             $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.
+             $manager = $_GET['manager'];
+             echo "Manager: ".$manager;
+//                for ($i = 0; $i < count($seleccionados); $i++) {
+//                    echo "
+//         Numero Seleccionado " . $i . ": " . $seleccionados[$i];
+//                }
+//        $data = Managers::getListCarriersNOAsignados();
+//        foreach($data as $value=>$name)
+//        {
+//            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+//        }
     }
+    public function actionPrueba()
+    {
+        $asignados=$_POST[asignados];
+        
+    }
+
+
+
+
+//        public function actionDynamicNoAsignados()
+//    {
+//          
+////        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
+//        $data = Managers::getListCarriersNOAsignados();
+//        foreach($data as $value=>$name)
+//        {
+//            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+//        }
+//    }
 }

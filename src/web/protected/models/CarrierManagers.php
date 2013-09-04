@@ -61,8 +61,8 @@ class CarrierManagers extends CActiveRecord
 		return array(
 			'start_date' => 'Start Date',
 			'end_date' => 'End Date',
-			'id_carrier' => 'Id Carrier',
-			'id_managers' => 'Id Managers',
+			'id_carrier' => 'Carrier',
+			'id_managers' => 'Managers',
 			'id' => 'ID',
 		);
 	}

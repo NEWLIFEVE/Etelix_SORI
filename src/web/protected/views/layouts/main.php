@@ -30,7 +30,8 @@
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'Carrier', 'url'=>array('/carrier'), 'visible'=>!Yii::app()->user->isGuest),
+//				array('label'=>'Distribucion Comercial', 'url'=>array('/carrierManagers/create'), 'visible'=>!Yii::app()->user->isGuest),
+                            	array('label'=>'Carrier', 'url'=>array('/carrier'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Reportes', 'url'=>array('/balance/reportes'), 'visible'=>!Yii::app()->user->isGuest),
