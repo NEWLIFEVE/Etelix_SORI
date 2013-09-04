@@ -40,14 +40,14 @@
 	<?php echo $form->error($model,'id_managers'); ?>
 </div>
 
-<div class="row divCarrier">
+<div class="row divCarrier" id="carriers">
     <?php
     $this->widget('ext.widgets.multiselects.XMultiSelects', array(
         'leftTitle' => 'Carriers Asignados',
-        'leftName' => 'Asignados',
+        'leftName' => 'Asignados[]',
         'leftList' => array(),
         'rightTitle' => 'Carriers No Asignados',
-        'rightName' => 'No Asignados',
+        'rightName' => 'No_Asignados[]',
         'rightList' =>Managers::model()->getListCarriersNOAsignados(),
         'size' => 15,  
         'width' => '400px',
@@ -56,14 +56,34 @@
 		<?php echo $form->error($model,'lastname'); ?>  
 </div>
     
-        <div id='botAsignar' class="row buttons">
+        
+<?php $this->endWidget(); ?>
+  <div id='botAsignar' class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
 	</div>
-<?php $this->endWidget(); ?>
-
 </div><!-- form -->
-
+<div id="contenedor">
+</div>
 <script>
+          
+
+  $("#botAsignar").on( "click",  function asignadosAnoasignados(){
+      
+   $("#carriers select option").prop("selected",true); 
+   var manager = $("#CarrierManagers_id_managers").val();
+   var asignados = $("#select_left").val();
+   var noasignados = $("#select_right").val();   
+      $.ajax({
+          type: "GET",
+          url: "UpdateDistComercial",
+          data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
+          success: function(data) {
+              alert(data);
+          }
+      });
+    $("#carriers select option").prop("selected",false);       
+  });
+          
           $("#options_right").on( "click",  function asignadosAnoasignados(){
                 $('#select_left :selected').each(function(i,selected){                        
                     $("#select_left option[value='"+$(selected).val()+"']").remove();
