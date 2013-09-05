@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'S O R I',
+	'name'=>'SORI',
         'language'=>'es',
         'theme'=>'designa',
         //'theme'=>'newssourcefinal',
@@ -35,6 +35,7 @@ return array(
 	// application components
 	'components'=>array(
 		'user'=>array(
+                        'class'=>'WebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
@@ -54,12 +55,12 @@ return array(
 		// uncomment the following to use a MySQL database
 		'db'=>array(
 
-			'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
-			//'connectionString' => 'pgsql:host=192.168.1.239;port=5432;dbname=sori',
+			//'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
+			'connectionString' => 'pgsql:host=192.168.1.239;port=5432;dbname=sori',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
-			'password' => 'Nsusfd8263',
-			//'password' => '123',
+			//'password' => 'Nsusfd8263',
+			'password' => '123',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(
