@@ -129,4 +129,5 @@ class Carrier extends CActiveRecord
 			}
 		}
 	}
+
 }

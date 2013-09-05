@@ -719,7 +719,7 @@ class Reader
                 }
             }
         }
-        if($this->error>0)
+        /*if($this->error>0)
         {
             return false;
         }
@@ -736,7 +736,7 @@ class Reader
                 return false;
             }
             
-        }                   
+        }   */                
     }
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor

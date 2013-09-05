@@ -44,10 +44,10 @@ class BalanceController extends Controller
 				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
 				'users'=>array_merge(Users::usersByType(1)),
 			),
-			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('guardar'),
 				'users'=>array_merge(Users::usersByType(2)),
-			),*/
+			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -388,12 +388,13 @@ class BalanceController extends Controller
 				//variables para validacion
 				$error=false;
 				$fechasArchivos=array();
+				$erroresArchivos=array();
 
 				/**
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
-				$tiempo=$dias*2400;
+				$tiempo=$dias*3200;
 				ini_set('max_execution_time', $tiempo);
 				/**
 				* array con los posibles nombres en el archivo del rerate
@@ -573,6 +574,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=true;
 									break;
 								case 1:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una estructura incorrecta </h5> <br/> ";
@@ -580,6 +582,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 2:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' ya esta almacenado </h5> <br/> ";
@@ -587,6 +590,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 3:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una fecha incorrecta </h5> <br/> ";
@@ -594,6 +598,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 4:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' no esta en el servidor </h5> <br/> ";
@@ -601,6 +606,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 6:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero falló el log</h5><br>";
@@ -608,9 +614,15 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 							}
 						}
+					}
+					$NumErrores=array_filter($erroresArchivos,'falsa');
+					if($NumErrores>=$dias*2)
+					{
+						Log::registrarLog(LogAction::getLikeId('Rerate'));
 					}
 				}
 				else
