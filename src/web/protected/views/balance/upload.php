@@ -41,6 +41,7 @@ $(function() {
     
 </script>
 </head>
+<h1>Carga de Archivos</h1>
 <div id="archivo">
   <ul>
     <li><input type="radio" name="tipo" value="dia"/>Por Día</li>
