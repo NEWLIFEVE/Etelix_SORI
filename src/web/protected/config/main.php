@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'S O R I',
+	'name'=>'SORI',
         'language'=>'es',
         'theme'=>'designa',
         //'theme'=>'newssourcefinal',
@@ -35,6 +35,7 @@ return array(
 	// application components
 	'components'=>array(
 		'user'=>array(
+                        'class'=>'WebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),

@@ -2,7 +2,7 @@
 .horas,
 .rerate
 {
-        margin-top: 14px;
+        /*margin-top: 14px;*/
 	background: rgba(0,0,0,0.03);
 	border-radius: 5px;
 	display: inline-block;
@@ -160,4 +160,11 @@
 #options_left_all
 {
     display:none;
+}
+#welcome{
+   
+    background: url(../img/arrow.png) no-repeat 90% 0;
+    height: 19em;
+    width: 79.9em;
+    
 }

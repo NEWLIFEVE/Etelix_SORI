@@ -2,10 +2,10 @@
 /* @var $this CarrierManagersController */
 /* @var $model CarrierManagers */
 
-$this->breadcrumbs=array(
-	'Carrier Managers'=>array('index'),
-	'Create',
-);
+//$this->breadcrumbs=array(
+//	'Carrier Managers'=>array('index'),
+//	'Create',
+//);
 
 //$this->menu=array(
 //	array('label'=>'List CarrierManagers', 'url'=>array('index')),
@@ -17,4 +17,4 @@ $this->breadcrumbs=array(
 
 <?php 
 //echo $this->renderPartial('_form', array('model'=>$model)); 
-echo $this->renderPartial('distComercial', array('model'=>$model)); ?>
+echo $this->renderPartial('_form', array('model'=>$model)); ?>
