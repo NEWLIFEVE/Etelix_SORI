@@ -247,7 +247,7 @@ class CarrierManagersController extends Controller
                 //echo "Asignar: ".$asignados[$key];
                 
                 if($modelAsignar->save() && $modelDesasignar->save()){
-                    echo "SE PUDO ASIGNAR A: ".$noasignados[$key]." ";
+                    echo "SE PUDO ASIGNAR A: ".$asignados[$key]." ";
                 }else{
                     //echo "NOOOOOO PUDO ASIGNAR A: ".$noasignados[$key]." ";
                 }
