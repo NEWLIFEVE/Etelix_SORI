@@ -28,7 +28,7 @@
 <div class='divVendedor'>
 	<?php echo $form->labelEx($model,'id_managers'); ?>
 	<?php echo $form->dropDownList($model,'id_managers',
-                CHtml::listData(Managers::model()->findAll(),'id','lastname'),
+                CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname'),
                 array(
                     'ajax'=>array(
                         'type'=>'POST',
