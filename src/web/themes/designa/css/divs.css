@@ -177,19 +177,20 @@
 
 .mensaje
 {
-    background-color: white;
-/*    border: thin outset;*/
-    border:ThreeDShadow solid;
-    border-radius: 8px 8px 8px 8px;
-    color: #6E6E6E;
-    padding-top: 0px;
-    padding: 18px 4px 0px 2px;
-    margin-top: -500px;
-    width: 490px;
-    position:absolute;
-    text-align: center;
-    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
-    padding: 23px 30px 43px 28px;
+  background-color:white;
+  border:solid threedshadow;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+  color:#6E6E6E;
+  margin-top:-917px;
+  padding:23px 30px 43px 28px;
+  position:fixed;
+  text-align:center;
+  width:490px;
+  margin-left:calc((34% - 0em) - 76px);
+
 }
 
 .cancelar
@@ -207,19 +208,6 @@
     text-align: center;
     width: 90px;
     height: 45px;
-}
-.seguro
-{
-    background-color: red;
-/*    border: thin outset;*/
-    color: #6E6E6E;
-    padding-top: 0px;
-    padding: 18px 4px 0px 2px;
-    margin-top: -500px;
-    width: 470px;
-    position:absolute;
-    text-align: left;
-    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
 }
 
 #welcome{
