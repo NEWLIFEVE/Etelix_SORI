@@ -109,11 +109,13 @@ class CarrierManagers extends CActiveRecord
         
         public static function checkCarrierManager($manager,$carrier){
             
-            $check = CarrierManagers::model()->find('id_managers =:manager AND id_carrier =:carrier AND end_date IS NULL AND start_date IS NOT NULL', array(':manager'=>$manager,':carrier'=>$carrier));
-            if (isset($check)){
-                return $check;
-            }else{
-                return FALSE;
+            $check = CarrierManagers::model()->find('id_managers =:manager AND id_carrier =:carrier 
+                                                   AND end_date IS NULL AND start_date IS NOT NULL', 
+                                             array(':manager' => $manager, ':carrier' => $carrier));
+        if (isset($check)) {
+            return $check;
+        } else {
+            return FALSE;
             }
         }
 }

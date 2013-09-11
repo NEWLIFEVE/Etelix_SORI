@@ -64,57 +64,5 @@
 </div><!-- form -->
 <div id="contenedor">
 </div>
-<script>
 
-      var espere = $("<div class='cargando'></div><div class='mensaje'><h2>Espere un momento por favor</h2><p><p><p><p><p><p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/><p><p><p><p></div>").hide();
-                   $("body").append(espere)
-                   espere.fadeIn('fast');
-      
-      setTimeout(function()
-                {
-                    espere.fadeOut('fast');
-                }, 2000);
-    
-
-  $("#botAsignar").on( "click",  function asignadosAnoasignados(){
-      
-   $("#carriers select option").prop("selected",true); 
-   var manager = $("#CarrierManagers_id_managers").val();
-   var asignados = $("#select_left").val();
-   var noasignados = $("#select_right").val();   
-      $.ajax({
-          type: "GET",
-          url: "UpdateDistComercial",
-          data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
-          success: function(data) {
-              alert(data);
-          }
-      });
-    $("#carriers select option").prop("selected",false);       
-  });
-          
-          $("#options_right").on( "click",  function asignadosAnoasignados(){
-                $('#select_left :selected').each(function(i,selected){                        
-                    $("#select_left option[value='"+$(selected).val()+"']").remove();
-                    $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-                });
-            });
-            
-          $("#options_left").on( "click",  function noasignadosAasignados(){ 
-                $('#select_right :selected').each(function(i,selected){                        
-                    $("#select_right option[value='"+$(selected).val()+"']").remove();
-                    $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-                });
-            });
-   
-            $("#CarrierManagers_id_managers").change(function(){
-                    $.ajax({
-                        type:'POST',
-                        url: "DynamicNoAsignados",
-                        success: function(data){
-                            $("#select_right").empty();
-                            $("#select_right").append(""+data+"");
-                        }                   
-                  });
-            });
-</script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>

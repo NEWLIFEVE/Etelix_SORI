@@ -129,5 +129,9 @@ class Carrier extends CActiveRecord
 			}
 		}
 	}
+        
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 
 }

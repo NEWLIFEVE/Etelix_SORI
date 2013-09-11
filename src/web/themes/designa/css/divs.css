@@ -123,7 +123,7 @@
 
 #botAsignar
 {
-  margin-left:240px;
+  margin-left:225px;
 }
 .divVendedor
 {
@@ -178,16 +178,46 @@
 .mensaje
 {
     background-color: white;
-    border: thin outset;
-    border-radius: 4px 4px 4px 4px;
+/*    border: thin outset;*/
+    border:ThreeDShadow solid;
+    border-radius: 8px 8px 8px 8px;
     color: #6E6E6E;
     padding-top: 0px;
-    padding: 58px 4px 4px 62px;
-    margin-top: -470px;
-    width: 470px;
+    padding: 18px 4px 0px 2px;
+    margin-top: -500px;
+    width: 490px;
     position:absolute;
     text-align: center;
-    margin-left:calc((((100% / 2) - (4 * 3%)) - (1 * 1em)) - (76 * 1px)); 
+    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
     padding: 23px 30px 43px 28px;
 }
 
+.cancelar
+{
+    margin-top: 30px;
+    margin-left: 150px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+.confirma
+{
+    margin-top: -45px;
+    margin-left: 245px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+.seguro
+{
+    background-color: red;
+/*    border: thin outset;*/
+    color: #6E6E6E;
+    padding-top: 0px;
+    padding: 18px 4px 0px 2px;
+    margin-top: -500px;
+    width: 470px;
+    position:absolute;
+    text-align: left;
+    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
+}
