@@ -146,7 +146,7 @@ class Users extends CActiveRecord
 		}
 		else
 		{
-			$arreglo = false;
+			$arreglo[0] = false;
 		}
 		return $arreglo;
 	}

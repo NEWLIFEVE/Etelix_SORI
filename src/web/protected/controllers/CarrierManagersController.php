@@ -27,18 +27,22 @@ class CarrierManagersController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','BuscaNombres'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
+
+                     
+                        array(  'allow', // Vistas para Administrador
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(1)),
+                        ),
+                        array(  'allow', // Vistas para Operaciones
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(3)),
+                        ),
+                        array(  'allow', // Vistas para Finanzas
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(4)),
+                        ),
+		
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -60,7 +64,7 @@ class CarrierManagersController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionDistComercial()
 	{
 		$model=new CarrierManagers;
 
@@ -80,6 +84,24 @@ class CarrierManagersController extends Controller
                         
 			//if($model->save())
 				$this->redirect(array('view','id'=>1,'id_managers'=>$_POST['CarrierManagers']['id_managers'],'id_carrier'=>$carriers));
+		}
+
+		$this->render('distComercial',array(
+			'model'=>$model,
+		));
+	}
+	public function actionCreate()
+	{
+		$model=new CarrierManagers;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['CarrierManagers']))
+		{
+			$model->attributes=$_POST['CarrierManagers'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -226,8 +248,10 @@ class CarrierManagersController extends Controller
                 
                 $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
                 $modelDesasignar->end_date = date("Y-m-d");
+
              if($modelAsignar->save() && $modelDesasignar->save()){                
                 $asigNames.= Carrier::getName($asignados[$key]).",";
+
                 }else{
 //                    //echo "NOOOOOO PUDO ASIGNAR A: ".$noasignados[$key]." ";
                 }

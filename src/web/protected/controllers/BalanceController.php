@@ -32,22 +32,29 @@ class BalanceController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
-				'users'=>array_merge(Users::usersByType(1)),
-			),
-			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('guardar'),
-				'users'=>array_merge(Users::usersByType(2)),
-			),*/
+                    
+                        array(  'allow', // Vistas para Administrador
+                                'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload'),
+                                'users'=>array_merge(Users::usersByType(1)),
+                        ),
+                        array(  'allow', // Vistas para NOC
+                                'actions'=>array('index','guardar','upload'),
+                                'users'=>array_merge(Users::usersByType(2)),
+                        ),
+                        array(  'allow', // Vistas para Operaciones
+                                'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload'),
+                                'users'=>array_merge(Users::usersByType(3)),
+                        ),
+                        array(  'allow', // Vistas para Finanzas
+                                'actions'=>array(''),
+                                'users'=>array_merge(Users::usersByType(4)),
+                        ),
+			
+                        array(  'allow', // Vistas para Retail
+                                'actions'=>array(''),
+                                'users'=>array_merge(Users::usersByType(5)),
+                        ),
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -74,6 +81,29 @@ class BalanceController extends Controller
 	public function actionMemoria()
 	{
 		echo ini_get("memory_limit");
+	}
+	public function actionUpload()
+	{
+            //Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		if(is_dir($ruta))
+		{
+			$archivos=@scandir($ruta);
+		}
+		if(count($archivos)>1)
+		{
+			foreach ($archivos as $key => $value)
+			{
+				if($key>1)
+				{ 
+					if($value!='index.html')
+					{
+						unlink($ruta.$value);
+					}
+				}
+			}
+		}
+		$this->render('upload');               
 	}
 
 	/**
@@ -138,6 +168,24 @@ class BalanceController extends Controller
 		$this->render('update',array(
 			'model'=>$model,
 		));
+	}
+        
+        	
+        public function actionCarga()
+	{
+		Yii::import("ext.EAjaxUpload.qqFileUploader");
+ 
+        $folder='uploads/';// folder for uploaded files
+        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
+        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
+        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+        $result = $uploader->handleUpload($folder);
+        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+ 
+        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+        $fileName=$result['filename'];//GETTING FILE NAME
+ 
+        echo $return;// it's array
 	}
 
 	/**
@@ -221,7 +269,7 @@ class BalanceController extends Controller
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
-			//Verifico la opcion del usuario a través del post
+			//Verifico la opcion del usuario a trav�s del post
 			//si la opcion es dia
 			if($_POST['tipo']=="dia")
 			{
@@ -609,7 +657,7 @@ class BalanceController extends Controller
 									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 6:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero falló el log</h5><br>";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero fall� el log</h5><br>";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);

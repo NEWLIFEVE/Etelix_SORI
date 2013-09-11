@@ -10,6 +10,7 @@
  * @property integer $id_log_action
  * @property integer $id_users
  * @property string $description_date
+ * @property string $id_esp
  *
  * The followings are the available model relations:
  * @property LogAction $idLogAction
@@ -66,6 +67,7 @@ class Log extends CActiveRecord
 			'hour' => 'Hour',
 			'id_log_action' => 'Id Log Action',
 			'id_users' => 'Id Users',
+			'id_esp' => 'Id Especial',
 			'description_date' => 'Description Date',
 		);
 	}
@@ -93,6 +95,7 @@ class Log extends CActiveRecord
 		$criteria->compare('hour',$this->hour,true);
 		$criteria->compare('id_log_action',$this->id_log_action);
 		$criteria->compare('id_users',$this->id_users);
+		$criteria->compare('id_esp',$this->id_esp);
 		$criteria->compare('description_date',$this->description_date,true);
 
 		return new CActiveDataProvider($this, array(
@@ -114,7 +117,7 @@ class Log extends CActiveRecord
 	/**
 	* Encargada de registrar el evento pasado como id
 	*/
-	public static function registrarLog($id,$description_date=null)
+	public static function registrarLog($id,$description_date=null,$id_esp=null)
 	{
 		$model=new self;
 		$model->hour=date("H:i:s");
@@ -122,6 +125,7 @@ class Log extends CActiveRecord
 		$model->id_log_action=$id;
 		$model->id_users=Yii::app()->user->id;
 		$model->description_date=$description_date;
+		$model->id_esp=$id_esp;
 		if($model->save())
 		{
 			return true;
