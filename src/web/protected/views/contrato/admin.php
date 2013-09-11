@@ -50,7 +50,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'production_date',
 		'end_date',
 		'id_carrier',
-		'id_compania',
+		'id_company',
 		array(
 			'class'=>'CButtonColumn',
 		),

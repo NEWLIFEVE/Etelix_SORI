@@ -9,7 +9,7 @@
  * @property string $production_date
  * @property string $end_date
  * @property integer $id_carrier
- * @property integer $id_compania
+ * @property integer $id_company
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
@@ -24,6 +24,12 @@ class Contrato extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+    public $id_termino_pago;
+    public $id_monetizable;
+    public $id_limites;
+    public $id_managers;
+    public $id_disputa;
+    public $id_carrier1;
 	public function tableName()
 	{
 		return 'contrato';
@@ -37,12 +43,12 @@ class Contrato extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('sign_date, id_carrier, id_compania', 'required'),
-			array('id_carrier, id_compania', 'numerical', 'integerOnly'=>true),
+			array('sign_date, id_carrier, id_company', 'required'),
+			array('id_carrier, id_company', 'numerical', 'integerOnly'=>true),
 			array('production_date, end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, sign_date, production_date, end_date, id_carrier, id_compania', 'safe', 'on'=>'search'),
+			array('id, sign_date, production_date, end_date, id_carrier, id_company', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,7 +61,7 @@ class Contrato extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
-			'idCompania' => array(self::BELONGS_TO, 'Company', 'id_compania'),
+			'idCompania' => array(self::BELONGS_TO, 'Company', 'id_company'),
 			'daysDisputeHistories' => array(self::HAS_MANY, 'DaysDisputeHistory', 'id_contrato'),
 			'contratoMonetizables' => array(self::HAS_MANY, 'ContratoMonetizable', 'id_contrato'),
 			'contratoTerminoPagos' => array(self::HAS_MANY, 'ContratoTerminoPago', 'id_contrato'),
@@ -70,11 +76,16 @@ class Contrato extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'sign_date' => 'Sign Date',
-			'production_date' => 'Production Date',
+			'sign_date' => 'Fecha Firma de Contrato',
+			'production_date' => 'Fecha puesta en Produccion',
 			'end_date' => 'End Date',
-			'id_carrier' => 'Id Carrier',
-			'id_compania' => 'Id Compania',
+			'id_carrier' => 'Carriers',
+			'id_company' => 'Compania',
+			'id_termino_pago' => 'Termino de Pago',
+			'id_monetizable' => 'Monetizable',
+			'id_limites' => 'Limites',
+                        'id_managers' => 'Account Manager:',
+                        'id_disputa' => 'Dias para disputas:',
 		);
 	}
 
@@ -101,7 +112,7 @@ class Contrato extends CActiveRecord
 		$criteria->compare('production_date',$this->production_date,true);
 		$criteria->compare('end_date',$this->end_date,true);
 		$criteria->compare('id_carrier',$this->id_carrier);
-		$criteria->compare('id_compania',$this->id_compania);
+		$criteria->compare('id_company',$this->id_company);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -118,4 +129,19 @@ class Contrato extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public static function getListRevisaFechaFirma($idCarrier)
+	{
+            $sql="Select c.id, c.sign_date
+                  From contrato c, carrier x
+                  Where x.id =$idCarrier and x.id = c.id_carrier";
+            
+            return CHtml::listData(Contrato::model()->findBySql($sql),'id','sing_date');
+ 
+	}
+        
+        public static function DatosContrato($carrier)
+        {
+           return self::model()->find("id_carrier=:carrier", array(':carrier'=>$carrier));       
+        }     
 }

@@ -181,10 +181,4 @@ class CarrierController extends Controller
 			Yii::app()->end();
 		}
 	}
-    public function actionContrato()
-    {
-        $this->render('contrato');
-    }
-
- 
 }

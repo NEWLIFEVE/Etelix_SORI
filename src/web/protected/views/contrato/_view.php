@@ -25,8 +25,8 @@
 	<?php echo CHtml::encode($data->id_carrier); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id_compania')); ?>:</b>
-	<?php echo CHtml::encode($data->id_compania); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('id_company')); ?>:</b>
+	<?php echo CHtml::encode($data->id_company); ?>
 	<br />
 
 
