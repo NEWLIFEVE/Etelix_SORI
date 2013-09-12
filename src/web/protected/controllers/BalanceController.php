@@ -214,6 +214,10 @@ class BalanceController extends Controller
 	*/
 	public function actionGuardar()
 	{
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		$fecha=date('Y-m-d');
+		$nuevafecha=strtotime('-1 day',strtotime($fecha));
+		$nuevafecha=date('Y-m-d',$nuevafecha);
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
@@ -232,69 +236,52 @@ class BalanceController extends Controller
 					'Carga Ruta Internal'=>'Ruta Internal Diario',
 					'Carga Ruta External'=>'Ruta External Diario'
 					);
-				//Primero verifico que esten todos los archivos
-				foreach($diarios as $key => $diario)
+				//Primero: verifico que archivos estan
+				$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
+				if(count($existentes)<=0)
 				{
-					//variable para validaciones
-					$error=true;
-					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
-					$this->lector->define($diario);
-					//Verifico la existencia del archivo
-					if(!file_exists($ruta))
+					$this->lector->error=4;
+					$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
+				}
+				if($this->lector->error==0)
+				{
+					foreach($existentes as $key => $diario)
 					{
-						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
-						if(file_exists($ruta))
+						//Defino variables internas
+						$this->lector->define($diario);
+						//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
+						$this->lector->logDiario($diario);
+						if($this->lector->error==0)
 						{
-							$error=false;
+							//cargo el archivo en memoria
+							$this->lector->carga($ruta.$diario);
+							//Tercero: verifico la fecha que sea correcta
+							$this->lector->validarFecha($nuevafecha);
 						}
-						else
+						if($this->lector->error==0)
 						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
+							//Cuarto: valido el orden de las columnas
+							$this->lector->validarColumnas($this->lista($diario));
 						}
-					}
-					else
-					{
-						$error=false;
-					}
-					//verifico que no este en el log
-					if(!$error)
-					{
-						if(Log::existe(LogAction::getId($key)))
+						if($this->lector->error==0)
 						{
-							if(file_exists($ruta))
+							//Guardo en base de datos
+							if($this->lector->diario($ruta.$diario))
 							{
-								$error=true;
-								$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
-								unlink($ruta);
+								//Si lo guarda grabo en log
+								Log::registrarLog(LogAction::getId($this->lector->log));
 							}
 						}
-						else
+						if($this->lector->error>0)
 						{
-							$error=false;
-						}			
-					}
-					if(!$error)
-					{
-						if($this->lector->diario($ruta))
-						{
-							Log::registrarLog(LogAction::getId($key));
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
+							$fallas.=$this->lector->errorComment;
 						}
 						if($this->lector->error==0)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						elseif($this->lector->error==3)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
+						$this->lector->error=0;
+						$this->lector->errorComment=NULL;
 					}
 				}
 			}
@@ -661,9 +648,38 @@ class BalanceController extends Controller
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
 	}
-
+	/**
+	*
+	*/
 	public function actionVer()
 	{
 		$this->render('guardar',array('data'=>$this->nombre));
+	}
+	/**
+	*
+	*/ 
+	protected function lista($archivo)
+	{
+		$primero="Ruta ";
+        $segundo="External ";
+        $tercero="Diario";
+        if(stripos($archivo,"internal"))
+        {
+            $segundo="Internal ";
+        }
+        if(stripos($archivo,'rerate') || stripos($archivo, "RR"))
+        {
+            $tercero="RR";
+        }
+        if(stripos($archivo,'GMT'))
+        {
+            $tercero="Hora";
+        }
+        $nombre=$primero.$segundo.$tercero;
+        $lista=array(
+        	'Ruta Internal Diario'=>array('nombre'='Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta External Diario'=>array('Ext. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	);
+        return $lista[$nombre];
 	}
 }
