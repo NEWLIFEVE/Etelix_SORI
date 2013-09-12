@@ -285,9 +285,9 @@ class ContratoController extends Controller
 		}
 	}
        public function actionDynamicDatosContrato()
-        {
-           
+        {           
            $model = Contrato::DatosContrato($_GET['idCarrier']);
+
            if($model!=NULL){      
                 $params['company']=$model->id_company;
                 $params['sign_date']=$model->sign_date;
@@ -296,6 +296,8 @@ class ContratoController extends Controller
                 $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['dias_disputa']=  DaysDisputeHistory::getDays($model->id);
+                $params['carrier']= Carrier::getName($model->id_carrier);
+                $params['fechaManager']=CarrierManagers::getFechaManager($model->id_carrier);
            }else{
                 $params['company']=''; 
                 $params['sign_date']='';
@@ -304,10 +306,9 @@ class ContratoController extends Controller
                 $params['monetizable']='';
                 $params['manager']='';
                 $params['dias_disputa']='';
+                $params['carrier']= Carrier::getName($_GET['idCarrier']);
+                $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);
            }
-           
-           
-           //json_encode($params);
            echo json_encode($params);
         }       
 

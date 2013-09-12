@@ -127,4 +127,7 @@ class CarrierManagers extends CActiveRecord
                 return '';
             }
         }
+        public static function getFechaManager($carrier){
+            return self::model()->find("id_carrier=:carrier AND end_date IS NULL", array(':carrier'=>$carrier))->start_date;
+        }
 }
