@@ -177,19 +177,19 @@
 
 .mensaje
 {
-    background-color: white;
-/*    border: thin outset;*/
-    border:ThreeDShadow solid;
-    border-radius: 8px 8px 8px 8px;
-    color: #6E6E6E;
-    padding-top: 0px;
-    padding: 18px 4px 0px 2px;
-    margin-top: -500px;
-    width: 490px;
-    position:absolute;
-    text-align: center;
-    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
-    padding: 23px 30px 43px 28px;
+  background-color:white;
+  border:solid threedshadow;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+  color:#6E6E6E;
+  margin-top:-917px;
+  padding:23px 30px 43px 28px;
+  position:fixed;
+  text-align:center;
+  width:490px;
+  margin-left:calc((34% - 0em) - 76px);
 }
 
 .cancelar
@@ -208,24 +208,106 @@
     width: 90px;
     height: 45px;
 }
-.seguro
-{
-    background-color: red;
-/*    border: thin outset;*/
-    color: #6E6E6E;
-    padding-top: 0px;
-    padding: 18px 4px 0px 2px;
-    margin-top: -500px;
-    width: 470px;
-    position:absolute;
-    text-align: left;
-    margin-left:calc((((100% / 2) - (4 * 4%)) - (1 * 1em)) - (76 * 1px)); 
-}
 
-#welcome{
-   
+#welcome
+{
     background: url(../img/arrow.png) no-repeat 90% 0;
     height: 19em;
-    width: 79.9em;
-    
+    width: 79.9em; 
+}
+.divOculto
+{
+    display: none;
+}
+.divOculto1
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -32px;
+    display: none;
+}
+#Contrato_end_date,
+#Contrato_sign_date,
+#Contrato_production_date,
+#Contrato_id_company,
+#Contrato_id_termino_pago,
+#Contrato_id_monetizable,
+#Contrato_id_limites,
+#Contrato_id_disputa
+{
+width: 20%;    
+}
+#Contrato_id_managers
+{
+    border-bottom: none;
+    border-style: none;
+ width: 20%;    
+}
+.pManager
+{
+    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;
+}
+.fechaFirma
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -80px;
+}
+.company
+{
+/*    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;*/
+}
+.fechaProduccion
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;
+}
+.fechaFin
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -79px;
+}
+.TPago
+{
+/*    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;*/
+}
+.monetizable
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -80px;
+}
+.disputa
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;
+}
+.limites
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -81px;
+}
+.CarrierActual
+{
+    width: 60%;
+    margin-left: 682px;
+    margin-top: -20px;
+    display: none;
+}
+#Contrato_id_carrier
+{
+width: 46.5%;    
 }

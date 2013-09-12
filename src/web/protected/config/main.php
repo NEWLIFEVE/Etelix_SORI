@@ -54,7 +54,7 @@ return array(
 		),*/
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString' => 'pgsql:host=192.168.1.239;port=5432;dbname=sori',
+			'connectionString' => 'pgsql:host=192.168.1.29;port=5432;dbname=sori',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
 			'password' => '123',
@@ -85,6 +85,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'manuel@newlifeve.com',
 	),
 );
