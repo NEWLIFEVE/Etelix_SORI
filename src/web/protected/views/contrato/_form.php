@@ -116,10 +116,11 @@
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
 	</div>
        </div>
+       <div class="lineabajo">
+        <!--<img src="/images/lineabajo.png" width="10px" height="45px" >-->
    </div>
 <?php $this->endWidget(); ?>
-   <div class="lineabajo">
-        <!--<img src="/images/lineabajo.png" width="10px" height="45px" >-->
+   
    </div>
 </div><!-- form -->
 
@@ -172,10 +173,10 @@
                             var carrierenlabel = (obj.carrier);
                             var fechaManagerCarrier = (obj.fechaManager);
                             
-                            var managerA = $("<label><h3 style='margin-left: -66px; margin-top: \n\
-                                             -76px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\
+                           var managerA = $("<label><h3 style='margin-left: -66px; margin-top: \n\
+                                             105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\
                                              -10px; '>         </h6></label>");
-                            var carrierA = $("<label id='labelCarrier'><h1 align='right' style='margin-left: 438px; margin-top: \n\
+                            var carrierA = $("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\
                                              -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
                                 $('.manageractual').append(managerA);
                                 $('.CarrierActual').append(carrierA);
