@@ -228,7 +228,7 @@ margin-top:30px;
 {
     width: 100%;
     margin-left: 850px;
-    margin-top: -32px;
+    margin-top: -132px;
     display: none;
 }
 #Contrato_end_date,
@@ -251,7 +251,7 @@ margin-top: 50px;
 {
     width: 20%;
     margin-left: 622px;
-    margin-top: 88px;
+    margin-top: -38px;
     display: none;
 }
 .fechaFirma
@@ -307,7 +307,7 @@ margin-top: 50px;
 .CarrierActual
 {
 /*    background-color:red;*/
-    width: 60%;
+    width: 658px;
     height: 40px;
     margin-left: 439px;
     margin-top: -70px;
@@ -315,11 +315,11 @@ margin-top: 50px;
 }
 #Contrato_id_carrier
 {
-width: 220%;    
+width: 46.5%;    
 }
 .carrierSelect
 {
-    position:absolute;
+    position:relative;
     margin-top: 50px;  
 }
 .lineabajo
