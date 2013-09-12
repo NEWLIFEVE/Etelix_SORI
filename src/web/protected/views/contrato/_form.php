@@ -3,7 +3,7 @@
 /* @var $model Contrato */
 /* @var $form CActiveForm */
 ?>
-
+<h2>Seleccione un Carrier para comenzar</h2>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>true,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">Los Campos con <span class="required">*</span> son obligatorios.</p>
         <div class="CarrierActual">
    
 		<?php echo $form->textField($model,'id_carrier1'); ?>
@@ -103,10 +103,7 @@
 	</div>
        <div class="disputa">
 		<?php echo $form->labelEx($model,'id_disputa'); ?>
-                <?php echo $form->dropDownList($model,'id_disputa',
-                CHtml::listData(DaysDisputeHistory::model()->findAll(array('order'=>'id')),'id','Days'),
-                array('prompt'=>'Seleccione')
-                ); ?> 
+                <?php echo $form->textField($model,'id_disputa');?>
 		<?php echo $form->error($model,'id_disputa'); ?>
 	</div>
         <div class="limites">
@@ -119,7 +116,7 @@
 	</div>
         <br>
 	<div id="botAsignar" class="row b">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
 	</div>
    </div>
 <?php $this->endWidget(); ?>
@@ -133,13 +130,14 @@
         var muestraDiv1= $('.divOculto');
         var muestraDiv2= $('.divOculto1');
         var pManager= $('.pManager');
-       var NombreCarrier= $('.CarrierActual');
+        var NombreCarrier= $('.CarrierActual');
         var idCarrier = $("#Contrato_id_carrier").val();
         $("#Contrato_id_company").val('');
         $("#Contrato_sign_date").val('');
         $("#Contrato_production_date").val('');
         $("#Contrato_id_termino_pago").val('');
         $("#Contrato_id_monetizable").val('');
+        $("#Contrato_id_disputa").val('');
         
             $.ajax({           
                 type: "GET",
@@ -150,11 +148,22 @@
                         {
                             obj = JSON.parse(data);
                             $("#Contrato_id_company").val(obj.company);
+                            if (obj.company!=''){
+                                $("#Contrato_id_company").prop("disabled", true);
+                                $("#Contrato_end_date").prop("disabled", false);
+                                $("#Contrato_sign_date").prop("disabled", true);
+                            }else{
+                                $("#Contrato_id_company").prop("disabled", false);
+                                $("#Contrato_end_date").prop("disabled", true);
+                                $("#Contrato_sign_date").prop("disabled", false);
+                            }
+                            
                             $("#Contrato_sign_date").val(obj.sign_date);
                             $("#Contrato_production_date").val(obj.production_date);
                             $("#Contrato_id_termino_pago").val(obj.termino_pago);
                             $("#Contrato_id_monetizable").val(obj.monetizable);
                             $("#Contrato_id_managers").val(obj.manager);
+                            $("#Contrato_id_disputa").val(obj.dias_disputa);
                         }       
             }); 
            muestraDiv2.toggle("slow");
@@ -163,5 +172,11 @@
            NombreCarrier.toggle("slow");
 
     });
+    
+$('#botAsignar').click('on',function()
+{
+    var end_date = $("#Contrato_end_date").val();
+    alert(end_date);
+});
 
 </script>

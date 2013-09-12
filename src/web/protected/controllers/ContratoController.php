@@ -69,9 +69,123 @@ class ContratoController extends Controller
 
 		if(isset($_POST['Contrato']))
 		{
-			$model->attributes=$_POST['Contrato'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                    $sign_date=$_POST['Contrato']['sign_date'];
+                    $production_date=$_POST['Contrato']['production_date'];
+                    $end_date=$_POST['Contrato']['end_date'];
+                    $company=$_POST['Contrato']['id_company'];
+                    $carrier=$_POST['Contrato']['id_carrier'];
+                    $termino_pago=$_POST['Contrato']['id_termino_pago'];
+                    $monetizable=$_POST['Contrato']['id_monetizable'];
+                    $dias_disputa=$_POST['Contrato']['id_disputa'];
+                    $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
+			if($modelAux != NULL){
+                            /*YA EXISTE*/
+                                $modelAux->sign_date=$sign_date;
+                                $modelAux->production_date=$production_date;
+                                $modelAux->id_company=$company;
+                                if ($end_date!='' || $end_date!=NULL){
+                                    $modelAux->end_date=$end_date;
+                                }else{
+                                    $modelAux->end_date=NULL;
+                                }
+                                /*TERMINO PAGO*/
+                                $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                if($modelCTP!=NULL){
+                                    if($modelCTP->id_termino_pago != $termino_pago){
+                                        $modelCTP->end_date=date('Y-m-d'); 
+                                        $modelCTP->save();
+                                        $modelCTPNEW = new ContratoTerminoPago;
+                                        $modelCTPNEW->id_contrato=$modelAux->id;
+                                        $modelCTPNEW->start_date=date('Y-m-d');
+                                        $modelCTPNEW->id_termino_pago =$termino_pago;
+                                        $modelCTPNEW->save();
+                                        Log::registrarLog(33,NULL, $modelCTPNEW->id);
+                                    }
+                                }else{
+                                        $modelCTPNEW = new ContratoTerminoPago;
+                                        $modelCTPNEW->id_contrato=$modelAux->id;
+                                        $modelCTPNEW->start_date=date('Y-m-d');
+                                        $modelCTPNEW->id_termino_pago =$termino_pago;
+                                        $modelCTPNEW->save();
+                                        Log::registrarLog(33,NULL, $modelCTPNEW->id);
+                                }
+                                /*MONETIZABLE*/
+                                $modelCM=  ContratoMonetizable::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                if($modelCM!=NULL){
+                                    if($modelCM->id_monetizable != $monetizable){
+                                        $modelCM->end_date=date('Y-m-d'); 
+                                        $modelCM->save();
+                                        $modelCMNEW = new ContratoMonetizable;
+                                        $modelCMNEW->id_contrato=$modelAux->id;
+                                        $modelCMNEW->start_date=date('Y-m-d');
+                                        $modelCMNEW->id_monetizable =$monetizable;
+                                        $modelCMNEW->save();
+                                        Log::registrarLog(34,NULL, $modelCMNEW->id);
+                                    }
+                                }else{
+                                        $modelCMNEW = new ContratoMonetizable;
+                                        $modelCMNEW->id_contrato=$modelAux->id;
+                                        $modelCMNEW->start_date=date('Y-m-d');
+                                        $modelCMNEW->id_monetizable =$monetizable;
+                                        $modelCMNEW->save();
+                                        Log::registrarLog(34,NULL, $modelCMNEW->id);
+                                }
+                                /*DIAS_DISPUTA*/
+                                $modelCD= DaysDisputeHistory::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                if($modelCD!=NULL){
+                                    if($modelCD->days != $dias_disputa){
+                                        $modelCD->end_date=date('Y-m-d'); 
+                                        $modelCD->save();
+                                        $modelCDNEW = new DaysDisputeHistory;
+                                        $modelCDNEW->id_contrato=$modelAux->id;
+                                        $modelCDNEW->start_date=date('Y-m-d');
+                                        $modelCDNEW->days =$dias_disputa;
+                                        $modelCDNEW->save();
+                                        Log::registrarLog(38,NULL, $modelCDNEW->id);
+                                    }
+                                }else{
+                                        $modelCDNEW = new DaysDisputeHistory;
+                                        $modelCDNEW->id_contrato=$modelAux->id;
+                                        $modelCDNEW->start_date=date('Y-m-d');
+                                        $modelCDNEW->days =$dias_disputa;
+                                        $modelCDNEW->save();
+                                        Log::registrarLog(38,NULL, $modelCDNEW->id);
+                                }
+                                if($modelAux->save())
+                                    $this->redirect(array('view','id'=>$modelAux->id));
+                        }else{
+                            /*NUEVO CONTRATO*/
+                                $model->attributes=$_POST['Contrato'];
+                                $model->end_date=NULL;
+                                $model->save();       
+                                /*TERMINO PAGO*/
+                                if($termino_pago!='' || $termino_pago!=NULL){
+                                $modelCTPNEW = new ContratoTerminoPago;
+                                $modelCTPNEW->id_contrato=$model->id;
+                                $modelCTPNEW->start_date=date('Y-m-d');
+                                $modelCTPNEW->id_termino_pago =$termino_pago;
+                                $modelCTPNEW->save();
+                                }
+                                /*MONETIZABLE*/
+                                if($monetizable!='' || $monetizable!=NULL){
+                                $modelCMNEW = new ContratoMonetizable;
+                                $modelCMNEW->id_contrato=$model->id;
+                                $modelCMNEW->start_date=date('Y-m-d');
+                                $modelCMNEW->id_monetizable =$monetizable;
+                                $modelCMNEW->save();
+                                }
+                                /*DIAS_DISPUTA*/
+                                if($dias_disputa!='' || $dias_disputa!=NULL){
+                                $modelCDNEW = new DaysDisputeHistory;
+                                $modelCDNEW->id_contrato=$model->id;
+                                $modelCDNEW->start_date=date('Y-m-d');
+                                $modelCDNEW->days =$dias_disputa;
+                                $modelCDNEW->save();
+                                }
+                                $this->redirect(array('view','id'=>$model->id));
+                        }
+                     
+                
 		}
 
 		$this->render('create',array(
@@ -174,16 +288,27 @@ class ContratoController extends Controller
         {
            
            $model = Contrato::DatosContrato($_GET['idCarrier']);
-                 
-           $params['company']=$model->id_company;
-           $params['sign_date']=$model->sign_date;
-           $params['production_date']=$model->production_date;
-           $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
-           $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
-           $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+           if($model!=NULL){      
+                $params['company']=$model->id_company;
+                $params['sign_date']=$model->sign_date;
+                $params['production_date']=$model->production_date;
+                $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
+                $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
+                $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+                $params['dias_disputa']=  DaysDisputeHistory::getDays($model->id);
+           }else{
+                $params['company']=''; 
+                $params['sign_date']='';
+                $params['production_date']='';
+                $params['termino_pago']='';
+                $params['monetizable']='';
+                $params['manager']='';
+                $params['dias_disputa']='';
+           }
+           
            
            //json_encode($params);
            echo json_encode($params);
-    }       
+        }       
 
 }
