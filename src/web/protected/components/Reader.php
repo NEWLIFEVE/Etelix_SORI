@@ -40,7 +40,10 @@ class Reader
     //No hay errores
 	const ERROR_NONE=0;
 
-    function __construct($nombre)
+    /**
+     *
+     */
+    public function setName($nombre)
     {
         $this->nombreArchivo=$nombre;
     }
@@ -960,10 +963,11 @@ class Reader
     */
     public function validarFecha($fecha)
     {
-        $date_balance=Utility::formatDate($this->excel->sheets[0]['cells'][1][4]);
+        $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
+        $this->fecha=$fecha;
+        $fecha=strtotime($fecha);
         if($fecha==$date_balance)
         {
-            $this->fecha=$date_balance;
             $this->error=self::ERROR_NONE;
             return true;
         }
@@ -971,6 +975,7 @@ class Reader
         {
             $this->error=self::ERROR_DATE;
             $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
+            //$this->errorComment="Fecha archivo: ".$date_balance." Fecha sistema: ".$fecha."<br>";
             return false;
         }
     }

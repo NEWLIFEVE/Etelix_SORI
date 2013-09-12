@@ -300,6 +300,7 @@ class BalanceController extends Controller
 				{
 					foreach($existentes as $key => $diario)
 					{
+						$this->lector->setName($diario);
 						//Defino variables internas
 						$this->lector->define($diario);
 						//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
@@ -336,6 +337,10 @@ class BalanceController extends Controller
 						$this->lector->error=0;
 						$this->lector->errorComment=NULL;
 					}
+				}
+				if($this->lector->error>0)
+				{
+					$fallas.=$this->lector->errorComment;
 				}
 			}
 			//Si la opcion es hora
