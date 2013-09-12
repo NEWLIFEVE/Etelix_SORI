@@ -3,10 +3,11 @@
 class BalanceController extends Controller
 {
 	/**
-	* Atributo para instanciar el componente reader
-	*/
+	 * Atributo para instanciar el componente reader
+	 */
 	public $lector;
 	private $nombre;
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -32,38 +33,35 @@ class BalanceController extends Controller
 	public function accessRules()
 	{
 		return array(
-                    
-                        array(  'allow', // Vistas para Administrador
-                                'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload'),
-                                'users'=>array_merge(Users::usersByType(1)),
-                        ),
-                        array(  'allow', // Vistas para NOC
-                                'actions'=>array('index','guardar','upload'),
-                                'users'=>array_merge(Users::usersByType(2)),
-                        ),
-                        array(  'allow', // Vistas para Operaciones
-                                'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload'),
-                                'users'=>array_merge(Users::usersByType(3)),
-                        ),
-                        array(  'allow', // Vistas para Finanzas
-                                'actions'=>array(''),
-                                'users'=>array_merge(Users::usersByType(4)),
-                        ),
-			
-                        array(  'allow', // Vistas para Retail
-                                'actions'=>array(''),
-                                'users'=>array_merge(Users::usersByType(5)),
-                        ),
-			
+			array('allow', // Vistas para Administrador
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload'),
+				'users'=>array_merge(Users::usersByType(1)),
+				),
+			array('allow', // Vistas para NOC
+				'actions'=>array('index','guardar','upload'),
+				'users'=>array_merge(Users::usersByType(2)),
+				),
+			array('allow', // Vistas para Operaciones
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload'),
+				'users'=>array_merge(Users::usersByType(3)),
+				),
+			array('allow', // Vistas para Finanzas
+				'actions'=>array(''),
+				'users'=>array_merge(Users::usersByType(4)),
+				),
+			array('allow', // Vistas para Retail
+				'actions'=>array(''),
+				'users'=>array_merge(Users::usersByType(5)),
+				),
 			array('deny',  // deny all users
 				'users'=>array('*'),
-			),
-		);
+				),
+			);
 	}
 
 	/**
-	* Muestra una vista con los balances especificados por compras
-	*/
+	 * Muestra una vista con los balances especificados por compras
+	 */
     public function actionCompras()
 	{
 		$model=new Balance;
@@ -71,20 +69,20 @@ class BalanceController extends Controller
 	}
 
 	/**
-	* Muestra una vista con los balances especificados por ventas
-	*/
+	 * Muestra una vista con los balances especificados por ventas
+	 */
 	public function actionVentas()
 	{
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
-	public function actionMemoria()
-	{
-		echo ini_get("memory_limit");
-	}
+
+	/**
+	 *
+	 */
 	public function actionUpload()
 	{
-            //Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
 		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		if(is_dir($ruta))
 		{
@@ -92,7 +90,7 @@ class BalanceController extends Controller
 		}
 		if(count($archivos)>1)
 		{
-			foreach ($archivos as $key => $value)
+			foreach($archivos as $key => $value)
 			{
 				if($key>1)
 				{ 
@@ -107,9 +105,9 @@ class BalanceController extends Controller
 	}
 
 	/**
-	* Muestra el detalle de un balance
-	* @param $id: el id del balance que va a mostrar
-	*/
+	 * Muestra el detalle de un balance
+	 * @param $id el id del balance que va a mostrar
+	 */
 	public function actionView($id)
 	{
 		$tipo=Balance::model()->findByPk($id)->type;
@@ -170,12 +168,14 @@ class BalanceController extends Controller
 		));
 	}
         
-        	
-        public function actionCarga()
+    /**
+     *
+     */
+    public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
- 
-        $folder='uploads/';// folder for uploaded files
+
+		$folder='uploads/';// folder for uploaded files
         $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
         $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
@@ -258,23 +258,26 @@ class BalanceController extends Controller
 	}
 
 	/**
-	* Action encargada de guardar en base de datos los archivos cargados
-	*/
+	 * Action encargada de guardar en base de datos los archivos cargados
+	 */
 	public function actionGuardar()
 	{
+		//Delclarando variables utiles para el codigo
 		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		$fecha=date('Y-m-d');
 		$nuevafecha=strtotime('-1 day',strtotime($fecha));
 		$nuevafecha=date('Y-m-d',$nuevafecha);
+
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
+
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
-			//Verifico la opcion del usuario a trav�s del post
-			//si la opcion es dia
+			//Verifico la opcion del usuario a través del post
+			//si la opcion es día
 			if($_POST['tipo']=="dia")
 			{
 				//instancio el componente
@@ -284,13 +287,15 @@ class BalanceController extends Controller
 					'Carga Ruta Internal'=>'Ruta Internal Diario',
 					'Carga Ruta External'=>'Ruta External Diario'
 					);
-				//Primero: verifico que archivos estan
+
+				//Primero: verifico que archivos están
 				$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
 				if(count($existentes)<=0)
 				{
 					$this->lector->error=4;
 					$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
 				}
+				//Si la primera condicion se cumple, no deberian haber errores
 				if($this->lector->error==0)
 				{
 					foreach($existentes as $key => $diario)
@@ -697,14 +702,9 @@ class BalanceController extends Controller
        	$this->render('guardar',array('data'=>$resultado));
 	}
 	/**
-	*
-	*/
-	public function actionVer()
-	{
-		$this->render('guardar',array('data'=>$this->nombre));
-	}
-	/**
-	*
+	* Retorna un arreglo con los nombres de las columnas que deberian tener los archivos
+	* @param $archivo string nombre del archivo que se va a consultar
+	* @return $lista[] array lista de nombres de columnas
 	*/ 
 	protected function lista($archivo)
 	{
@@ -725,7 +725,7 @@ class BalanceController extends Controller
         }
         $nombre=$primero.$segundo.$tercero;
         $lista=array(
-        	'Ruta Internal Diario'=>array('nombre'='Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal Diario'=>array('Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	'Ruta External Diario'=>array('Ext. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	);
         return $lista[$nombre];
