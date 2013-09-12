@@ -54,15 +54,9 @@ return array(
 		),*/
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-
-//                     vhost dev:   'connectionString' => 'pgsql:host=192.168.1.239;port=5432;dbname=sori',
-
-			//'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sori',
-
 			'connectionString' => 'pgsql:host=192.168.1.29;port=5432;dbname=sori',
 			'emulatePrepare' => true,
 			'username' => 'postgres',
-			//'password' => 'Nsusfd8263',
 			'password' => '123',
 			'charset' => 'utf8',
 		),
@@ -91,6 +85,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'manuel@newlifeve.com',
 	),
 );
