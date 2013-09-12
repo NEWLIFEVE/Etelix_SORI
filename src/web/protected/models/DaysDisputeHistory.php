@@ -105,4 +105,13 @@ class DaysDisputeHistory extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+                 
+        public static function getDays($contrato){           
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
+            if($model!=NULL){
+                return $model->days;
+            }else{
+                return '';
+            }
+        }
 }

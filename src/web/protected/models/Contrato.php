@@ -142,6 +142,6 @@ class Contrato extends CActiveRecord
         
         public static function DatosContrato($carrier)
         {
-           return self::model()->find("id_carrier=:carrier", array(':carrier'=>$carrier));       
+           return self::model()->find("id_carrier=:carrier and end_date IS NULL", array(':carrier'=>$carrier));       
         }     
 }

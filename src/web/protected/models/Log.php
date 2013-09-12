@@ -63,12 +63,12 @@ class Log extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date' => 'Date',
-			'hour' => 'Hour',
-			'id_log_action' => 'Id Log Action',
-			'id_users' => 'Id Users',
+			'date' => 'Fecha',
+			'hour' => 'Hora',
+			'id_log_action' => 'Accion',
+			'id_users' => 'Usuario',
 			'id_esp' => 'Id Especial',
-			'description_date' => 'Description Date',
+			'description_date' => 'Fecha RR',
 		);
 	}
 
@@ -100,6 +100,7 @@ class Log extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                    'sort'=>array('defaultOrder'=>'date DESC'),
 		));
 	}
 
