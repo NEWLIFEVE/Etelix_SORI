@@ -120,7 +120,12 @@ class Carrier extends CActiveRecord
 				$model->record_date=date("Y-m-d");
 				if($model->save())
 				{
-					return $model->id;
+                                    $modelCM=new CarrierManagers;
+                                    $modelCM->id_carrier=$model->id;
+                                    $modelCM->id_managers=8;
+                                    $modelCM->start_date=date('Y-m-d');
+                                    $modelCM->save();
+                                    return $model->id;
 				}
 			}
 			else
