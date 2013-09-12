@@ -28,7 +28,7 @@ class ContratoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','DynamicDatosContrato'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -65,7 +65,7 @@ class ContratoController extends Controller
 		$model=new Contrato;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contrato']))
 		{
@@ -170,4 +170,20 @@ class ContratoController extends Controller
 			Yii::app()->end();
 		}
 	}
+       public function actionDynamicDatosContrato()
+        {
+           
+           $model = Contrato::DatosContrato($_GET['idCarrier']);
+                 
+           $params['company']=$model->id_company;
+           $params['sign_date']=$model->sign_date;
+           $params['production_date']=$model->production_date;
+           $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
+           $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
+           $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+           
+           //json_encode($params);
+           echo json_encode($params);
+    }       
+
 }

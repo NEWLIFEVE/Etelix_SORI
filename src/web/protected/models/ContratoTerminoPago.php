@@ -107,4 +107,8 @@ class ContratoTerminoPago extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public static function getTpId($contrato){
+            return self::model()->find("id_contrato=:contrato", array(':contrato'=>$contrato))->id_termino_pago;
+        }
 }

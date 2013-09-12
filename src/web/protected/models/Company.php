@@ -95,4 +95,8 @@ class Company extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+                
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 }

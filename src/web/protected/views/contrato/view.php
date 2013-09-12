@@ -26,6 +26,6 @@ $this->menu=array(
 		'production_date',
 		'end_date',
 		'id_carrier',
-		'id_compania',
+		'id_company',
 	),
 )); ?>

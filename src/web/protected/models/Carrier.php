@@ -138,5 +138,10 @@ class Carrier extends CActiveRecord
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
+        
+            public static function getListCarrier()
+    {
+        return CHtml::listData(Carrier::model()->findAll(), 'id', 'name');
+    }
 
 }

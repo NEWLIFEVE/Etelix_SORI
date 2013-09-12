@@ -107,4 +107,8 @@ class ContratoMonetizable extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+                
+        public static function getMonetizableId($contrato){
+            return self::model()->find("id_contrato=:contrato", array(':contrato'=>$contrato))->id_monetizable;
+        }
 }
