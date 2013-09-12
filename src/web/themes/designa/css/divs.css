@@ -231,7 +231,7 @@ margin-top:30px;
     margin-top: -132px;
     display: none;
 }
-#Contrato_end_date,
+/*#Contrato_end_date,
 #Contrato_sign_date,
 #Contrato_production_date,
 #Contrato_id_company,
@@ -241,7 +241,7 @@ margin-top:30px;
 #Contrato_id_disputa
 {
 width: 20%;    
-}
+}*/
 .manageractual
 {
 /*background-color: red; */
@@ -285,6 +285,18 @@ margin-top: 50px;
     margin-top: -35px;
     display: none;*/
 }
+.contratoForm{
+width: 24%;
+display: inline-block;
+}
+.contratoForm input, .contratoForm select{
+    /*float: left;*/
+    width: 90% !important;
+}
+
+@media screen and (max-width: 600px) { /* 13 / 390 */
+    .contratoForm{ width: 45%;}
+}
 .monetizable
 {
     width: 100%;
@@ -315,7 +327,7 @@ margin-top: 50px;
 }
 #Contrato_id_carrier
 {
-width: 46.5%;    
+width: 46%;    
 }
 .carrierSelect
 {
