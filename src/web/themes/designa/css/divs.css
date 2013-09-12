@@ -217,7 +217,12 @@
 }
 .divOculto
 {
+    margin-top: 60px;
     display: none;
+}
+.SegundoNivel
+{
+margin-top:30px;    
 }
 .divOculto1
 {
@@ -237,43 +242,41 @@
 {
 width: 20%;    
 }
-#Contrato_id_managers
+.manageractual
 {
-    border-bottom: none;
-    border-style: none;
- width: 20%;    
+/*background-color: red; */
+margin-top: 50px;
 }
 .pManager
 {
     width: 20%;
-    margin-left: 682px;
-    margin-top: -35px;
+    margin-left: 622px;
+    margin-top: 88px;
     display: none;
 }
 .fechaFirma
 {
     width: 100%;
     margin-left: 292px;
-    margin-top: -80px;
+    margin-top: -82px;
 }
 .company
 {
-/*    width: 20%;
-    margin-left: 682px;
-    margin-top: -35px;
-    display: none;*/
+/*       width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;*/
 }
 .fechaProduccion
 {
     width: 100%;
     margin-left: 570px;
-    margin-top: -79px;
+    margin-top: -80px;
 }
 .fechaFin
 {
     width: 100%;
     margin-left: 850px;
-    margin-top: -79px;
+    margin-top: -80px;
 }
 .TPago
 {
@@ -286,28 +289,45 @@ width: 20%;
 {
     width: 100%;
     margin-left: 292px;
-    margin-top: -80px;
+    margin-top: -82px;
 }
 .disputa
 {
     width: 100%;
     margin-left: 570px;
-    margin-top: -79px;
+    margin-top: -84px;
 }
 .limites
 {
     width: 100%;
     margin-left: 850px;
-    margin-top: -81px;
+    margin-top: -84px;
 }
+
 .CarrierActual
 {
+/*    background-color:red;*/
     width: 60%;
-    margin-left: 682px;
-    margin-top: -20px;
-    display: none;
+    height: 40px;
+    margin-left: 439px;
+    margin-top: -70px;
+    display: none; 
 }
 #Contrato_id_carrier
 {
-width: 46.5%;    
+width: 220%;    
+}
+.carrierSelect
+{
+    position:absolute;
+    margin-top: 50px;  
+}
+.lineabajo
+{
+background: url(../img/lineabajo.png) no-repeat 90% 0;
+height: 16em;
+width: 104px;
+position: absolute;
+margin-top: -65px;
+margin-left: 939px;
 }

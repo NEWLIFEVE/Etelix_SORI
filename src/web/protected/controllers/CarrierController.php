@@ -181,4 +181,5 @@ class CarrierController extends Controller
 			Yii::app()->end();
 		}
 	}
+
 }

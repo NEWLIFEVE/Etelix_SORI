@@ -181,6 +181,8 @@ class ContratoController extends Controller
            $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
            $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
            $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+           $params['carrier']= Carrier::getName($model->id_carrier);
+           $params['fechaManager']=CarrierManagers::getFechaManager($model->id_carrier);
            
            //json_encode($params);
            echo json_encode($params);
