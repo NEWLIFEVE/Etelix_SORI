@@ -229,4 +229,52 @@ class Log extends CActiveRecord
 			return "no";
 		}
 	}
+
+	/**
+	 *
+	 */
+	public static function logDiario()
+	{
+		$cargados="<h3>ESTATUS CARGA</h3>
+  <p>Archivos Cargados:</p><ul>";
+  $nocargados="</ul>
+  <p>Archivos Faltantes:</p>
+  <ul>";
+		if(self::existe(1))
+		{
+			if(self::existe(3))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta External Definitivo</li>";
+			}
+			else
+			{
+				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta External Preliminar</li>";
+				$nocargados.="<li class='nocargados' name='diario'>Ruta External Definitivo</li>";
+			}
+		}
+		else
+		{
+			$nocargados.="<li class='nocargados'>Ruta External</li>";
+		}
+		if(self::existe(2))
+		{
+			if(self::existe(4))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal Definitivo</li>";
+			}
+			else
+			{
+				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta Internal Preliminar</li>";
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal Definitivo</li>";
+			}
+		}
+		else
+		{
+			$nocargados.="<li class='nocargados'>Ruta Internal</li>";
+		}
+		
+		$cargados.="</ul>";
+		$nocargados.="</ul>";
+		return $cargados.$nocargados;
+	}
 }
