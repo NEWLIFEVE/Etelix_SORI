@@ -37,7 +37,8 @@
         <div class="manageractual"> </div>
    </div>
    <div class="divOculto">
-       	<div class="company">
+       <div class="valores">
+       	<div class="contratoForm">
 		<?php echo $form->labelEx($model,'id_company'); ?>
                 <?php echo $form->dropDownList($model,'id_company',
                 CHtml::listData(company::model()->findAll(array('order'=>'name')),'id','name'),
@@ -46,7 +47,7 @@
 		<?php echo $form->error($model,'id_company'); ?>
 	</div>
        
-	<div class="fechaFirma">
+	<div class="contratoForm">
 		<?php echo $form->labelEx($model,'sign_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                            'model' => $model,
@@ -58,7 +59,7 @@
                  <?php echo $form->error($model,'sign_date'); ?>
 	</div>
 
-	<div class="fechaProduccion">
+	<div class="contratoForm">
 		<?php echo $form->labelEx($model,'production_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                            'model' => $model,
@@ -70,7 +71,7 @@
 		<?php echo $form->error($model,'production_date'); ?>
 	</div>
 
-	<div class="fechaFin">
+	<div class="contratoForm">
 		<?php echo $form->labelEx($model,'end_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                            'model' => $model,
@@ -81,8 +82,8 @@
                  ))); ?>
 		<?php echo $form->error($model,'end_date'); ?>
 	</div>
-       <div class="SegundoNivel">
-        <div class="TPago">
+       <!--<div class="SegundoNivel">-->
+        <div class="contratoForm">
 		<?php echo $form->labelEx($model,'id_termino_pago'); ?>
                 <?php echo $form->dropDownList($model,'id_termino_pago',
                 CHtml::listData(TerminoPago::model()->findAll(array('order'=>'id')),'id','name'),
@@ -90,7 +91,7 @@
                 ); ?> 
 		<?php echo $form->error($model,'id_termino_pago'); ?>
 	</div>
-        <div class="monetizable">
+        <div class="contratoForm">
 		<?php echo $form->labelEx($model,'id_monetizable'); ?>
                 <?php echo $form->dropDownList($model,'id_monetizable',
                 CHtml::listData(Monetizable::model()->findAll(array('order'=>'id')),'id','name'),
@@ -98,28 +99,39 @@
                 ); ?> 
 		<?php echo $form->error($model,'id_monetizable'); ?>
 	</div>
-       <div class="disputa">
+       <div class="contratoForm">
 		<?php echo $form->labelEx($model,'id_disputa'); ?>
                 <?php echo $form->textField($model,'id_disputa');?>
 		<?php echo $form->error($model,'id_disputa'); ?>
 	</div>
-        <div class="limites">
-		<?php echo $form->labelEx($model,'id_limites'); ?>
-                <?php echo $form->dropDownList($model,'id_limites',
+        <div class="contratoForm">
+		<?php echo $form->labelEx($model,'id_limite_credito'); ?>
+                <?php echo $form->textField($model,'id_limite_credito',
                 CHtml::listData(Limites::model()->findAll(array('order'=>'name')),'id','name'),
                 array('prompt'=>'Seleccione')
                 ); ?> 
-		<?php echo $form->error($model,'id_limites'); ?>
+		<?php echo $form->error($model,'id_limite_credito'); ?>
 	</div>
-        <br>
-	<div id="botAsignar" class="row b">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+        <div class="contratoForm">
+		<?php echo $form->labelEx($model,'id_limite_compra'); ?>
+                <?php echo $form->textField($model,'id_limite_compra',
+                CHtml::listData(Limites::model()->findAll(array('order'=>'name')),'id','name'),
+                array('prompt'=>'Seleccione')
+                ); ?> 
+		<?php echo $form->error($model,'id_limite_compra'); ?>
 	</div>
        </div>
+        <br>
+        <?php $this->endWidget(); ?>
+	<div id="botAsignar" class="row buttons">
+                
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+	</div>
+       <!--</div>-->
        <div class="lineabajo">
         <!--<img src="/images/lineabajo.png" width="10px" height="45px" >-->
    </div>
-<?php $this->endWidget(); ?>
+
    
    </div>
 </div><!-- form -->
@@ -133,6 +145,7 @@
         var pManager= $('.pManager');
         var NombreCarrier= $('.CarrierActual');
         var idCarrier = $("#Contrato_id_carrier").val();
+        var end_date = $("#Contrato_end_date").val();
         
         $("#Contrato_id_company").val('');
         $("#Contrato_sign_date").val('');
@@ -182,7 +195,9 @@
                                 $('.CarrierActual').append(carrierA);
                                 managerA.slideDown('slow');    
                                 carrierA.slideDown('slow'); 
-                      }       
+                  
+         
+                  }       
 
             }); 
            muestraDiv2.slideDown("slow");
@@ -192,12 +207,32 @@
 
     });
     
-$('#botAsignar').click('on',function()
-{
+$('#botAsignar').click('on',function(e)
+{   
+    e.preventDefault();
     $("#Contrato_id_company").prop("disabled", false);
     $("#Contrato_end_date").prop("disabled", false);
     $("#Contrato_sign_date").prop("disabled", false);
-    
+    var carrier = $("#Contrato_id_carrier").val();
+    var sign_date = $("#Contrato_sign_date").val();
+    var production_date = $("#Contrato_production_date").val();
+    var company = $("#Contrato_id_company").val();
+    var termino_pago = $("#Contrato_id_termino_pago").val();
+    var monetizable = $("#Contrato_id_monetizable").val();
+    var dias_disputa = $("#Contrato_id_disputa").val();
+    var carrier = $("#Contrato_id_carrier").val();
+    var end_date = $("#Contrato_end_date").val();          
+                
+               $.ajax({ 
+                type: "GET",
+                url: "Contrato",
+                data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&id_disputa="+dias_disputa,
+
+                success: function(data) 
+                        {
+                            alert('voy');
+                            alert(data);
+                        }});
 });
 
 </script>

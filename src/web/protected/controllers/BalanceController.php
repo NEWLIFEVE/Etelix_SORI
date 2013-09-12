@@ -735,4 +735,5 @@ class BalanceController extends Controller
         	);
         return $lista[$nombre];
 	}
+        
 }

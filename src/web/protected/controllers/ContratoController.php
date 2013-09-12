@@ -28,7 +28,7 @@ class ContratoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicDatosContrato'),
+				'actions'=>array('index','view','DynamicDatosContrato','Contrato'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -65,18 +65,36 @@ class ContratoController extends Controller
 		$model=new Contrato;
 
 		// Uncomment the following line if AJAX validation is needed
-		 $this->performAjaxValidation($model);
+		 //$this->performAjaxValidation($model);
 
-		if(isset($_POST['Contrato']))
-		{
-                    $sign_date=$_POST['Contrato']['sign_date'];
-                    $production_date=$_POST['Contrato']['production_date'];
-                    $end_date=$_POST['Contrato']['end_date'];
-                    $company=$_POST['Contrato']['id_company'];
-                    $carrier=$_POST['Contrato']['id_carrier'];
-                    $termino_pago=$_POST['Contrato']['id_termino_pago'];
-                    $monetizable=$_POST['Contrato']['id_monetizable'];
-                    $dias_disputa=$_POST['Contrato']['id_disputa'];
+//		if(isset($_POST['Contrato']))
+//		{
+//                     
+//                
+//		}
+
+		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+	public function actionContrato()
+	{
+		$model=new Contrato;
+
+		// Uncomment the following line if AJAX validation is needed
+		 //$this->performAjaxValidation($model);
+               
+//		if(isset($_POST['Contrato']))
+//		{
+                    $sign_date=$_GET['sign_date'];
+                    $production_date=$_GET['production_date'];
+                    $end_date=$_GET['end_date'];
+                    $company=$_GET['id_company'];
+                    $carrier=$_GET['id_carrier'];
+                    $termino_pago=$_GET['id_termino_pago'];
+                    $monetizable=$_GET['id_monetizable'];
+                    $dias_disputa=$_GET['id_disputa'];
+                    $text='';
                     $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
@@ -100,6 +118,8 @@ class ContratoController extends Controller
                                         $modelCTPNEW->id_termino_pago =$termino_pago;
                                         $modelCTPNEW->save();
                                         Log::registrarLog(33,NULL, $modelCTPNEW->id);
+                                        
+                                        $text.= $termino_pago.',';
                                     }
                                 }else{
                                         $modelCTPNEW = new ContratoTerminoPago;
@@ -121,6 +141,7 @@ class ContratoController extends Controller
                                         $modelCMNEW->id_monetizable =$monetizable;
                                         $modelCMNEW->save();
                                         Log::registrarLog(34,NULL, $modelCMNEW->id);
+                                        $text.= $monetizable.',';
                                     }
                                 }else{
                                         $modelCMNEW = new ContratoMonetizable;
@@ -142,6 +163,7 @@ class ContratoController extends Controller
                                         $modelCDNEW->days =$dias_disputa;
                                         $modelCDNEW->save();
                                         Log::registrarLog(38,NULL, $modelCDNEW->id);
+                                        $text.= $dias_disputa.',';
                                     }
                                 }else{
                                         $modelCDNEW = new DaysDisputeHistory;
@@ -151,11 +173,14 @@ class ContratoController extends Controller
                                         $modelCDNEW->save();
                                         Log::registrarLog(38,NULL, $modelCDNEW->id);
                                 }
-                                if($modelAux->save())
-                                    $this->redirect(array('view','id'=>$modelAux->id));
+                                $modelAux->save();
+                                   
                         }else{
                             /*NUEVO CONTRATO*/
-                                $model->attributes=$_POST['Contrato'];
+                                $model->id_company=$company;
+                                $model->id_carrier=$carrier;
+                                $model->sign_date=$sign_date;
+                                $model->production_date=$poduction_date;
                                 $model->end_date=NULL;
                                 $model->save();       
                                 /*TERMINO PAGO*/
@@ -181,16 +206,11 @@ class ContratoController extends Controller
                                 $modelCDNEW->start_date=date('Y-m-d');
                                 $modelCDNEW->days =$dias_disputa;
                                 $modelCDNEW->save();
-                                }
-                                $this->redirect(array('view','id'=>$model->id));
-                        }
-                     
-                
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
+                                
+                                }                                
+                        }                   
+//		}
+             echo $text;   
 	}
 
 	/**

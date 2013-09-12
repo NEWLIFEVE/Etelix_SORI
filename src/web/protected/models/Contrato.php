@@ -26,7 +26,8 @@ class Contrato extends CActiveRecord
 	 */
     public $id_termino_pago;
     public $id_monetizable;
-    public $id_limites;
+    public $id_limite_credito;
+    public $id_limite_compra;
     public $id_managers;
     public $id_disputa;
     public $id_carrier1;
@@ -83,7 +84,8 @@ class Contrato extends CActiveRecord
 			'id_company' => 'Compania',
 			'id_termino_pago' => 'Termino de Pago',
 			'id_monetizable' => 'Monetizable',
-			'id_limites' => 'Limites',
+			'id_limite_credito' => 'Limite de Credito',
+			'id_limite_compra' => 'Limite de Compra',
                         'id_managers' => 'Account Manager:',
                         'id_disputa' => 'Dias para disputas:',
 		);
