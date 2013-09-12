@@ -304,7 +304,7 @@ class ContratoController extends Controller
                 $params['production_date']='';
                 $params['termino_pago']='';
                 $params['monetizable']='';
-                $params['manager']='';
+                $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['dias_disputa']='';
                 $params['carrier']= Carrier::getName($_GET['idCarrier']);
                 $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);

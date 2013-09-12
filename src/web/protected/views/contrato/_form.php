@@ -193,8 +193,10 @@
     
 $('#botAsignar').click('on',function()
 {
-    var end_date = $("#Contrato_end_date").val();
-    alert(end_date);
+    $("#Contrato_id_company").prop("disabled", false);
+    $("#Contrato_end_date").prop("disabled", false);
+    $("#Contrato_sign_date").prop("disabled", false);
+    
 });
 
 </script>
