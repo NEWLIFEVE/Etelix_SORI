@@ -27,28 +27,10 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		//Cada vez que el usuario llegue al index se verificaran si hay archivos en la carpeta uploads y se eliminaran
-		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
-		if(is_dir($ruta))
-		{
-			$archivos=@scandir($ruta);
-		}
-		if(count($archivos)>1)
-		{
-			foreach ($archivos as $key => $value)
-			{
-				if($key>1)
-				{ 
-					if($value!='index.html')
-					{
-						unlink($ruta.$value);
-					}
-				}
-			}
-		}
+		
 		if(!Yii::app()->user->isGuest)
 		{
-			$this->render('upload');
+			$this->render('index');
 		}
 		else
 		{
@@ -147,23 +129,53 @@ class SiteController extends Controller
 		$this->redirect(Yii::app()->homeUrl);
 	}
 
-	public function actionUpload()
-	{
-		Yii::import("ext.EAjaxUpload.qqFileUploader");
- 
-        $folder='uploads/';// folder for uploaded files
-        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
-        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
-        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result = $uploader->handleUpload($folder);
-        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
- 
-        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
-        $fileName=$result['filename'];//GETTING FILE NAME
- 
-        echo $return;// it's array
-	}
 
+        
+        public static function controlAcceso() {
+        //$idUsuario = Yii::app()->user->id;
+        $tipoUsuario = Yii::app()->user->type;
+        /* ADMINISTRADOR */
+        if ($tipoUsuario == 1) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                            array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
+        /* NOC */
+        if ($tipoUsuario == 2) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
+        /* OPERACIONES */
+        if ($tipoUsuario == 3) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                            array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
+        /* FINANZAS */
+        if ($tipoUsuario == 4) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
+        /* RETAIL */
+        if ($tipoUsuario == 5) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
+        }
         
         
 }

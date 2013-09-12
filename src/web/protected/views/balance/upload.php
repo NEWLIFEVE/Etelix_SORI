@@ -41,6 +41,7 @@ $(function() {
     
 </script>
 </head>
+<h1>Carga de Archivos</h1>
 <div id="archivo">
   <ul>
     <li><input type="radio" name="tipo" value="dia"/>Por Día</li>
@@ -53,7 +54,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',
 array(
         'id'=>'uploadFile',
         'config'=>array(
-               'action'=>Yii::app()->createUrl('site/upload'),
+               'action'=>Yii::app()->createUrl('balance/carga'),
                'allowedExtensions'=>array("xls", "xlsx"),//array("jpg","jpeg","gif","exe","mov" and etc...
                'sizeLimit'=>20*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>1*1024,// minimum file size in bytes

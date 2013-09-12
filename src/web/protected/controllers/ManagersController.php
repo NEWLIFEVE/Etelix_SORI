@@ -171,23 +171,23 @@ class ManagersController extends Controller
 		}
 	}
         
-         public function actionCreateCM()
-	{
-		$model=new Managers;
-               $model->scenario="CarrierManagers";
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['CarrierManagers']))
-		{
-			$model->attributes=$_POST['CarrierManagers'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+//         public function actionCreateCM()
+//	{
+//		$model=new Managers;
+//               $model->scenario="CarrierManagers";
+//		// Uncomment the following line if AJAX validation is needed
+//		// $this->performAjaxValidation($model);
+//
+//		if(isset($_POST['CarrierManagers']))
+//		{
+//			$model->attributes=$_POST['CarrierManagers'];
+//			if($model->save())
+//				$this->redirect(array('view','id'=>$model->id));
+//		}
+//
+//		$this->render('admin',array(
+//			'model'=>$model,
+//		));
+//	}
         
 }

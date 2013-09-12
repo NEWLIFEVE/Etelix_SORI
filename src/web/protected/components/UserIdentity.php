@@ -43,7 +43,7 @@ class UserIdentity extends CUserIdentity
 		else 
 		{
 			$this->_id=$user->id;
-			$this->_type=$user->id;
+			$this->_type=$user->id_type_of_user;
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
 		}

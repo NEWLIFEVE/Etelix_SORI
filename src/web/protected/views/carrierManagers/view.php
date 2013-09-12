@@ -16,7 +16,9 @@ $this->breadcrumbs=array(
 //);
 //?>
 
-<h1>Manger #<?php echo $model->id; ?></h1>
+<h1>id #<?php echo $model->id; ?></h1>
+<h1>Manager #<?php echo $_GET['id_managers']; ?></h1>
+<h1>Carrier#<?php echo $_GET['id_carrier']; ?></h1>
 
 <?php //$this->widget('zii.widgets.CDetailView', array(
 //	'data'=>$model,

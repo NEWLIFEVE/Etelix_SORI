@@ -129,16 +129,14 @@ class Carrier extends CActiveRecord
 			}
 		}
 	}
-        /**
-         * 
-         */
-        public function getNames($id)
-        {
-            $carriers=CarrierManagers::model()->findAll('id_managers=:id',array(':id'=>$id));
-	    return CHtml::listData($carriers,'id_carrier','id_carrier');
+        
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
+        
+            public static function getListCarrier()
+    {
+        return CHtml::listData(Carrier::model()->findAll(), 'id', 'name');
+    }
+
 }
-//"SELECT m.name , c.name 
-//              FROM carrier c, managers m, carrier_managers cm
-//              WHERE m.id = cm.id_managers AND c.id = cm.id_carrier AND cm.end_date IS NULL  AND m.name ='{$nombre}'
-//              ORDER BY m.name ASC"

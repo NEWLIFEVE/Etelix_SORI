@@ -27,18 +27,22 @@ class CarrierManagersController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicAsignados', 'DynamicNoAsignados'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
+
+                     
+                        array(  'allow', // Vistas para Administrador
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(1)),
+                        ),
+                        array(  'allow', // Vistas para Operaciones
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(3)),
+                        ),
+                        array(  'allow', // Vistas para Finanzas
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(4)),
+                        ),
+		
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -60,6 +64,32 @@ class CarrierManagersController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionDistComercial()
+	{
+		$model=new CarrierManagers;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['CarrierManagers']))
+		{
+                    
+			$model->attributes=$_POST['CarrierManagers'];
+                        $Asignados = $_POST['Asignados'];
+                        $carriers = " ";
+                        foreach ($Asignados as $value) {
+                            $carriers = $carriers." - ".$value;
+                        }
+                        //$noAsignados = $_POST['No_Asignados'];
+                        
+			//if($model->save())
+				$this->redirect(array('view','id'=>1,'id_managers'=>$_POST['CarrierManagers']['id_managers'],'id_carrier'=>$carriers));
+		}
+
+		$this->render('distComercial',array(
+			'model'=>$model,
+		));
+	}
 	public function actionCreate()
 	{
 		$model=new CarrierManagers;
@@ -70,9 +100,8 @@ class CarrierManagersController extends Controller
 		if(isset($_POST['CarrierManagers']))
 		{
 			$model->attributes=$_POST['CarrierManagers'];
-                        
-			//if($model->save())
-				$this->redirect(array('view','id'=>$model->id_managers));
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -103,7 +132,7 @@ class CarrierManagersController extends Controller
 			'model'=>$model,
 		));
 	}
-
+ 
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -181,16 +210,124 @@ class CarrierManagersController extends Controller
         {
             echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
         }
-    }
-                
+    }        
         public function actionDynamicNoAsignados()
-    {
-          
-//        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
+    {         
+    
         $data = Managers::getListCarriersNOAsignados();
         foreach($data as $value=>$name)
         {
             echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
         }
     }
+    
+    public function actionUpdateDistComercial(){
+        $manager = $_GET['manager'];
+        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+        $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.          
+  
+        if ($manager>0){
+            
+        if (count($asignados)==0){
+            
+        }else{
+         $managerNames=""; 
+         $asigNames="";    
+         $noasigNames="";  
+         $managerNames.= Managers::getName($manager);
+        foreach ($asignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
+            
+            if ($model){
+                
+            }else{
+                $modelAsignar = new CarrierManagers;
+                $modelAsignar->start_date = date("Y-m-d");
+                $modelAsignar->id_carrier = $asignados[$key];
+                $modelAsignar->id_managers = $manager;
+                
+                $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
+                $modelDesasignar->end_date = date("Y-m-d");
+
+             if($modelAsignar->save() && $modelDesasignar->save()){                
+                $asigNames.= Carrier::getName($asignados[$key]).",";
+
+                }else{
+//                    //echo "NOOOOOO PUDO ASIGNAR A: ".$noasignados[$key]." ";
+                }
+            }
+        }
+
+        foreach ($noasignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
+            
+            if ($model){
+                $modelSinAsignar = new CarrierManagers;
+                $model->end_date = date("Y-m-d");
+                $modelSinAsignar->start_date = date("Y-m-d");
+                $modelSinAsignar->id_carrier = $noasignados[$key];
+                $modelSinAsignar->id_managers = 8;
+                if($model->save() && $modelSinAsignar->save()){
+                    $noasigNames.=Carrier::getName($noasignados[$key]).",";
+                }else{
+//                    echo "NOOOOOO PUDO DESASIGNAR A: ".$noasignados[$key]." ";
+                }  
+            }
+        }
+        echo $managerNames.'/'.$noasigNames.'/'.$asigNames;
+                }
+        }else{
+            echo "Debe seleccionar un Manager";
+        }
+    }
+    public function actionBuscaNombres(){
+        $manager = $_GET['manager'];
+        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+//        if (isset($asignados)) {
+//           $asignados = Managers::getListCarriersAsignados($_GET['manager']);
+//        } else { 
+//        }
+//        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+        $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.          
+  
+        if ($manager>0){
+        if (count($asignados)==0){
+        }else{
+         $managerNames=""; 
+         $asigNames="";    
+         $noasigNames="";  
+         $managerNames.= Managers::getName($manager);
+        foreach ($asignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
+            
+            if ($model){
+            }else{
+                $modelAsignar = new CarrierManagers;
+                $modelAsignar->start_date = date("Y-m-d");
+                $modelAsignar->id_carrier = $asignados[$key];
+                $modelAsignar->id_managers = $manager;
+                $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
+                $modelDesasignar->end_date = date("Y-m-d");
+                    $asigNames.= Carrier::getName($asignados[$key]).",";
+            }
+        }
+        foreach ($noasignados as $key => $value) {
+            $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
+            
+            if ($model){
+                $modelSinAsignar = new CarrierManagers;
+                $model->end_date = date("Y-m-d");
+                $modelSinAsignar->start_date = date("Y-m-d");
+                $modelSinAsignar->id_carrier = $noasignados[$key];
+                $modelSinAsignar->id_managers = 8;
+                    $noasigNames.=Carrier::getName($noasignados[$key]).",";
+            }
+        }
+        echo $managerNames.'/'.$noasigNames.'/'.$asigNames;
+                }
+        }else{
+            echo "Debe seleccionar un Manager";
+        }
+    }
+
 }

@@ -2,7 +2,7 @@
 .horas,
 .rerate
 {
-        margin-top: 14px;
+        /*margin-top: 14px;*/
 	background: rgba(0,0,0,0.03);
 	border-radius: 5px;
 	display: inline-block;
@@ -123,7 +123,7 @@
 
 #botAsignar
 {
-  margin-left:240px;
+  margin-left:225px;
 }
 .divVendedor
 {
@@ -160,4 +160,154 @@
 #options_left_all
 {
     display:none;
+}
+
+
+ .cargando
+{
+     background-color: black;
+     height: 100%;
+     position: fixed;
+     text-align: center;
+     top: 0px;
+     width: 100%;
+     content:"";
+     opacity: .7; 
+}
+
+.mensaje
+{
+  background-color:white;
+  border:solid threedshadow;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+  color:#6E6E6E;
+  margin-top:-917px;
+  padding:23px 30px 43px 28px;
+  position:fixed;
+  text-align:center;
+  width:490px;
+  margin-left:calc((34% - 0em) - 76px);
+}
+
+.cancelar
+{
+    margin-top: 30px;
+    margin-left: 150px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+.confirma
+{
+    margin-top: -45px;
+    margin-left: 245px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+
+#welcome
+{
+    background: url(../img/arrow.png) no-repeat 90% 0;
+    height: 19em;
+    width: 79.9em; 
+}
+.divOculto
+{
+    display: none;
+}
+.divOculto1
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -32px;
+    display: none;
+}
+#Contrato_end_date,
+#Contrato_sign_date,
+#Contrato_production_date,
+#Contrato_id_company,
+#Contrato_id_termino_pago,
+#Contrato_id_monetizable,
+#Contrato_id_limites,
+#Contrato_id_disputa
+{
+width: 20%;    
+}
+#Contrato_id_managers
+{
+    border-bottom: none;
+    border-style: none;
+ width: 20%;    
+}
+.pManager
+{
+    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;
+}
+.fechaFirma
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -80px;
+}
+.company
+{
+/*    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;*/
+}
+.fechaProduccion
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;
+}
+.fechaFin
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -79px;
+}
+.TPago
+{
+/*    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;*/
+}
+.monetizable
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -80px;
+}
+.disputa
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;
+}
+.limites
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -81px;
+}
+.CarrierActual
+{
+    width: 60%;
+    margin-left: 682px;
+    margin-top: -20px;
+    display: none;
+}
+#Contrato_id_carrier
+{
+width: 46.5%;    
 }
