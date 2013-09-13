@@ -297,6 +297,8 @@ $('#botAsignar').click('on',function(e)
               }
     }); 
         }});
+          $("#Contrato_id_company").prop("disabled", true);
+    $("#Contrato_sign_date").prop("disabled", true);
 });
 
 </script>
