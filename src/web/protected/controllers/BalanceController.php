@@ -667,7 +667,7 @@ class BalanceController extends Controller
 					$NumErrores=array_filter($erroresArchivos,'falsa');
 					if($NumErrores>=$dias*2)
 					{
-						Log::registrarLog(LogAction::getLikeId('Rerate'));
+						Log::registrarLog(31);
 					}
 				}
 				else

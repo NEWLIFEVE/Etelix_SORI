@@ -1,6 +1,6 @@
 ﻿DROP function ejecutar_rerate()
 /*ejecuta el rerate de todo lo que este en la tabla balance_temp*/
-CREATE OR REPLACE function ejecutar_rerate() RETURNS boolean
+CREATE OR REPLACE function ejecutar_rerate() RETURNS RECORD
 AS $$
 DECLARE
 	b RECORD;
@@ -8,9 +8,9 @@ DECLARE
 	result boolean;
 	min date;
 	max date;
-	idAction int;
+	idAction RECORD;
 BEGIN
-	SELECT id INTO idAction FROM log_action WHERE name = 'Rerate Completado';
+	SELECT * INTO idAction FROM log_action WHERE name = 'Rerate Completado';
 	SELECT MIN(date_balance), MAX(date_balance) INTO min, max FROM balance_temp;
 	WHILE min <= max LOOP
 		FOR b IN SELECT id FROM balance WHERE date_balance=min ORDER BY id ASC LOOP
@@ -21,8 +21,8 @@ BEGIN
 	FOR t IN SELECT * FROM balance_temp ORDER BY id ASC LOOP
 		SELECT compara_balances(t.id) INTO result;
 	END LOOP;
-	INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, idAction, 1, current_date);
-	RETURN true;
+	INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, idAction.id, 1, current_date);
+	RETURN idAction;
 END;
 $$ language 'plpgsql';
 
@@ -183,7 +183,7 @@ CREATE OR REPLACE FUNCTION condicion() RETURNS TRIGGER
 AS $$
 DECLARE 
 	valor integer;
-	result boolean;
+	result RECORD;
 	registro RECORD;
 	es RECORD;
 BEGIN
@@ -191,12 +191,14 @@ BEGIN
 	SELECT * INTO registro FROM log order by id desc limit 1;
 	IF registro.id_log_action=es.id THEN
 		SELECT ejecutar_rerate() INTO result;
-		RETURN registro;
+		RETURN result;
 	ELSE
 		RETURN NULL;
 	END IF;
 END;
 $$ language 'plpgsql';
+
+
 
 CREATE TRIGGER rerate 
 AFTER INSERT ON log
