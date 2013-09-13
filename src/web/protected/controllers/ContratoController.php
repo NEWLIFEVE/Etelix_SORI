@@ -28,7 +28,7 @@ class ContratoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicDatosContrato','Contrato'),
+				'actions'=>array('index','view','DynamicDatosContrato','Contrato','ContratoConfirma'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -77,6 +77,36 @@ class ContratoController extends Controller
 			'model'=>$model,
 		));
 	}
+       public function actionContratoConfirma()
+       {
+                    $sign_date=$_GET['sign_date'];
+                    $production_date=$_GET['production_date'];
+                    $end_date=$_GET['end_date'];
+                    $company=$_GET['id_company'];
+                    $carrier=$_GET['id_carrier'];
+                    $termino_pago=$_GET['id_termino_pago'];
+                    $monetizable=$_GET['id_monetizable'];
+                    $termino_pagoO=$_GET['id_TP_Oculto'];
+                    $monetizableO=$_GET['id_M_Oculto'];
+                    $dias_disputa=$_GET['id_disputa'];
+                    $companyName='';
+                    $carrierName='';
+                    $monetizaName='';
+                    $termino_pName='';
+                    $termino_pNameO='';
+                    $monetizaNameO='';
+                    $text='';
+                    $companyName.=Company::getName($company);
+                    $carrierName.=Carrier::getName($carrier); 
+                    $termino_pName.= TerminoPago::getName($termino_pago);
+                    $monetizaName.= Monetizable::getName($monetizable);
+                    $termino_pNameO.= TerminoPago::getName($termino_pagoO);
+                    $monetizaNameO.= Monetizable::getName($monetizableO);
+                    echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$sign_date.'|'.$production_date.'|'.$end_date.'|'.$monetizaNameO.'|'.$termino_pNameO;
+                       
+                       
+       }
+        
 	public function actionContrato()
 	{
 		$model=new Contrato;
@@ -94,7 +124,14 @@ class ContratoController extends Controller
                     $termino_pago=$_GET['id_termino_pago'];
                     $monetizable=$_GET['id_monetizable'];
                     $dias_disputa=$_GET['id_disputa'];
+                    $termino_pName='';
+                    $monetizaName='';
+                    $companyName='';
+                    $carrierName='';
                     $text='';
+                    $companyName.=Company::getName($company);
+                    $carrierName.=Carrier::getName($carrier);
+
                     $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
@@ -107,6 +144,7 @@ class ContratoController extends Controller
                                     $modelAux->end_date=NULL;
                                 }
                                 /*TERMINO PAGO*/
+                                                
                                 $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCTP!=NULL){
                                     if($modelCTP->id_termino_pago != $termino_pago){
@@ -118,8 +156,9 @@ class ContratoController extends Controller
                                         $modelCTPNEW->id_termino_pago =$termino_pago;
                                         $modelCTPNEW->save();
                                         Log::registrarLog(33,NULL, $modelCTPNEW->id);
-                                        
+
                                         $text.= $termino_pago.',';
+                                        $termino_pName.= TerminoPago::getName($termino_pago);
                                     }
                                 }else{
                                         $modelCTPNEW = new ContratoTerminoPago;
@@ -142,6 +181,7 @@ class ContratoController extends Controller
                                         $modelCMNEW->save();
                                         Log::registrarLog(34,NULL, $modelCMNEW->id);
                                         $text.= $monetizable.',';
+                                        $monetizaName.= Monetizable::getName($monetizable);
                                     }
                                 }else{
                                         $modelCMNEW = new ContratoMonetizable;
@@ -173,8 +213,7 @@ class ContratoController extends Controller
                                         $modelCDNEW->save();
                                         Log::registrarLog(38,NULL, $modelCDNEW->id);
                                 }
-                                $modelAux->save();
-                                   
+                                $modelAux->save();      
                         }else{
                             /*NUEVO CONTRATO*/
                                 $model->id_company=$company;
@@ -210,7 +249,8 @@ class ContratoController extends Controller
                                 }                                
                         }                   
 //		}
-             echo $text;   
+             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa;
+
 	}
 
 	/**

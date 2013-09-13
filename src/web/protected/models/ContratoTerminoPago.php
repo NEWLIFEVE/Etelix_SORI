@@ -116,4 +116,5 @@ class ContratoTerminoPago extends CActiveRecord
                 return '';
             }
         }
+       
 }
