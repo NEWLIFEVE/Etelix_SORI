@@ -13,7 +13,7 @@ $(document).on('ready',function()
 		$("div.horas").fadeOut("slow");
 		$("div.rerate").fadeOut("slow");
 		console.log(msj.acumulador);
-		if(msj.acumulador>=4)
+		if(msj.acumulador>=2)
 		{
 			$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
 		}

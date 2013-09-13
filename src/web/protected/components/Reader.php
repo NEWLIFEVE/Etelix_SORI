@@ -254,7 +254,7 @@ class Reader
                         }
                         else
                         {
-                            $this->model=Balance::model()->find('date_balance=:date AND {$this->destino}=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                            $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
                                     ':date'=>$this->fecha,
                                     ':destino'=>$valores[$this->destino],
                                     ':customer'=>$valores['id_carrier_customer'],
@@ -879,7 +879,7 @@ class Reader
             if($campo!=$this->excel->sheets[0]['cells'][2][$pos])
             {
                 $this->error=self::ERROR_ESTRUC;
-                $this->errorComment.="Columna ".$this->excel->sheets[0]['cells'][2][$pos]." esta en el lugar de ".$campo;
+                $this->errorComment.="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene la columna ".$this->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
                 return false;
             }
         }
@@ -975,7 +975,6 @@ class Reader
         {
             $this->error=self::ERROR_DATE;
             $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
-            //$this->errorComment="Fecha archivo: ".$date_balance." Fecha sistema: ".$fecha."<br>";
             return false;
         }
     }
