@@ -188,7 +188,7 @@ function valForm(objeto)
                                       {
                                       var nopudo = 'Desasignado:';
                                       }
-                                var espere = $('.mensaje').html("<h5>Al manager: <b>" + managerNames + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "\
+                                var espere = $('.mensaje').html("<h5>Al manager <b>" + managerNames + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "\
                                                              <br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                                 setTimeout(function()
                                 {
