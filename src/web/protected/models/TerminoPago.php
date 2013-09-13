@@ -95,4 +95,7 @@ class TerminoPago extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public static function getName($termino_pago){           
+            return self::model()->find("id=:id", array(':id'=>$termino_pago))->name;
+        }
 }
