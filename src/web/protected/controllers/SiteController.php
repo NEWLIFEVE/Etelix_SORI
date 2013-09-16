@@ -128,9 +128,7 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-
-
-        
+      
         public static function controlAcceso() {
         //$idUsuario = Yii::app()->user->id;
         $tipoUsuario = Yii::app()->user->type;

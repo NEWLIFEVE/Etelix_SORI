@@ -120,7 +120,14 @@
                 ); ?> 
 		<?php echo $form->error($model,'id_limite_compra'); ?>
 	</div>
+       <input type="hidden" id="dias_disputa_Oculto"  value="">
+       <input type="hidden" id="monetizable_Oculto"  value="">
+       <input type="hidden" id="TerminoP_Oculto"  value="">
+       <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
+       <input type="hidden" id="F_P_produccion_Oculto"  value="">
+       
        </div>
+
         <br>
         <?php $this->endWidget(); ?>
 	<div id="botAsignar" class="row buttons">
@@ -174,19 +181,24 @@
                                 $("#Contrato_end_date").prop("disabled", true);
                                 $("#Contrato_sign_date").prop("disabled", false);
                             }
-                            
                             $("#Contrato_sign_date").val(obj.sign_date);
                             $("#Contrato_production_date").val(obj.production_date);
                             $("#Contrato_id_termino_pago").val(obj.termino_pago);
                             $("#Contrato_id_monetizable").val(obj.monetizable);
                             $("#Contrato_id_managers").val(obj.manager);
                             $("#Contrato_id_disputa").val(obj.dias_disputa);
-
+   
+                            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
+                            $("#F_P_produccion_Oculto").val(obj.production_date);
+                            $("#TerminoP_Oculto").val(obj.termino_pago);
+                            $("#monetizable_Oculto").val(obj.monetizable);
+                            $("#dias_disputa_Oculto").val(obj.dias_disputa);
+                
                             var manageractual = (obj.manager);
                             var carrierenlabel = (obj.carrier);
                             var fechaManagerCarrier = (obj.fechaManager);
-                            
-                           var managerA = $("<label><h3 style='margin-left: -66px; margin-top: \n\
+
+                            var managerA = $("<label><h3 style='margin-left: -66px; margin-top: \n\
                                              105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\
                                              -10px; '>         </h6></label>");
                             var carrierA = $("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\
@@ -195,16 +207,12 @@
                                 $('.CarrierActual').append(carrierA);
                                 managerA.slideDown('slow');    
                                 carrierA.slideDown('slow'); 
-                  
-         
-                  }       
-
+                        }   
             }); 
            muestraDiv2.slideDown("slow");
            pManager.slideDown("slow");
            muestraDiv1.slideDown("slow");
            NombreCarrier.slideDown("slow");
-
     });
     
 $('#botAsignar').click('on',function(e)
@@ -221,18 +229,76 @@ $('#botAsignar').click('on',function(e)
     var monetizable = $("#Contrato_id_monetizable").val();
     var dias_disputa = $("#Contrato_id_disputa").val();
     var carrier = $("#Contrato_id_carrier").val();
-    var end_date = $("#Contrato_end_date").val();          
-                
+    var end_date = $("#Contrato_end_date").val(); 
+    var diasDisputaOculto = $("#dias_disputa_Oculto").val();
+    var F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val();
+    var F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val();
+
+    var monetizaOculto = $("#monetizable_Oculto").val();      
+    var TPOculto = $("#TerminoP_Oculto").val();  
+               
+                $.ajax({ 
+                type: "GET",
+                url: "ContratoConfirma",
+                data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&id_disputa="+dias_disputa+"&id_M_Oculto="+monetizaOculto+"&id_TP_Oculto="+TPOculto,
+
+                success: function(data) 
+                        {
+                          var contrato=data.split("|");
+                          var carierNames=contrato[0].split(",");
+                          var companyName=contrato[1].split(",");
+                          var termino_pName=contrato[2].split(",");
+                          var monetizableName=contrato[3].split(",");
+                          var dias_disputa=contrato[4].split(",");
+                          var sign_date=contrato[5].split(",");
+                          var production_date=contrato[6].split(",");
+                          var end_date=contrato[7].split(",");
+                          var monetizaNameO=contrato[8].split(",");
+                          var termino_pNameO=contrato[9].split(",");
+
+                          var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el Contrato \n\
+                                      \n\: <br><b>("+carierNames+" / "+companyName+")</b></h4>\n\<p><h6>Terminos de pago de: "+termino_pNameO+" a "+termino_pName+"<p><p>Monetizable de: "+monetizaNameO+" a "+monetizableName+"<p>Dias de Disputa de: "+diasDisputaOculto+" a "+dias_disputa+"<p>\n\
+                                      <p>Fecha de firma de contrato: "+F_Firma_Contrato_Oculto+" a  "+sign_date+"<p>Fecha de Puesta en Produccion: "+F_P_produccion_Oculto+" a "+production_date+"<p> "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar' class='cancelar'>\n\
+                                      <img src='/images/cancelar.png'width='90px' height='50px'/>\n\&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
+                                      width='85px' height='45px'/></div></div>").hide();
+                                  $("body").append(revisa);
+                                  revisa.fadeIn('fast');
+                    
+        $('#confirma,#cancelar').on('click', function()
+    {
+        var tipo=$(this).attr('id');
+        if(tipo=="confirma")
+          {             
                $.ajax({ 
                 type: "GET",
                 url: "Contrato",
                 data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&id_disputa="+dias_disputa,
 
                 success: function(data) 
-                        {
-                            alert('voy');
-                            alert(data);
-                        }});
+                        {                          
+                         var exito = $('.mensaje').html("<h4>Se realizaron los siguientes cambios en el Contrato \n\
+                                      \n\: <br><b>("+carierNames+" / "+companyName+")</b></h4>\n\<p><h6>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                      </h6><p>\n\
+                                      <img src='/images/si.png'width='90px' height='50px'/>").hide().fadeIn('fast');
+                                setTimeout(function()
+                                {
+                                    exito.fadeOut('fast');
+                                }, 4000);
+
+                                setTimeout(function()
+                                {
+                                    $('.cargando').fadeOut('fast');
+                                }, 4000);
+                        }});  
+          }
+          else
+              {
+                revisa.fadeOut('fast');  
+              }
+    }); 
+        }});
+          $("#Contrato_id_company").prop("disabled", true);
+    $("#Contrato_sign_date").prop("disabled", true);
 });
 
 </script>
