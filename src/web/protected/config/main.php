@@ -53,6 +53,7 @@ return array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),*/
 		// uncomment the following to use a MySQL database
+
             'db'=>array(
 
                         'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
@@ -63,6 +64,7 @@ return array(
                                     //'password'=>'Nsusfd8263',
                                     'charset'=>'utf8',
                         ),
+
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
