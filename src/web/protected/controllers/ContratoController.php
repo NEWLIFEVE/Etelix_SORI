@@ -155,7 +155,7 @@ class ContratoController extends Controller
                                         $modelCTPNEW->start_date=date('Y-m-d');
                                         $modelCTPNEW->id_termino_pago =$termino_pago;
                                         $modelCTPNEW->save();
-                                        Log::registrarLog(33,NULL, $modelCTPNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
 
                                         $text.= $termino_pago.',';
                                         $termino_pName.= TerminoPago::getName($termino_pago);
@@ -166,7 +166,7 @@ class ContratoController extends Controller
                                         $modelCTPNEW->start_date=date('Y-m-d');
                                         $modelCTPNEW->id_termino_pago =$termino_pago;
                                         $modelCTPNEW->save();
-                                        Log::registrarLog(33,NULL, $modelCTPNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
                                 }
                                 /*MONETIZABLE*/
                                 $modelCM=  ContratoMonetizable::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
@@ -179,7 +179,7 @@ class ContratoController extends Controller
                                         $modelCMNEW->start_date=date('Y-m-d');
                                         $modelCMNEW->id_monetizable =$monetizable;
                                         $modelCMNEW->save();
-                                        Log::registrarLog(34,NULL, $modelCMNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
                                         $text.= $monetizable.',';
                                         $monetizaName.= Monetizable::getName($monetizable);
                                     }
@@ -189,7 +189,7 @@ class ContratoController extends Controller
                                         $modelCMNEW->start_date=date('Y-m-d');
                                         $modelCMNEW->id_monetizable =$monetizable;
                                         $modelCMNEW->save();
-                                        Log::registrarLog(34,NULL, $modelCMNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
                                 }
                                 /*DIAS_DISPUTA*/
                                 $modelCD= DaysDisputeHistory::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
@@ -202,7 +202,7 @@ class ContratoController extends Controller
                                         $modelCDNEW->start_date=date('Y-m-d');
                                         $modelCDNEW->days =$dias_disputa;
                                         $modelCDNEW->save();
-                                        Log::registrarLog(38,NULL, $modelCDNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Dias Max Disputa'),NULL, $modelCDNEW->id);
                                         $text.= $dias_disputa.',';
                                     }
                                 }else{
@@ -211,7 +211,7 @@ class ContratoController extends Controller
                                         $modelCDNEW->start_date=date('Y-m-d');
                                         $modelCDNEW->days =$dias_disputa;
                                         $modelCDNEW->save();
-                                        Log::registrarLog(38,NULL, $modelCDNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Dias Max Disputa'),NULL, $modelCDNEW->id);
                                 }
                                 $modelAux->save();      
                         }else{
