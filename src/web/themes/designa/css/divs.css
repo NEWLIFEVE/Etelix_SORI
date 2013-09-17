@@ -184,12 +184,12 @@
   border-top-left-radius:8px;
   border-top-right-radius:8px;
   color:#6E6E6E;
-  margin-top:-917px;
+  top:10%;
   padding:23px 30px 43px 28px;
   position:fixed;
   text-align:center;
   width:490px;
-  margin-left:calc((34% - 0em) - 76px);
+  margin-left:30%;
 }
 
 .cancelar
@@ -217,8 +217,16 @@
 }
 .divOculto
 {
-    margin-top: 60px;
+    margin-top: 45px;
     display: none;
+}
+.formularioContrato
+{
+    display: none;
+}
+.note
+{
+    display:none;
 }
 .SegundoNivel
 {
