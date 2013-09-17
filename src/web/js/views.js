@@ -432,7 +432,7 @@ $('#botAsignar').click('on',function(e)
                         }}); 
 //                         $(".formularioContrato").hide("slow");   
 //                         $(".note").hide("slow"); 
-//                         $('#Contrato_id_carrier').val('');
+                         $('#Contrato_id_carrier').val('');                    
           }
           else
               {
