@@ -86,25 +86,30 @@ class ContratoController extends Controller
                     $carrier=$_GET['id_carrier'];
                     $termino_pago=$_GET['id_termino_pago'];
                     $monetizable=$_GET['id_monetizable'];
-                    $termino_pagoO=$_GET['id_TP_Oculto'];
-                    $monetizableO=$_GET['id_M_Oculto'];
                     $dias_disputa=$_GET['id_disputa'];
+                     $termino_pagoO=$_GET['id_TP_Oculto'];
+                     $monetizableO=$_GET['id_M_Oculto'];
                     $companyName='';
                     $carrierName='';
                     $monetizaName='';
                     $termino_pName='';
                     $termino_pNameO='';
                     $monetizaNameO='';
-                    $text='';
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier); 
                     $termino_pName.= TerminoPago::getName($termino_pago);
                     $monetizaName.= Monetizable::getName($monetizable);
+                    if ($termino_pagoO==''||$monetizableO=='')
+                    {
+                       $termino_pNameO.=false; 
+                       $monetizaNameO.=false;
+                    }
+                    else
+                        {
                     $termino_pNameO.= TerminoPago::getName($termino_pagoO);
                     $monetizaNameO.= Monetizable::getName($monetizableO);
-                    echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$sign_date.'|'.$production_date.'|'.$end_date.'|'.$monetizaNameO.'|'.$termino_pNameO;
-                       
-                       
+                        }
+                    echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$sign_date.'|'.$production_date.'|'.$end_date.'|'.$monetizaNameO.'|'.$termino_pNameO;         
        }
         
 	public function actionContrato()
@@ -219,7 +224,7 @@ class ContratoController extends Controller
                                 $model->id_company=$company;
                                 $model->id_carrier=$carrier;
                                 $model->sign_date=$sign_date;
-                                $model->production_date=$poduction_date;
+                                $model->production_date=$production_date;
                                 $model->end_date=NULL;
                                 $model->save();       
                                 /*TERMINO PAGO*/

@@ -283,8 +283,8 @@ class CarrierManagersController extends Controller
     public function actionBuscaNombres(){
         $manager = $_GET['manager'];
         $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
-//        if (isset($asignados)) {
-//           $asignados = Managers::getListCarriersAsignados($_GET['manager']);
+//        if ($asignados) {
+//         
 //        } else { 
 //        }
 //        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
