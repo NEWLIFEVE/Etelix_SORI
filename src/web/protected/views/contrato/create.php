@@ -13,6 +13,6 @@
 //);
 ?>
 
-<h1>Contrato</h1>
+<h1>Condiciones Comerciales</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
