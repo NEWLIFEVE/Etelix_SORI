@@ -125,6 +125,9 @@ class Managers extends CActiveRecord
                   Where x.id_managers ='8' and x.id_carrier = c.id and x.end_date IS NULL ORDER BY c.name ASC";
             return CHtml::listData(Carrier::model()->findAllBySql($sql),'id','name');
 	}
+         public static function getName($manager){           
+            return self::model()->find("id=:id", array(':id'=>$manager))->lastname;
+        }
           
 }
 

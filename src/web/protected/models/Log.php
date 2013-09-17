@@ -10,6 +10,7 @@
  * @property integer $id_log_action
  * @property integer $id_users
  * @property string $description_date
+ * @property string $id_esp
  *
  * The followings are the available model relations:
  * @property LogAction $idLogAction
@@ -62,11 +63,12 @@ class Log extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date' => 'Date',
-			'hour' => 'Hour',
-			'id_log_action' => 'Id Log Action',
-			'id_users' => 'Id Users',
-			'description_date' => 'Description Date',
+			'date' => 'Fecha',
+			'hour' => 'Hora',
+			'id_log_action' => 'Accion',
+			'id_users' => 'Usuario',
+			'id_esp' => 'Id Especial',
+			'description_date' => 'Fecha RR',
 		);
 	}
 
@@ -93,10 +95,12 @@ class Log extends CActiveRecord
 		$criteria->compare('hour',$this->hour,true);
 		$criteria->compare('id_log_action',$this->id_log_action);
 		$criteria->compare('id_users',$this->id_users);
+		$criteria->compare('id_esp',$this->id_esp);
 		$criteria->compare('description_date',$this->description_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                    'sort'=>array('defaultOrder'=>'date DESC'),
 		));
 	}
 
@@ -114,7 +118,7 @@ class Log extends CActiveRecord
 	/**
 	* Encargada de registrar el evento pasado como id
 	*/
-	public static function registrarLog($id,$description_date=null)
+	public static function registrarLog($id,$description_date=null,$id_esp=null)
 	{
 		$model=new self;
 		$model->hour=date("H:i:s");
@@ -122,6 +126,7 @@ class Log extends CActiveRecord
 		$model->id_log_action=$id;
 		$model->id_users=Yii::app()->user->id;
 		$model->description_date=$description_date;
+		$model->id_esp=$id_esp;
 		if($model->save())
 		{
 			return true;
@@ -223,5 +228,53 @@ class Log extends CActiveRecord
 		{
 			return "no";
 		}
+	}
+
+	/**
+	 *
+	 */
+	public static function logDiario()
+	{
+		$cargados="<h3>ESTATUS CARGA</h3>
+  <p>Archivos Cargados:</p><ul>";
+  $nocargados="</ul>
+  <p>Archivos Faltantes:</p>
+  <ul>";
+		if(self::existe(1))
+		{
+			if(self::existe(3))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta External Definitivo</li>";
+			}
+			else
+			{
+				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta External Preliminar</li>";
+				$nocargados.="<li class='nocargados' name='diario'>Ruta External Definitivo</li>";
+			}
+		}
+		else
+		{
+			$nocargados.="<li class='nocargados'>Ruta External</li>";
+		}
+		if(self::existe(2))
+		{
+			if(self::existe(4))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal Definitivo</li>";
+			}
+			else
+			{
+				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta Internal Preliminar</li>";
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal Definitivo</li>";
+			}
+		}
+		else
+		{
+			$nocargados.="<li class='nocargados'>Ruta Internal</li>";
+		}
+		
+		$cargados.="</ul>";
+		$nocargados.="</ul>";
+		return $cargados.$nocargados;
 	}
 }

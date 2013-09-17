@@ -71,33 +71,9 @@ array(
 ));
 ?>
 <div class="diario oculta">
-  <h3>ESTATUS CARGA</h3>
-  <p>Archivos Cargados:</p>
-  <ul>
-      <?php
-      if(Log::existe(2))
-      {
-        echo "<li class='cargados' name='diario'>Ruta Internal</li>";
-      }
-      if(Log::existe(1))
-      {
-        echo "<li class='cargados' name='diario'>Ruta External</li>";
-      }
-      ?>
-  </ul>
-  <p>Archivos Faltantes:</p>
-  <ul>
-      <?php
-      if(!Log::existe(2))
-      {
-        echo "<li class='nocargados'>Ruta Internal</li>";
-      }
-      if(!Log::existe(1))
-      {
-        echo "<li class='nocargados'>Ruta External</li>";
-      }
-      ?>
-  </ul>
+  <?php
+  echo Log::logDiario();
+  ?>
 </div>
 <div class="horas oculta">
   <h3>ESTATUS CARGA</h3>
@@ -146,10 +122,10 @@ array(
       ?>
       <li><?php
       $listo=Log::getListo();
-      if($listo == "procesando")
+      /*if($listo == "procesando")
       {
         echo "Procesando <img src='/images/gif-load.gif'>";
-      }
+      }*/
       ?></li>
   </ul>
 </div>

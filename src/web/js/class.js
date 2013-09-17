@@ -10,7 +10,7 @@ mensajes.prototype.contar=function(objeto)
 {
 	console.log("Contar");
 	console.log(objeto);
-	$(objeto).each(function()
+	$(objeto).filter(function(){ return $(this).attr('id')=="definitivo"; }).each(function()
 	{
 		men.acumulador=men.acumulador+parseFloat(1);
 		console.log(men.acumulador);

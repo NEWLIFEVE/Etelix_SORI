@@ -128,9 +128,7 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-
-
-        
+      
         public static function controlAcceso() {
         //$idUsuario = Yii::app()->user->id;
         $tipoUsuario = Yii::app()->user->type;
@@ -138,8 +136,10 @@ class SiteController extends Controller
         if ($tipoUsuario == 1) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-                            array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
                             array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
+                            array('label'=>'Log', 'url'=>array('/log/admin')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
@@ -147,7 +147,7 @@ class SiteController extends Controller
         if ($tipoUsuario == 2) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-                array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
@@ -155,7 +155,7 @@ class SiteController extends Controller
         if ($tipoUsuario == 3) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-                            array('label'=>'Cargar Archivos', 'url'=>array('/balance/upload')),
+                            array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
@@ -164,6 +164,7 @@ class SiteController extends Controller
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
                             array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
