@@ -41,7 +41,7 @@
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_company'); ?>
                         <?php echo $form->dropDownList($model,'id_company',
-                        CHtml::listData(Company::model()->findAll(array('order'=>'name')),'id','name'),
+                        CHtml::listData(Company::model()->findAll(array('order'=>'id')),'id','name'),
                         array('prompt'=>'Seleccione')
                         ); ?>
                         <?php echo $form->error($model,'id_company'); ?>
