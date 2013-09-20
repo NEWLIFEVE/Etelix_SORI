@@ -59,7 +59,7 @@ function valForm(objeto)
 		}
 		else
 		{
-			var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'>Aceptar</button><button name='cancelar'>Cancelar</button>";
+			var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
 			var estilo={
 //				'background':'#FFF6BF',
 //				'border':'10px #FFD324 solid',
@@ -148,9 +148,8 @@ function valForm(objeto)
                                       }
                        var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en la Distribucion \n\
                                       \n\Comercial para el manager: <br><b>"+managerNames+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
-                                      "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar' class='cancelar'>\n\
-                                      <img src='/images/cancelar.png'width='90px' height='50px'/>\n\&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                      "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
                                }
@@ -317,7 +316,7 @@ function valForm(objeto)
            NombreCarrier.slideDown("slow");
     });
     
-$('#botAsignar').click('on',function(e)
+$('#botAsignarContrato').click('on',function(e)
 {   
     e.preventDefault();
     $("#Contrato_id_company").prop("disabled", false);
@@ -357,13 +356,12 @@ $('#botAsignar').click('on',function(e)
                           var monetizaNameO=contrato[8].split(",");
                           var termino_pNameO=contrato[9].split(",");
 
-                 if(TPOculto==false){
+                 if(TPOculto==false && monetizaOculto==false){
                             var guardoEdito=" Se guardo con exito el Contrato";        
                             var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
                                       \n\ <br><b>( "+carierNames+" / "+companyName+" )</b></h4>\n\Con las siguientes condiciones comerciales:<p><h6>Termino de pago: "+termino_pName+"<p><p>Monetizable: "+monetizableName+"<p>Dias de disputa: "+dias_disputa+"<p>\n\
-                                      <p>Fecha de Firma de contrato: "+sign_date+"<p>Fecha de puesta en produccion: "+production_date+"<p> "+end_date+"<p></h6><p><p>Si todos los datos a almacenar son correcstos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar' class='cancelar'>\n\
-                                      <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                      <p>Fecha de Firma de contrato: "+sign_date+"<p>Fecha de puesta en produccion: "+production_date+"<p> "+end_date+"<p></h6><p><p>Si todos los datos a almacenar son correcstos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
                       }
@@ -401,9 +399,8 @@ $('#botAsignar').click('on',function(e)
                                }
                           var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el Contrato \n\
                                       \n\: <br><b>("+carierNames+" / "+companyName+" )</b></h4>\n\<p><h6>"+backTPago+ ""+termino_pName+"<p><p>"+backMonetizable+" "+monetizableName+"<p>"+backDiasDiasputa+" "+dias_disputa+"<p>\n\
-                                      <p>"+backF_Firma+" "+sign_date+"<p> "+backProduccion+" "+production_date+"<p> "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar' class='cancelar'>\n\
-                                      <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                      <p>"+backF_Firma+" "+sign_date+"<p> "+backProduccion+" "+production_date+"<p> "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p>\n\
+                                      <p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');         
                           }

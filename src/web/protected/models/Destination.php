@@ -45,6 +45,7 @@ class Destination extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination'),
+                        'ZonaGeografica' => array(self::HAS_MANY, 'ZonaGeografica', 'id'),
 		);
 	}
 
@@ -115,4 +116,24 @@ class Destination extends CActiveRecord
 			}
 		}
 	}
+        public static function getListDestinationAsignados($id)
+	{
+            $sql="Select c.id, c.name
+                  From destination c, zona_geografica x
+                  Where c.id =id_destination and x.id=$id";
+            return CHtml::listData(Destination::model()->findAllBySql($sql),'id','name');
+	}
+        public static function getListDestinationNOAsignados()
+	{
+            $sql="Select c.id, c.name
+                  From destination c, zona_geografica x
+                  Where c.id =id_destination and x.id='2'";
+                      
+//           $sql=" Select c.id, c.name
+//                  From destination c, zona_destination x
+//                  Where x.id_zona_geografica ='1'";
+            return CHtml::listData(Destination::model()->findAllBySql($sql),'id','name');
+	}
+        
+        
 }
