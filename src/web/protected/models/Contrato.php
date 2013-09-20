@@ -79,7 +79,7 @@ class Contrato extends CActiveRecord
 			'id' => 'ID',
 			'sign_date' => 'Fecha Firma de Contrato',
 			'production_date' => 'Fecha puesta en Produccion',
-			'end_date' => 'End Date',
+			'end_date' => 'Fecha fin de Contrato',
 			'id_carrier' => 'Carriers',
 			'id_company' => 'Compania',
 			'id_termino_pago' => 'Termino de Pago',

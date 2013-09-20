@@ -1,25 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "destination".
+ * This is the model class for table "geographic_zone".
  *
- * The followings are the available columns in table 'destination':
+ * The followings are the available columns in table 'geographic_zone':
  * @property integer $id
- * @property string $name
- * @property integer $id_geographic_zone
+ * @property string $name_zona
+ * @property string $color_zona
  *
  * The followings are the available model relations:
- * @property GeographicZone $idGeographicZone
- * @property Balance[] $balances
+ * @property Destination[] $destinations
+ * @property DestinationInt[] $destinationInts
  */
-class Destination extends CActiveRecord
+class GeographicZone extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'destination';
+		return 'geographic_zone';
 	}
 
 	/**
@@ -30,12 +30,11 @@ class Destination extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('id_geographic_zone', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>50),
+			array('name_zona, color_zona', 'required'),
+			array('name_zona, color_zona', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, id_geographic_zone', 'safe', 'on'=>'search'),
+			array('id, name_zona, color_zona', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,8 +46,8 @@ class Destination extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idGeographicZone' => array(self::BELONGS_TO, 'GeographicZone', 'id_geographic_zone'),
-			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination'),
+			'destinations' => array(self::HAS_MANY, 'Destination', 'id_geographic_zone'),
+			'destinationInts' => array(self::HAS_MANY, 'DestinationInt', 'id_geographic_zone'),
 		);
 	}
 
@@ -59,8 +58,8 @@ class Destination extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Nombre',
-                        'id_geographic_zone' => 'Id Geographic Zone',
+			'name_zona' => 'Name Zona',
+			'color_zona' => 'Color Zona',
 		);
 	}
 
@@ -83,8 +82,8 @@ class Destination extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('id_geographic_zone',$this->id_geographic_zone);
+		$criteria->compare('name_zona',$this->name_zona,true);
+		$criteria->compare('color_zona',$this->color_zona,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -95,30 +94,10 @@ class Destination extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Destination the static model class
+	 * @return GeographicZone the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-	public static function getId($nombre=null)
-	{
-		if($nombre != null)
-		{
-			$model=self::model()->find('name=:nombre',array(':nombre'=>$nombre));
-			if($model == null)
-			{
-				$model=new self;
-				$model->name=$nombre;
-				if($model->save())
-				{
-					return $model->id;
-				}
-			}
-			else
-			{
-				return $model->id;
-			}
-		}
 	}
 }

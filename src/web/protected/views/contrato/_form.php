@@ -121,6 +121,8 @@
                         <?php echo $form->error($model,'id_limite_compra'); ?>
                 </div>
                <input type="hidden" id="dias_disputa_Oculto"  value="">
+               <input type="hidden" id="credito_Oculto"  value="">
+               <input type="hidden" id="compra_Oculto"  value="">
                <input type="hidden" id="monetizable_Oculto"  value="">
                <input type="hidden" id="TerminoP_Oculto"  value="">
                <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
@@ -130,7 +132,7 @@
         <br>
         <?php $this->endWidget(); ?>
 
-                <div id="botAsignar" class="row buttons">
+                <div id="botAsignarContrato" class="row buttons">
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
                 </div>
       </div>
