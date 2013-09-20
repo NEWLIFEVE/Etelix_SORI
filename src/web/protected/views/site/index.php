@@ -27,8 +27,9 @@ $this->pageTitle=Yii::app()->name;
         ]);
 
         var options = {
-          title: 'Rendimiento de la compañia',
-          hAxis: {title: 'Años',  titleTextStyle: {color: 'red'}}
+          //title: 'Rendimiento de la compañia',
+          hAxis: {title: '(Grafico de Bienvenida, NO refleja data real)',  titleTextStyle: {color: '#555'}},
+          colors: ['#555', '#64B69C', '#53A8C7', '#F7D662', '#70AE24' , '#999999']    
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
@@ -36,10 +37,13 @@ $this->pageTitle=Yii::app()->name;
       }
     </script>
   </head>
+  <div id="welcome">
 <h1>Bienvenido a  <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
-<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<!--<div id="chart_div" style="width: 900px; height: 400px;"></div>-->
+<h4>Sistema de Origen</h4>
 
-
+<h2 align="center" >Haga click en alguna opcion del menu para empezar</h2>
+</div>
 
 
 <!--<p>Congratulations! You have successfully created your Yii application.</p>

@@ -1,5 +1,13 @@
 <?php
-Class Utility{
+/**
+ * @package components
+ */
+Class Utility
+{
+    /**
+     * @param $fecha date la fecha a formatear
+     * @return $fechaFinal string fecha formateada para base de datos
+     */
 	public static function formatDate($fecha=null)
 	{
         if($fecha==NULL)
@@ -28,6 +36,10 @@ Class Utility{
         }
         return $fechaFinal;
     }
+
+    /**
+     *
+     */
     public static function notNull($valor)
     {
         if($valor===null)
@@ -35,6 +47,7 @@ Class Utility{
 
         return $valor;
     }
+    
     /**
     * Retorna el numero de dias entre una fecha y otra
     */

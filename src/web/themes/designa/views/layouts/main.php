@@ -30,13 +30,23 @@
 <div class="container">
 	<header id="navtop">
 		<a href="/" class="logo fleft">
-			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.0.1">
+			<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.2.0">
 		</a>
-		V 1.0.1
+		V 1.2.0
 		<nav class="fright">
-			<?php $this->widget('zii.widgets.CMenu',array(
+			<?php 
+                         Yii::import('webroot.protected.controllers.SiteController');
+                         if((!Yii::app()->user->isGuest)){
+                        
+                        $menuItems = SiteController::controlAcceso();   
+                        $this->widget('zii.widgets.CMenu',array(
+				'items'=>$menuItems
+				)); 
+                         }else{
+                        $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
-					array('label'=>'Home', 'url'=>array('/site/index')),
+
+					//array('label'=>'Home', 'url'=>array('/site/index')),
 					/*array('label'=>'Carrier', 'url'=>array('/carrier/admin'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Ventas', 'url'=>array('/balance/ventas'), 'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Compras', 'url'=>array('/balance/compras'), 'visible'=>!Yii::app()->user->isGuest),
@@ -44,6 +54,7 @@
 					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 					),
 				)); 
+                         }
 			?>
 		</nav>
 	</header>

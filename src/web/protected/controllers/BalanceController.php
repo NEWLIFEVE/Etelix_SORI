@@ -3,10 +3,11 @@
 class BalanceController extends Controller
 {
 	/**
-	* Atributo para instanciar el componente reader
-	*/
+	 * Atributo para instanciar el componente reader
+	 */
 	public $lector;
 	private $nombre;
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -32,31 +33,35 @@ class BalanceController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','ventas','compras', 'guardar', 'ver', 'memoria'),
+			array('allow', // Vistas para Administrador
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload'),
 				'users'=>array_merge(Users::usersByType(1)),
-			),
-			/*array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('guardar'),
+				),
+			array('allow', // Vistas para NOC
+				'actions'=>array('index','guardar','upload'),
 				'users'=>array_merge(Users::usersByType(2)),
-			),*/
+				),
+			array('allow', // Vistas para Operaciones
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload'),
+				'users'=>array_merge(Users::usersByType(3)),
+				),
+			array('allow', // Vistas para Finanzas
+				'actions'=>array(''),
+				'users'=>array_merge(Users::usersByType(4)),
+				),
+			array('allow', // Vistas para Retail
+				'actions'=>array(''),
+				'users'=>array_merge(Users::usersByType(5)),
+				),
 			array('deny',  // deny all users
 				'users'=>array('*'),
-			),
-		);
+				),
+			);
 	}
 
 	/**
-	* Muestra una vista con los balances especificados por compras
-	*/
+	 * Muestra una vista con los balances especificados por compras
+	 */
     public function actionCompras()
 	{
 		$model=new Balance;
@@ -64,22 +69,45 @@ class BalanceController extends Controller
 	}
 
 	/**
-	* Muestra una vista con los balances especificados por ventas
-	*/
+	 * Muestra una vista con los balances especificados por ventas
+	 */
 	public function actionVentas()
 	{
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
-	public function actionMemoria()
+
+	/**
+	 *
+	 */
+	public function actionUpload()
 	{
-		echo ini_get("memory_limit");
+		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		if(is_dir($ruta))
+		{
+			$archivos=@scandir($ruta);
+		}
+		if(count($archivos)>1)
+		{
+			foreach($archivos as $key => $value)
+			{
+				if($key>1)
+				{ 
+					if($value!='index.html')
+					{
+						unlink($ruta.$value);
+					}
+				}
+			}
+		}
+		$this->render('upload');               
 	}
 
 	/**
-	* Muestra el detalle de un balance
-	* @param $id: el id del balance que va a mostrar
-	*/
+	 * Muestra el detalle de un balance
+	 * @param $id el id del balance que va a mostrar
+	 */
 	public function actionView($id)
 	{
 		$tipo=Balance::model()->findByPk($id)->type;
@@ -138,6 +166,26 @@ class BalanceController extends Controller
 		$this->render('update',array(
 			'model'=>$model,
 		));
+	}
+        
+    /**
+     *
+     */
+    public function actionCarga()
+	{
+		Yii::import("ext.EAjaxUpload.qqFileUploader");
+
+		$folder='uploads/';// folder for uploaded files
+        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
+        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
+        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+        $result = $uploader->handleUpload($folder);
+        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+ 
+        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+        $fileName=$result['filename'];//GETTING FILE NAME
+ 
+        echo $return;// it's array
 	}
 
 	/**
@@ -210,19 +258,26 @@ class BalanceController extends Controller
 	}
 
 	/**
-	* Action encargada de guardar en base de datos los archivos cargados
-	*/
+	 * Action encargada de guardar en base de datos los archivos cargados
+	 */
 	public function actionGuardar()
 	{
+		//Delclarando variables utiles para el codigo
+		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		$fecha=date('Y-m-d');
+		$nuevafecha=strtotime('-1 day',strtotime($fecha));
+		$nuevafecha=date('Y-m-d',$nuevafecha);
+
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
+
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
 			//Verifico la opcion del usuario a través del post
-			//si la opcion es dia
+			//si la opcion es día
 			if($_POST['tipo']=="dia")
 			{
 				//instancio el componente
@@ -232,70 +287,60 @@ class BalanceController extends Controller
 					'Carga Ruta Internal'=>'Ruta Internal Diario',
 					'Carga Ruta External'=>'Ruta External Diario'
 					);
-				//Primero verifico que esten todos los archivos
-				foreach($diarios as $key => $diario)
+
+				//Primero: verifico que archivos están
+				$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
+				if(count($existentes)<=0)
 				{
-					//variable para validaciones
-					$error=true;
-					$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".xls";
-					$this->lector->define($diario);
-					//Verifico la existencia del archivo
-					if(!file_exists($ruta))
+					$this->lector->error=4;
+					$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
+				}
+				//Si la primera condicion se cumple, no deberian haber errores
+				if($this->lector->error==0)
+				{
+					foreach($existentes as $key => $diario)
 					{
-						$ruta = Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$diario.".XLS";
-						if(file_exists($ruta))
+						$this->lector->setName($diario);
+						//Defino variables internas
+						$this->lector->define($diario);
+						//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
+						$this->lector->logDiario($diario);
+						if($this->lector->error==0)
 						{
-							$error=false;
+							//cargo el archivo en memoria
+							$this->lector->carga($ruta.$diario);
+							//Tercero: verifico la fecha que sea correcta
+							$this->lector->validarFecha($nuevafecha);
 						}
-						else
+						if($this->lector->error==0)
 						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' no esta en el servidor </h5> <br/> ";
+							//Cuarto: valido el orden de las columnas
+							$this->lector->validarColumnas($this->lista($diario));
 						}
-					}
-					else
-					{
-						$error=false;
-					}
-					//verifico que no este en el log
-					if(!$error)
-					{
-						if(Log::existe(LogAction::getId($key)))
+						if($this->lector->error==0)
 						{
-							if(file_exists($ruta))
+							//Guardo en base de datos
+							if($this->lector->diario($ruta.$diario))
 							{
-								$error=true;
-								$fallas.="<h5 class='nocargados'> El archivo '".$diario."' ya esta almacenado </h5> <br/> ";
-								unlink($ruta);
+								//Si lo guarda grabo en log
+								Log::registrarLog(LogAction::getId($this->lector->log));
 							}
 						}
-						else
+						if($this->lector->error>0)
 						{
-							$error=false;
-						}			
-					}
-					if(!$error)
-					{
-						if($this->lector->diario($ruta))
-						{
-							Log::registrarLog(LogAction::getId($key));
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
+							$fallas.=$this->lector->errorComment;
 						}
 						if($this->lector->error==0)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						elseif($this->lector->error==3)
-						{
-							$fallas.="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
-							if(file_exists($ruta))
-							{
-								unlink($ruta);
-							}
-						}
+						$this->lector->error=0;
+						$this->lector->errorComment=NULL;
 					}
+				}
+				if($this->lector->error>0)
+				{
+					$fallas.=$this->lector->errorComment;
 				}
 			}
 			//Si la opcion es hora
@@ -388,12 +433,13 @@ class BalanceController extends Controller
 				//variables para validacion
 				$error=false;
 				$fechasArchivos=array();
+				$erroresArchivos=array();
 
 				/**
 				* saco cuenta de la cantidad de dias en el rango introducido
 				*/
 				$dias=Utility::dias(Utility::formatDate($_POST['fechaInicio']),Utility::formatDate($_POST['fechaFin']));
-				$tiempo=$dias*2400;
+				$tiempo=$dias*3200;
 				ini_set('max_execution_time', $tiempo);
 				/**
 				* array con los posibles nombres en el archivo del rerate
@@ -542,6 +588,7 @@ class BalanceController extends Controller
 				{
 					//Instancio el componente
 					$this->lector=new Reader;
+                                        Log::registrarLog(LogAction::getLikeId('Rerate Iniciado'));
 					foreach($archivos as $key => $archivo)
 					{
 						$this->lector->define($archivo);
@@ -573,6 +620,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=true;
 									break;
 								case 1:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una estructura incorrecta </h5> <br/> ";
@@ -580,6 +628,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 2:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' ya esta almacenado </h5> <br/> ";
@@ -587,6 +636,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 3:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' tiene una fecha incorrecta </h5> <br/> ";
@@ -594,6 +644,7 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 4:
 									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' no esta en el servidor </h5> <br/> ";
@@ -601,16 +652,23 @@ class BalanceController extends Controller
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 								case 6:
-									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero falló el log</h5><br>";
+									$fallas.="<h5 class='nocargados'> El archivo '".$archivo.$j."' grabo en base de datos pero fall� el log</h5><br>";
 									if(file_exists($ruta))
 									{
 										unlink($ruta);
 									}
+									$erroresArchivos[$archivo.$j]=false;
 									break;
 							}
 						}
+					}
+					$NumErrores=array_filter($erroresArchivos,'falsa');
+					if($NumErrores>=$dias*2)
+					{
+						Log::registrarLog(31);
 					}
 				}
 				else
@@ -649,9 +707,34 @@ class BalanceController extends Controller
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
 	}
-
-	public function actionVer()
+	/**
+	* Retorna un arreglo con los nombres de las columnas que deberian tener los archivos
+	* @param $archivo string nombre del archivo que se va a consultar
+	* @return $lista[] array lista de nombres de columnas
+	*/ 
+	protected function lista($archivo)
 	{
-		$this->render('guardar',array('data'=>$this->nombre));
+		$primero="Ruta ";
+        $segundo="External ";
+        $tercero="Diario";
+        if(stripos($archivo,"internal"))
+        {
+            $segundo="Internal ";
+        }
+        if(stripos($archivo,'rerate') || stripos($archivo, "RR"))
+        {
+            $tercero="RR";
+        }
+        if(stripos($archivo,'GMT'))
+        {
+            $tercero="Hora";
+        }
+        $nombre=$primero.$segundo.$tercero;
+        $lista=array(
+        	'Ruta Internal Diario'=>array('Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta External Diario'=>array('Ext. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	);
+        return $lista[$nombre];
 	}
+        
 }

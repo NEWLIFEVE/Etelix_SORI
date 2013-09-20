@@ -7,7 +7,7 @@ src/web/assets/*
 *.sublime-workspace
 
 # netbeans
-nbproject/private/
+nbproject/*
 build/
 nbbuild/
 dist/

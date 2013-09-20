@@ -2,7 +2,7 @@
 .horas,
 .rerate
 {
-        margin-top: 14px;
+        /*margin-top: 14px;*/
 	background: rgba(0,0,0,0.03);
 	border-radius: 5px;
 	display: inline-block;
@@ -14,7 +14,7 @@
 	padding-right: 1em;
 	padding-top: 1em;
 	position: absolute;
-	top: 240px;
+	top: 327px;
 	width: 15%;
 }
 .diario ul li.cargados,
@@ -112,4 +112,242 @@
 {
 	font-size: 1.2em;
 	text-align: center;
+}
+.divCarrier
+{
+  margin-left: 8.6%;
+  width:auto;
+  height:400px;
+  margin-top: 2em;
+}
+
+#botAsignar
+{
+  margin-left:225px;
+}
+.divVendedor
+{
+  margin-left:300px;
+}
+.izquierda
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -110px;
+    border-radius:250px 250px 250px 250px;
+}
+.derecha
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -80px;
+    border-radius:250px 250px 250px 250px;
+}
+/*.tapa
+{
+  background-color:red;
+  height:200px;
+  margin-left:407px;
+  margin-top:-192px;
+  width:50px;
+}*/
+#options_right_all
+{
+    display:none;
+}
+#options_left_all
+{
+    display:none;
+}
+
+
+ .cargando
+{
+     background-color: black;
+     height: 100%;
+     position: fixed;
+     text-align: center;
+     top: 0px;
+     width: 100%;
+     content:"";
+     opacity: .7; 
+}
+
+.mensaje
+{
+  background-color:white;
+  border:solid threedshadow;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+  color:#6E6E6E;
+  top:10%;
+  padding:23px 30px 43px 28px;
+  position:fixed;
+  text-align:center;
+  width:490px;
+  margin-left:30%;
+}
+
+.cancelar
+{
+    margin-top: 30px;
+    margin-left: 150px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+.confirma
+{
+    margin-top: -45px;
+    margin-left: 245px;
+    text-align: center;
+    width: 90px;
+    height: 45px;
+}
+
+#welcome
+{
+    background: url(../img/arrow.png) no-repeat 90% 0;
+    height: 19em;
+    width: 79.9em; 
+}
+.divOculto
+{
+    margin-top: 45px;
+    display: none;
+}
+.formularioContrato
+{
+    display: none;
+}
+.note
+{
+    display:none;
+}
+.SegundoNivel
+{
+margin-top:30px;    
+}
+.divOculto1
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -132px;
+    display: none;
+}
+/*#Contrato_end_date,
+#Contrato_sign_date,
+#Contrato_production_date,
+#Contrato_id_company,
+#Contrato_id_termino_pago,
+#Contrato_id_monetizable,
+#Contrato_id_limites,
+#Contrato_id_disputa
+{
+width: 20%;    
+}*/
+.manageractual
+{
+/*background-color: red; */
+margin-top: 50px;
+}
+.pManager
+{
+    width: 20%;
+    margin-left: 622px;
+    margin-top: -38px;
+    display: none;
+}
+.fechaFirma
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -82px;
+}
+.company
+{
+/*       width: 100%;
+    margin-left: 570px;
+    margin-top: -79px;*/
+}
+.fechaProduccion
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -80px;
+}
+.fechaFin
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -80px;
+}
+.TPago
+{
+/*    width: 20%;
+    margin-left: 682px;
+    margin-top: -35px;
+    display: none;*/
+}
+.contratoForm{
+width: 24%;
+display: inline-block;
+}
+.contratoForm input, .contratoForm select{
+    /*float: left;*/
+    width: 90% !important;
+}
+
+@media screen and (max-width: 600px) { /* 13 / 390 */
+    .contratoForm{ width: 45%;}
+}
+.monetizable
+{
+    width: 100%;
+    margin-left: 292px;
+    margin-top: -82px;
+}
+.disputa
+{
+    width: 100%;
+    margin-left: 570px;
+    margin-top: -84px;
+}
+.limites
+{
+    width: 100%;
+    margin-left: 850px;
+    margin-top: -84px;
+}
+
+.CarrierActual
+{
+/*    background-color:red;*/
+    width: 658px;
+    height: 40px;
+    margin-left: 439px;
+    margin-top: -70px;
+    display: none; 
+}
+#Contrato_id_carrier
+{
+width: 46%;    
+}
+.carrierSelect
+{
+    position:relative;
+    margin-top: 50px;  
+}
+.lineabajo
+{
+background: url(../img/lineabajo.png) no-repeat 90% 0;
+height: 16em;
+width: 104px;
+position: absolute;
+margin-top: -65px;
+margin-left: 939px;
 }

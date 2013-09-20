@@ -227,3 +227,42 @@ div.search-form
 {
 	background: #80CFFF;
 }
+.divCarrierSI
+{
+  margin-top: 10px;
+  margin-left: 120px;
+  width: 600px;
+  height:200px;
+}
+.divCarrierNO
+{
+    height:200px;
+    margin-left: 570px;
+    margin-top: -69px;
+    width: 600px;
+}
+#botAsignar
+{
+  margin-left:220px;
+}
+.divVendedor
+{
+  margin-left:300px;
+}
+.izquierda
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -110px;
+    border-radius:250px 250px 250px 250px;
+}
+.derecha
+{
+    width: 30px;
+    height: 30px;
+    margin-left: 510px;
+    margin-top: -80px;
+    border-radius:250px 250px 250px 250px;
+}
+

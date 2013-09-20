@@ -146,8 +146,13 @@ class Users extends CActiveRecord
 		}
 		else
 		{
-			$arreglo = false;
+			$arreglo[0] = false;
 		}
 		return $arreglo;
 	}
+        
+                
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->username;
+        }
 }

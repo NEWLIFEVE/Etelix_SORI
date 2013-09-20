@@ -1,5 +1,6 @@
-﻿/*ejecuta el rerate de todo lo que este en la tabla balance_temp*/
-CREATE OR REPLACE function ejecutar_rerate() RETURNS void
+﻿DROP function ejecutar_rerate()
+/*ejecuta el rerate de todo lo que este en la tabla balance_temp*/
+CREATE OR REPLACE function ejecutar_rerate() RETURNS RECORD
 AS $$
 DECLARE
 	b RECORD;
@@ -7,7 +8,9 @@ DECLARE
 	result boolean;
 	min date;
 	max date;
+	idAction RECORD;
 BEGIN
+	SELECT * INTO idAction FROM log_action WHERE name = 'Rerate Completado';
 	SELECT MIN(date_balance), MAX(date_balance) INTO min, max FROM balance_temp;
 	WHILE min <= max LOOP
 		FOR b IN SELECT id FROM balance WHERE date_balance=min ORDER BY id ASC LOOP
@@ -18,7 +21,8 @@ BEGIN
 	FOR t IN SELECT * FROM balance_temp ORDER BY id ASC LOOP
 		SELECT compara_balances(t.id) INTO result;
 	END LOOP;
-	INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, 57, 1, current_date);
+	INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, idAction.id, 1, current_date);
+	RETURN idAction;
 END;
 $$ language 'plpgsql';
 
@@ -68,7 +72,7 @@ BEGIN
 	END IF;
 	/*Verifico que trajo algo*/
 	IF b.id IS NOT NULL THEN
-		IF b.minutes=t.minutes AND b.revenue=t.revenue AND b.cost=t.cost THEN
+		IF b.minutes=t.minutes AND b.revenue=t.revenue AND b.cost=t.cost AND b.margin=t.margin THEN
 			/*Si son iguales lo dejo asi*/
 			DELETE FROM balance_temp WHERE id=t.id;
 			RETURN true;
@@ -174,16 +178,29 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+/*Funcion que llama el trigger*/
+CREATE OR REPLACE FUNCTION condicion() RETURNS TRIGGER 
+AS $$
+DECLARE 
+	valor integer;
+	result RECORD;
+	registro RECORD;
+	es RECORD;
+BEGIN
+	SELECT * INTO es FROM log_action WHERE name='Rerate';
+	SELECT * INTO registro FROM log order by id desc limit 1;
+	IF registro.id_log_action=es.id THEN
+		SELECT ejecutar_rerate() INTO result;
+		RETURN result;
+	ELSE
+		RETURN NULL;
+	END IF;
+END;
+$$ language 'plpgsql';
 
-select ejecutar_rerate()
-select * from balance_temp;
-select * from balance where date_balance='2013-08-06' AND status=1;
-SELECT * FROM rrhistory;
 
-select * from balance_time;
-delete from balance_time;
 
-select * from carrier;
-
-SELECT * FROM log_action WHERE name='Carga Ruta Internal'
-INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, 57, 1, current_date);
+CREATE TRIGGER rerate 
+AFTER INSERT ON log
+FOR EACH STATEMENT
+EXECUTE PROCEDURE condicion();

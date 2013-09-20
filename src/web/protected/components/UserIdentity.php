@@ -8,6 +8,7 @@
 class UserIdentity extends CUserIdentity
 {
 	private $_id;
+	private $_type;
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_INACTIV=4;
 	/**
@@ -42,6 +43,7 @@ class UserIdentity extends CUserIdentity
 		else 
 		{
 			$this->_id=$user->id;
+			$this->_type=$user->id_type_of_user;
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
 		}
@@ -54,5 +56,12 @@ class UserIdentity extends CUserIdentity
 	public function getId()
 	{
 		return $this->_id;
+	}
+	/**
+	*
+	*/
+	public function getType()
+	{
+		return $this->_type;
 	}
 }
