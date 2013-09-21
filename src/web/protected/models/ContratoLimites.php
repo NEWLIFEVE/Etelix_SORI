@@ -111,4 +111,21 @@ class ContratoLimites extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public static function getCredito($contrato){           
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL AND id_limites = 1", array(':contrato'=>$contrato));
+            if($model!=NULL){
+                return $model->monto;
+            }else{
+                return '';
+            }
+        }
+        public static function getCompra($contrato){           
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL AND id_limites = 2", array(':contrato'=>$contrato));
+            if($model!=NULL){
+                return $model->monto;
+            }else{
+                return '';
+            }
+        }
 }
