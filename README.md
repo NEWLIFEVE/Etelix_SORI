@@ -10,7 +10,6 @@ Realese 1.2.0
 -Mensajes en Condiciones Comerciales
 -Modificar contrato y crear nuevo contrato
 -Al momento de cargar diarios, los carriers nuevos se le asigna el manager 'Sin Asignar'
--Validacion de formato de Archivo, validando el orden de las columnas en los excel
 
 
 Realese 1.1.1

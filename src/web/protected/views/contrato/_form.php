@@ -41,7 +41,7 @@
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_company'); ?>
                         <?php echo $form->dropDownList($model,'id_company',
-                        CHtml::listData(Company::model()->findAll(array('order'=>'name')),'id','name'),
+                        CHtml::listData(Company::model()->findAll(array('order'=>'id')),'id','name'),
                         array('prompt'=>'Seleccione')
                         ); ?>
                         <?php echo $form->error($model,'id_company'); ?>
@@ -121,6 +121,8 @@
                         <?php echo $form->error($model,'id_limite_compra'); ?>
                 </div>
                <input type="hidden" id="dias_disputa_Oculto"  value="">
+               <input type="hidden" id="credito_Oculto"  value="">
+               <input type="hidden" id="compra_Oculto"  value="">
                <input type="hidden" id="monetizable_Oculto"  value="">
                <input type="hidden" id="TerminoP_Oculto"  value="">
                <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
@@ -130,7 +132,7 @@
         <br>
         <?php $this->endWidget(); ?>
 
-                <div id="botAsignar" class="row buttons">
+                <div id="botAsignarContrato" class="row buttons">
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
                 </div>
       </div>
