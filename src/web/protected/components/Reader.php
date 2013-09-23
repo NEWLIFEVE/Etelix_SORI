@@ -254,7 +254,8 @@ class Reader
                         }
                         else
                         {
-                            $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                            $this->model=new Balance;
+                            $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
                                     ':date'=>$this->fecha,
                                     ':destino'=>$valores[$this->destino],
                                     ':customer'=>$valores['id_carrier_customer'],
