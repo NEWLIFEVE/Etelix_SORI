@@ -1,28 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "contrato_limites".
+ * This is the model class for table "credit_limit".
  *
- * The followings are the available columns in table 'contrato_limites':
+ * The followings are the available columns in table 'credit_limit':
  * @property integer $id
  * @property string $start_date
  * @property string $end_date
  * @property integer $id_contrato
- * @property integer $id_limites
- * @property double $monto
+ * @property double $amount
  *
  * The followings are the available model relations:
  * @property Contrato $idContrato
- * @property Limites $idLimites
  */
-class ContratoLimites extends CActiveRecord
+class CreditLimit extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'contrato_limites';
+		return 'credit_limit';
 	}
 
 	/**
@@ -33,13 +31,13 @@ class ContratoLimites extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('start_date, id_contrato, id_limites, monto', 'required'),
-			array('id_contrato, id_limites', 'numerical', 'integerOnly'=>true),
-			array('monto', 'numerical'),
+			array('start_date, id_contrato, amount', 'required'),
+			array('id_contrato', 'numerical', 'integerOnly'=>true),
+			array('amount', 'numerical'),
 			array('end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, start_date, end_date, id_contrato, id_limites, monto', 'safe', 'on'=>'search'),
+			array('id, start_date, end_date, id_contrato, amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +50,6 @@ class ContratoLimites extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idContrato' => array(self::BELONGS_TO, 'Contrato', 'id_contrato'),
-			'idLimites' => array(self::BELONGS_TO, 'Limites', 'id_limites'),
 		);
 	}
 
@@ -66,8 +63,7 @@ class ContratoLimites extends CActiveRecord
 			'start_date' => 'Start Date',
 			'end_date' => 'End Date',
 			'id_contrato' => 'Id Contrato',
-			'id_limites' => 'Id Limites',
-			'monto' => 'Monto',
+			'amount' => 'Amount',
 		);
 	}
 
@@ -93,8 +89,7 @@ class ContratoLimites extends CActiveRecord
 		$criteria->compare('start_date',$this->start_date,true);
 		$criteria->compare('end_date',$this->end_date,true);
 		$criteria->compare('id_contrato',$this->id_contrato);
-		$criteria->compare('id_limites',$this->id_limites);
-		$criteria->compare('monto',$this->monto);
+		$criteria->compare('amount',$this->amount);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,25 +100,17 @@ class ContratoLimites extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ContratoLimites the static model class
+	 * @return CreditLimit the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-        
+                       
         public static function getCredito($contrato){           
-            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL AND id_limites = 1", array(':contrato'=>$contrato));
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL ", array(':contrato'=>$contrato));
             if($model!=NULL){
-                return $model->monto;
-            }else{
-                return '';
-            }
-        }
-        public static function getCompra($contrato){           
-            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL AND id_limites = 2", array(':contrato'=>$contrato));
-            if($model!=NULL){
-                return $model->monto;
+                return $model->amount;
             }else{
                 return '';
             }

@@ -484,4 +484,4 @@ $('#botAsignarContrato').click('on',function(e)
         }});
 
 });
-//FIIN contrato, add and update
+//FIN contrato, add and update
