@@ -68,16 +68,16 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'issue_date' => 'Issue Date',
-			'from_date' => 'From Date',
-			'to_date' => 'To Date',
-			'received_date' => 'Received Date',
-			'sent_date' => 'Sent Date',
-			'doc_number' => 'Doc Number',
-			'minutes' => 'Minutes',
-			'amount' => 'Amount',
-			'note' => 'Note',
-			'id_type_accounting_document' => 'Id Type Accounting Document',
+			'issue_date' => 'Fecha de Emisión',
+			'from_date' => 'Desde la fecha',
+			'to_date' => 'Hasta la fecha',
+			'received_date' => 'Fecha de recepción',
+			'sent_date' => 'Fecha de envio',
+			'doc_number' => 'Número de documento',
+			'minutes' => 'Minutos',
+			'amount' => 'Cantidad',
+			'note' => 'Nota',
+			'id_type_accounting_document' => 'Tipo de documento contable',
 		);
 	}
 

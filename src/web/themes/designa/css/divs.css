@@ -120,14 +120,6 @@
   height:400px;
   margin-top: 2em;
 }
-#botAsignar,#botAsignarContrato
-{
-  margin-left:225px;
-}
-#botAsignarContrato
-{
-  margin-left:225px;
-}
 .divVendedor
 {
   margin-left:300px;
@@ -323,8 +315,8 @@ margin-top: 50px;
     display: none;*/
 }
 .contratoForm{
-width: 24%;
-display: inline-block;
+    width: 24%;
+    display: inline-block;
 }
 .contratoForm input, .contratoForm select{
     /*float: left;*/
@@ -373,18 +365,18 @@ width: 46%;
 }
 .lineabajo
 {
-background: url(../img/lineabajo.png) no-repeat 90% 0;
-height: 16em;
-width: 104px;
-position: absolute;
-margin-top: -65px;
-margin-left: 939px;
+   background: url(../img/lineabajo.png) no-repeat 90% 0;
+   height: 16em;
+   width: 104px;
+   position: absolute;
+   margin-top: -65px;
+   margin-left: 939px;
 }
 .destinationform
 {
-      float: left;
-width: 24%;
-display: inline-block;
+   float: left;
+   width: 24%;
+   display: inline-block;
 }
 #ZonaDestination_id_zona_geografica select,#ZonaDestination_id_destination select,.botAsignarDestination div{
     width: 90% !important;
@@ -405,4 +397,19 @@ display: inline-block;
     width: 24%;
     margin-top: 1%;
 }
-
+.valoresDocumento
+{
+    display:none;
+} 
+.formularioDocumento
+{
+    padding-top: 2%;
+}
+.selectTypeDocument
+{
+    width: 76%; 
+}
+#botAsignar,#botAsignarContrato,#botAgregarDatosContable
+{
+  margin-left: 20%;
+}
