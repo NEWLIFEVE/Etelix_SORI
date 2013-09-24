@@ -105,7 +105,7 @@ function valForm(objeto)
                 aguanta.fadeOut('fast');
             }, 3000);
          }     
-    else
+    else 
       { 
         $.ajax({           
                 type: "GET",
@@ -113,7 +113,7 @@ function valForm(objeto)
                 data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
                 success: function(data) 
                     {     var carriers=data.split("/");
-                          var managerNames=carriers[0].split(",");
+                          var managerName=carriers[0].split(",");
                           var asigname=carriers[2].split(",");
                           var noasigname=carriers[1].split(",");
                                   
@@ -147,7 +147,7 @@ function valForm(objeto)
                                        var desA = 'Dsasignarle:';
                                       }
                        var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en la Distribucion \n\
-                                      \n\Comercial para el manager: <br><b>"+managerNames+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
+                                      \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
                                       "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
                                       class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
@@ -167,7 +167,7 @@ function valForm(objeto)
                 success: function(data) 
                         {
                               var carriers=data.split("/");
-                              var managerNames=carriers[0].split(",");
+                              var managerName=carriers[0].split(",");
                               var asigname=carriers[2].split(",");
                               var noasigname=carriers[1].split(",");
 
@@ -187,7 +187,7 @@ function valForm(objeto)
                                       {
                                       var nopudo = 'Desasignado:';
                                       }
-                                var espere = $('.mensaje').html("<h5>Al manager <b>" + managerNames + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "\
+                                var espere = $('.mensaje').html("<h5>Al manager <b>" + managerName + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "\
                                                              <br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                                 setTimeout(function()
                                 {
@@ -292,6 +292,10 @@ function valForm(objeto)
                             $("#TerminoP_Oculto").val(obj.termino_pago);
                             $("#monetizable_Oculto").val(obj.monetizable);
                             $("#dias_disputa_Oculto").val(obj.dias_disputa);
+                            $("#Contrato_id_limite_credito").val(obj.credito);
+                            $("#credito_Oculto").val(obj.credito);
+                            $("#Contrato_id_limite_compra").val(obj.compra);
+                            $("#compra_Oculto").val(obj.compra);
                 
                             var manageractual = (obj.manager);
                             var carrierenlabel = (obj.carrier);
@@ -323,45 +327,62 @@ $('#botAsignarContrato').click('on',function(e)
     $("#Contrato_end_date").prop("disabled", false);
     $("#Contrato_sign_date").prop("disabled", false);
     var carrier = $("#Contrato_id_carrier").val();
-    var sign_date = $("#Contrato_sign_date").val();
-    var production_date = $("#Contrato_production_date").val();
     var company = $("#Contrato_id_company").val();
     var termino_pago = $("#Contrato_id_termino_pago").val();
     var monetizable = $("#Contrato_id_monetizable").val();
-    var dias_disputa = $("#Contrato_id_disputa").val();
-    var carrier = $("#Contrato_id_carrier").val();
-    var end_date = $("#Contrato_end_date").val(); 
     var diasDisputaOculto = $("#dias_disputa_Oculto").val();
     var F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val();
     var F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val();
-    var monetizaOculto = $("#monetizable_Oculto").val();      
+    var monetizableOculto = $("#monetizable_Oculto").val();      
     var TPOculto = $("#TerminoP_Oculto").val();  
                
                 $.ajax({ 
                 type: "GET",
                 url: "ContratoConfirma",
-                data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&id_M_Oculto="+monetizaOculto+"&id_disputa="+dias_disputa+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
+                data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
 
                 success: function(data) 
                         {
-                          var contrato=data.split("|");
-                          var carierNames=contrato[0].split(",");
-                          var companyName=contrato[1].split(",");
-                          var termino_pName=contrato[2].split(",");
-                          var monetizableName=contrato[3].split(",");
-                          var dias_disputa=contrato[4].split(",");
-                          var sign_date=contrato[5].split(",");
-                          var production_date=contrato[6].split(",");
-                          var end_date=contrato[7].split(",");
-                          var monetizaNameO=contrato[8].split(",");
-                          var termino_pNameO=contrato[9].split(",");
+                            obj = JSON.parse(data);
+                            var carrierName=obj.carrierName;
+                            var companyName=obj.companyName;
+                            var termino_pName=obj.termino_pName;
+                            var monetizableName=obj.monetizableName;
+                            var dias_disputa=$("#Contrato_id_disputa").val();
+                            var credito=$("#Contrato_id_limite_credito").val();
+                            var compra=$("#Contrato_id_limite_compra").val();
+                            var sign_date = $("#Contrato_sign_date").val();
+                            var production_date = $("#Contrato_production_date").val();
+                            var end_date=$("#Contrato_end_date").val();
+                            var monetizableNameO=obj.monetizableNameO;
+                            var termino_pNameO=obj.termino_pNameO;
+                            var creditoO = $("#credito_Oculto").val();
+                            var compraO = $("#compra_Oculto").val();
+
+
 
                  if(TPOculto==false && monetizaOculto==false){
                             var guardoEdito=" Se guardo con exito el Contrato";        
-                            var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
-                                      \n\ <br><b>( "+carierNames+" / "+companyName+" )</b></h4>\n\Con las siguientes condiciones comerciales:<p><h6>Termino de pago: "+termino_pName+"<p><p>Monetizable: "+monetizableName+"<p>Dias de disputa: "+dias_disputa+"<p>\n\
-                                      <p>Fecha de Firma de contrato: "+sign_date+"<p>Fecha de puesta en produccion: "+production_date+"<p> "+end_date+"<p></h6><p><p>Si todos los datos a almacenar son correcstos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
-                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+
+                            var revisa = $("<div class='cargando'>\n\
+                                                </div><div class='mensaje'>\n\
+                                                    <h4>Esta a punto de crear un nuevo Contrato: \n\
+                                                        \n\ <br><b>( "+carrierName+" / "+companyName+" )</b>\n\
+                                                        </h4>\n\Con las siguientes condiciones comerciales:<p>\n\
+                                                        <h6>Termino de pago: "+termino_pName+"<p><p>Monetizable: "+monetizableName+"<p>\n\
+                                                            Dias de disputa: "+dias_disputa+"<p>\n\
+                                                            Limite de Credito: "+credito+"<p>\n\
+                                                            Limite de Compra: "+compra+"<p>\n\
+                                                        <p>Fecha de Firma de contrato: "+sign_date+"<p>\n\
+                                                            Fecha de puesta en produccion: "+production_date+"<p> \n\
+                                                            "+end_date+"<p></h6>\n\
+                                                        <p><p>Si todos los datos a almacenar son correcstos, presione Aceptar, de lo contrario Cancelar<p>\n\
+                                                <p><div id='cancelar' class='cancelar'>\n\
+                                                    <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;\n\
+                                                    </div>\n\
+                                                <div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
+                                      width='85px' height='45px'/></div></div>").hide();
+
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
                       }
@@ -391,16 +412,38 @@ $('#botAsignarContrato').click('on',function(e)
                                 else{
                                   backTPago= "Terminos de pago: ";
                                }
-                             if(monetizaOculto != monetizable){
-                                  var backMonetizable="Monetizable de: "+monetizaNameO+" a "; 
+                             if(monetizableOculto != monetizable){
+                                  var backMonetizable="Monetizable de: "+monetizableNameO+" a "; 
                                }
                                 else{
                                   backMonetizable="Monetizable: ";  
                                }
-                          var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el Contrato \n\
-                                      \n\: <br><b>("+carierNames+" / "+companyName+" )</b></h4>\n\<p><h6>"+backTPago+ ""+termino_pName+"<p><p>"+backMonetizable+" "+monetizableName+"<p>"+backDiasDiasputa+" "+dias_disputa+"<p>\n\
-                                      <p>"+backF_Firma+" "+sign_date+"<p> "+backProduccion+" "+production_date+"<p> "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p>\n\
-                                      <p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                             if(creditoO != credito){
+                                  var backCredito="Limite de Credito de: "+creditoO+" a "; 
+                               }
+                                else{
+                                  backCredito="Limite de Credito: ";  
+                               }
+                             if(compraO != compra){
+                                  var backCompra="Limite de Compra de: "+compraO+" a "; 
+                               }
+                                else{
+                                  backCompra="Limite de Compra: ";  
+                               }
+                          var revisa = $("<div class='cargando'></div>\n\
+                                            <div class='mensaje'>\n\
+                                            <h4>Esta a punto de realizar los siguientes cambios en el Contrato \n\
+                                      \n\: <br><b>("+carrierName+" / "+companyName+" )</b></h4>\n\<p>\n\
+                                            <h6>"+backTPago+ ""+termino_pName+"<p>\n\
+                                            <p>"+backMonetizable+" "+monetizableName+"<p>\n\
+                                                "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
+                                                "+backCredito+" "+credito+"<p>\n\
+                                                "+backCompra+" "+compra+"<p>\n\
+                                            <p>"+backF_Firma+" "+sign_date+"<p> \n\
+                                                "+backProduccion+" "+production_date+"<p> \n\
+                                                "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar' class='cancelar'>\n\
+                                      <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
+                                      width='85px' height='45px'/></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');         
                           }
@@ -413,12 +456,12 @@ $('#botAsignarContrato').click('on',function(e)
                $.ajax({ 
                 type: "GET",
                 url: "Contrato",
-                data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&id_disputa="+dias_disputa,
+                data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra,
 
                 success: function(data) 
                         {                          
                          var exito = $('.mensaje').html("<h4>"+guardoEdito+"\n\
-                                      \n\: <br><b>("+carierNames+" / "+companyName+")</b></h4>\n\<p><h6>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                      \n\: <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
                                       </h6><p>\n\
                                       <img src='/images/si.png'width='90px' height='50px'/>").hide().fadeIn('fast');
                                 setTimeout(function()
@@ -429,7 +472,10 @@ $('#botAsignarContrato').click('on',function(e)
                         }}); 
 //                         $(".formularioContrato").hide("slow");   
 //                         $(".note").hide("slow"); 
-                         $('#Contrato_id_carrier').val('');                    
+//                         $('#Contrato_id_carrier').val('');       
+    $("#Contrato_id_company").prop("disabled", true);
+    $("#Contrato_end_date").prop("disabled", false);
+    $("#Contrato_sign_date").prop("disabled", true);
           }
           else
               {
@@ -437,5 +483,153 @@ $('#botAsignarContrato').click('on',function(e)
               }
     }); 
         }});
+
 });
 //FIIN contrato, add and update
+
+//FIIN administra las zonas geograficas con los destinos externos e internos
+ $(".botAsignarDestination").on( "click",  function DestinosAsignadosNoasignados()
+     {
+         $("#carriers select option").prop("selected",true);    
+            var GeographicZone = $("#GeographicZone_id").val();
+            var asignados = $("#select_right").val();
+            var noasignados = $("#select_left").val(); 
+            var destinos = $('#GeographicZone_id_destination').val();
+
+            if(GeographicZone=="")
+              {
+               var aguanta = $("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino y una zona geografica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(aguanta)
+                    aguanta.fadeIn('fast');
+                    setTimeout(function()
+                 {
+                     aguanta.fadeOut('fast');
+                 }, 3000);
+              }else{
+      
+            if (destinos == 1){
+                   var tipoDestino="Destinos Externos";
+                   var elijeDestinationBuscaName="../Destination/BuscaNombresDes";
+                   var destination_update="../Destination/UpdateZonaDestination";
+            } if (destinos == 2){
+                   tipoDestino="Destinos Internos";
+                   elijeDestinationBuscaName="../DestinationInt/BuscaNombresDesInt";
+                   destination_update="../DestinationInt/UpdateZonaDestinationInt";
+            }
+                $.ajax({           
+                        type: "GET",
+                        url: elijeDestinationBuscaName,
+                        data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
+
+                success: function(data) 
+                {
+                        obj = JSON.parse(data);
+                        var GeographicZoneName = (obj.GeographicZoneName);
+                        var AsigNames = (obj.asigNames);
+                        var NoAsigNames = (obj.noasigNames);
+                        if (AsigNames<1&&NoAsigNames<1)
+                          {
+                            var NoHayDatos = $("<div class='cargando'></div><div class='mensaje'><h3>No hay datos que cambiar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(NoHayDatos)
+                                NoHayDatos.fadeIn('fast');
+                                setTimeout(function()
+                             {
+                                 NoHayDatos.fadeOut('fast');
+                             }, 3000);   
+                          }else{  
+                        if (AsigNames=="")
+                            {
+                             var asig="";
+                            }else{
+                                   var asig='Asignarle: ';
+                                 }
+                         if (NoAsigNames=="")
+                            {
+                             var desA="";
+                            }else{
+                                var desA = 'Dsasignarle:';
+                                 }
+                           var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>\n\
+                                        Esta a punto de realizar actualizar "+tipoDestino+" la Zona Geográfica: \n\
+                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
+                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
+                                        "+NoAsigNames+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar\n\
+                                        <p><p><p><div id='cancelar'class='cancelar'><p><label><b>\n\
+                                        Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
+                                        <p><label><b>Aceptar</b></label></div></div>").hide();
+                                  $("body").append(revisa);
+                                  revisa.fadeIn('fast');
+                                
+                  $('#confirma,#cancelar').on('click', function()
+                   {
+                       var tipo=$(this).attr('id');
+                       if(tipo=="confirma")
+                         {     $('.mensaje').html("<h2>Espere un momento por favor</h2><p><p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/><p><p><p><p><p><p><p><p<p><p>").hide().fadeIn('fast');  
+                            $.ajax({           
+                                  type: "GET",
+                                  url: destination_update,
+                                  data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
+
+                                  success: function(data) 
+                                          {  
+                                  var exito = $('.mensaje').html("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: \n\
+                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
+                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
+                                        "+NoAsigNames+"</h6><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                setTimeout(function()
+                                {
+                                    exito.fadeOut('fast');
+                                    $('.cargando').fadeOut('fast');
+                                }, 4000);      
+                                          }
+                                 }); 
+                         }else{
+                              revisa.fadeOut('fast');
+                              }              
+                   });
+                                 }
+                 }    
+                       });
+                        $("#carriers select option").prop("selected",false);   
+                  }
+     });
+   
+//  carga los datos en los select  multiple zona geografica y destination...  
+     $('#GeographicZone_id_destination').change(function(){
+        var GeographicZone = $("#GeographicZone_id").val();
+        var destinos = $('#GeographicZone_id_destination').val();
+                $.ajax({           
+                        type: "POST",
+                        url: "DynamicAsignados",
+                        data:   'GeographicZone='+GeographicZone+'&destinos='+destinos,         
+                                success: function(data) 
+                                {
+                                    $('#select_right').empty().append(data);
+                                }
+                       });
+     });
+     $('#GeographicZone_id').change(function(){
+        var GeographicZone = $("#GeographicZone_id").val();
+        var destinos = $('#GeographicZone_id_destination').val();
+          if (destinos<1)
+              {
+                var aguanta = $("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino antes de seleccionar la zona geográfica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(aguanta)
+                    aguanta.fadeIn('fast');
+                    setTimeout(function()
+                 {
+                     aguanta.fadeOut('fast');
+                 }, 3000);
+              }else{
+               $.ajax({           
+                        type: "POST",
+                        url: "DynamicAsignados",
+                        data:   'GeographicZone='+GeographicZone+'&destinos='+destinos,         
+                                success: function(data) 
+                                {
+                                $('#select_right').empty().append(data);   
+                                }
+                      });
+                    }
+     });
+//     fin de adm de zonas y destinos

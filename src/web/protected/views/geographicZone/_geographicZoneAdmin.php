@@ -1,5 +1,7 @@
 <?php
 /* @var $this GeographicZoneController */
+/* @var $controllerDestination DestinationController */
+/* @var $controllerDestinationInt DestinationIntController */
 /* @var $model GeographicZone */
 /* @var $form CActiveForm */
 ?>
@@ -19,19 +21,19 @@
 	<?php echo $form->errorSummary($model); ?>
         <div class="valoresDestination">
         <div class='destinationform'>
-                <?php echo $form->labelEx($model,'id_destination'); ?>
+                <?php echo $form->labelEx($model,'Destinos'); ?>
                 <?php echo $form->dropDownList($model,'id_destination', 
                 array(
-                    ''=>'Seleccione',
-                    'id_destination'=>'Destinos Externos',
-                    'id_destination_int'=>'Destinos Internos',
+                    ' '=>'Seleccione',
+                    '1'=>'Destinos Externos',
+                    '2'=>'Destinos Internos',
                      ),
                    array(
-//                    'ajax'=>array(
-//                        'type'=>'POST',
-//                        'url'=>CController::createUrl('DynamicAsignados'),
-//                        'update'=>'#select_right',
-//                   )
+                    'ajax'=>array(
+                        'type'=>'POST',
+                        'url'=>CController::createUrl('ElijeTipoDestination'),
+                        'update'=>'#select_left',
+                   )
                         )
                 ); ?>
                 <?php echo $form->error($model,'id_destination'); ?>
@@ -41,11 +43,12 @@
                 <?php echo $form->dropDownList($model,'id',
                         CHtml::listData(GeographicZone::model()->findAll(array('order'=>'name_zona')),'id','name_zona'),
                  array(
-                    'ajax'=>array(
-                        'type'=>'POST',
-                        'url'=>CController::createUrl('DynamicAsignados'),
-                        'update'=>'#select_right',
-                    ),'prompt'=>'Seleccione'
+//                    'ajax'=>array(
+//                        'type'=>'POST',
+//                        'url'=>CController::createUrl('DynamicAsignados'),
+//                        'update'=>'#select_right',
+//                    ),
+                    'prompt'=>'Seleccione'
                      )
                 ); ?>
                 <?php echo $form->error($model,'id'); ?>
@@ -56,7 +59,8 @@
                 $this->widget('ext.widgets.multiselects.XMultiSelects', array(
                     'leftTitle' => 'Destinos No Asignados',
                     'leftName' => 'No_Asignados[]',
-                    'leftList' =>  Destination::model()->getListDestinationNOAsignados(),
+//                    'leftList' =>  Destination::model()->getListDestinationNOAsignados(),
+                    'leftList' => array(),
                     'rightTitle' => 'Destinos  Asignados',
                     'rightName' => 'Asignados[]',
                     'rightList' =>array(),
@@ -66,12 +70,12 @@
                 ?>
                 <?php echo $form->error($model,'lastname'); ?>  
         </div>
-
+              <?php $this->endWidget(); ?>
 	<div class="row buttons botAsignarDestination">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
+
 
 </div><!-- form -->
 

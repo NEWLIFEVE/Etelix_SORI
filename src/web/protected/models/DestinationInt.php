@@ -6,8 +6,10 @@
  * The followings are the available columns in table 'destination_int':
  * @property integer $id
  * @property string $name
+ * @property integer $id_geographic_zone
  *
  * The followings are the available model relations:
+ * @property GeographicZone $idGeographicZone
  * @property Balance[] $balances
  */
 class DestinationInt extends CActiveRecord
@@ -29,10 +31,11 @@ class DestinationInt extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name', 'required'),
+                        array('id_geographic_zone', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, name,id_geographic_zone', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -45,6 +48,8 @@ class DestinationInt extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination_int'),
+			'idGeographicZone' => array(self::BELONGS_TO, 'GeographicZone', 'id_geographic_zone'),
+	
 		);
 	}
 
@@ -56,6 +61,7 @@ class DestinationInt extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+                        'id_geographic_zone' => 'Id Geographic Zone',
 		);
 	}
 
@@ -79,6 +85,7 @@ class DestinationInt extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
+                $criteria->compare('id_geographic_zone',$this->id_geographic_zone);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,5 +121,20 @@ class DestinationInt extends CActiveRecord
 				return $model->id;
 			}
 		}
+	}
+        
+ public static function getListDestinationIntNoAsig()
+	{          
+            return CHtml::listData(DestinationInt::model()->findAll("id_geographic_zone=:zona order by name asc",array(':zona'=>2)),'id','name');
+	}    
+        
+                /**
+	 * este busca los destinos asignados a zonas geograficas
+         * a partir del valor recibido en el controlador de zona geografica
+	 */
+        public static function getListDestinationIntAsignados($id)
+	{
+            return CHtml::listData(DestinationInt::model()->findAll('id_geographic_zone=:zona order by name asc',array(':zona'=>$id)),'id','name');
+	
 	}
 }

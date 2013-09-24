@@ -120,7 +120,7 @@
   height:400px;
   margin-top: 2em;
 }
-#botAsignar
+#botAsignar,#botAsignarContrato
 {
   margin-left:225px;
 }
@@ -164,8 +164,6 @@
 {
     display:none;
 }
-
-
  .cargando
 {
      background-color: black;
@@ -177,7 +175,6 @@
      content:"";
      opacity: .7; 
 }
-
 .mensaje
 {
   background-color:white;
@@ -187,7 +184,7 @@
   border-top-left-radius:8px;
   border-top-right-radius:8px;
   color:#6E6E6E;
-  top:10%;
+  top:20%;
   padding:23px 30px 43px 28px;
   position:fixed;
   text-align:center;
@@ -408,3 +405,4 @@ display: inline-block;
     width: 24%;
     margin-top: 1%;
 }
+

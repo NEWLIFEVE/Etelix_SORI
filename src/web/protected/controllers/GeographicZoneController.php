@@ -28,15 +28,15 @@ class GeographicZoneController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','create','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -170,4 +170,49 @@ class GeographicZoneController extends Controller
 			Yii::app()->end();
 		}
 	}
+        /**
+	 * este busca los destinos asignados a zonas geograficas
+	 */
+        public function actionDynamicAsignados()
+        {
+    //        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
+            
+            $tipoDestino=$_POST['destinos'];
+             if ($tipoDestino==1)
+               {
+                  $data = Destination::getListDestinationAsignados($_POST['GeographicZone']);
+               }
+               else if ($tipoDestino==2)
+               {
+                   $data = DestinationInt::getListDestinationIntAsignados($_POST['GeographicZone']);  
+               }
+           
+            foreach($data as $value=>$name)
+            {
+                echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+            }
+        } 
+        /**
+	 *  recibe el valor de id_destination
+         *  dependiendo de si es 1 o dos
+         *  va a ejecutar una de las consultas al modelo
+         *  destination o destinationInt respectivamente
+	 */
+        public function actionElijeTipoDestination()
+        {
+            $tipoDestino=$_POST['GeographicZone']['id_destination'];
+            
+           if ($tipoDestino==1)
+               {
+                 $data = Destination::getListDestinationNoAsig();
+               }
+               else if ($tipoDestino==2)
+               {
+                  $data = DestinationInt::getListDestinationIntNoAsig();  
+               }
+            foreach($data as $value=>$name)
+            {
+                echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+            }
+        } 
 }

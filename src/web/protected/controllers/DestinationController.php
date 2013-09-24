@@ -1,6 +1,6 @@
 <?php
 
-class DestinoController extends Controller
+class DestinationController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,15 +28,15 @@ class DestinoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','UpdateZonaDestination','BuscaNombresDes'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','UpdateZonaDestino'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','UpdateZonaDestino'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -157,7 +157,6 @@ class DestinoController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
-
 	/**
 	 * Performs the AJAX validation.
 	 * @param Destination $model the model to be validated
@@ -170,4 +169,59 @@ class DestinoController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionBuscaNombresDes(){
+        
+            $GeographicZone = $_GET['GeographicZone'];
+            $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.  
+            $asigNames="";
+            $noasigNames="";
+            $GeographicZoneName="";
+            $GeographicZoneName.= GeographicZone::getName($GeographicZone);
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Destination::model()->findByPk($asignados[$key]);   
+                if ($modelAsig->id_geographic_zone != $GeographicZone)
+                    $asigNames.= $modelAsig->name.", ";      
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Destination::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_geographic_zone != 2)  
+                $noasigNames.=$modelNoAsig->name.", ";
+            }
+                    $params['GeographicZoneName']=$GeographicZoneName;    
+                    $params['asigNames']=$asigNames;    
+                    $params['noasigNames']=$noasigNames;    
+                       echo json_encode($params);
+        }
+        
+        public function actionUpdateZonaDestination(){
+        
+            $GeographicZone = $_GET['GeographicZone'];
+            $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.  
+            $asigNames="";
+            $noasigNames="";
+
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Destination::model()->findByPk($asignados[$key]);
+                
+                if ($modelAsig->id_geographic_zone != $GeographicZone)
+                {   
+                $modelAsig->id_geographic_zone = $GeographicZone;
+                if($modelAsig->save()){                
+                    $asigNames.= $modelAsig->name.", ";
+                } 
+                }
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Destination::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_geographic_zone != 2)
+                {
+                $modelNoAsig->id_geographic_zone = 2;
+                if($modelNoAsig->save() ){
+                    $noasigNames.=$modelNoAsig->name.", ";
+                }
+                }
+            }   
+        }
 }

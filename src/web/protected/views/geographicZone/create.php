@@ -7,12 +7,13 @@ $this->breadcrumbs=array(
 	'Create',
 );
 
-$this->menu=array(
-	array('label'=>'List GeographicZone', 'url'=>array('index')),
-	array('label'=>'Manage GeographicZone', 'url'=>array('admin')),
-);
+//$this->menu=array(
+//	array('label'=>'List GeographicZone', 'url'=>array('index')),
+//	array('label'=>'Manage GeographicZone', 'url'=>array('admin')),
+//);
 ?>
 
-<h1>Create GeographicZone</h1>
+<h1>Zona geografica por destinos</h1>
+
 
 <?php echo $this->renderPartial('_geographicZoneAdmin', array('model'=>$model)); ?>

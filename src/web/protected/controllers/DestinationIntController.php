@@ -28,7 +28,7 @@ class DestinationIntController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','UpdateZonaDestinationInt','BuscaNombresDesInt'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -170,4 +170,59 @@ class DestinationIntController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionBuscaNombresDesInt(){
+        
+            $GeographicZone = $_GET['GeographicZone'];
+            $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.  
+            $asigNames="";
+            $noasigNames="";
+            $GeographicZoneName="";
+            $GeographicZoneName.= GeographicZone::getName($GeographicZone);
+            foreach ($asignados as $key => $value) {
+                $modelAsig = DestinationInt::model()->findByPk($asignados[$key]);
+                 if ($modelAsig->id_geographic_zone != $GeographicZone)
+                    $asigNames.= $modelAsig->name.", ";      
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = DestinationInt::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_geographic_zone != 2) 
+                    $noasigNames.=$modelNoAsig->name.", ";
+            }
+                    $params['GeographicZoneName']=$GeographicZoneName;    
+                    $params['asigNames']=$asigNames;    
+                    $params['noasigNames']=$noasigNames;    
+                       echo json_encode($params);
+             
+        }
+        public function actionUpdateZonaDestinationInt(){
+        
+            $GeographicZone = $_GET['GeographicZone'];
+            $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.  
+            $asigNames="";
+            $noasigNames="";
+
+            foreach ($asignados as $key => $value) {
+                $modelAsig = DestinationInt::model()->findByPk($asignados[$key]);
+                 if ($modelAsig->id_geographic_zone != $GeographicZone)
+                {   
+                $modelAsig->id_geographic_zone = $GeographicZone;
+                if($modelAsig->save()){                
+                    $asigNames.= $modelAsig->name.", ";
+                } 
+                }         
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = DestinationInt::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_geographic_zone != 2)
+                {
+                $modelNoAsig->id_geographic_zone = 2;
+                if($modelNoAsig->save() ){
+                    $noasigNames.=$modelNoAsig->name.", ";
+                }
+                }
+            }  
+        }
+    
 }

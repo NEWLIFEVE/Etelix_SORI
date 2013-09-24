@@ -2,6 +2,16 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Realese 1.2.0
+-Nuevo Modulo Condiciones Comerciales
+-Log del Sistema
+-Cambios en Carga diaria de archivos Captura, 1era carga PRELIMINARES/2da carga DEFINITIVOS
+-Mensajes personalizados en Dist.Comercial
+-Mensajes en Condiciones Comerciales
+-Modificar contrato y crear nuevo contrato
+-Al momento de cargar diarios, los carriers nuevos se le asigna el manager 'Sin Asignar'
+
+
 Realese 1.1.1
 - Ordenado Alfabeticamente Managers y Carriers en DistComercial
 - Nueva validacion de nombre de archivo en carga de archivo diario
