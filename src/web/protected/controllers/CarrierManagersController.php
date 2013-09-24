@@ -203,7 +203,7 @@ class CarrierManagersController extends Controller
         
                 
         public function actionDynamicAsignados()
-    {
+    { 
 //        echo CHtml::tag('option',array('value'=>'empty'),'Seleccione uno',true);
         $data = Managers::getListCarriersAsignados($_POST['CarrierManagers']['id_managers']);
         foreach($data as $value=>$name)
@@ -283,11 +283,11 @@ class CarrierManagersController extends Controller
     public function actionBuscaNombres(){
         $manager = $_GET['manager'];
         $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
-//        if ($asignados) {
-//         
-//        } else { 
-//        }
-//        $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
+//                if ($asignados=="null"){
+//                      echo'asignados es nulo';
+////                      $asignados= '6';
+////                      $asigNames.=" "; 
+//                   }
         $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.          
   
         if ($manager>0){
@@ -308,7 +308,7 @@ class CarrierManagersController extends Controller
                 $modelAsignar->id_managers = $manager;
                 $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
                 $modelDesasignar->end_date = date("Y-m-d");
-                    $asigNames.= Carrier::getName($asignados[$key]).",";
+                          $asigNames.= Carrier::getName($asignados[$key]).",";
             }
         }
         foreach ($noasignados as $key => $value) {
@@ -320,7 +320,11 @@ class CarrierManagersController extends Controller
                 $modelSinAsignar->start_date = date("Y-m-d");
                 $modelSinAsignar->id_carrier = $noasignados[$key];
                 $modelSinAsignar->id_managers = 8;
-                    $noasigNames.=Carrier::getName($noasignados[$key]).",";
+//                if ($noasignados==null){
+//                     $noasigNames.='';   
+//                   }else{
+                          $noasigNames.=Carrier::getName($noasignados[$key]).",";   
+//                        }
             }
         }
         echo $managerNames.'/'.$noasigNames.'/'.$asigNames;

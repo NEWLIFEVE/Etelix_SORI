@@ -60,7 +60,7 @@
 <?php $this->endWidget(); ?>
   <div id='botAsignar' class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
-	</div>
+  </div>
 </div><!-- form -->
 <div id="contenedor">
 </div>

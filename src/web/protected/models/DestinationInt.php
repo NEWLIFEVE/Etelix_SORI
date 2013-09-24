@@ -122,4 +122,19 @@ class DestinationInt extends CActiveRecord
 			}
 		}
 	}
+        
+ public static function getListDestinationIntNoAsig()
+	{          
+            return CHtml::listData(DestinationInt::model()->findAll("id_geographic_zone=:zona order by name asc",array(':zona'=>2)),'id','name');
+	}    
+        
+                /**
+	 * este busca los destinos asignados a zonas geograficas
+         * a partir del valor recibido en el controlador de zona geografica
+	 */
+        public static function getListDestinationIntAsignados($id)
+	{
+            return CHtml::listData(DestinationInt::model()->findAll('id_geographic_zone=:zona order by name asc',array(':zona'=>$id)),'id','name');
+	
+	}
 }

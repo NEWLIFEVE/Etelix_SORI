@@ -121,4 +121,25 @@ class Destination extends CActiveRecord
 			}
 		}
 	}
+        /**
+	 * este busca los destinos asignados a zonas geograficas
+         * a partir del valor recibido en el controlador de zona geografica
+	 */
+        public static function getListDestinationAsignados($id)
+	{
+            return CHtml::listData(Destination::model()->findAll('id_geographic_zone=:zona order by name asc',array(':zona'=>$id)),'id','name');
+	}
+         /**
+	 * trae todos los destinos externos que no 
+         * esten asignados a ninguna zona geografica
+	 */
+        public static function getListDestinationNoAsig()
+	{          
+            return CHtml::listData(Destination::model()->findAll("id_geographic_zone=:zona order by name asc",array(':zona'=>2)),'id','name');
+	}
+        
+ 
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 }

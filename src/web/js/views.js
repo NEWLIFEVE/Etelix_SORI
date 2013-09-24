@@ -59,7 +59,7 @@ function valForm(objeto)
 		}
 		else
 		{
-			var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'>Aceptar</button><button name='cancelar'>Cancelar</button>";
+			var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
 			var estilo={
 //				'background':'#FFF6BF',
 //				'border':'10px #FFD324 solid',
@@ -105,7 +105,7 @@ function valForm(objeto)
                 aguanta.fadeOut('fast');
             }, 3000);
          }     
-    else
+    else 
       { 
         $.ajax({           
                 type: "GET",
@@ -148,9 +148,8 @@ function valForm(objeto)
                                       }
                        var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en la Distribucion \n\
                                       \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
-                                      "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar' class='cancelar'>\n\
-                                      <img src='/images/cancelar.png'width='90px' height='50px'/>\n\&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                      "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
                                }
@@ -362,8 +361,9 @@ $('#botAsignarContrato').click('on',function(e)
 
 
 
-                 if(TPOculto==false){
+                 if(TPOculto==false && monetizaOculto==false){
                             var guardoEdito=" Se guardo con exito el Contrato";        
+
                             var revisa = $("<div class='cargando'>\n\
                                                 </div><div class='mensaje'>\n\
                                                     <h4>Esta a punto de crear un nuevo Contrato: \n\
@@ -382,6 +382,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                     </div>\n\
                                                 <div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
                                       width='85px' height='45px'/></div></div>").hide();
+
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
                       }
@@ -484,4 +485,152 @@ $('#botAsignarContrato').click('on',function(e)
         }});
 
 });
-//FIN contrato, add and update
+
+//FIIN contrato, add and update
+
+//FIIN administra las zonas geograficas con los destinos externos e internos
+ $(".botAsignarDestination").on( "click",  function DestinosAsignadosNoasignados()
+     {
+         $("#carriers select option").prop("selected",true);    
+            var GeographicZone = $("#GeographicZone_id").val();
+            var asignados = $("#select_right").val();
+            var noasignados = $("#select_left").val(); 
+            var destinos = $('#GeographicZone_id_destination').val();
+
+            if(GeographicZone=="")
+              {
+               var aguanta = $("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino y una zona geografica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(aguanta)
+                    aguanta.fadeIn('fast');
+                    setTimeout(function()
+                 {
+                     aguanta.fadeOut('fast');
+                 }, 3000);
+              }else{
+      
+            if (destinos == 1){
+                   var tipoDestino="Destinos Externos";
+                   var elijeDestinationBuscaName="../Destination/BuscaNombresDes";
+                   var destination_update="../Destination/UpdateZonaDestination";
+            } if (destinos == 2){
+                   tipoDestino="Destinos Internos";
+                   elijeDestinationBuscaName="../DestinationInt/BuscaNombresDesInt";
+                   destination_update="../DestinationInt/UpdateZonaDestinationInt";
+            }
+                $.ajax({           
+                        type: "GET",
+                        url: elijeDestinationBuscaName,
+                        data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
+
+                success: function(data) 
+                {
+                        obj = JSON.parse(data);
+                        var GeographicZoneName = (obj.GeographicZoneName);
+                        var AsigNames = (obj.asigNames);
+                        var NoAsigNames = (obj.noasigNames);
+                        if (AsigNames<1&&NoAsigNames<1)
+                          {
+                            var NoHayDatos = $("<div class='cargando'></div><div class='mensaje'><h3>No hay datos que cambiar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(NoHayDatos)
+                                NoHayDatos.fadeIn('fast');
+                                setTimeout(function()
+                             {
+                                 NoHayDatos.fadeOut('fast');
+                             }, 3000);   
+                          }else{  
+                        if (AsigNames=="")
+                            {
+                             var asig="";
+                            }else{
+                                   var asig='Asignarle: ';
+                                 }
+                         if (NoAsigNames=="")
+                            {
+                             var desA="";
+                            }else{
+                                var desA = 'Dsasignarle:';
+                                 }
+                           var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>\n\
+                                        Esta a punto de realizar actualizar "+tipoDestino+" la Zona Geográfica: \n\
+                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
+                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
+                                        "+NoAsigNames+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar\n\
+                                        <p><p><p><div id='cancelar'class='cancelar'><p><label><b>\n\
+                                        Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
+                                        <p><label><b>Aceptar</b></label></div></div>").hide();
+                                  $("body").append(revisa);
+                                  revisa.fadeIn('fast');
+                                
+                  $('#confirma,#cancelar').on('click', function()
+                   {
+                       var tipo=$(this).attr('id');
+                       if(tipo=="confirma")
+                         {     $('.mensaje').html("<h2>Espere un momento por favor</h2><p><p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/><p><p><p><p><p><p><p><p<p><p>").hide().fadeIn('fast');  
+                            $.ajax({           
+                                  type: "GET",
+                                  url: destination_update,
+                                  data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
+
+                                  success: function(data) 
+                                          {  
+                                  var exito = $('.mensaje').html("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: \n\
+                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
+                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
+                                        "+NoAsigNames+"</h6><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                setTimeout(function()
+                                {
+                                    exito.fadeOut('fast');
+                                    $('.cargando').fadeOut('fast');
+                                }, 4000);      
+                                          }
+                                 }); 
+                         }else{
+                              revisa.fadeOut('fast');
+                              }              
+                   });
+                                 }
+                 }    
+                       });
+                        $("#carriers select option").prop("selected",false);   
+                  }
+     });
+   
+//  carga los datos en los select  multiple zona geografica y destination...  
+     $('#GeographicZone_id_destination').change(function(){
+        var GeographicZone = $("#GeographicZone_id").val();
+        var destinos = $('#GeographicZone_id_destination').val();
+                $.ajax({           
+                        type: "POST",
+                        url: "DynamicAsignados",
+                        data:   'GeographicZone='+GeographicZone+'&destinos='+destinos,         
+                                success: function(data) 
+                                {
+                                    $('#select_right').empty().append(data);
+                                }
+                       });
+     });
+     $('#GeographicZone_id').change(function(){
+        var GeographicZone = $("#GeographicZone_id").val();
+        var destinos = $('#GeographicZone_id_destination').val();
+          if (destinos<1)
+              {
+                var aguanta = $("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino antes de seleccionar la zona geográfica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(aguanta)
+                    aguanta.fadeIn('fast');
+                    setTimeout(function()
+                 {
+                     aguanta.fadeOut('fast');
+                 }, 3000);
+              }else{
+               $.ajax({           
+                        type: "POST",
+                        url: "DynamicAsignados",
+                        data:   'GeographicZone='+GeographicZone+'&destinos='+destinos,         
+                                success: function(data) 
+                                {
+                                $('#select_right').empty().append(data);   
+                                }
+                      });
+                    }
+     });
+//     fin de adm de zonas y destinos

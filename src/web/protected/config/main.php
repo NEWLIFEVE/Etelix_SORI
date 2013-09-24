@@ -41,20 +41,14 @@ return array(
         		'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
        			),
        		),
-        /*'db'=>array(
-        	'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-        	),*/
-        // uncomment the following to use a MySQL database
-		'db'=>array(
-			//'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_sori',
-			'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
-			'emulatePrepare'=>true,
-			'username'=>'postgres',
-			'password'=>'123',
-                        //'password'=>'Nsusfd8263',
-			'charset'=>'utf8',
-			),
-		),
+
+            'db'=>array(
+                      'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
+                                    'emulatePrepare'=>true,
+                                    'username'=>'postgres',
+                                   'password'=>'123',
+                                    'charset'=>'utf8',
+                        ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -74,7 +68,7 @@ return array(
 				*/
 			),
 		),
-	
+	),
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(

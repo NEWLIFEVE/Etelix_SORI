@@ -7,16 +7,24 @@
  * @property integer $id
  * @property string $name_zona
  * @property string $color_zona
+
  *
  * The followings are the available model relations:
  * @property Destination[] $destinations
  * @property DestinationInt[] $destinationInts
+
  */
 class GeographicZone extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
+
+        public $id_destination;
+    
+    
+
+
 	public function tableName()
 	{
 		return 'geographic_zone';
@@ -46,8 +54,10 @@ class GeographicZone extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
 			'destinations' => array(self::HAS_MANY, 'Destination', 'id_geographic_zone'),
 			'destinationInts' => array(self::HAS_MANY, 'DestinationInt', 'id_geographic_zone'),
+
 		);
 	}
 
@@ -57,9 +67,10 @@ class GeographicZone extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Zona Geografica',
 			'name_zona' => 'Name Zona',
 			'color_zona' => 'Color Zona',
+
 		);
 	}
 
@@ -100,4 +111,8 @@ class GeographicZone extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public static function getName($GeographicZone){           
+                return self::model()->find("id=:id", array(':id'=>$GeographicZone))->name_zona;
+        }
+          
 }
