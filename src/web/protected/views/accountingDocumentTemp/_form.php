@@ -17,30 +17,31 @@
 	'enableAjaxValidation'=>false,
 ));?>
 
+         <?php echo $form->errorSummary($model); ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
         
-        <div class="selectTypeDocument">
-            <select id="selectTypeDocument">
-                <option> Seleccione</option>
-                <option value="1"> Facturas</option>
-                <option value="2"> Depositos</option>
-                <option value="3"> otros</option>
-                <option value="4"> ootros</option>
-            </select>
+        <div class="AccountingDocumentTemp_id_type_accounting_document">
+            <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
+                    <?php echo $form->dropDownList($model,'id_type_accounting_document',
+                        CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')),'id','name'),
+                        array('prompt'=>'Seleccione')
+                        ); ?>
+		<?php echo $form->error($model,'id_type_accounting_document'); ?>
         </div>
 
    <div class="formularioDocumento">
      <div class="valoresDocumento">
-         <?php echo $form->errorSummary($model); ?>
+
         <div class="contratoForm">
 		<?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'issue_date',
-                                   'htmlOptions' => array(
-                                       'size' => '10', // textField size
-                                       'maxlength' => '10', // textField maxlength
-                ))); ?>
+                           'options'=>array('dateFormat'=>'yy-mm-dd',
+                                   'yearRange'=>'1900',
+                                   'size' => '10', // textField size
+                                   'maxlength' => '10', // textField maxlength
+                    ),)); ?>
 		<?php echo $form->error($model,'issue_date'); ?>
 	</div>
 
@@ -49,9 +50,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'from_date',
-                                   'htmlOptions' => array(
-                                       'size' => '10', // textField size
-                                       'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd',
+                                   'yearRange'=>'1900',
+                                   'size' => '10', // textField size
+                                   'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'from_date'); ?>
 	</div>
@@ -61,9 +63,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'to_date',
-                                   'htmlOptions' => array(
-                                       'size' => '10', // textField size
-                                       'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd',
+                                   'yearRange'=>'1900',
+                                   'size' => '10', // textField size
+                                   'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'to_date'); ?>
 	</div>
@@ -73,9 +76,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'received_date',
-                                   'htmlOptions' => array(
-                                       'size' => '10', // textField size
-                                       'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd',
+                                   'yearRange'=>'1900',
+                                   'size' => '10', // textField size
+                                   'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'received_date'); ?>
 	</div>
@@ -85,9 +89,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'sent_date',
-                                   'htmlOptions' => array(
-                                       'size' => '10', // textField size
-                                       'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd',
+                                   'yearRange'=>'1900',
+                                   'size' => '10', // textField size
+                                   'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'sent_date'); ?>
 	</div>
@@ -110,60 +115,67 @@
 		<?php echo $form->error($model,'amount'); ?>
 	</div>
 
-	<div class="contratoForm">
+	<div class="contratoFormTextArea">
+            <br>
 		<?php echo $form->labelEx($model,'note'); ?>
-		<?php echo $form->textField($model,'note',array('size'=>60,'maxlength'=>250)); ?>
+		<?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
 		<?php echo $form->error($model,'note'); ?>
 	</div>
-
-	<div class="contratoForm">
-		<?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
-		<?php echo $form->textField($model,'id_type_accounting_document'); ?>
-		<?php echo $form->error($model,'id_type_accounting_document'); ?>
-	</div>
               <br>
               <br>
-        <?php $this->endWidget(); ?>
+      
 	<div id="botAgregarDatosContable" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
 	</div>
       </div>
     </div>
-
+  <?php $this->endWidget(); ?>
 </div><!-- form -->
 
 <script>
-  $('#selectTypeDocument').change(function()
+  $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
     {
         $('.instruccion').slideUp('slow');
         $('.valoresDocumento').slideDown('slow');
     });
+        $('.contratoFormTextArea').click('on',function()
+          {
+              $('#AccountingDocumentTemp_note').slideDown('slow');
+          });
     
   $('#botAgregarDatosContable').click('on',function(e)
     { 
-       var selecTipoDoc=$('#selectTypeDocument');
-       var fechaEmision=$('#AccountingDocumentTemp_issue_date');
-       var desdeFecha=$('#AccountingDocumentTemp_from_date');
-       var hastaFecha=$('#AccountingDocumentTemp_to_date');
-       var fechaRecepcion=$('#AccountingDocumentTemp_received_date');
-       var fechaEnvio=$('#AccountingDocumentTemp_sent_date');
-       var numDocumento=$('#AccountingDocumentTemp_doc_number');
-       var minutos=$('#AccountingDocumentTemp_minutes');
-       var cantidad=$('#AccountingDocumentTemp_amount');
-       var nota=$('#AccountingDocumentTemp_note');
-       var tipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document');
-       if()
-           {
-        $.ajax({ 
-              type: "GET",
-              url: "agregarDocumentoTemporal",
-              data: "fechaEmision="+fechaEmision+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
-                    &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&tipoDoc="+tipoDoc,
-
-              success: function(data) 
-                      {
-
-                      }          
-        }); 
+        
+        
+        var exito = $("<div class='cargando'></div><div class='mensaje'><h3>El documento fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(exito)
+                                exito.fadeIn('fast');
+                                setTimeout(function()
+                             {
+                                 exito.fadeOut('fast');
+                             }, 30000);
+       
+//       var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document');
+//       var fechaEmision=$('#AccountingDocumentTemp_issue_date');
+//       var desdeFecha=$('#AccountingDocumentTemp_from_date');
+//       var hastaFecha=$('#AccountingDocumentTemp_to_date');
+//       var fechaRecepcion=$('#AccountingDocumentTemp_received_date');
+//       var fechaEnvio=$('#AccountingDocumentTemp_sent_date');
+//       var numDocumento=$('#AccountingDocumentTemp_doc_number');
+//       var minutos=$('#AccountingDocumentTemp_minutes');
+//       var cantidad=$('#AccountingDocumentTemp_amount');
+//       var nota=$('#AccountingDocumentTemp_note');
+//      
+//        $.ajax({ 
+//              type: "GET",
+//              url: "Create",
+//              data: "fechaEmision="+fechaEmision+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
+//                    &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+//
+//              success: function(data) 
+//                      {
+//
+//                      }          
+//        }); 
     }); 
 </script>

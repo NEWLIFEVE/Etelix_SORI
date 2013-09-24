@@ -71,7 +71,8 @@ class AccountingDocumentTempController extends Controller
 		{
 			$model->attributes=$_POST['AccountingDocumentTemp'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+//				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('create','id'=>$model->id));
 		}
 
 		$this->render('create',array(
