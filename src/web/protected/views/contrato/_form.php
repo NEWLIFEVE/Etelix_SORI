@@ -106,18 +106,12 @@
                 </div>
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_limite_credito'); ?>
-                        <?php echo $form->textField($model,'id_limite_credito',
-                        CHtml::listData(Limites::model()->findAll(array('order'=>'name')),'id','name'),
-                        array('prompt'=>'Seleccione')
-                        ); ?> 
+                        <?php echo $form->textField($model,'id_limite_credito'); ?> 
                         <?php echo $form->error($model,'id_limite_credito'); ?>
                 </div>
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_limite_compra'); ?>
-                        <?php echo $form->textField($model,'id_limite_compra',
-                        CHtml::listData(Limites::model()->findAll(array('order'=>'name')),'id','name'),
-                        array('prompt'=>'Seleccione')
-                        ); ?> 
+                        <?php echo $form->textField($model,'id_limite_compra'); ?> 
                         <?php echo $form->error($model,'id_limite_compra'); ?>
                 </div>
                <input type="hidden" id="dias_disputa_Oculto"  value="">

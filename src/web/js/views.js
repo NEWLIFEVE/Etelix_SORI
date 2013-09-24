@@ -485,6 +485,7 @@ $('#botAsignarContrato').click('on',function(e)
         }});
 
 });
+
 //FIIN contrato, add and update
 
 //FIIN administra las zonas geograficas con los destinos externos e internos
