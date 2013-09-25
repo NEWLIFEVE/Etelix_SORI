@@ -15,9 +15,11 @@
  * @property double $amount
  * @property string $note
  * @property integer $id_type_accounting_document
+ * @property integer $id_carrier
  *
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
+ * @property Carrier $idCarrier
  */
 class AccountingDocumentTemp extends CActiveRecord
 {
@@ -38,14 +40,14 @@ class AccountingDocumentTemp extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, received_date, sent_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,6 +60,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idTypeAccountingDocument' => array(self::BELONGS_TO, 'TypeAccountingDocument', 'id_type_accounting_document'),
+                        'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
 		);
 	}
 
@@ -75,9 +78,10 @@ class AccountingDocumentTemp extends CActiveRecord
 			'sent_date' => 'Fecha de envio',
 			'doc_number' => 'Número de documento',
 			'minutes' => 'Minutos',
-			'amount' => 'Cantidad',
+			'amount' => 'Monto',
 			'note' => 'Nota',
 			'id_type_accounting_document' => 'Tipo de documento contable',
+			'id_carrier' => 'Carrier',
 		);
 	}
 
@@ -110,6 +114,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('amount',$this->amount);
 		$criteria->compare('note',$this->note,true);
 		$criteria->compare('id_type_accounting_document',$this->id_type_accounting_document);
+		$criteria->compare('id_carrier',$this->id_carrier);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

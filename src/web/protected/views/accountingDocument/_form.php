@@ -78,6 +78,11 @@
 		<?php echo $form->textField($model,'id_type_accounting_document'); ?>
 		<?php echo $form->error($model,'id_type_accounting_document'); ?>
 	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'id_carrier'); ?>
+		<?php echo $form->textField($model,'id_carrier'); ?>
+		<?php echo $form->error($model,'id_carrier'); ?>
+	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

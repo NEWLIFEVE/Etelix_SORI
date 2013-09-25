@@ -361,7 +361,7 @@ $('#botAsignarContrato').click('on',function(e)
 
 
 
-                 if(TPOculto==false && monetizaOculto==false){
+                 if(TPOculto==false && monetizableOculto==false){
                             var guardoEdito=" Se guardo con exito el Contrato";        
 
                             var revisa = $("<div class='cargando'>\n\

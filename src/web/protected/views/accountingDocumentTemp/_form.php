@@ -22,11 +22,13 @@
         
         <div class="AccountingDocumentTemp_id_type_accounting_document">
             <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
-                    <?php echo $form->dropDownList($model,'id_type_accounting_document',
-                        CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')),'id','name'),
-                        array('prompt'=>'Seleccione')
-                        ); ?>
-		<?php echo $form->error($model,'id_type_accounting_document'); ?>
+            <?php echo $form->dropDownList($model,'id_type_accounting_document',TypeAccountingDocument::getListTypeAccountingDocument(),array('prompt'=>'Seleccione')); ?>
+            <?php echo $form->error($model,'id_type_accounting_document'); ?>
+        </div>
+        <div class="AccountingDocumentTemp_id_type_accounting_document">
+            <?php echo $form->labelEx($model,'id_carrier'); ?>
+            <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+            <?php echo $form->error($model,'id_carrier'); ?>
         </div>
 
    <div class="formularioDocumento">
