@@ -377,11 +377,8 @@ $('#botAsignarContrato').click('on',function(e)
                                                             Fecha de puesta en produccion: "+production_date+"<p> \n\
                                                             "+end_date+"<p></h6>\n\
                                                         <p><p>Si todos los datos a almacenar son correcstos, presione Aceptar, de lo contrario Cancelar<p>\n\
-                                                <p><div id='cancelar' class='cancelar'>\n\
-                                                    <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;\n\
-                                                    </div>\n\
-                                                <div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                                <p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
 
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');
@@ -441,9 +438,8 @@ $('#botAsignarContrato').click('on',function(e)
                                                 "+backCompra+" "+compra+"<p>\n\
                                             <p>"+backF_Firma+" "+sign_date+"<p> \n\
                                                 "+backProduccion+" "+production_date+"<p> \n\
-                                                "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar' class='cancelar'>\n\
-                                      <img src='/images/cancelar.png' width='75px' height='75px' onmouseover='this.src='/images/cancelar1.png';'/>&nbsp;</div><div id='confirma' class='confirma'><img src='/images/aceptar.png'\n\
-                                      width='85px' height='45px'/></div></div>").hide();
+                                                "+end_date+"<p></h6><p><p>Si esta seguro de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
                                   $("body").append(revisa);
                                   revisa.fadeIn('fast');         
                           }
