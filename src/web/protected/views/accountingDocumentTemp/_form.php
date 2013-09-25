@@ -22,10 +22,8 @@
         
         <div class="AccountingDocumentTemp_id_type_accounting_document">
             <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
-                    <?php echo $form->dropDownList($model,'id_type_accounting_document',
-                        CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')),'id','name'),
-                        array('prompt'=>'Seleccione')
-                        ); ?>
+                    <?php echo $form->dropDownList($model,'id_type_accounting_document', 
+                            TypeAccountingDocument::getNameList(),array('empty'=>'Seleccionar..'));?>
 		<?php echo $form->error($model,'id_type_accounting_document'); ?>
         </div>
 
@@ -37,10 +35,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'issue_date',
-                           'options'=>array('dateFormat'=>'yy-mm-dd',
-                                   'yearRange'=>'1900',
-                                   'size' => '10', // textField size
-                                   'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd'),
+                                   'htmlOptions' => array(
+                                       'size' => '10', // textField size
+                                       'maxlength' => '10', // textField maxlength
                     ),)); ?>
 		<?php echo $form->error($model,'issue_date'); ?>
 	</div>
@@ -50,10 +48,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'from_date',
-                           'options'=>array('dateFormat'=>'yy-mm-dd',
-                                   'yearRange'=>'1900',
-                                   'size' => '10', // textField size
-                                   'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd'),
+                                   'htmlOptions' => array(
+                                       'size' => '10', // textField size
+                                       'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'from_date'); ?>
 	</div>
@@ -63,10 +61,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'to_date',
-                           'options'=>array('dateFormat'=>'yy-mm-dd',
-                                   'yearRange'=>'1900',
-                                   'size' => '10', // textField size
-                                   'maxlength' => '10', // textField maxlength
+                          'options'=>array('dateFormat'=>'yy-mm-dd'),
+                                   'htmlOptions' => array(
+                                       'size' => '10', // textField size
+                                       'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'to_date'); ?>
 	</div>
@@ -76,10 +74,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'received_date',
-                           'options'=>array('dateFormat'=>'yy-mm-dd',
-                                   'yearRange'=>'1900',
-                                   'size' => '10', // textField size
-                                   'maxlength' => '10', // textField maxlength
+                           'options'=>array('dateFormat'=>'yy-mm-dd'),
+                                   'htmlOptions' => array(
+                                       'size' => '10', // textField size
+                                       'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'received_date'); ?>
 	</div>
@@ -89,10 +87,10 @@
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'sent_date',
-                           'options'=>array('dateFormat'=>'yy-mm-dd',
-                                   'yearRange'=>'1900',
-                                   'size' => '10', // textField size
-                                   'maxlength' => '10', // textField maxlength
+                         'options'=>array('dateFormat'=>'yy-mm-dd'),
+                                   'htmlOptions' => array(
+                                       'size' => '10', // textField size
+                                       'maxlength' => '10', // textField maxlength
                 ))); ?>
 		<?php echo $form->error($model,'sent_date'); ?>
 	</div>
@@ -114,14 +112,16 @@
 		<?php echo $form->textField($model,'amount'); ?>
 		<?php echo $form->error($model,'amount'); ?>
 	</div>
-
+                            <div class="hacerUnaNota">
+                                <br>
+                                <label>Nota (+)</label> 
+                            </div>           
 	<div class="contratoFormTextArea">
-            <br>
-		<?php echo $form->labelEx($model,'note'); ?>
+                <br>     
+		 <label class="quitaNota"><b>Nota (-)</b></label> 
 		<?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
 		<?php echo $form->error($model,'note'); ?>
 	</div>
-              <br>
               <br>
       
 	<div id="botAgregarDatosContable" class="row buttons">
@@ -131,29 +131,18 @@
     </div>
   <?php $this->endWidget(); ?>
 </div><!-- form -->
-
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>
 <script>
-  $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
-    {
-        $('.instruccion').slideUp('slow');
-        $('.valoresDocumento').slideDown('slow');
-    });
-        $('.contratoFormTextArea').click('on',function()
-          {
-              $('#AccountingDocumentTemp_note').slideDown('slow');
-          });
-    
-  $('#botAgregarDatosContable').click('on',function(e)
-    { 
-        
-        
-        var exito = $("<div class='cargando'></div><div class='mensaje'><h3>El documento fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-                                $("body").append(exito)
-                                exito.fadeIn('fast');
-                                setTimeout(function()
-                             {
-                                 exito.fadeOut('fast');
-                             }, 30000);
+  
+//  $('#botAgregarDatosContable').click('on',function(e)
+//    { 
+//        var exito = $("<div class='cargando'></div><div class='mensaje'><h3>El documento fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+//                                $("body").append(exito)
+//                                exito.fadeIn('fast');
+//                                setTimeout(function()
+//                             {
+//                                 exito.fadeOut('fast');
+//                             }, 30000);
        
 //       var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document');
 //       var fechaEmision=$('#AccountingDocumentTemp_issue_date');
@@ -177,5 +166,5 @@
 //
 //                      }          
 //        }); 
-    }); 
+//    }); 
 </script>

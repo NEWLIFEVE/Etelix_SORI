@@ -40,8 +40,7 @@
         </div>
         <div class='destinationform'>
                 <?php echo $form->labelEx($model,'id'); ?>
-                <?php echo $form->dropDownList($model,'id',
-                        CHtml::listData(GeographicZone::model()->findAll(array('order'=>'name_zona')),'id','name_zona'),
+                <?php echo $form->dropDownList($model,'id',GeographicZone::getListGeo(),
                  array(
 //                    'ajax'=>array(
 //                        'type'=>'POST',

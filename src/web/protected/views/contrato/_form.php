@@ -24,8 +24,7 @@
 
         <div class="row carrierSelect">
 		<?php echo $form->labelEx($model,'id_carrier'); ?>  
-                <?php echo $form->dropDownList($model,'id_carrier',
-                CHtml::listData(Carrier::model()->findAll(array('order'=>'name')),'id','name'),
+                <?php echo $form->dropDownList($model,'id_carrier', Carrier::getListCarrier(),
                 array('prompt'=>'Seleccione')
                 ); ?> 
 		<?php echo $form->error($model,'id_carrier'); ?>
@@ -40,8 +39,7 @@
           <div class="valores">
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_company'); ?>
-                        <?php echo $form->dropDownList($model,'id_company',
-                        CHtml::listData(Company::model()->findAll(array('order'=>'id')),'id','name'),
+                        <?php echo $form->dropDownList($model,'id_company',Company::getListCompany(),
                         array('prompt'=>'Seleccione')
                         ); ?>
                         <?php echo $form->error($model,'id_company'); ?>
@@ -52,6 +50,7 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'sign_date',
+                          'options'=>array('dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
@@ -64,6 +63,7 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'production_date',
+                        'options'=>array('dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
@@ -76,6 +76,7 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'end_date',
+                             'options'=>array('dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
@@ -85,16 +86,14 @@
                <!--<div class="SegundoNivel">-->
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_termino_pago'); ?>
-                        <?php echo $form->dropDownList($model,'id_termino_pago',
-                        CHtml::listData(TerminoPago::model()->findAll(array('order'=>'id')),'id','name'),
+                        <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
                         array('prompt'=>'Seleccione')
                         ); ?> 
                         <?php echo $form->error($model,'id_termino_pago'); ?>
                 </div>
                 <div class="contratoForm">
                         <?php echo $form->labelEx($model,'id_monetizable'); ?>
-                        <?php echo $form->dropDownList($model,'id_monetizable',
-                        CHtml::listData(Monetizable::model()->findAll(array('order'=>'id')),'id','name'),
+                        <?php echo $form->dropDownList($model,'id_monetizable',Monetizable::getListMonetizable(),
                         array('prompt'=>'Seleccione')
                         ); ?> 
                         <?php echo $form->error($model,'id_monetizable'); ?>

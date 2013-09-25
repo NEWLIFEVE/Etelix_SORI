@@ -114,5 +114,7 @@ class GeographicZone extends CActiveRecord
         public static function getName($GeographicZone){           
                 return self::model()->find("id=:id", array(':id'=>$GeographicZone))->name_zona;
         }
-          
+        public static function getListGeo(){           
+                return CHtml::listData(GeographicZone::model()->findAll(array('order'=>'name_zona')),'id','name_zona');
+        }  
 }

@@ -128,7 +128,14 @@ class Managers extends CActiveRecord
          public static function getName($manager){           
             return self::model()->find("id=:id", array(':id'=>$manager))->lastname;
         }
-          
+        
+        public static function getNameList()
+        {
+            return CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname');
+        }
+               
+                
+                
 }
 
 
