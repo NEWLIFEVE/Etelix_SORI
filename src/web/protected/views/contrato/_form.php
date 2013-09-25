@@ -52,6 +52,7 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'sign_date',
+                                   'options'=> array( 'dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
@@ -64,7 +65,9 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'production_date',
+                                    'options'=> array( 'dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
+                                       'dateFormat'=>'yy-mm-dd',
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
                          ))); ?>
@@ -76,7 +79,9 @@
                         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                    'model' => $model,
                                    'attribute' => 'end_date',
+                                    'options'=> array( 'dateFormat'=>'yy-mm-dd'),
                                    'htmlOptions' => array(
+                                       'dateFormat'=>'yy-mm-dd',
                                        'size' => '10', // textField size
                                        'maxlength' => '10', // textField maxlength
                          ))); ?>
