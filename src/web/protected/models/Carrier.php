@@ -12,6 +12,8 @@
  * The followings are the available model relations:
  * @property Balance[] $balances
  * @property CarrierManagers[] $carrierManagers
+ * @property AccountingDocumentTemp[] $accountingDocumentTemps
+ * @property AccountingDocument[] $accountingDocuments
  */
 class Carrier extends CActiveRecord
 {
@@ -50,6 +52,8 @@ class Carrier extends CActiveRecord
 		return array(
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_carrier'),
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
+			'$accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
+			'$accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
 		);
 	}
 
@@ -139,9 +143,14 @@ class Carrier extends CActiveRecord
             return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
         
-       public static function getListCarrier()
-    {
-        return CHtml::listData(Carrier::model()->findAll(), 'id', 'name');
-    }
+        public static function getListCarrier()
+        {
+            return CHtml::listData(Carrier::model()->findAll(array('order' => 'name')), 'id', 'name');
+        }
+        public static function getListCarrierNoUNKNOWN()
+        {
+            $id = self::getId('Unknown_Carrier');
+            return CHtml::listData(Carrier::model()->findAll("id !=:id order by name ASC",array(":id"=>$id)), 'id', 'name');
+        }
 
 }
