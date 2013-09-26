@@ -131,18 +131,23 @@
       
 	<div id="botAgregarDatosContable" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
-	</div>      
+	</div> 
+        <div class="VistDocTemporales">
+            <table border="1" class="tablaVistDocTemporales">
+                <tr> <td> Tipo de Doc </td> <td> Carrier </td> <td> Fecha de Emisión </td> <td> Fecha de Inicio </td>
+                    <td> Fecha de Culminación </td> <td> Fecha Recepción </td> <td> Fecha Envio </td> <td> N°Documento </td> <td> Minutos </td> <td> Cantidad </td>
+            </table>
+        </div>
+              <br> 
+        <div id="botAgregarDatosContableFinal" class="row buttons">
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+        </div>  
+              
       </div>
     </div> 
   <?php $this->endWidget(); ?>
 </div><!-- form -->
-       <div class="VistDocTemporales">
-            <table border="1" class="tablaVistDocTemporales">
-                <tr> <td> Tipo de Doc </td> <td> Carrier </td> <td> Fecha de Emisión </td> <td> Fecha de Inicio </td>
-                    <td> Fecha de Culminación </td> <td> Fecha Recepción </td> <td> Fecha Envio </td> <td> N°Documento </td> <td> Minutos </td> <td> Cantidad </td>
-              
-            </table>
-        </div>
+
 
 <!--<script src="<?php // echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>-->
 <script>
@@ -237,6 +242,7 @@
                                                   <td> "+fechaEnvioTemp+" </td> <td> "+numDocumentoTemp+" </td> <td> "+minutosTemp+" </td> <td> "+cantidadTemp+" </td></tr>");
 
                                                         $('.tablaVistDocTemporales').fadeIn('slow');
+                                                        $('#botAgregarDatosContableFinal').fadeIn('slow');
                                 
                                 $("#AccountingDocumentTemp_doc_number").val('');
                                 $("#AccountingDocumentTemp_minutes").val('');
@@ -247,4 +253,21 @@
 //       ------------------------------
          }
     }); 
+    
+      $('#botAgregarDatosContableFinal').click('on',function(e)
+    { 
+        e.preventDefault();
+         $.ajax({ 
+              type: "GET",
+              url: "guardarListaFinal",
+//              data: "&selecTipoDocNameTemp="+selecTipoDocNameTemp+"&idCarrierNameTemp="+idCarrierNameTemp+"&fechaEmisionTemp="+fechaEmisionTemp+"&desdeFechaTemp="+desdeFechaTemp+"&hastaFechaTemp="+hastaFechaTemp+"\
+//                    &fechaRecepcionTemp="+fechaRecepcionTemp+"&fechaEnvioTemp="+fechaEnvioTemp+"&numDocumentoTemp="+numDocumentoTemp+"&minutosTemp="+minutosTemp+"&cantidadTemp="+cantidadTemp,
+
+              success: function(data) 
+                      { 
+                          alert(data);
+                      }
+                      
+               });
+    });
 </script>

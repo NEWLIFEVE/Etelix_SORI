@@ -28,7 +28,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -136,6 +136,27 @@ class AccountingDocumentTempController extends Controller
                     $params['cantidadTemp']=$cantidad;    
                        echo json_encode($params);
              }
+        }
+        
+         public function actionGuardarListaFinal()
+        {
+             echo 'entreeeeeeeee';
+//       $selecTipoDoc=$_GET['idCarrierNameTemp'];
+//       $idCarrier=$_GET['selecTipoDocNameTemp'];
+//       $fechaEmision=$_GET['fechaEmisionTemp'];
+//       $desdeFecha=$_GET['desdeFechaTemp'];
+//       $hastaFecha=$_GET['hastaFechaTemp'];
+//       $fechaRecepcion=$_GET['fechaRecepcionTemp'];
+//       $fechaEnvio=$_GET['fechaEnvioTemp'];
+//       $numDocumento=$_GET['numDocumentoTemp'];
+//       $minutos=$_GET['minutosTemp'];
+//       $cantidad=$_GET['cantidadTemp'];
+//
+//       $idCarrierName="";
+//       $selecTipoDocName="";
+//       $idCarrierName.= Carrier::getName($idCarrier);
+//       $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+//        
         }
 	/**
 	 * Updates a particular model.
