@@ -123,7 +123,9 @@ class AccountingDocumentTempController extends Controller
                 $model->amount = $cantidad;
                 $model->note = $nota;
      
-             if($model->save()){                
+             if($model->save()){ 
+                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                 Log::registrarLog($idAction, NULL, $model->id);
                     $params['idCarrierNameTemp']=$idCarrierName;    
                     $params['selecTipoDocNameTemp']=$selecTipoDocName;    
                     $params['fechaEmisionTemp']=$fechaEmision;    
