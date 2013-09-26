@@ -1,11 +1,11 @@
 <?php
 /* @var $this GeographicZoneController */
 /* @var $model GeographicZone */
-
-$this->breadcrumbs=array(
-	'Geographic Zones'=>array('index'),
-	'Create',
-);
+//
+//$this->breadcrumbs=array(
+//	'Geographic Zones'=>array('index'),
+//	'Create',
+//);
 
 //$this->menu=array(
 //	array('label'=>'List GeographicZone', 'url'=>array('index')),
