@@ -22,14 +22,19 @@
         
         <div class="AccountingDocumentTemp_id_type_accounting_document">
             <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
-                    <?php echo $form->dropDownList($model,'id_type_accounting_document', 
-                            TypeAccountingDocument::getNameList(),array('empty'=>'Seleccionar..'));?>
-		<?php echo $form->error($model,'id_type_accounting_document'); ?>
+            <?php echo $form->dropDownList($model,'id_type_accounting_document',TypeAccountingDocument::getListTypeAccountingDocument(),array('prompt'=>'Seleccione')); ?>
+            <?php echo $form->error($model,'id_type_accounting_document'); ?>
         </div>
 
    <div class="formularioDocumento">
      <div class="valoresDocumento">
-
+         
+        <div class="AccountingDocumentTemp_id_type_accounting_document  contratoForm">
+            <?php echo $form->labelEx($model,'id_carrier'); ?>
+            <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+            <?php echo $form->error($model,'id_carrier'); ?>
+        </div>
+         
         <div class="contratoForm">
 		<?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -126,45 +131,120 @@
       
 	<div id="botAgregarDatosContable" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
-	</div>
+	</div>      
       </div>
-    </div>
+    </div> 
   <?php $this->endWidget(); ?>
 </div><!-- form -->
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>
+       <div class="VistDocTemporales">
+            <table border="1" class="tablaVistDocTemporales">
+                <tr> <td> Tipo de Doc </td> <td> Carrier </td> <td> Fecha de Emisión </td> <td> Fecha de Inicio </td>
+                    <td> Fecha de Culminación </td> <td> Fecha Recepción </td> <td> Fecha Envio </td> <td> N°Documento </td> <td> Minutos </td> <td> Cantidad </td>
+              
+            </table>
+        </div>
+
+<!--<script src="<?php // echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>-->
 <script>
-  
-//  $('#botAgregarDatosContable').click('on',function(e)
-//    { 
-//        var exito = $("<div class='cargando'></div><div class='mensaje'><h3>El documento fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-//                                $("body").append(exito)
-//                                exito.fadeIn('fast');
-//                                setTimeout(function()
-//                             {
-//                                 exito.fadeOut('fast');
-//                             }, 30000);
-       
-//       var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document');
-//       var fechaEmision=$('#AccountingDocumentTemp_issue_date');
-//       var desdeFecha=$('#AccountingDocumentTemp_from_date');
-//       var hastaFecha=$('#AccountingDocumentTemp_to_date');
-//       var fechaRecepcion=$('#AccountingDocumentTemp_received_date');
-//       var fechaEnvio=$('#AccountingDocumentTemp_sent_date');
-//       var numDocumento=$('#AccountingDocumentTemp_doc_number');
-//       var minutos=$('#AccountingDocumentTemp_minutes');
-//       var cantidad=$('#AccountingDocumentTemp_amount');
-//       var nota=$('#AccountingDocumentTemp_note');
-//      
-//        $.ajax({ 
-//              type: "GET",
-//              url: "Create",
-//              data: "fechaEmision="+fechaEmision+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
-//                    &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
-//
-//              success: function(data) 
-//                      {
-//
-//                      }          
-//        }); 
-//    }); 
+  $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
+    {
+        $('div.instruccion').slideUp('slow');
+        $('div.valoresDocumento').slideDown('slow');
+    });
+    
+    $('div.hacerUnaNota').click('on',function()
+      {
+          $('div.hacerUnaNota').hide('slow');
+          $('div.contratoFormTextArea').fadeIn('slow');
+          $('textarea#AccountingDocumentTemp_note').fadeIn('slow');
+      });
+
+    $('.quitaNota').click('on',function()
+      {
+          $('div.hacerUnaNota').slideDown('slow');
+          $('div.contratoFormTextArea').hide('slow');
+          $('textarea#AccountingDocumentTemp_note').hide('slow');
+      });
+      
+      
+  $('#botAgregarDatosContable').click('on',function(e)
+    { 
+        e.preventDefault();
+
+
+       var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
+       var idCarrier=$('#AccountingDocumentTemp_id_carrier').val();
+       var fechaEmision=$('#AccountingDocumentTemp_issue_date').val();
+       var desdeFecha=$('#AccountingDocumentTemp_from_date').val();
+       var hastaFecha=$('#AccountingDocumentTemp_to_date').val();
+       var fechaRecepcion=$('#AccountingDocumentTemp_received_date').val();
+       var fechaEnvio=$('#AccountingDocumentTemp_sent_date').val();
+       var numDocumento=$('#AccountingDocumentTemp_doc_number').val();
+       var minutos=$('#AccountingDocumentTemp_minutes').val();
+       var cantidad=$('#AccountingDocumentTemp_amount').val();
+       var nota=$('#AccountingDocumentTemp_note').val();
+                    
+       if (idCarrier==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||fechaRecepcion==''||fechaEnvio==''||numDocumento==''||minutos==''||cantidad==''){
+           var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por seleccionar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                             $("body").append(msjIndicador)
+                                msjIndicador.fadeIn('fast');
+                                setTimeout(function(){
+                                    msjIndicador.fadeOut('fast');
+                                }, 3000); 
+         }else{             
+//      -------------------------------
+        $.ajax({ 
+              type: "GET",
+              url: "guardarListaTemp",
+              data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
+                    &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+
+              success: function(data) 
+                      { 
+                       msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El documento contable fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                             $("body").append(msjIndicador)
+                                msjIndicador.fadeIn('fast');
+                                setTimeout(function()
+                             {
+                                 msjIndicador.fadeOut('fast');
+                             }, 3000); 
+                      
+                            obj = JSON.parse(data);
+                            var idCarrierNameTemp=obj.idCarrierNameTemp;
+                            var selecTipoDocNameTemp=obj.selecTipoDocNameTemp;
+                            var fechaEmisionTemp=obj.fechaEmisionTemp;
+                            var desdeFechaTemp=obj.desdeFechaTemp;
+                            var hastaFechaTemp=obj.hastaFechaTemp;
+                            var fechaRecepcionTemp=obj.fechaRecepcionTemp;
+                            var fechaEnvioTemp=obj.fechaEnvioTemp;
+                            var numDocumentoTemp=obj.numDocumentoTemp;
+                            var minutosTemp=obj.minutosTemp;
+                            var cantidadTemp=obj.cantidadTemp;
+
+//                            alert(idCarrierNameTemp);
+//                            alert(selecTipoDocNameTemp);
+//                            alert(fechaEmisionTemp);
+//                            alert(desdeFechaTemp);
+//                            alert(hastaFechaTemp);
+//                            alert(fechaRecepcionTemp);
+//                            alert(fechaEnvioTemp);
+//                            alert(numDocumentoTemp);
+//                            alert(minutosTemp);
+//                            alert(cantidadTemp);
+
+                                $(".tablaVistDocTemporales").append("<tr class='vistaTemp'><td> "+selecTipoDocNameTemp+" </td> <td> "+idCarrierNameTemp+" </td> <td> "+fechaEmisionTemp+" </td> \n\
+                                                  <td> "+desdeFechaTemp+" </td><td> "+hastaFechaTemp+" </td> <td> "+fechaRecepcionTemp+" </td>\n\
+                                                  <td> "+fechaEnvioTemp+" </td> <td> "+numDocumentoTemp+" </td> <td> "+minutosTemp+" </td> <td> "+cantidadTemp+" </td></tr>");
+
+                                                        $('.tablaVistDocTemporales').fadeIn('slow');
+                                
+                                $("#AccountingDocumentTemp_doc_number").val('');
+                                $("#AccountingDocumentTemp_minutes").val('');
+                                $("#AccountingDocumentTemp_amount").val('');
+                                $("#AccountingDocumentTemp_note").val('');
+                      }          
+        }); 
+//       ------------------------------
+         }
+    }); 
 </script>

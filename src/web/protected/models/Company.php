@@ -99,10 +99,9 @@ class Company extends CActiveRecord
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
-        
+             
         public static function getListCompany()
         {
-            return  CHtml::listData(Company::model()->findAll(array('order'=>'id')),'id','name');
+            return CHtml::listData(Company::model()->findAll(array('order' => 'name')), 'id', 'name');
         }
-                       
 }

@@ -428,3 +428,34 @@ width: 46%;
 {
     color:rgba(111,204,187,1);
 }
+.tablaVistDocTemporales
+{
+    background:rgba(111,204,187,1);
+    margin-top: 2%;
+    margin-left: 8%;
+    display: none;
+    font-weight:bold;
+    color: white;
+    border: none;
+    border-bottom-color: rgba(111,204,187,1);
+}
+.tablaVistDocTemporales:hover
+{
+    /*background:rgba(44, 139, 110, 1);*/
+    margin-top: 2%;
+    margin-left: 8%;
+    font-weight:bold;
+    alignment-adjust: central;
+    border: none;
+    
+}
+.vistaTemp
+{
+    background:white;
+    color: #555;
+}
+.vistaTemp:hover
+{
+    background:rgba(143, 206, 194, 1);
+    color: white;
+}

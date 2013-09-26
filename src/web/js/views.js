@@ -639,22 +639,4 @@ $('#botAsignarContrato').click('on',function(e)
      });
 //     fin de adm de zonas y destinos
 
-$('#AccountingDocumentTemp_id_type_accounting_document').change(function()
-    {
-        $('div.instruccion').slideUp('slow');
-        $('div.valoresDocumento').slideDown('slow');
-    });
-    
-    $('div.hacerUnaNota').click('on',function()
-      {
-          $('div.hacerUnaNota').hide('slow');
-          $('div.contratoFormTextArea').fadeIn('slow');
-          $('textarea#AccountingDocumentTemp_note').fadeIn('slow');
-      });
 
-    $('.quitaNota').click('on',function()
-      {
-          $('div.hacerUnaNota').slideDown('slow');
-          $('div.contratoFormTextArea').hide('slow');
-          $('textarea#AccountingDocumentTemp_note').hide('slow');
-      });

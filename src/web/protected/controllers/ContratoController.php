@@ -305,21 +305,19 @@ class ContratoController extends Controller
                                 }                                
                                 /*CREDITO*/
                                 if($credito!='' || $credito!=NULL){
-                                $modelCLCreditoNEW = new ContratoLimites;
+                                $modelCLCreditoNEW = new CreditLimit;
                                 $modelCLCreditoNEW->id_contrato=$model->id;
-                                $modelCLCreditoNEW->id_limites=1;
                                 $modelCLCreditoNEW->start_date=date('Y-m-d');
-                                $modelCLCreditoNEW->monto =$credito;
+                                $modelCLCreditoNEW->amount =$credito;
                                 $modelCLCreditoNEW->save();
                                 }                                
                                            
                                 /*COMPRA*/
                                 if($compra!='' || $compra!=NULL){
-                                $modelCLCompraNEW = new ContratoLimites;
+                                $modelCLCompraNEW = new PurchaseLimit;
                                 $modelCLCompraNEW->id_contrato=$model->id;
-                                $modelCLCompraNEW->id_limites=2;
                                 $modelCLCompraNEW->start_date=date('Y-m-d');
-                                $modelCLCompraNEW->monto =$compra;
+                                $modelCLCompraNEW->amount =$compra;
                                 $modelCLCompraNEW->save();
                                 }                                
                         }                   
