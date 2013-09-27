@@ -159,7 +159,7 @@
         </div>
         <?php $this->endWidget(); ?>
         <div class="VistDocTemporales">
-                <table border="1" class="tablaVistDocTemporales" <?php if($model==null){echo "style='display:none;'";}?>>
+                <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
                     <tr>
                         <td> Tipo de Doc </td>
                         <td> Carrier </td>
