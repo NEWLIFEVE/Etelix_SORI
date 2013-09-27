@@ -41,6 +41,39 @@ $(document).on('ready',function()
 	valForm(msj);
 	
 });
+/**Vista Uploads*/
+  $(function() {
+        
+        //$.noConflict();
+        $( ".datepicker" ).datepicker();
+        $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
+        $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
+        
+    });
+    $(function($){
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd/mm/yy',
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+    });
+
+
+
+
 function valForm(objeto)
 {
 	$('input[name="grabar"]').on('click',function(e)
@@ -603,6 +636,8 @@ $('#botAsignarContrato').click('on',function(e)
      $('#GeographicZone_id_destination').change(function(){
         var GeographicZone = $("#GeographicZone_id").val();
         var destinos = $('#GeographicZone_id_destination').val();
+        if(GeographicZone!="")
+        {
                 $.ajax({           
                         type: "POST",
                         url: "DynamicAsignados",
@@ -612,6 +647,7 @@ $('#botAsignarContrato').click('on',function(e)
                                     $('#select_right').empty().append(data);
                                 }
                        });
+              }
      });
      $('#GeographicZone_id').change(function(){
         var GeographicZone = $("#GeographicZone_id").val();
