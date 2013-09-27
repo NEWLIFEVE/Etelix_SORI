@@ -150,8 +150,16 @@
             <div id="botAgregarDatosContable" class="row buttons">
                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
             </div>
-            <div class="VistDocTemporales">
-                <table border="1" class="tablaVistDocTemporales">
+            
+                <br>
+                <div id="botAgregarDatosContableFinal" class="row buttons">
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+                </div>
+            </div>
+        </div>
+        <?php $this->endWidget(); ?>
+        <div class="VistDocTemporales">
+                <table border="1" class="tablaVistDocTemporales" <?php if($model==null){echo "style='display:none;'";}?>>
                     <tr>
                         <td> Tipo de Doc </td>
                         <td> Carrier </td>
@@ -164,14 +172,29 @@
                         <td> Minutos </td>
                         <td> Cantidad </td>
                         <td> Acciones </td>
-                    </table>
-                </div>
-                <br>
-                <div id="botAgregarDatosContableFinal" class="row buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
-                </div>
+                    </tr>
+                    <?php
+                        if($lista!=null)
+                        {
+                            foreach ($lista as $key => $value)
+                            { 
+                                echo "<tr class='vistaTemp' id='".$value->id."'>
+                                        <td>".$value->id_type_accounting_document."</td>
+                                        <td>".$value->id_carrier."</td>
+                                        <td>".$value->issue_date."</td>
+                                        <td>".$value->from_date."</td>
+                                        <td>".$value->to_date."</td>
+                                        <td>".$value->received_date."</td>
+                                        <td>".$value->sent_date."</td>
+                                        <td>".$value->doc_number."</td>
+                                        <td>".$value->minutes."</td>
+                                        <td>".$value->amount."</td>
+                                        <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                      </tr>";  
+                            }
+                        }
+                    ?>
+                </table>
             </div>
-        </div>
-        <?php $this->endWidget(); ?>
         </div>
         <!-- form -->

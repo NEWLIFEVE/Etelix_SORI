@@ -131,4 +131,20 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	/**
+	 * @access public
+	 * @param $usuario id del usuario en session
+	 */
+	public static function listaGuardados($usuario)
+	{
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier
+			  FROM(SELECT id, issue_date, from_date, to_date, received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
+			  	   FROM accounting_document_temp
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
 }
