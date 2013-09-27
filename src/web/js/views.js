@@ -388,19 +388,22 @@ $('#botAsignarContrato').click('on',function(e)
             if(TPOculto==false && monetizableOculto==false)
             {
                 var guardoEdito=" Se guardo con exito el Contrato";
-                var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: 
-                                <br>
-                                <b>( "+carrierName+" / "+companyName+" )</b>
-                                </h4>\n\Con las siguientes condiciones comerciales:<p>
-                                <h6>Termino de pago: "+termino_pName+"<p><p>Monetizable: "+monetizableName+"<p>
-                                Dias de disputa: "+dias_disputa+"<p>
-                                                                  Limite de Credito: "+credito+"<p>\n\
-                                                            Limite de Compra: "+compra+"<p>\n\
-                                                        <p>Fecha de Firma de contrato: "+sign_date+"<p>\n\
-                                                            Fecha de puesta en produccion: "+production_date+"<p> <p></h6>\n\
-                                                        <p><p>Si todos los datos a almacenar son correctos, presione Aceptar, de lo contrario Cancelar<p>\n\
-                                                <p><div id='cancelar'\n\
-                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
+                                <br><b>( "+carrierName+" / "+companyName+" )</b></h4><p>Con las siguientes condiciones comerciales:\n\
+                                <p><h6>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
+                                <p>Dias de disputa: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
+                                <p>Limite de Compra: "+compra+"</p>\n\
+                                <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
+                                <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
+                                </h6>\n\
+                                <p>Si todos los datos a almacenar son correctos, presione Aceptar, de lo contrario Cancelar<p>\n\
+                                <div id='cancelar' class='cancelar'>\n\
+                                    <p><label><b>Cancelar</b></label></p>\n\
+                                </div>\n\
+                                <div id='confirma' class='confirma'>\n\
+                                    <p><label><b>Aceptar</b></label></p>\n\
+                                </div>\n\
+                                </div>").hide();
                 $("body").append(revisa);
                 revisa.fadeIn('fast');
             }
@@ -762,18 +765,18 @@ $('#botAgregarDatosContable').click('on',function(e)
                 }, 3000); 
                       
                 obj = JSON.parse(data);
-                var idCarrierNameTemp=obj.idCarrierNameTemp;
-                var selecTipoDocNameTemp=obj.selecTipoDocNameTemp;
-                var fechaEmisionTemp=obj.fechaEmisionTemp;
-                var desdeFechaTemp=obj.desdeFechaTemp;
-                var hastaFechaTemp=obj.hastaFechaTemp;
-                var fechaRecepcionTemp=obj.fechaRecepcionTemp;
-                var fechaEnvioTemp=obj.fechaEnvioTemp;
-                var numDocumentoTemp=obj.numDocumentoTemp;
-                var minutosTemp=obj.minutosTemp;
-                var cantidadTemp=obj.cantidadTemp;
+                var idCarrierNameTemp=obj.idCarrierNameTemp, 
+                    selecTipoDocNameTemp=obj.selecTipoDocNameTemp,
+                    fechaEmisionTemp=obj.fechaEmisionTemp,
+                    desdeFechaTemp=obj.desdeFechaTemp,
+                    hastaFechaTemp=obj.hastaFechaTemp,
+                    fechaRecepcionTemp=obj.fechaRecepcionTemp,
+                    fechaEnvioTemp=obj.fechaEnvioTemp,
+                    numDocumentoTemp=obj.numDocumentoTemp,
+                    minutosTemp=obj.minutosTemp,
+                    cantidadTemp=obj.cantidadTemp;
 
-                $(".tablaVistDocTemporales").append("<tr class='vistaTemp'><td> "+selecTipoDocNameTemp+" </td> <td> "+idCarrierNameTemp+" </td> <td> "+fechaEmisionTemp+" </td> \n\
+                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'><td> "+selecTipoDocNameTemp+" </td> <td> "+idCarrierNameTemp+" </td> <td> "+fechaEmisionTemp+" </td> \n\
                                                   <td> "+desdeFechaTemp+" </td><td> "+hastaFechaTemp+" </td> <td> "+fechaRecepcionTemp+" </td>\n\
                                                   <td> "+fechaEnvioTemp+" </td> <td> "+numDocumentoTemp+" </td> <td> "+minutosTemp+" </td> <td> "+cantidadTemp+" </td><td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>");
 
