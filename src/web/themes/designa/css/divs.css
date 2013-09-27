@@ -432,22 +432,22 @@ width: 46%;
 {
     background:rgba(111,204,187,1);
     margin-top: 2%;
-    margin-left: 8%;
+    margin-left: 7%;
     display: none;
     font-weight:bold;
     color: white;
     border: none;
+    text-align:center;
     border-bottom-color: rgba(111,204,187,1);
 }
 .tablaVistDocTemporales:hover
 {
     /*background:rgba(44, 139, 110, 1);*/
     margin-top: 2%;
-    margin-left: 8%;
+    margin-left: 7%;
     font-weight:bold;
-    alignment-adjust: central;
+    text-align:center;
     border: none;
-    
 }
 .vistaTemp
 {
