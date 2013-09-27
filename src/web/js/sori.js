@@ -1,4 +1,19 @@
 /**
+ * Objeto Global
+ */
+ var $SORI = {};
+
+/**
+ * Sobmodulo UI
+ */
+$SORI.UI={};
+
+/**
+ * Submodulo de llamadas AJAX
+ */
+$SORI.AJAX={};
+
+/**
 *
 */
 var mensajes=function()

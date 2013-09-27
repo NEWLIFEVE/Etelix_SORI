@@ -9,6 +9,7 @@ class AccountingDocumentTempController extends Controller
 	public $layout='//layouts/column2';
 
 	/**
+	 * @access public
 	 * @return array action filters
 	 */
 	public function filters()
@@ -22,6 +23,7 @@ class AccountingDocumentTempController extends Controller
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
+	 * @access public 
 	 * @return array access control rules
 	 */
 	public function accessRules()
@@ -47,6 +49,7 @@ class AccountingDocumentTempController extends Controller
 
 	/**
 	 * Displays a particular model.
+	 * @access public
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
@@ -59,6 +62,7 @@ class AccountingDocumentTempController extends Controller
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * @access public
 	 */
 	public function actionCreate()
 	{
@@ -73,98 +77,69 @@ class AccountingDocumentTempController extends Controller
 			$model->attributes=$_POST['AccountingDocumentTemp'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
-//				$this->redirect(array('create','id'=>$model->id));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,'lista'=>$lista
 		));
 	}
-        
-        public function actionGuardarListaTemp()
-        {
-            
-       $selecTipoDoc=$_GET['selecTipoDoc'];
-       $idCarrier=$_GET['idCarrier'];
-       $fechaEmision=$_GET['fechaEmision'];
-       $desdeFecha=$_GET['desdeFecha'];
-       $hastaFecha=$_GET['hastaFecha'];
-       $fechaRecepcion=$_GET['fechaRecepcion'];
-       $fechaEnvio=$_GET['fechaEnvio'];
-       $numDocumento=$_GET['numDocumento'];
-       $minutos=$_GET['minutos'];
-       $cantidad=$_GET['cantidad'];
-       $nota=$_GET['nota'];
 
-       $idCarrierName="";
-       $selecTipoDocName="";
-       $idCarrierName.= Carrier::getName($idCarrier);
-       $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-//       $fechaEmisionName="";
-//       $desdeFechaName="";
-//       $hastaFechaName="";
-//       $fechaRecepcionName="";
-//       $fechaEnvioName="";
-//       $numDocumentoName="";
-//       $minutosName="";
-//       $cantidadName="";
-//       $notaName="";
-  
-                $model=new AccountingDocumentTemp;
+	/**
+	 * @access public
+	 */
+	public function actionGuardarListaTemp()
+	{
+		$selecTipoDoc=$_GET['selecTipoDoc'];
+		$idCarrier=$_GET['idCarrier'];
+		$fechaEmision=$_GET['fechaEmision'];
+		$desdeFecha=$_GET['desdeFecha'];
+		$hastaFecha=$_GET['hastaFecha'];
+		$fechaRecepcion=$_GET['fechaRecepcion'];
+		$fechaEnvio=$_GET['fechaEnvio'];
+		$numDocumento=$_GET['numDocumento'];
+		$minutos=$_GET['minutos'];
+		$cantidad=$_GET['cantidad'];
+		$nota=$_GET['nota'];
+		$idCarrierName="";
+		$selecTipoDocName="";
+		$idCarrierName.= Carrier::getName($idCarrier);
+		$selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
 
-                $model->id_type_accounting_document = $selecTipoDoc;
-                $model->id_carrier = $idCarrier;
-                $model->issue_date =$fechaEmision;
-                $model->from_date = $desdeFecha;
-                $model->to_date = $hastaFecha;
-                $model->received_date = $fechaRecepcion;
-                $model->sent_date = $fechaEnvio;
-                $model->doc_number = $numDocumento;
-                $model->minutes = $minutos;
-                $model->amount = $cantidad;
-                $model->note = $nota;
+		$model=new AccountingDocumentTemp;
+        $model->id_type_accounting_document = $selecTipoDoc;
+        $model->id_carrier = $idCarrier;
+        $model->issue_date =$fechaEmision;
+        $model->from_date = $desdeFecha;
+        $model->to_date = $hastaFecha;
+        $model->received_date = $fechaRecepcion;
+        $model->sent_date = $fechaEnvio;
+        $model->doc_number = $numDocumento;
+        $model->minutes = $minutos;
+        $model->amount = $cantidad;
+        $model->note = $nota;
      
-             if($model->save()){ 
-                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                 Log::registrarLog($idAction, NULL, $model->id);
-                    $params['idCarrierNameTemp']=$idCarrierName;    
-                    $params['selecTipoDocNameTemp']=$selecTipoDocName;    
-                    $params['fechaEmisionTemp']=$fechaEmision;    
-                    $params['desdeFechaTemp']=$desdeFecha;    
-                    $params['hastaFechaTemp']=$hastaFecha;    
-                    $params['fechaRecepcionTemp']=$fechaRecepcion;    
-                    $params['fechaEnvioTemp']=$fechaEnvio;    
-                    $params['numDocumentoTemp']=$numDocumento;    
-                    $params['minutosTemp']=$minutos;    
-                    $params['cantidadTemp']=$cantidad;    
-                       echo json_encode($params);
-             }
-        }
-        
-         public function actionGuardarListaFinal()
-        {
-             echo 'entreeeeeeeee';
-         
-//       $selecTipoDoc=$_GET['idCarrierNameTemp'];
-//       $idCarrier=$_GET['selecTipoDocNameTemp'];
-//       $fechaEmision=$_GET['fechaEmisionTemp'];
-//       $desdeFecha=$_GET['desdeFechaTemp'];
-//       $hastaFecha=$_GET['hastaFechaTemp'];
-//       $fechaRecepcion=$_GET['fechaRecepcionTemp'];
-//       $fechaEnvio=$_GET['fechaEnvioTemp'];
-//       $numDocumento=$_GET['numDocumentoTemp'];
-//       $minutos=$_GET['minutosTemp'];
-//       $cantidad=$_GET['cantidadTemp'];
-//
-//       $idCarrierName="";
-//       $selecTipoDocName="";
-//       $idCarrierName.= Carrier::getName($idCarrier);
-//       $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-//        
-        }
+	    if($model->save())
+	    {
+	    	$idAction=LogAction::getLikeId('Crear Documento Contable Temp');
+	    	Log::registrarLog($idAction, NULL, $model->id);
+	    	$params['idCarrierNameTemp']=$idCarrierName;
+	    	$params['selecTipoDocNameTemp']=$selecTipoDocName;
+	    	$params['fechaEmisionTemp']=$fechaEmision;
+	    	$params['desdeFechaTemp']=$desdeFecha;
+	    	$params['hastaFechaTemp']=$hastaFecha;
+	    	$params['fechaRecepcionTemp']=$fechaRecepcion;
+	    	$params['fechaEnvioTemp']=$fechaEnvio;
+	    	$params['numDocumentoTemp']=$numDocumento;
+	    	$params['minutosTemp']=$minutos;
+	    	$params['cantidadTemp']=$cantidad;
+	    	echo json_encode($params);
+	    }
+	}
+
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @access public
 	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionUpdate($id)
@@ -189,6 +164,7 @@ class AccountingDocumentTempController extends Controller
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @access public
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
