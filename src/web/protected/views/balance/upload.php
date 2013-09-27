@@ -1,46 +1,6 @@
 <?php
 echo CHtml::beginForm('/balance/guardar','post',array('name'=>'monto'));
 ?>
-<head>
-<meta charset="utf-8" />
-  <title>jQuery UI Datepicker - Format date</title>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css" />
-<script>
-$(function() {
-        
-        $.noConflict();
-        $( ".datepicker" ).datepicker();
-        $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
-        $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
-        
-    });
-  
-    $(function($){
-        $.datepicker.regional['es'] = {
-            closeText: 'Cerrar',
-            prevText: '<Ant',
-            nextText: 'Sig>',
-            currentText: 'Hoy',
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-            weekHeader: 'Sm',
-            dateFormat: 'dd/mm/yy',
-            firstDay: 0,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        };
-        $.datepicker.setDefaults($.datepicker.regional['es']);
-    });
-    
-</script>
-</head>
 <h1>Carga de Archivos</h1>
 <div id="archivo">
   <ul>
