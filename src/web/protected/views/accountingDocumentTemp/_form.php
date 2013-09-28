@@ -179,16 +179,16 @@
                             foreach ($lista as $key => $value)
                             { 
                                 echo "<tr class='vistaTemp' id='".$value->id."'>
-                                        <td>".$value->id_type_accounting_document."</td>
-                                        <td>".$value->id_carrier."</td>
-                                        <td>".$value->issue_date."</td>
-                                        <td>".$value->from_date."</td>
-                                        <td>".$value->to_date."</td>
-                                        <td>".$value->received_date."</td>
-                                        <td>".$value->sent_date."</td>
-                                        <td>".$value->doc_number."</td>
-                                        <td>".$value->minutes."</td>
-                                        <td>".$value->amount."</td>
+                                        <td id='id_type_accounting_document'>".$value->id_type_accounting_document."</td>
+                                        <td id='id_carrier'>".$value->id_carrier."</td>
+                                        <td id='issue_date'>".$value->issue_date."</td>
+                                        <td id='from_date'>".$value->from_date."</td>
+                                        <td id='to_date'>".$value->to_date."</td>
+                                        <td id='received_date'>".$value->received_date."</td>
+                                        <td id='sent_date'>".$value->sent_date."</td>
+                                        <td id='doc_number'>".$value->doc_number."</td>
+                                        <td id='minutes'>".$value->minutes."</td>
+                                        <td id='amount'>".$value->amount."</td>
                                         <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                       </tr>";  
                             }

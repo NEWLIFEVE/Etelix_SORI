@@ -1,6 +1,9 @@
 $(document).on('ready',function()
 {
-    new $SORI;
+    /**
+     *
+     */
+    $SORI.init();
 	var msj=new mensajes();
 	/**
 	* Deshabilita el boton de "Grabar en base de datos" si todos los archivos de diario estan cargados,
@@ -776,9 +779,9 @@ $('#botAgregarDatosContable').click('on',function(e)
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp;
 
-                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'><td> "+selecTipoDocNameTemp+" </td> <td> "+idCarrierNameTemp+" </td> <td> "+fechaEmisionTemp+" </td> \n\
-                                                  <td> "+desdeFechaTemp+" </td><td> "+hastaFechaTemp+" </td> <td> "+fechaRecepcionTemp+" </td>\n\
-                                                  <td> "+fechaEnvioTemp+" </td> <td> "+numDocumentoTemp+" </td> <td> "+minutosTemp+" </td> <td> "+cantidadTemp+" </td><td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>");
+                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'><td id='temp_tipo'> "+selecTipoDocNameTemp+" </td> <td id='temp_carrier'> "+idCarrierNameTemp+" </td> <td id='temp_emision'> "+fechaEmisionTemp+" </td> \n\
+                                                  <td id='temp_desde'> "+desdeFechaTemp+" </td><td id='temp_hasta'> "+hastaFechaTemp+" </td> <td id='temp_recepcion'> "+fechaRecepcionTemp+" </td>\n\
+                                                  <td id='temp_envio'> "+fechaEnvioTemp+" </td> <td id='temp_numero'> "+numDocumentoTemp+" </td> <td id='temp_minutos'> "+minutosTemp+" </td> <td id='temp_monto'> "+cantidadTemp+" </td><td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>");
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
