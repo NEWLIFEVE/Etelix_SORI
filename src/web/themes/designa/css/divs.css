@@ -439,6 +439,7 @@ width: 46%;
     text-align:center;
     border-bottom-color: rgba(111,204,187,1);
 }
+
 .tablaVistDocTemporales:hover
 {
     /*background:rgba(44, 139, 110, 1);*/
@@ -462,3 +463,14 @@ width: 46%;
 { 
     display:none;
 }
+/*.tablamensaje
+{
+    background:rgba(111,204,187,1);
+    margin-top: 2%;
+    margin-left: 7%;
+    font-weight:bold;
+    color: white;
+    border: none;
+    text-align:center;
+    border-bottom-color: rgba(111,204,187,1);
+}*/

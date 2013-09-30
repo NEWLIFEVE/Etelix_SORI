@@ -757,16 +757,9 @@ $('#botAgregarDatosContable').click('on',function(e)
             url: "guardarListaTemp",
             data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
                     &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
-            success: function(data)
-            {
-                msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El documento contable fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-                $("body").append(msjIndicador);
-                msjIndicador.fadeIn('fast');
-                setTimeout(function()
-                {
-                    msjIndicador.fadeOut('fast');
-                }, 3000); 
-                      
+
+              success: function(data) 
+                      {
                 obj = JSON.parse(data);
                 var idCarrierNameTemp=obj.idCarrierNameTemp, 
                     selecTipoDocNameTemp=obj.selecTipoDocNameTemp,
@@ -795,7 +788,6 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
-                                
                 $("#AccountingDocumentTemp_doc_number").val('');
                 $("#AccountingDocumentTemp_minutes").val('');
                 $("#AccountingDocumentTemp_amount").val('');
@@ -814,9 +806,32 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
         url: "guardarListaFinal",
         success: function(data)
         {
-            alert(data);
+            var src={
+                "People":{
+                    "Person": [ data
+                    //{"FirstName": "John", "LastName": "Smith"},
+                    //{"FirstName": "Joe", "LastName": "Bloggs"},
+                    //{"FirstName": "Wendy", "LastName": "Deng"}
+                    ]
+                    }
+                    };
+            var persons=[];
+            var obj=src["People"]["Person"];
+            for(i in obj)
+            {
+                var temp=[];
+                temp.push("tipo");
+                temp.push(obj[i].tipo);
+                temp.push("carrier");
+                temp.push(obj[i].carrier);
+                persons.push(temp);
+                temp.push("fecha");
+                temp.push(obj[i].fecha);
+                temp.push("monto");
+                temp.push(obj[i].monto);
+                persons.push(temp);
+            }
+            alert(JSON.stringify(persons));
         }
     });
 });
-    
-    //fin de documentos contables...........
