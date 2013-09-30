@@ -17,20 +17,36 @@ $SORI.UI={
 	 */
 	_editar:function(obj)
 	{
-		var contenido=new Array();
-		for (var i = 0, j = obj.childElementCount - 1; i >= j; i++)
-		{
-			contenido[i]=obj.children[i].innerHTML;
-			console.log(contenido[i]);
-		};
-		/*for(var i = 0, j = obj.childElementCount - 1; i >= j; i++)
+		self=this;
+		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
 		{
 			var input=document.createElement('input');
-			input.name=obj.children[i].id;
-			input.value=obj.children[i].innerHTML;
-			obj.children[i].innerHTML="";
-			obj.children[i].appendChild(input);
-		};*/
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[10].innerHTML="";
+		obj[0].children[10].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.gif'>";
+		obj=null;
+		self.accion();
+	},
+	/**
+	 * @access private
+	 */
+	_revert:function(obj)
+	{
+		var contenido=new Array();
+		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[10].innerHTML="";
+		obj[0].children[10].innerHTML="<img name='edit' alt='edit' src='/images/icon_lapiz.jpg'><img name='delete' alt='delete' src='/images/icon_x.gif'>";
+		self.accion();
 	},
 	/**
 	 * @access public
@@ -38,19 +54,30 @@ $SORI.UI={
 	accion:function()
 	{
 		self=this;
-		var $objeto;
-		$("img[name='edit'], img[name='delete']").on('click',function()
+		var $fila;
+		$("img[name='edit'], img[name='delete'], img[name='save'], img[name='cancel']").on('click',function()
 		{
-			$objeto=$(this).parent().parent();
+			$fila=$(this).parent().parent();
 			if($(this).attr('name')=="delete")
 			{
-				$objeto.remove();
+				$fila.remove();
+				$SORI.AJAX.borrar($fila[0].id);
 			}
 			if($(this).attr('name')=='edit')
 			{
-				self._editar($objeto);
+				self._editar($fila);
 			}
+			if($(this).attr('name')=='save')
+			{
+				self._revert($fila);
+			}
+			if($(this).attr('name')=='cancel')
+			{
+				self._revert($fila);
+			}
+			console.dir($fila);
 		});
+		//$fila=null;
 	},
 	init:function()
 	{
@@ -65,7 +92,16 @@ $SORI.AJAX={
 	self:this,
 	borrar:function(id)
 	{
-
+		$.ajax(
+		{
+			type:'GET',
+			url:'delete/'+id,
+			data:'',
+			success:function(data)
+			{
+				console.log("eliminado");
+			}
+		});
 	}
 
 };
