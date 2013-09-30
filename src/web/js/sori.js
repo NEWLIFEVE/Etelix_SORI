@@ -5,7 +5,7 @@
  	init:function()
  	{
  		this.UI.init()
- 	}
+ 	},
  };
 
 /**
@@ -45,7 +45,8 @@ $SORI.UI={
 			obj[0].children[i].innerHTML=contenido[i];
 		}
 		obj[0].children[10].innerHTML="";
-		obj[0].children[10].innerHTML="<img name='edit' alt='edit' src='/images/icon_lapiz.jpg'><img name='delete' alt='delete' src='/images/icon_x.gif'>";
+		obj[0].children[10].innerHTML="<img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
 		self.accion();
 	},
 	/**
@@ -69,15 +70,15 @@ $SORI.UI={
 			}
 			if($(this).attr('name')=='save')
 			{
+				$SORI.AJAX.actualizar($fila[0].id);
 				self._revert($fila);
 			}
 			if($(this).attr('name')=='cancel')
 			{
 				self._revert($fila);
 			}
-			console.dir($fila);
 		});
-		//$fila=null;
+		$fila=null;
 	},
 	init:function()
 	{
@@ -95,17 +96,51 @@ $SORI.AJAX={
 		$.ajax(
 		{
 			type:'GET',
-			url:'delete/'+id,
+			url:'borrar/'+id,
 			data:'',
 			success:function(data)
 			{
 				console.log("eliminado");
 			}
 		});
+		id=null;
+	},
+	actualizar:function(id)
+	{
+		$.ajax(
+		{
+			type:'POST',
+			url:'update/'+id,
+			data:$SORI.UTILS.getData(id),
+			success:function(data)
+			{
+				console.log(data);
+			}
+		});
+		id=null;
 	}
 
 };
-
+/**
+ * Submodulo de utilidades
+ */
+$SORI.UTILS={
+	self:this,
+	/**
+	 * Obtiene los datos de los inputs dentro de una fila
+	 * @param id int id de la fila donde se encuentran los inputs
+	 */
+	getData:function(id)
+	{
+		var inputs=$('tr#'+id).children().children(), datos="";
+		for (var i=0, j=inputs.length - 2; i <= j; i++)
+		{
+			datos+=inputs[i].name+"="+inputs[i].value+"&";
+		};
+		id=null;
+		return datos;
+	}
+};
 /**
 *
 */

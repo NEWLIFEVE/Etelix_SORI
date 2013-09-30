@@ -779,9 +779,19 @@ $('#botAgregarDatosContable').click('on',function(e)
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp;
 
-                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'><td id='temp_tipo'> "+selecTipoDocNameTemp+" </td> <td id='temp_carrier'> "+idCarrierNameTemp+" </td> <td id='temp_emision'> "+fechaEmisionTemp+" </td> \n\
-                                                  <td id='temp_desde'> "+desdeFechaTemp+" </td><td id='temp_hasta'> "+hastaFechaTemp+" </td> <td id='temp_recepcion'> "+fechaRecepcionTemp+" </td>\n\
-                                                  <td id='temp_envio'> "+fechaEnvioTemp+" </td> <td id='temp_numero'> "+numDocumentoTemp+" </td> <td id='temp_minutos'> "+minutosTemp+" </td> <td id='temp_monto'> "+cantidadTemp+" </td><td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>");
+                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[received_date]'>"+fechaRecepcionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
@@ -793,6 +803,8 @@ $('#botAgregarDatosContable').click('on',function(e)
             }
         });
     }
+    console.log("hasta aqui llego");
+    $SORI.UI.accion();
 });
 $('#botAgregarDatosContableFinal').click('on',function(e)
 {
