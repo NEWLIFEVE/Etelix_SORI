@@ -15,4 +15,4 @@
 
 <h1>Documentos Contables</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'lista'=>$lista)); ?>
