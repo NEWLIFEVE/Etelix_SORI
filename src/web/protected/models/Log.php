@@ -277,4 +277,6 @@ class Log extends CActiveRecord
 		$nocargados.="</ul>";
 		return $cargados.$nocargados;
 	}
+        
+
 }

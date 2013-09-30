@@ -694,13 +694,13 @@ $('#botAsignarContrato').click('on',function(e)
 
               success: function(data) 
                       { 
-                       msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El documento contable fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-                             $("body").append(msjIndicador);
-                                msjIndicador.fadeIn('fast');
-                                setTimeout(function()
-                             {
-                                 msjIndicador.fadeOut('fast');
-                             }, 3000); 
+//                       msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El documento contable fue guardado con exito</h3><p><p><p><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+//                             $("body").append(msjIndicador);
+//                                msjIndicador.fadeIn('fast');
+//                                setTimeout(function()
+//                             {
+//                                 msjIndicador.fadeOut('fast');
+//                             }, 1000); 
                       
                             obj = JSON.parse(data);
                             var idCarrierNameTemp=obj.idCarrierNameTemp;
@@ -737,12 +737,96 @@ $('#botAsignarContrato').click('on',function(e)
          $.ajax({ 
               type: "GET",
               url: "guardarListaFinal",
-//              data: "&selecTipoDocNameTemp="+selecTipoDocNameTemp+"&idCarrierNameTemp="+idCarrierNameTemp+"&fechaEmisionTemp="+fechaEmisionTemp+"&desdeFechaTemp="+desdeFechaTemp+"&hastaFechaTemp="+hastaFechaTemp+"\
-//                    &fechaRecepcionTemp="+fechaRecepcionTemp+"&fechaEnvioTemp="+fechaEnvioTemp+"&numDocumentoTemp="+numDocumentoTemp+"&minutosTemp="+minutosTemp+"&cantidadTemp="+cantidadTemp,
-
               success: function(data) 
                       { 
-                          alert(data);
+                          
+                          
+                  var src={
+                     "People": {
+                         "Person": [ data
+//                            {"FirstName": "John", "LastName": "Smith"},
+//                            {"FirstName": "Joe", "LastName": "Bloggs"},
+//                            {"FirstName": "Wendy", "LastName": "Deng"}
+                          ]
+                      }
+                  };
+
+                  var persons=[];
+                  var obj=src["People"]["Person"];
+                  for(i in obj){
+                    var temp=[];
+                    temp.push("tipo");
+                    temp.push(obj[i].tipo);
+                    temp.push("carrier");
+                    temp.push(obj[i].carrier);
+                    persons.push(temp);
+                    temp.push("fecha");
+                    temp.push(obj[i].fecha);
+                    temp.push("monto");
+                    temp.push(obj[i].monto);
+                    persons.push(temp);
+                    }
+                  alert(JSON.stringify(persons));
+                  // persons contain your requried array
+
+
+                          
+                          
+                          
+                          
+//                         var obj = JSON.parse(data);
+//                         alert(obj.tipo);
+//                         obj.data.length; 
+                                     
+//                       alert(obj);
+                         
+//                         for(obj; obj <= length; obj++){
+                        // la siguiente linea obtiene el valor del elemento indicado por index;
+//                        alert(obj[0]);
+//                        }
+                         
+//                         var i=0;
+//                  while(obj[i]!="undefined" || i<40)
+//                  {
+//                      console.dir(obj[i]);
+//                      i=i+1;
+//                  }
+                          
+//                          alert(obj[1][0]);
+                                  
+               
+//            for (var data = 0; data < length; data--) {
+//                  alert ('primera opcion');
+//                    var tipoF=obj.tipo;
+                    
+//                    alert(obj[0].tipo);
+//                     alert ('segunda opcion');
+//                        alert (tipoF);
+//                         alert ('data');
+//                           alert(data);
+//                            alert ('guardoooooooooo');
+              
+//            }
+  
+//                            for (data; data==""; obj ){
+    
+//              var exito = $("<div class='cargando'></div> <div class='mensaje'> <h3>El \n\
+//                            documento contable fue guardado con exito</h3> <p><tabel class\n\
+//                            ='tablamensaje' border='3'><tr> <td> Tipo de Doc </td> <td> Car\n\
+//                            rier </td> <td> Fecha de Emisión </td> <td> Cantidad </td></tr> \n\
+//                            <p><tr><td>"+TipoDF+"</td><td>"+CarrierDF+"</td><td>"+FechaEmisionDF+"\
+//                            </td> <td> "+CantidadDF+" </td></tr></table><p><p><p><p><p><p><p>\n\
+//                            <img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+//                                         
+////                  $(".tablamensaje").append("<tr class='vistaTemp'><td> "+TipoDF+" </td> <td> "+CarrierDF+" </td> \n\
+////                  <td> "+FechaEmisionDF+" </td> <td> "+CantidadDF+" </td></tr>");
+//                            
+//                  $("body").append(exito);
+//                     exito.fadeIn('fast');
+//                     setTimeout(function(){
+//                      exito.fadeOut('fast');
+//                  }, 10000); 
+//                           }  
                       }
                });
     });

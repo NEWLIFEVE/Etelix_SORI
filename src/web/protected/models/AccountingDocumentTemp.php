@@ -131,4 +131,13 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+       
+//        falta.....................
+        public static function getListDocTemp()
+        {
+            return CHtml::listData(AccountingDocumentTemp::model()->findAll(), '*');
+            
+            $id = self::getId('Unknown_Carrier');
+            return CHtml::listData(Carrier::model()->findAll("id !=:id order by name ASC",array(":id"=>$id)), 'id', 'name'); 
+        }
 }

@@ -142,24 +142,61 @@ class AccountingDocumentTempController extends Controller
         
          public function actionGuardarListaFinal()
         {
-             echo 'entreeeeeeeee';
-         
-//       $selecTipoDoc=$_GET['idCarrierNameTemp'];
-//       $idCarrier=$_GET['selecTipoDocNameTemp'];
-//       $fechaEmision=$_GET['fechaEmisionTemp'];
-//       $desdeFecha=$_GET['desdeFechaTemp'];
-//       $hastaFecha=$_GET['hastaFechaTemp'];
-//       $fechaRecepcion=$_GET['fechaRecepcionTemp'];
-//       $fechaEnvio=$_GET['fechaEnvioTemp'];
-//       $numDocumento=$_GET['numDocumentoTemp'];
-//       $minutos=$_GET['minutosTemp'];
-//       $cantidad=$_GET['cantidadTemp'];
+            $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+            $idUsers=Yii::app()->user->id;
+            $modelLog= Log::model()->findAll('id_log_action=:idAction AND id_users=:idUsers', array(":idAction"=>$idAction,":idUsers"=>$idUsers));
+            if($modelLog!=null)
+            {
+                $llave=0;
+                foreach ($modelLog as $key => $Log)
+                {
+                    $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
+                    if($modelADT!=null){
+                        $modelAD=new AccountingDocument;
+                        $modelAD->setAttributes($modelADT->getAttributes());
+                        if($modelAD->save()){
+                            $modelADT->deleteByPk($Log->id_esp);
+                            $idAction = LogAction::getLikeId('Crear Documento Contable Final');
+                            Log::registrarLog($idAction, NULL, $modelAD->id);
+                            
+                            $params = array();
+                            $params[$llave]['tipo']=TypeAccountingDocument::getName($modelAD->id_type_accounting_document);
+                            $params[$llave]['carrier']=Carrier::getName($modelAD->id_carrier);
+                            $params[$llave]['fecha']=$modelAD->issue_date;
+                            $params[$llave]['monto']=$modelAD->amount;
+                           $llave=$llave+1;
+//                            $a = array();
+//                        $a[0][0] = "a";
+//                        $a[0][1] = "b";
+//                        $a[1][0] = "y";
+//                        $a[1][1] = "z";
+
+//                            $TipoDocNameFin="";
+//                            $CarrierNameFin="";
+//                            $FechaEmisionFin="";
+//                            $CantidadFin="";
+//                                         $TipoDocNameFin.=TypeAccountingDocument::getName($modelAD->id_type_accounting_document);
+//                                         $CarrierNameFin.=  Carrier::getName($modelAD->id_carrier);
+//                                         $FechaEmisionFin.=($modelAD->issue_date);
+//                                         $CantidadFin.=($modelAD->amount);
+//             //                            
+//             //                        echo 'Guarde '.$TipoDocNameFin;
+//             //                        echo 'Guarde '.$CarrierNameFin;
+//             //                        echo 'Guarde '.$FechaEmisionFin;
+//             //                        echo 'Guarde '.$CantidadFin;
 //
-//       $idCarrierName="";
-//       $selecTipoDocName="";
-//       $idCarrierName.= Carrier::getName($idCarrier);
-//       $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-//        
+//                                 $params['TipoDocNameFin']=$TipoDocNameFin;    
+//                                 $params['CarrierNameFin']=$CarrierNameFin;    
+//                                 $params['FechaEmisionFin']=$FechaEmisionFin;    
+//                                 $params['CantidadFin']=$CantidadFin;    
+//                                     echo json_encode($params);
+                        }
+                    }
+                }
+           
+                            echo json_encode($params);
+                            
+            }
         }
 	/**
 	 * Updates a particular model.
