@@ -150,51 +150,50 @@
             <div id="botAgregarDatosContable" class="row buttons">
                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
             </div>
-            
-                <br>
-                <div id="botAgregarDatosContableFinal" class="row buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
-                </div>
-            </div>
+           
         </div>
-        <?php $this->endWidget(); ?>
-        <div class="VistDocTemporales">
-                <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
-                    <tr>
-                        <td> Tipo de Doc </td>
-                        <td> Carrier </td>
-                        <td> Fecha de Emisión </td>
-                        <td> Fecha de Inicio </td>
-                        <td> Fecha de Culminación </td>
-                        <td> Fecha Recepción </td>
-                        <td> Fecha Envio </td>
-                        <td> N°Documento </td>
-                        <td> Minutos </td>
-                        <td> Cantidad </td>
-                        <td> Acciones </td>
-                    </tr>
-                    <?php
-                        if($lista!=null)
-                        {
-                            foreach ($lista as $key => $value)
-                            { 
-                                echo "<tr class='vistaTemp' id='".$value->id."'>
-                                        <td id='AccountingDocumentTemp[id_type_accounting_document]'>".$value->id_type_accounting_document."</td>
-                                        <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
-                                        <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
-                                        <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
-                                        <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                        <td id='AccountingDocumentTemp[received_date]'>".$value->received_date."</td>
-                                        <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
-                                        <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
-                                        <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
-                                        <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                        <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-                                      </tr>";  
-                            }
+    </div>
+    <?php $this->endWidget(); ?>
+    <div class="VistDocTemporales">
+        <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista==null){echo "style='display:none;'";}?>>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+        </div>
+            <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
+                <tr>
+                    <td> Tipo de Doc </td>
+                    <td> Carrier </td>
+                    <td> Fecha de Emisión </td>
+                    <td> Fecha de Inicio </td>
+                    <td> Fecha de Culminación </td>
+                    <td> Fecha Recepción </td>
+                    <td> Fecha Envio </td>
+                    <td> N°Documento </td>
+                    <td> Minutos </td>
+                    <td> Cantidad </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista!=null)
+                    {
+                        foreach ($lista as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_type_accounting_document]'>".$value->id_type_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
+                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[received_date]'>".$value->received_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
                         }
-                    ?>
-                </table>
-            </div>
+                    }
+                ?>
+            </table>
         </div>
+    </div>
         <!-- form -->
