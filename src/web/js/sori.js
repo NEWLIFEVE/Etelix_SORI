@@ -1,23 +1,34 @@
 /**
  * Objeto Global
  */
- var $SORI = {
- 	init:function()
+ var $SORI =(function()
  	{
- 		this.UI.init()
- 	},
- };
+ 		var self=this;
+ 		return{
+ 			self:self
+ 		}
+ 	})();
 
 /**
  * Sobmodulo UI
  */
-$SORI.UI={
+$SORI.UI=(function()
+{
 	/**
-	 * @access private
+	 * @access public
 	 */
-	_editar:function(obj)
+	function init()
 	{
-		self=this;
+		accion();
+	}
+
+	/**
+	 * Metodo encargado de agregar campos para editar en la tabla
+	 * @access private
+	 * @param obj obj es el objeto de la fila que se quiere manipular
+	 */
+	function _editar(obj)
+	{
 		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
 		{
 			var input=document.createElement('input');
@@ -30,12 +41,15 @@ $SORI.UI={
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.gif'>";
 		obj=null;
-		self.accion();
-	},
+		accion();
+	}
+
 	/**
+	 * Metodo encargado de regresar la fila a su estado normal si estuvo en estado de edicion
 	 * @access private
+	 * @param obj obj es el objeto de la fila que se esta manipulando
 	 */
-	_revert:function(obj)
+	function _revert(obj)
 	{
 		var contenido=new Array();
 		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
@@ -47,14 +61,14 @@ $SORI.UI={
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
-		self.accion();
-	},
+		accion();
+	}
 	/**
+	 * Metodo encargado de ejecutar las repectivas llamadas
 	 * @access public
 	 */
-	accion:function()
+	function accion()
 	{
-		self=this;
 		var $fila;
 		$("img[name='edit'], img[name='delete'], img[name='save'], img[name='cancel']").on('click',function()
 		{
@@ -66,32 +80,122 @@ $SORI.UI={
 			}
 			if($(this).attr('name')=='edit')
 			{
-				self._editar($fila);
+				_editar($fila);
 			}
 			if($(this).attr('name')=='save')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
-				self._revert($fila);
+				_revert($fila);
 			}
 			if($(this).attr('name')=='cancel')
 			{
-				self._revert($fila);
+				_revert($fila);
 			}
 		});
 		$fila=null;
-	},
-	init:function()
-	{
-		this.accion()
 	}
-};
+
+	/**
+	 * Metodo encargado de las animaciones de la tabla comercial
+	 * @access public
+	 * @param id string es el id del formulario que se realizan cambios
+	 */
+	function formChange(id)
+	{
+		$('#'+id).change(function()
+		{
+			var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
+				muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
+				idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
+		    $("#Contrato_id_company").val('');
+		    $("#Contrato_sign_date").val('');
+		    $("#Contrato_production_date").val('');
+		    $("#Contrato_id_termino_pago").val('');
+		    $("#Contrato_id_monetizable").val('');
+		    $("#Contrato_id_disputa").val('');
+		    $("#F_Firma_Contrato_Oculto").val('');
+		    $("#F_P_produccion_Oculto").val('');
+		    $("#TerminoP_Oculto").val('');
+		    $("#Contrato_id_monetizable").val('');
+		    $("#dias_disputa_Oculto").val('');
+		    $(".manageractual").empty();
+		    $(".CarrierActual").empty();
+		    $.ajax({
+		        type: "GET",
+		        url: "DynamicDatosContrato",
+		        data: "idCarrier="+idCarrier,
+		        success: function(data)
+		        {
+		            obj=JSON.parse(data);
+		            $("#Contrato_id_company").val(obj.company);
+		            if(obj.company!='')
+		            {
+		                $("#Contrato_id_company").prop("disabled", true);
+		                $("#Contrato_end_date").prop("disabled", false);
+		                $("#Contrato_sign_date").prop("disabled", true);
+		            }
+		            else
+		            {
+		                $("#Contrato_id_company").prop("disabled", false);
+		                $("#Contrato_end_date").prop("disabled", true);
+		                $("#Contrato_sign_date").prop("disabled", false)
+		            }
+		            $("#Contrato_sign_date").val(obj.sign_date);
+		            $("#Contrato_production_date").val(obj.production_date);
+		            $("#Contrato_id_termino_pago").val(obj.termino_pago);
+		            $("#Contrato_id_monetizable").val(obj.monetizable);
+		            $("#Contrato_id_managers").val(obj.manager);
+		            $("#Contrato_id_disputa").val(obj.dias_disputa);
+		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
+		            $("#F_P_produccion_Oculto").val(obj.production_date);
+		            $("#TerminoP_Oculto").val(obj.termino_pago);
+		            $("#monetizable_Oculto").val(obj.monetizable);
+		            $("#dias_disputa_Oculto").val(obj.dias_disputa);
+		            $("#Contrato_id_limite_credito").val(obj.credito);
+		            $("#credito_Oculto").val(obj.credito);
+		            $("#Contrato_id_limite_compra").val(obj.compra);
+		            $("#compra_Oculto").val(obj.compra);
+
+		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
+		            	fechaManagerCarrier=(obj.fechaManager),
+		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+" </h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>"),
+		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\ -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
+		            $('.manageractual').append(managerA);
+		            managerA.slideDown('slow');
+		            $('.CarrierActual').append(carrierA);
+		            carrierA.slideDown('slow');
+		        }
+		    });
+		    muestraDiv2.slideDown("slow");
+		    nota.fadeIn("slow");
+		    pManager.slideDown("slow");
+		    muestraDiv1.slideDown("slow");
+		    muestraformC.slideDown("slow");
+		    NombreCarrier.slideDown("slow");
+		    carrierA=managerA=fechaManagerCarrier=carrierenlabel=manageractual=end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
+		});
+	}
+
+	/**
+	 * Retorna los mestodos publicos
+	 */
+	return{
+		init:init,
+		formChange:formChange
+	}
+})();
 
 /**
  * Submodulo de llamadas AJAX
  */
-$SORI.AJAX={
-	self:this,
-	borrar:function(id)
+$SORI.AJAX=(function()
+{	
+	/**
+	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
+	 * @param id int id de la fila que se va a eliminar
+	 * @access public
+	 */
+	function borrar(id)
 	{
 		$.ajax(
 		{
@@ -104,14 +208,20 @@ $SORI.AJAX={
 			}
 		});
 		id=null;
-	},
-	actualizar:function(id)
+	}
+
+	/**
+	 * Metodo encargado de enviar la solicutid de actualizar por ajax de la fila indicada
+	 * @param id int id de la fila que se va actualizar
+	 * @access public
+	 */
+	function actualizar(id)
 	{
 		$.ajax(
 		{
 			type:'POST',
 			url:'update/'+id,
-			data:$SORI.UTILS.getData(id),
+			//data:$SORI.UTILS.getData(id),
 			success:function(data)
 			{
 				console.log(data);
@@ -120,17 +230,25 @@ $SORI.AJAX={
 		id=null;
 	}
 
-};
+	/**
+	 * retorna los metodos publicos*/
+return{
+	actualizar:actualizar,
+	borrar:borrar
+	}
+})();
+
 /**
  * Submodulo de utilidades
  */
-$SORI.UTILS={
-	self:this,
+$SORI.UTILS=(function()
+{
 	/**
 	 * Obtiene los datos de los inputs dentro de una fila
-	 * @param id int id de la fila donde se encuentran los inputs
+	 * @access public
+	 * @param id int es el id de la fila donde se encuentran los inputs
 	 */
-	getData:function(id)
+	function getData(id)
 	{
 		var inputs=$('tr#'+id).children().children(), datos="";
 		for (var i=0, j=inputs.length - 2; i <= j; i++)
@@ -140,7 +258,16 @@ $SORI.UTILS={
 		id=null;
 		return datos;
 	}
-};
+
+	/**
+	 * retorna los metodos y variables publicos
+	 */
+	return{
+		getData:getData
+	}
+})();
+
+
 /**
 *
 */
