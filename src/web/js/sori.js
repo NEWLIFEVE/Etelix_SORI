@@ -1,14 +1,8 @@
 /**
  * Objeto Global
  */
- var $SORI =(function()
- 	{
- 		var self=this;
- 		return{
- 			self:self
- 		}
- 	})();
-
+ var $SORI={};
+ 
 /**
  * Sobmodulo UI
  */
@@ -34,6 +28,10 @@ $SORI.UI=(function()
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
 			input.value=obj[0].children[i].innerHTML;
+			if(i>=2 && i<=6)
+			{
+				$(input).datepicker();
+			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
 			input=null;
@@ -267,6 +265,10 @@ $SORI.UTILS=(function()
 	}
 })();
 
+$SORI.constructor=(function()
+ {
+    $SORI.UI.init();
+ })();
 
 /**
 *
@@ -311,10 +313,6 @@ mensajes.prototype.elimina=function()
 		this.remove();
 	});
 	return true;
-}
-mensajes.prototype.enviar=function()
-{
-	
 }
 
 

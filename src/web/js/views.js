@@ -681,6 +681,7 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
+                $SORI.UI.init();
                 $("#AccountingDocumentTemp_doc_number").val('');
                 $("#AccountingDocumentTemp_minutes").val('');
                 $("#AccountingDocumentTemp_amount").val('');
@@ -688,7 +689,6 @@ $('#botAgregarDatosContable').click('on',function(e)
             }
         });
     }
-    $SORI.UI.init();
 });
 $('#botAgregarDatosContableFinal').click('on',function(e)
 {
@@ -728,7 +728,7 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
     });
 });
 /**Vista Uploads*/
-/*$(function() 
+$(function() 
 {
     $( ".datepicker" ).datepicker();
     $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
@@ -754,4 +754,4 @@ $(function($)
         yearSuffix: ''
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
-});*/
+});
