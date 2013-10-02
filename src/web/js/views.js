@@ -399,14 +399,9 @@ $('#botAsignarContrato').click('on',function(e)
                                 <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
                                 <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
                                 </h6>\n\
-                                <p>Si todos los datos a almacenar son correctos, presione Aceptar, de lo contrario Cancelar<p>\n\
-                                <div id='cancelar' class='cancelar'>\n\
-                                    <p><label><b>Cancelar</b></label></p>\n\
-                                </div>\n\
-                                <div id='confirma' class='confirma'>\n\
-                                    <p><label><b>Aceptar</b></label></p>\n\
-                                </div>\n\
-                                </div>").hide();
+                                <p>Si todos los datos a almacenar son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
+                                                   class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
+                                                   <p><label><b>Aceptar</b></label></div></div>").hide();
                 $("body").append(revisa);
                 revisa.fadeIn('fast');
             }
@@ -779,7 +774,6 @@ $('#botAgregarDatosContable').click('on',function(e)
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
                                 
-
                                 $("#AccountingDocumentTemp_doc_number").val('');
                                 $("#AccountingDocumentTemp_minutes").val('');
                                 $("#AccountingDocumentTemp_amount").val('');
@@ -791,50 +785,55 @@ $('#botAgregarDatosContable').click('on',function(e)
     }); 
     
       $('#botAgregarDatosContableFinal').click('on',function(e)
-    { 
-        e.preventDefault();
-         $.ajax({ 
-              type: "GET",
-              url: "guardarListaFinal",
-              success: function(data) 
-                      { 
-                          
-                          
-                  var src={
-                     "People": {
-                         "Person": [ data
-//                            {"FirstName": "John", "LastName": "Smith"},
-//                            {"FirstName": "Joe", "LastName": "Bloggs"},
-//                            {"FirstName": "Wendy", "LastName": "Deng"}
-                          ]
-                      }
-                  };
+    { e.preventDefault();
+                var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de guardar todos los documentos contables de \n\
+                             forma definitiva<p></h6><p><p>Si esta seguro, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
+                             class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
+                             <p><label><b>Aceptar</b></label></div></div>").hide();
 
-                  var persons=[];
-                  var obj=src["People"]["Person"];
-                  for(i in obj){
-                    var temp=[];
-                    temp.push("tipo");
-                    temp.push(obj[i].tipo);
-                    temp.push("carrier");
-                    temp.push(obj[i].carrier);
-                    persons.push(temp);
-                    temp.push("fecha");
-                    temp.push(obj[i].fecha);
-                    temp.push("monto");
-                    temp.push(obj[i].monto);
-                    persons.push(temp);
-                    }
-                  alert(JSON.stringify(persons));
-                  // persons contain your requried array
+                $("body").append(revisa);
+                revisa.fadeIn('fast');         
+            
+            $('#confirma,#cancelar').on('click',function()
+            {
+                var tipo=$(this).attr('id');
+                if(tipo=="confirma")
+                {
+                    $.ajax({ 
+                         type: "GET",
+                         url: "guardarListaFinal",
+                         success: function(data) 
+                         {   
+                           revisa.fadeOut('fast');
+                           var obj = JSON.parse(data);
 
+                           var exito=$("<div class='cargando'></div>").hide();
+                                     $("body").append(exito);
+                                     exito.fadeIn('fast');
 
-                          
-             
-                      }
-               });
-            });
+                                     $('.mensajeFinal').fadeIn('slow');
+                                     $('.tablamensaje').fadeIn('slow');
 
+                                     $('.filasMsjFinal').empty();
 
-    
+                           for (var i = 0,j=obj.length;i<=j;i++){
+                            $('.tablamensaje').append("<tr class='filasMsjFinal'><td>"+(obj[i].tipo)+"</td><td>"+(obj[i].carrier)+"</td><td>"+(obj[i].fecha)+"</td><td>"+(obj[i].monto)+"</td></tr>");          
+
+                                     setTimeout(function(){
+                                     $('.mensajeFinal').fadeOut('slow');
+                                     $('.cargando').fadeOut('slow');
+                                     }, 4000);
+
+                                     exito=null;
+                                     $('#botAgregarDatosContableFinal').fadeOut('slow');
+                                      $('.tablaVistDocTemporales').fadeOut('slow');
+                                     $('.vistaTemp').empty();
+                           }  
+                         }  
+                    });
+                }else{
+                     revisa.fadeOut('fast');
+                }
+           });
+     });
     //fin de documentos contables...........

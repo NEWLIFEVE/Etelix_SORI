@@ -432,7 +432,8 @@ width: 46%;
 {
     background:rgba(111,204,187,1);
     margin-top: 2%;
-    margin-left: 7%;
+    margin-left:1%;
+    right:auto;
     font-weight:bold;
     color: white;
     border: none;
@@ -444,7 +445,8 @@ width: 46%;
 {
     /*background:rgba(44, 139, 110, 1);*/
     margin-top: 2%;
-    margin-left: 7%;
+    margin-left: 1%;
+    right:auto;
     font-weight:bold;
     text-align:center;
     border: none;
@@ -463,14 +465,45 @@ width: 46%;
 { 
     display:none;
 }
-/*.tablamensaje
+
+.mensajeFinal
 {
+  background-color:white;
+  border:solid threedshadow;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-left-radius:8px;
+  border-top-right-radius:8px;
+  color:#6E6E6E;
+  top:20%;
+  padding:23px 30px 43px 28px;
+  position:fixed;
+  text-align:center;
+  width:490px;
+  margin-left:20%;
+  display: none;
+  z-index: 1350;
+}
+.tablamensaje
+{
+    text-align: center;
+    display: none;
+    margin-left:auto;
+    margin-right:auto;
+    z-index: 1351;
     background:rgba(111,204,187,1);
     margin-top: 2%;
-    margin-left: 7%;
     font-weight:bold;
     color: white;
     border: none;
-    text-align:center;
+   
+}
+.filasMsjFinal
+{
+    text-align: center; margin-left:15%;
+    background:white;
+    color: silver;
+    border: none;
     border-bottom-color: rgba(111,204,187,1);
-}*/
+    font-weight:normal;
+}

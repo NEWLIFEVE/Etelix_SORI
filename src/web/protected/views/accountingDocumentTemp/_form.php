@@ -151,10 +151,6 @@
                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
             </div>
             
-                <br>
-                <div id="botAgregarDatosContableFinal" class="row buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
-                </div>
             </div>
         </div>
         <?php $this->endWidget(); ?>
@@ -196,5 +192,22 @@
                     ?>
                 </table>
             </div>
-        </div>
-        <!-- form -->
+                <br>
+                <div id="botAgregarDatosContableFinal" class="row buttons">
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+                </div>
+        </div><!-- form -->
+
+     <div class='mensajeFinal'> <h3>El documento contable fue guardado con exito</h3>
+            <table border="4" class='tablamensaje'>
+               <tr>
+                   <td> Tipo de Doc </td>
+                   <td> Carrier </td>
+                   <td> Fecha de Emisión </td>
+                   <td> Monto </td>
+               </tr>
+           </table>
+        <p><img src='/images/si.png'width='95px' height='95px'/>
+    </div>
+
+        
