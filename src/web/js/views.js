@@ -3,7 +3,6 @@ $(document).on('ready',function()
     /**
      *
      */
-    $SORI.init();
 	var msj=new mensajes();
 	/**
 	* Deshabilita el boton de "Grabar en base de datos" si todos los archivos de diario estan cargados,
@@ -44,34 +43,6 @@ $(document).on('ready',function()
 	});
 	valForm(msj);
 	
-});
-/**Vista Uploads*/
-$(function() 
-{
-    $( ".datepicker" ).datepicker();
-    $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
-    $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
-});
-$(function($)
-{
-    $.datepicker.regional['es']={
-        closeText: 'Cerrar',
-        prevText: '<Ant',
-        nextText: 'Sig>',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        weekHeader: 'Sm',
-        dateFormat: 'dd/mm/yy',
-        firstDay: 0,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['es']);
 });
 
 /**
@@ -270,86 +241,8 @@ $("#CarrierManagers_id_managers").change(function()
 });
 //fin de cambio en dist comercial
 
-/**
- *
- */
-$('#Contrato_id_carrier').change(function()
-{
-    var nota=$('.note');
-    var muestraDiv1= $('.divOculto');
-    var muestraformC= $('.formularioContrato');
-    var muestraDiv2= $('.divOculto1');
-    var pManager= $('.pManager');
-    var NombreCarrier= $('.CarrierActual');
-    var idCarrier = $("#Contrato_id_carrier").val();
-    var end_date = $("#Contrato_end_date").val();
-    $("#Contrato_id_company").val('');
-    $("#Contrato_sign_date").val('');
-    $("#Contrato_production_date").val('');
-    $("#Contrato_id_termino_pago").val('');
-    $("#Contrato_id_monetizable").val('');
-    $("#Contrato_id_disputa").val('');
-    $("#F_Firma_Contrato_Oculto").val('');
-    $("#F_P_produccion_Oculto").val('');
-    $("#TerminoP_Oculto").val('');
-    $("#Contrato_id_monetizable").val('');
-    $("#dias_disputa_Oculto").val('');
-    $(".manageractual").empty();
-    $(".CarrierActual").empty();
-    $.ajax({
-        type: "GET",
-        url: "DynamicDatosContrato",
-        data: "idCarrier="+idCarrier,
-        success: function(data)
-        {
-            obj=JSON.parse(data);
-            $("#Contrato_id_company").val(obj.company);
-            if(obj.company!='')
-            {
-                $("#Contrato_id_company").prop("disabled", true);
-                $("#Contrato_end_date").prop("disabled", false);
-                $("#Contrato_sign_date").prop("disabled", true);
-            }
-            else
-            {
-                $("#Contrato_id_company").prop("disabled", false);
-                $("#Contrato_end_date").prop("disabled", true);
-                $("#Contrato_sign_date").prop("disabled", false)
-            }
-            $("#Contrato_sign_date").val(obj.sign_date);
-            $("#Contrato_production_date").val(obj.production_date);
-            $("#Contrato_id_termino_pago").val(obj.termino_pago);
-            $("#Contrato_id_monetizable").val(obj.monetizable);
-            $("#Contrato_id_managers").val(obj.manager);
-            $("#Contrato_id_disputa").val(obj.dias_disputa);
-            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
-            $("#F_P_produccion_Oculto").val(obj.production_date);
-            $("#TerminoP_Oculto").val(obj.termino_pago);
-            $("#monetizable_Oculto").val(obj.monetizable);
-            $("#dias_disputa_Oculto").val(obj.dias_disputa);
-            $("#Contrato_id_limite_credito").val(obj.credito);
-            $("#credito_Oculto").val(obj.credito);
-            $("#Contrato_id_limite_compra").val(obj.compra);
-            $("#compra_Oculto").val(obj.compra);
+$SORI.UI.formChange('Contrato_id_carrier');
 
-            var manageractual = (obj.manager);
-            var carrierenlabel = (obj.carrier);
-            var fechaManagerCarrier = (obj.fechaManager);
-            var managerA = $("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+" </h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>");
-            var carrierA = $("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\ -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
-            $('.manageractual').append(managerA);
-            $('.CarrierActual').append(carrierA);
-            managerA.slideDown('slow');
-            carrierA.slideDown('slow');
-        }
-    });
-muestraDiv2.slideDown("slow");
-nota.fadeIn("slow");
-pManager.slideDown("slow");
-muestraDiv1.slideDown("slow");
-muestraformC.slideDown("slow");
-NombreCarrier.slideDown("slow");
-});
 $('#botAsignarContrato').click('on',function(e)
 {
     e.preventDefault();
@@ -767,22 +660,33 @@ $('#botAgregarDatosContable').click('on',function(e)
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp;
 
-                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'><td id='temp_tipo'> "+selecTipoDocNameTemp+" </td> <td id='temp_carrier'> "+idCarrierNameTemp+" </td> <td id='temp_emision'> "+fechaEmisionTemp+" </td> \n\
-                                                  <td id='temp_desde'> "+desdeFechaTemp+" </td><td id='temp_hasta'> "+hastaFechaTemp+" </td> <td id='temp_recepcion'> "+fechaRecepcionTemp+" </td>\n\
-                                                  <td id='temp_envio'> "+fechaEnvioTemp+" </td> <td id='temp_numero'> "+numDocumentoTemp+" </td> <td id='temp_minutos'> "+minutosTemp+" </td> <td id='temp_monto'> "+cantidadTemp+" </td><td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>");
+                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[received_date]'>"+fechaRecepcionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
+
                                 
-                                $("#AccountingDocumentTemp_doc_number").val('');
-                                $("#AccountingDocumentTemp_minutes").val('');
-                                $("#AccountingDocumentTemp_amount").val('');
-                                $("#AccountingDocumentTemp_note").val('');
+                                    $SORI.UI.init();
+                                    $("#AccountingDocumentTemp_doc_number").val('');
+                                    $("#AccountingDocumentTemp_minutes").val('');
+                                    $("#AccountingDocumentTemp_amount").val('');
+                                    $("#AccountingDocumentTemp_note").val('');
                       }          
         }); 
-//       ------------------------------
-         }
-    }); 
+     }
+}); 
     
       $('#botAgregarDatosContableFinal').click('on',function(e)
     { e.preventDefault();
@@ -836,4 +740,32 @@ $('#botAgregarDatosContable').click('on',function(e)
                 }
            });
      });
-    //fin de documentos contables...........
+/**Vista Uploads*/
+$(function() 
+{
+    $( ".datepicker" ).datepicker();
+    $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
+    $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
+});
+$(function($)
+{
+    $.datepicker.regional['es']={
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 0,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
+

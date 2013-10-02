@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -182,17 +182,38 @@ class AccountingDocumentTempController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['AccountingDocumentTemp']))
+		/*if(isset($_POST['AccountingDocumentTemp']))
 		{
 			$model->attributes=$_POST['AccountingDocumentTemp'];
+			$model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
+			$model->id_carrier=Carrier::getId($model->id_carrier);
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+				return "Actualizado id: ".$model->id;
+			else
+				return "Algo salio mal";
+		}*/
+		if(isset($_POST['AccountingDocumentTemp']))
+		{
 
-		$this->render('update',array(
+			$model->attributes=$_POST['AccountingDocumentTemp'];
+			$model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+			$model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+        	$model->issue_date=$_POST['AccountingDocumentTemp']['issue_date'];
+        	$model->from_date=$_POST['AccountingDocumentTemp']['from_date'];
+        	$model->to_date=$_POST['AccountingDocumentTemp']['to_date'];
+        	$model->received_date=$_POST['AccountingDocumentTemp']['received_date'];
+        	$model->sent_date=$_POST['AccountingDocumentTemp']['sent_date'];
+        	$model->doc_number=$_POST['AccountingDocumentTemp']['doc_number'];
+        	$model->minutes=$_POST['AccountingDocumentTemp']['minutes'];
+        	$model->amount=$_POST['AccountingDocumentTemp']['amount'];
+			if($model->save())
+				return "Actualizado id: ".$model->id;
+			else
+				return "Algo salio mal";
+		}
+		/*$this->render('update',array(
 			'model'=>$model,
-		));
+		));*/
 	}
 
 	/**
@@ -201,13 +222,17 @@ class AccountingDocumentTempController extends Controller
 	 * @access public
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	/*public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}*/
+	public function actionBorrar($id)
+	{
+		$this->loadModel($id)->delete();
 	}
 
 	/**
