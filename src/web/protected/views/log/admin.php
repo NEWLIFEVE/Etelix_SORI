@@ -12,18 +12,18 @@
 //	array('label'=>'Create Log', 'url'=>array('create')),
 //);
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#log-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
+//Yii::app()->clientScript->registerScript('search', "
+//$('.search-button').click(function(){
+//	$('.search-form').toggle();
+//	return false;
+//});
+//$('.search-form form').submit(function(){
+//	$('#log-grid').yiiGridView('update', {
+//		data: $(this).serialize()
+//	});
+//	return false;
+//});
+//");
 ?>
 
 <h1>Logs</h1>
@@ -38,7 +38,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
-</div> search-form 
+</div> 
+<!--search-form--> 
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'log-grid',

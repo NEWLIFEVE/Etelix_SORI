@@ -111,9 +111,8 @@ class ContratoController extends Controller
                     $params['monetizableName']=$monetizableName;    
                     $params['monetizableNameO']=$monetizableNameO;    
                     $params['termino_pNameO']=$termino_pNameO;    
-                       echo json_encode($params);
-//                    echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$sign_date.'|'.$production_date.'|'.$end_date.'|'.$monetizaNameO.'|'.$termino_pNameO;         
-       }
+                    echo json_encode($params);
+    }
         
 	public function actionContrato()
 	{
@@ -224,54 +223,50 @@ class ContratoController extends Controller
                                         Log::registrarLog(LogAction::getId('Modificar Dias Max Disputa'),NULL, $modelCDNEW->id);
                                 }
                                 /*CREDITO*/
-                                $modelCLCredito= ContratoLimites::model()->find('id_contrato=:contrato and end_date IS NULL AND id_limites = 1',array(':contrato'=>$modelAux->id)); 
+                                $modelCLCredito= CreditLimit::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCLCredito!=NULL){
-                                    if($modelCLCredito->monto != $credito){
+                                    if($modelCLCredito->amount != $credito){
                                         $modelCLCredito->end_date=date('Y-m-d'); 
                                         $modelCLCredito->save();
-                                        $modelCLCreditoNEW = new ContratoLimites;
+                                        $modelCLCreditoNEW = new CreditLimit;
                                         $modelCLCreditoNEW->id_contrato=$modelAux->id;
-                                        $modelCLCreditoNEW->id_limites=$modelCLCredito->id_limites;
                                         $modelCLCreditoNEW->start_date=date('Y-m-d');
-                                        $modelCLCreditoNEW->monto =$credito;
+                                        $modelCLCreditoNEW->amount =$credito;
                                         $modelCLCreditoNEW->save();
-                                        //Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Limite de Credito'),NULL, $modelCLCreditoNEW->id);
                                         $text.= $credito.',';
                                         
                                     }
                                 }else{
-                                        $modelCLCreditoNEW = new ContratoLimites;
+                                        $modelCLCreditoNEW = new CreditLimit;
                                         $modelCLCreditoNEW->id_contrato=$modelAux->id;
-                                        $modelCLCreditoNEW->id_limites=1;
                                         $modelCLCreditoNEW->start_date=date('Y-m-d');
-                                        $modelCLCreditoNEW->monto =$credito;
+                                        $modelCLCreditoNEW->amount =$credito;
                                         $modelCLCreditoNEW->save();
-                                        //Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
-                                }
+                                        Log::registrarLog(LogAction::getId('Modificar Limite de Credito'),NULL, $modelCLCreditoNEW->id);
+                                }                        
                                 /*COMPRA*/
-                                $modelCLCompra= ContratoLimites::model()->find('id_contrato=:contrato and end_date IS NULL AND id_limites = 2',array(':contrato'=>$modelAux->id)); 
+                                $modelCLCompra= PurchaseLimit::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCLCompra!=NULL){
-                                    if($modelCLCompra->monto != $compra){
+                                    if($modelCLCompra->amount != $compra){
                                         $modelCLCompra->end_date=date('Y-m-d'); 
                                         $modelCLCompra->save();
-                                        $modelCLCompraNEW = new ContratoLimites;
+                                        $modelCLCompraNEW = new PurchaseLimit;
                                         $modelCLCompraNEW->id_contrato=$modelAux->id;
-                                        $modelCLCompraNEW->id_limites=$modelCLCompra->id_limites;
                                         $modelCLCompraNEW->start_date=date('Y-m-d');
-                                        $modelCLCompraNEW->monto =$compra;
+                                        $modelCLCompraNEW->amount =$compra;
                                         $modelCLCompraNEW->save();
-                                        //Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Limite de Compra'),NULL, $modelCLCompraNEW->id);
                                         $text.= $compra.',';
                                         
                                     }
                                 }else{
-                                        $modelCLCompraNEW = new ContratoLimites;
+                                        $modelCLCompraNEW = new PurchaseLimit;
                                         $modelCLCompraNEW->id_contrato=$modelAux->id;
-                                        $modelCLCompraNEW->id_limites=2;
                                         $modelCLCompraNEW->start_date=date('Y-m-d');
-                                        $modelCLCompraNEW->monto =$compra;
+                                        $modelCLCompraNEW->amount =$compra;
                                         $modelCLCompraNEW->save();
-                                        //Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
+                                        Log::registrarLog(LogAction::getId('Modificar Limite de Compra'),NULL, $modelCLCompraNEW->id);
                                 }
                                 $modelAux->save();      
                         }else{
@@ -281,7 +276,8 @@ class ContratoController extends Controller
                                 $model->sign_date=$sign_date;
                                 $model->production_date=$production_date;
                                 $model->end_date=NULL;
-                                $model->save();       
+                                $model->save();  
+                                Log::registrarLog(LogAction::getId('Crear Contrato'),NULL, $model->id);
                                 /*TERMINO PAGO*/
                                 if($termino_pago!='' || $termino_pago!=NULL){
                                 $modelCTPNEW = new ContratoTerminoPago;
@@ -309,21 +305,19 @@ class ContratoController extends Controller
                                 }                                
                                 /*CREDITO*/
                                 if($credito!='' || $credito!=NULL){
-                                $modelCLCreditoNEW = new ContratoLimites;
+                                $modelCLCreditoNEW = new CreditLimit;
                                 $modelCLCreditoNEW->id_contrato=$model->id;
-                                $modelCLCreditoNEW->id_limites=1;
                                 $modelCLCreditoNEW->start_date=date('Y-m-d');
-                                $modelCLCreditoNEW->monto =$credito;
+                                $modelCLCreditoNEW->amount =$credito;
                                 $modelCLCreditoNEW->save();
                                 }                                
                                            
                                 /*COMPRA*/
                                 if($compra!='' || $compra!=NULL){
-                                $modelCLCompraNEW = new ContratoLimites;
+                                $modelCLCompraNEW = new PurchaseLimit;
                                 $modelCLCompraNEW->id_contrato=$model->id;
-                                $modelCLCompraNEW->id_limites=2;
                                 $modelCLCompraNEW->start_date=date('Y-m-d');
-                                $modelCLCompraNEW->monto =$compra;
+                                $modelCLCompraNEW->amount =$compra;
                                 $modelCLCompraNEW->save();
                                 }                                
                         }                   
@@ -436,8 +430,10 @@ class ContratoController extends Controller
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
-                $params['credito']= ContratoLimites::getCredito($model->id);
-                $params['compra']= ContratoLimites::getCompra($model->id);
+//                $params['credito']= ContratoLimites::getCredito($model->id);
+//                $params['compra']= ContratoLimites::getCompra($model->id);
+                $params['credito']= CreditLimit::getCredito($model->id);
+                $params['compra']= PurchaseLimit::getCompra($model->id);
                 $params['fechaManager']=CarrierManagers::getFechaManager($model->id_carrier);
                 
            }else{
@@ -448,6 +444,8 @@ class ContratoController extends Controller
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['dias_disputa']='';
+                $params['credito']='';
+                $params['compra']='';
                 $params['carrier']= Carrier::getName($_GET['idCarrier']);
                 $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);
            }

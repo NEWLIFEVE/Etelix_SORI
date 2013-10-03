@@ -27,7 +27,15 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'color_zona'); ?>
-		<?php echo $form->textField($model,'color_zona',array('size'=>50,'maxlength'=>50)); ?>
+		<?php 
+                    $this->widget('ext.SMiniColors.SActiveColorPicker', array(
+                    'model' => $model,
+                    'attribute' => 'color_zona',
+                    'hidden'=>false, // defaults to false - can be set to hide the textarea with the hex
+                    'options' => array(), // jQuery plugin options
+                    'htmlOptions' => array(), // html attributes
+                ));
+                ?>
 		<?php echo $form->error($model,'color_zona'); ?>
 	</div>
 

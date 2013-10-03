@@ -122,13 +122,20 @@ class Managers extends CActiveRecord
 	{
             $sql="Select c.id, c.name
                   From carrier c, carrier_managers x
-                  Where x.id_managers ='8' and x.id_carrier = c.id and x.end_date IS NULL ORDER BY c.name ASC";
+                  Where x.id_managers ='8' and x.id_carrier = c.id and c.id!='1130' and  x.end_date IS NULL ORDER BY c.name ASC ";
             return CHtml::listData(Carrier::model()->findAllBySql($sql),'id','name');
 	}
          public static function getName($manager){           
             return self::model()->find("id=:id", array(':id'=>$manager))->lastname;
         }
-          
+        
+        public static function getNameList()
+        {
+            return CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname');
+        }
+               
+                
+                
 }
 
 
