@@ -153,7 +153,7 @@ class AccountingDocumentTemp extends CActiveRecord
 			  FROM(SELECT id, issue_date, from_date, to_date, received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c
-			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier";
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier  ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;

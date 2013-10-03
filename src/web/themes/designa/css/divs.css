@@ -476,7 +476,7 @@ width: 46%;
   border-top-left-radius:8px;
   border-top-right-radius:8px;
   color:#6E6E6E;
-  top:20%;
+  top:9%;
   padding:23px 30px 43px 28px;
   position:fixed;
   text-align:center;
@@ -507,4 +507,9 @@ width: 46%;
     border: none;
     border-bottom-color: rgba(111,204,187,1);
     font-weight:normal;
+}
+
+.CarierDocument
+{
+    margin-top: 50%;
 }
