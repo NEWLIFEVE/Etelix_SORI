@@ -576,7 +576,7 @@ $('#GeographicZone_id').change(function()
         setTimeout(function()
         {
             aguanta.fadeOut('fast');
-        }, 3000);
+        }, 1000);
     }
     else
     {
@@ -637,7 +637,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         setTimeout(function()
         {
             msjIndicador.fadeOut('fast');
-        }, 3000);
+        }, 1000);
     }
     else
     {
@@ -660,8 +660,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp;
-
-                $(".tablaVistDocTemporales").append("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                
+                $(".tablaVistDocTemporales").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
@@ -676,9 +676,9 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                     </tr>");
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
+                
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
 
-                                
                                     $SORI.UI.init();
                                     $("#AccountingDocumentTemp_doc_number").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
@@ -769,4 +769,10 @@ $(function($)
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
+
+//
+//                        $(".cargando").append("<h3>El documento contable\n\
+//                                     fue guardado con exito</h3><table border='4' class='tablamensaje'><tr>\n\
+//                                     <td> Tipo de Doc </td><td> Carrier </td><td> Fecha de Emisión </td><td>\n\
+//                                     Monto </td></tr></table><p><img src='/images/si.png'width='95px' height='95px'/></p>");
 

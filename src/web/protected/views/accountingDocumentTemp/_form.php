@@ -25,7 +25,7 @@
     </div>
     <div class="formularioDocumento">
         <div class="valoresDocumento">
-            <div class="AccountingDocumentTemp_id_type_accounting_document  contratoForm">
+            <div class="AccountingDocumentTemp_id_type_accounting_document contratoForm">
                 <?php echo $form->labelEx($model,'id_carrier'); ?>
                 <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_carrier'); ?>
