@@ -393,7 +393,7 @@ $('#botAsignarContrato').click('on',function(e)
             {
                 var tipo=$(this).attr('id');
                 if(tipo=="confirma")
-                {
+                {  $('.mensaje').html("<h2>Espere un momento por favor</h2><p><p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/><p><p><p><p><p><p><p><p<p><p>").hide().fadeIn('fast');
                     $.ajax({
                         type: "GET",
                         url: "Contrato",

@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <link href="<?php echo Yii::app()->baseUrl; ?>/images/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114" />
-        etelix1
+        
         <link href="<?php echo Yii::app()->baseUrl; ?>/images/apple-touch-icon-144x144-precomposed.png" rel="apple-touch-icon-precomposed" sizes="144x144" />
 	<!--<link rel="stylesheet" href="/resources/demos/style.css" />-->
 	<!--[if lt IE 9]>
