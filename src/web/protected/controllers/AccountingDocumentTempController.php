@@ -196,8 +196,8 @@ class AccountingDocumentTempController extends Controller
 		{
 
 			$model->attributes=$_POST['AccountingDocumentTemp'];
-			$model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-			$model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+//			$model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+//			$model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
         	$model->issue_date=$_POST['AccountingDocumentTemp']['issue_date'];
         	$model->from_date=$_POST['AccountingDocumentTemp']['from_date'];
         	$model->to_date=$_POST['AccountingDocumentTemp']['to_date'];
