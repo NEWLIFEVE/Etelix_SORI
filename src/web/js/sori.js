@@ -124,19 +124,25 @@ $SORI.UI=(function()
 		        data: "idCarrier="+idCarrier,
 		        success: function(data)
 		        {
+                            console.dir(data);
 		            obj=JSON.parse(data);
 		            $("#Contrato_id_company").val(obj.company);
 		            if(obj.company!='')
 		            {
 		                $("#Contrato_id_company").prop("disabled", true);
 		                $("#Contrato_end_date").prop("disabled", false);
-		                $("#Contrato_sign_date").prop("disabled", true);
+		                 if(obj.sign_date=='' || obj.sign_date == null){
+                                     $("#Contrato_sign_date").prop("disabled", false);
+                                }else{
+                                     $("#Contrato_sign_date").prop("disabled", true);
+                                }
 		            }
 		            else
 		            {
+                               $("#Contrato_sign_date").prop("disabled", false)
 		                $("#Contrato_id_company").prop("disabled", false);
 		                $("#Contrato_end_date").prop("disabled", true);
-		                $("#Contrato_sign_date").prop("disabled", false)
+		               
 		            }
 		            $("#Contrato_sign_date").val(obj.sign_date);
 		            $("#Contrato_production_date").val(obj.production_date);

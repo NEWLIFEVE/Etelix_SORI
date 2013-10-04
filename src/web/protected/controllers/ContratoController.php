@@ -141,17 +141,17 @@ class ContratoController extends Controller
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
 
-                         if($sign_date!='' || $sign_date!=NULL){
-                                        $sign_date=$sign_date;
-                                    }else{
-                                        $sign_date=NULL;
-                                    }
-                                    if($production_date!='' || $production_date!=NULL){
-                                        $production_date=$production_date;
-                                    }else{
-                                        $production_date=NULL;
-                                    }
-                    
+                    if($sign_date!='' || $sign_date!=NULL){
+                        $sign_date=$sign_date;
+                    }else{
+                        $sign_date=NULL;
+                    }
+                    if($production_date!='' || $production_date!=NULL){
+                        $production_date=$production_date;
+                    }else{
+                        $production_date=NULL;
+                    }
+
                     $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
