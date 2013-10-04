@@ -44,7 +44,7 @@ class Contrato extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('sign_date, id_carrier, id_company', 'required'),
+			array('id_carrier, id_company', 'required'),
 			array('id_carrier, id_company', 'numerical', 'integerOnly'=>true),
 			array('production_date, end_date', 'safe'),
 			// The following rule is used by search().
