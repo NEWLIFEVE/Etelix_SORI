@@ -176,7 +176,7 @@
   border-top-left-radius:8px;
   border-top-right-radius:8px;
   color:#6E6E6E;
-  top:20%;
+  top:12%;
   padding:23px 30px 43px 28px;
   position:fixed;
   text-align:center;
@@ -274,12 +274,15 @@ width: 20%;
 .manageractual
 {
 /*background-color: red; */
-margin-top: 50px;
+    margin-top: 50px;
+    margin-left: -7%;
+    width: 330px;
+    text-align: -webkit-right;
 }
 .pManager
 {
     width: 20%;
-    margin-left: 622px;
+    margin-left: 582px;
     margin-top: -38px;
     display: none;
 }

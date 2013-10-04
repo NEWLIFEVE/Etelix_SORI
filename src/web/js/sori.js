@@ -156,7 +156,13 @@ $SORI.UI=(function()
 
 		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
 		            	fechaManagerCarrier=(obj.fechaManager),
-		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+" </h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>"),
+		            	ManagerUP=(obj.managerUP);
+                                        if(ManagerUP=='1'){
+                                           var ManagerUPName='Presidente';
+                                          }else{
+                                               ManagerUPName='Ventas';
+                                          }
+		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +ManagerUPName+"  / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>");
 		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\ -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
 		            $('.manageractual').append(managerA);
 		            managerA.slideDown('slow');

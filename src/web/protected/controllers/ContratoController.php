@@ -141,6 +141,17 @@ class ContratoController extends Controller
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
 
+                         if($sign_date!='' || $sign_date!=NULL){
+                                        $sign_date=$sign_date;
+                                    }else{
+                                        $sign_date=NULL;
+                                    }
+                                    if($production_date!='' || $production_date!=NULL){
+                                        $production_date=$production_date;
+                                    }else{
+                                        $production_date=NULL;
+                                    }
+                    
                     $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
@@ -428,6 +439,9 @@ class ContratoController extends Controller
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
                 $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+                
+                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
+                
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
 //                $params['credito']= ContratoLimites::getCredito($model->id);
@@ -443,6 +457,7 @@ class ContratoController extends Controller
                 $params['termino_pago']='';
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
+                $params['managerUP']=Managers::getUP(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';
