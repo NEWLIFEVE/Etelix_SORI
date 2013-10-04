@@ -151,7 +151,6 @@ class ContratoController extends Controller
                     }else{
                         $production_date=NULL;
                     }
-
                     $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
