@@ -93,42 +93,45 @@
                 <!--<div class="SegundoNivel">-->
                 <div class="contratoForm">
 
-                        <?php echo $form->labelEx($model,'id_termino_pago'); ?>
-                        <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
-                        array('prompt'=>'Seleccione')
-                        ); ?> 
-                        <?php echo $form->error($model,'id_termino_pago'); ?>
+                     <?php echo $form->labelEx($model,'id_termino_pago'); ?>
+                     <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
+                     array('prompt'=>'Seleccione')
+                     ); ?> 
+                     <?php echo $form->error($model,'id_termino_pago'); ?>
                 </div>
+                
                 <div class="contratoForm">
-                        <?php echo $form->labelEx($model,'id_monetizable'); ?>
-                        <?php echo $form->dropDownList($model,'id_monetizable',Monetizable::getListMonetizable(),
-                        array('prompt'=>'Seleccione')
-                        ); ?> 
-                        <?php echo $form->error($model,'id_monetizable'); ?>
-
+                     <?php echo $form->labelEx($model,'id_monetizable'); ?>
+                     <?php echo $form->dropDownList($model,'id_monetizable',Monetizable::getListMonetizable(),
+                     array('prompt'=>'Seleccione')
+                     ); ?> 
+                     <?php echo $form->error($model,'id_monetizable'); ?>
                 </div>
+                
                 <div class="contratoForm">
-<?php echo $form->labelEx($model, 'id_disputa'); ?>
-                    <?php echo $form->textField($model, 'id_disputa'); ?>
-                    <?php echo $form->error($model, 'id_disputa'); ?>
+                     <?php echo $form->labelEx($model, 'id_disputa'); ?>
+                     <?php echo $form->textField($model, 'id_disputa'); ?>
+                     <?php echo $form->error($model, 'id_disputa'); ?>
                 </div>
+                
                 <div class="contratoForm">
-<?php echo $form->labelEx($model, 'id_limite_credito'); ?>
-<?php echo $form->textField($model, 'id_limite_credito'); ?> 
-<?php echo $form->error($model, 'id_limite_credito'); ?>
+                     <?php echo $form->labelEx($model, 'id_limite_credito'); ?>
+                     <?php echo $form->textField($model, 'id_limite_credito'); ?> 
+                     <?php echo $form->error($model, 'id_limite_credito'); ?>
                 </div>
+                
                 <div class="contratoForm">
-<?php echo $form->labelEx($model, 'id_limite_compra'); ?>
-<?php echo $form->textField($model, 'id_limite_compra'); ?> 
-<?php echo $form->error($model, 'id_limite_compra'); ?>
+                     <?php echo $form->labelEx($model, 'id_limite_compra'); ?>
+                     <?php echo $form->textField($model, 'id_limite_compra'); ?> 
+                     <?php echo $form->error($model, 'id_limite_compra'); ?>
                 </div>
-                <input type="hidden" id="dias_disputa_Oculto"  value="">
-                <input type="hidden" id="credito_Oculto"  value="">
-                <input type="hidden" id="compra_Oculto"  value="">
-                <input type="hidden" id="monetizable_Oculto"  value="">
-                <input type="hidden" id="TerminoP_Oculto"  value="">
-                <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
-                <input type="hidden" id="F_P_produccion_Oculto"  value="">
+                     <input type="hidden" id="dias_disputa_Oculto"  value="">
+                     <input type="hidden" id="credito_Oculto"  value="">
+                     <input type="hidden" id="compra_Oculto"  value="">
+                     <input type="hidden" id="monetizable_Oculto"  value="">
+                     <input type="hidden" id="TerminoP_Oculto"  value="">
+                     <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
+                     <input type="hidden" id="F_P_produccion_Oculto"  value="">
             </div>
 
             <br>
