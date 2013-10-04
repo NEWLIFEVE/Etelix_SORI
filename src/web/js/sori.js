@@ -23,7 +23,7 @@ $SORI.UI=(function()
 	 */
 	function _editar(obj)
 	{
-		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
@@ -37,7 +37,7 @@ $SORI.UI=(function()
 			input=null;
 		}
 		obj[0].children[10].innerHTML="";
-		obj[0].children[10].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.gif'>";
+		obj[0].children[10].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -50,14 +50,14 @@ $SORI.UI=(function()
 	function _revert(obj)
 	{
 		var contenido=new Array();
-		for (var i=0, j=obj[0].childElementCount-2;i<=j;i++)
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
 			contenido[i]=obj[0].children[i].children[0].value;
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
 		obj[0].children[10].innerHTML="";
-		obj[0].children[10].innerHTML="<img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[10].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -219,7 +219,7 @@ $SORI.AJAX=(function()
 		{
 			type:'POST',
 			url:'update/'+id,
-			//data:$SORI.UTILS.getData(id),
+			data:$SORI.UTILS.getData(id),
 			success:function(data)
 			{
 				console.log(data);

@@ -427,8 +427,9 @@ width: 46%;
 .hacerUnaNota
 {
     color:rgba(111,204,187,1);
+    width: 5%;
 }
-.tablaVistDocTemporales
+.tablaVistDocTemporales 
 {
     background:rgba(111,204,187,1);
     margin-top: 2%;
@@ -439,7 +440,20 @@ width: 46%;
     border: none;
     text-align:center;
     border-bottom-color: rgba(111,204,187,1);
+    width: 1081px;
 }
+.tablaVistDocTemporales tr td input
+{
+    font-size: 1em;
+    padding: 0em;
+    width: 67px;
+    box-sizing: border-box;
+}
+.tablaVistDocTemporales tr td:nth-child(9), .tablaVistDocTemporales tr td:nth-child(10)
+{
+   width: 75px;
+}
+
 
 .tablaVistDocTemporales:hover
 {
@@ -507,4 +521,9 @@ width: 46%;
     border: none;
     border-bottom-color: rgba(111,204,187,1);
     font-weight:normal;
+}
+
+.edit
+{
+    margin-right: 7px;
 }

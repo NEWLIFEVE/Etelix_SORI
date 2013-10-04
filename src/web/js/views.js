@@ -617,6 +617,7 @@ $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
     var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
+    alert(selecTipoDoc);
     var idCarrier=$('#AccountingDocumentTemp_id_carrier').val();
     var fechaEmision=$('#AccountingDocumentTemp_issue_date').val();
     var desdeFecha=$('#AccountingDocumentTemp_from_date').val();
@@ -671,7 +672,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td><img name='edit' alt='editar' src='/images/icon_lapiz.jpg'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                        <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
 
                 $('.tablaVistDocTemporales').fadeIn('slow');
