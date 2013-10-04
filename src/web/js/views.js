@@ -258,7 +258,19 @@ $('#botAsignarContrato').click('on',function(e)
     var F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val();
     var monetizableOculto = $("#monetizable_Oculto").val();      
     var TPOculto = $("#TerminoP_Oculto").val();
-
+    
+    var dias_disputa=$("#Contrato_id_disputa").val();
+    var credito=$("#Contrato_id_limite_credito").val();
+    var compra=$("#Contrato_id_limite_compra").val();
+    
+    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1' ||dias_disputa<'1'){
+        var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(stop)
+                    stop.fadeIn('fast');
+                    setTimeout(function()
+                    {stop.fadeOut('fast');
+                    }, 3000);
+    }else{
     $.ajax({
         type: "GET",
         url: "ContratoConfirma",
@@ -270,9 +282,6 @@ $('#botAsignarContrato').click('on',function(e)
             var companyName=obj.companyName;
             var termino_pName=obj.termino_pName;
             var monetizableName=obj.monetizableName;
-            var dias_disputa=$("#Contrato_id_disputa").val();
-            var credito=$("#Contrato_id_limite_credito").val();
-            var compra=$("#Contrato_id_limite_compra").val();
             var sign_date = $("#Contrato_sign_date").val();
             var production_date = $("#Contrato_production_date").val();
             var end_date=$("#Contrato_end_date").val();
@@ -316,7 +325,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backF_Firma ="Fecha de firma de contrato: ";
-                }
+                }       
                 if(F_P_produccion_Oculto!=production_date)
                 {
                     var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ";
@@ -324,7 +333,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backProduccion ="Fecha de Puesta en Produccion: ";
-                }
+                }       
                 if(TPOculto!=termino_pago)
                 {
                     var backTPago="Terminos de pago de: "+termino_pNameO+" a ";
@@ -421,6 +430,7 @@ $('#botAsignarContrato').click('on',function(e)
             });
         }
     });
+    }
 });
 
 //FIIN contrato, add and update
