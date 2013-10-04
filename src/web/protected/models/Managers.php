@@ -136,6 +136,9 @@ class Managers extends CActiveRecord
         {
             return CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname');
         }
+        public static function getUP($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->up;
+        }
                
                 
                 

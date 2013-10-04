@@ -439,6 +439,9 @@ class ContratoController extends Controller
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
                 $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
+                
+                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
+                
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
 //                $params['credito']= ContratoLimites::getCredito($model->id);
@@ -454,6 +457,7 @@ class ContratoController extends Controller
                 $params['termino_pago']='';
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
+                $params['managerUP']=Managers::getUP(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';
