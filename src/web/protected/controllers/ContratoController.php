@@ -141,7 +141,7 @@ class ContratoController extends Controller
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
 
-                         if($sign_date!='' || $sign_date!=NULL){
+                                    if($sign_date!='' || $sign_date!=NULL){
                                         $sign_date=$sign_date;
                                     }else{
                                         $sign_date=NULL;
