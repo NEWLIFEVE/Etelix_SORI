@@ -71,7 +71,7 @@ class Reader
      * @param string $ruta: ruta absoluta de archivo que va a ser leido
      * @return boolean
 	 */
-	public function diario($ruta)
+	public function diario()
 	{
 		//aumento el tiempo maximo de ejecucion
         ini_set('max_execution_time', 1200);
@@ -212,96 +212,59 @@ class Reader
                         $valores['margin']=Utility::notNull($this->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                        if(stripos($this->log,"Preliminar"))
+                        $this->model=new Balance;
+                        $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                                ':date'=>$this->fecha,
+                                ':destino'=>$valores[$this->destino],
+                                ':customer'=>$valores['id_carrier_customer'],
+                                ':supplier'=>$valores['id_carrier_supplier']
+                                )
+                        );
+                        $this->model->date_balance=$this->fecha;
+                        $this->model->minutes=$valores['minutes'];
+                        $this->model->acd=$valores['acd'];
+                        $this->model->asr=$valores['asr'];
+                        $this->model->margin_percentage=$valores['margin_percentage'];
+                        $this->model->margin_per_minute=$valores['margin_per_minute'];
+                        $this->model->cost_per_minute=$valores['cost_per_minute'];
+                        $this->model->revenue_per_minute=$valores['revenue_per_minute'];
+                        $this->model->pdd=$valores['pdd'];
+                        $this->model->incomplete_calls=$valores['incomplete_calls'];
+                        $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
+                        $this->model->complete_calls=$valores['complete_calls'];
+                        $this->model->complete_calls_ner=$valores['complete_calls_ner'];
+                        $this->model->calls_attempts=$valores['calls_attempts'];
+                        $this->model->duration_real=$valores['duration_real'];
+                        $this->model->duration_cost=$valores['duration_cost'];
+                        $this->model->ner02_efficient=$valores['ner02_efficient'];
+                        $this->model->ner02_seizure=$valores['ner02_seizure'];
+                        $this->model->pdd_calls=$valores['pdd_calls'];
+                        $this->model->revenue=$valores['revenue'];
+                        $this->model->cost=$valores['cost'];
+                        $this->model->margin=$valores['margin'];
+                        $this->model->date_change=date('Y-m-d');
+                        $this->model->id_carrier_supplier=$valores['id_carrier_supplier'];
+                        $this->model->id_carrier_customer=$valores['id_carrier_customer'];
+                        $this->model->id_destination=$valores['id_destination'];
+                        $this->model->id_destination_int=$valores['id_destination_int'];
+                        $this->model->status=1;
+                        if($this->model->save())
                         {
-                            $this->model=new Balance;
-                            $this->model->date_balance=$this->fecha;
-                            $this->model->minutes=$valores['minutes'];
-                            $this->model->acd=$valores['acd'];
-                            $this->model->asr=$valores['asr'];
-                            $this->model->margin_percentage=$valores['margin_percentage'];
-                            $this->model->margin_per_minute=$valores['margin_per_minute'];
-                            $this->model->cost_per_minute=$valores['cost_per_minute'];
-                            $this->model->revenue_per_minute=$valores['revenue_per_minute'];
-                            $this->model->pdd=$valores['pdd'];
-                            $this->model->incomplete_calls=$valores['incomplete_calls'];
-                            $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
-                            $this->model->complete_calls=$valores['complete_calls'];
-                            $this->model->complete_calls_ner=$valores['complete_calls_ner'];
-                            $this->model->calls_attempts=$valores['calls_attempts'];
-                            $this->model->duration_real=$valores['duration_real'];
-                            $this->model->duration_cost=$valores['duration_cost'];
-                            $this->model->ner02_efficient=$valores['ner02_efficient'];
-                            $this->model->ner02_seizure=$valores['ner02_seizure'];
-                            $this->model->pdd_calls=$valores['pdd_calls'];
-                            $this->model->revenue=$valores['revenue'];
-                            $this->model->cost=$valores['cost'];
-                            $this->model->margin=$valores['margin'];
-                            $this->model->date_change=date('Y-m-d');
-                            $this->model->id_carrier_supplier=$valores['id_carrier_supplier'];
-                            $this->model->id_carrier_customer=$valores['id_carrier_customer'];
-                            $this->model->id_destination=$valores['id_destination'];
-                            $this->model->id_destination_int=$valores['id_destination_int'];
-                            $this->model->status=1;
-                            if($this->model->save())
-                            {
-                                $this->nuevos=$this->nuevos+1;
-                                $this->model->unsetAttributes();
-                            }
-                            else
-                            {
-                                $this->fallas=$this->fallas+1;
-                            }
+                            $this->nuevos=$this->nuevos+1;
+                            $this->model->unsetAttributes();
                         }
                         else
                         {
-                            $this->model=new Balance;
-                            $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
-                                    ':date'=>$this->fecha,
-                                    ':destino'=>$valores[$this->destino],
-                                    ':customer'=>$valores['id_carrier_customer'],
-                                    ':supplier'=>$valores['id_carrier_supplier']
-                                    )
-                            );
-                            $this->model->minutes=$valores['minutes'];
-                            $this->model->acd=$valores['acd'];
-                            $this->model->asr=$valores['asr'];
-                            $this->model->margin_percentage=$valores['margin_percentage'];
-                            $this->model->margin_per_minute=$valores['margin_per_minute'];
-                            $this->model->cost_per_minute=$valores['cost_per_minute'];
-                            $this->model->revenue_per_minute=$valores['revenue_per_minute'];
-                            $this->model->pdd=$valores['pdd'];
-                            $this->model->incomplete_calls=$valores['incomplete_calls'];
-                            $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
-                            $this->model->complete_calls=$valores['complete_calls'];
-                            $this->model->complete_calls_ner=$valores['complete_calls_ner'];
-                            $this->model->calls_attempts=$valores['calls_attempts'];
-                            $this->model->duration_real=$valores['duration_real'];
-                            $this->model->duration_cost=$valores['duration_cost'];
-                            $this->model->ner02_efficient=$valores['ner02_efficient'];
-                            $this->model->ner02_seizure=$valores['ner02_seizure'];
-                            $this->model->pdd_calls=$valores['pdd_calls'];
-                            $this->model->revenue=$valores['revenue'];
-                            $this->model->cost=$valores['cost'];
-                            $this->model->margin=$valores['margin'];
-                            $this->model->date_change=date('Y-m-d');
-                            if($this->model->save())
-                            {
-                                $this->nuevos=$this->nuevos+1;
-                                $this->model->unsetAttributes();
-                            }
-                            else
-                            {
-                                $this->fallas=$this->fallas+1;
-                            }
+                            $this->fallas=$this->fallas+1;
                         }
-                        break;
+                    break;
                 }
 			}//fin de for de $j
 		}//fin de for de $i
         if($this->fallas>0)
         {
             $this->error=self::ERROR_SAVE_DB;
+            $this->errorComment=$this->fallas." no grabados";
             return false;
         }
         else
@@ -988,6 +951,20 @@ class Reader
             $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
             return false;
         }
+    }
+
+    /**
+     * @access public
+     * @return string con la lista de columnas en el archivo actual
+     */
+    public function getColumnas()
+    {
+        $columnas=null;
+        for ($i=0; $i < 25; $i++)
+        {
+            $columnas.=$this->excel->sheets[0]['cells'][2][$i].", ";
+        }
+        return $columnas;
     }
 }
 ?>

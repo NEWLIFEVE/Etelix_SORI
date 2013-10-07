@@ -320,7 +320,7 @@ class BalanceController extends Controller
 						if($this->lector->error==0)
 						{
 							//Guardo en base de datos
-							if($this->lector->diario($ruta.$diario))
+							if($this->lector->diario())
 							{
 								//Si lo guarda grabo en log
 								Log::registrarLog(LogAction::getId($this->lector->log));
