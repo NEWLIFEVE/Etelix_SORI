@@ -95,7 +95,11 @@ class Monetizable extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-         public static function getName($monetizable){           
+        public static function getName($monetizable){           
             return self::model()->find("id=:id", array(':id'=>$monetizable))->name;
         }
+        
+        public static function getListMonetizable(){           
+            return CHtml::listData(Monetizable::model()->findAll(array('order'=>'id')),'id','name');
+        }                   
 }

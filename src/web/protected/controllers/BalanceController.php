@@ -38,7 +38,7 @@ class BalanceController extends Controller
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
-				'actions'=>array('index','guardar','upload'),
+				'actions'=>array('index','guardar','upload','carga'),
 				'users'=>array_merge(Users::usersByType(2)),
 				),
 			array('allow', // Vistas para Operaciones
@@ -320,7 +320,7 @@ class BalanceController extends Controller
 						if($this->lector->error==0)
 						{
 							//Guardo en base de datos
-							if($this->lector->diario($ruta.$diario))
+							if($this->lector->diario())
 							{
 								//Si lo guarda grabo en log
 								Log::registrarLog(LogAction::getId($this->lector->log));

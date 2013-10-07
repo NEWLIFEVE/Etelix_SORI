@@ -10,6 +10,7 @@
  * @property string $record_date
  * @property string $position
  * @property string $lastname
+ * @property integer $up
  *
  * The followings are the available model relations:
  * @property CarrierManagers[] $carrierManagers
@@ -37,7 +38,7 @@ class Managers extends CActiveRecord
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, address, record_date, position, lastname', 'safe', 'on'=>'search'),
+			array('id, name, address, record_date, position, lastname,up', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +66,7 @@ class Managers extends CActiveRecord
 			'record_date' => 'Record Date',
 			'position' => 'Position',
 			'lastname' => 'Lastname',
+			'lastname' => 'Unidad de Produccion',
 		);
 	}
 
@@ -92,6 +94,7 @@ class Managers extends CActiveRecord
 		$criteria->compare('record_date',$this->record_date,true);
 		$criteria->compare('position',$this->position,true);
 		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('up',$this->up,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -122,13 +125,23 @@ class Managers extends CActiveRecord
 	{
             $sql="Select c.id, c.name
                   From carrier c, carrier_managers x
-                  Where x.id_managers ='8' and x.id_carrier = c.id and x.end_date IS NULL ORDER BY c.name ASC";
+                  Where x.id_managers ='8' and x.id_carrier = c.id and c.id!='1130' and  x.end_date IS NULL ORDER BY c.name ASC ";
             return CHtml::listData(Carrier::model()->findAllBySql($sql),'id','name');
 	}
          public static function getName($manager){           
             return self::model()->find("id=:id", array(':id'=>$manager))->lastname;
         }
-          
+        
+        public static function getNameList()
+        {
+            return CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname');
+        }
+        public static function getUP($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->up;
+        }
+               
+                
+                
 }
 
 

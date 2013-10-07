@@ -27,9 +27,8 @@
 
 <div class='divVendedor'>
 	<?php echo $form->labelEx($model,'id_managers'); ?>
-	<?php echo $form->dropDownList($model,'id_managers',
-                CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname'),
-                array(
+        <?php echo $form->dropDownList($model,'id_managers', Managers::getNameList(),
+               array(
                     'ajax'=>array(
                         'type'=>'POST',
                         'url'=>CController::createUrl('DynamicAsignados'),
@@ -60,7 +59,7 @@
 <?php $this->endWidget(); ?>
   <div id='botAsignar' class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
-	</div>
+  </div>
 </div><!-- form -->
 <div id="contenedor">
 </div>

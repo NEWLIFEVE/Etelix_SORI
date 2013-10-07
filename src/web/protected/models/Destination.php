@@ -5,9 +5,11 @@
  *
  * The followings are the available columns in table 'destination':
  * @property integer $id
- * @property string $nombre
+ * @property string $name
+ * @property integer $id_geographic_zone
  *
  * The followings are the available model relations:
+ * @property GeographicZone $idGeographicZone
  * @property Balance[] $balances
  */
 class Destination extends CActiveRecord
@@ -29,10 +31,11 @@ class Destination extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name', 'required'),
+			array('id_geographic_zone', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nombre', 'safe', 'on'=>'search'),
+			array('id, name, id_geographic_zone', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,6 +47,7 @@ class Destination extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'idGeographicZone' => array(self::BELONGS_TO, 'GeographicZone', 'id_geographic_zone'),
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination'),
 		);
 	}
@@ -56,6 +60,7 @@ class Destination extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Nombre',
+                        'id_geographic_zone' => 'Id Geographic Zone',
 		);
 	}
 
@@ -78,7 +83,8 @@ class Destination extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('id_geographic_zone',$this->id_geographic_zone);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -115,4 +121,25 @@ class Destination extends CActiveRecord
 			}
 		}
 	}
+        /**
+	 * este busca los destinos asignados a zonas geograficas
+         * a partir del valor recibido en el controlador de zona geografica
+	 */
+        public static function getListDestinationAsignados($id)
+	{
+            return CHtml::listData(Destination::model()->findAll('id_geographic_zone=:zona order by name asc',array(':zona'=>$id)),'id','name');
+	}
+         /**
+	 * trae todos los destinos externos que no 
+         * esten asignados a ninguna zona geografica
+	 */
+        public static function getListDestinationNoAsig()
+	{          
+            return CHtml::listData(Destination::model()->findAll("id_geographic_zone=:zona order by name asc",array(':zona'=>2)),'id','name');
+	}
+        
+ 
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 }
