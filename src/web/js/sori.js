@@ -163,7 +163,7 @@ $SORI.UI=(function()
 		            	fechaManagerCarrier=(obj.fechaManager),
 		            	ManagerUP=(obj.managerUP);
                                         if(ManagerUP=='1'){
-                                           var ManagerUPName='Presidente';
+                                           var ManagerUPName='Presidencia';
                                           }else{
                                                ManagerUPName='Ventas';
                                           }

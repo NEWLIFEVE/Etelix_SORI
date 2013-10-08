@@ -85,12 +85,13 @@
                 ?>
                 <?php echo $form->error($model,'to_date'); ?>
             </div>
-            <div class="contratoForm fechaDeRecepcion">
-                <?php echo $form->labelEx($model,'valid_received_date'); ?>
+
+            <div class="contratoForm emailReceivedDate">
+                <?php echo $form->labelEx($model,'email_received_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                         'model'=>$model,
-                        'attribute'=>'valid_received_date',
+                        'attribute'=>'email_received_date',
                         'options'=>array(
                             'dateFormat'=>'yy-mm-dd'
                             ),
@@ -101,13 +102,7 @@
                         )
                     ); 
                 ?>
-                <?php echo $form->error($model,'valid_received_date'); ?>
-            </div>
-            
-            <div class="contratoForm emailReceivedDate">
-                
-                cualquier vaina
-                
+                <?php echo $form->error($model,'email_received_date'); ?>
             </div>
             
             <div class="contratoForm fechaDeEnvio">
@@ -174,7 +169,7 @@
                     <td> Fecha de Emisión </td>
                     <td> Fecha de Inicio </td>
                     <td> Fecha de Culminación </td>
-                    <td> Fecha Recepción </td>
+                    <td> Fecha Recep(Email)</td>
                     <td> Fecha Envio </td>
                     <td> N°Documento </td>
                     <td> Minutos </td>
@@ -192,7 +187,7 @@
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
                                     <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                    <td id='AccountingDocumentTemp[received_date]'>".$value->received_date."</td>
+                                    <td id='AccountingDocumentTemp[received_date]'>".$value->email_received_date."</td>
                                     <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>

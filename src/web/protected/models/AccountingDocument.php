@@ -8,7 +8,7 @@
  * @property string $issue_date
  * @property string $from_date
  * @property string $to_date
- * @property string $received_date
+ * @property string $valid_received_date
  * @property string $sent_date
  * @property string $doc_number
  * @property double $minutes
@@ -16,6 +16,9 @@
  * @property string $note
  * @property integer $id_type_accounting_document
  * @property integer $id_carrier
+ * @property string $email_received_date
+ * @property string $valid_received_hour
+ * @property string $email_received_hour
  *
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -44,10 +47,10 @@ class AccountingDocument extends CActiveRecord
 			array('minutes, amount', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
-			array('issue_date, from_date, to_date, received_date, sent_date', 'safe'),
+			array('issue_date, from_date, to_date, valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +77,10 @@ class AccountingDocument extends CActiveRecord
 			'issue_date' => 'Issue Date',
 			'from_date' => 'From Date',
 			'to_date' => 'To Date',
-			'received_date' => 'Received Date',
+			'valid_received_date' => 'Valid Received Date',
+			'email_received_date' => 'Email Received Date',
+			'valid_received_hour' => 'Valid Received Hour',
+			'email_received_hour' => 'Email Received Hour',
 			'sent_date' => 'Sent Date',
 			'doc_number' => 'Doc Number',
 			'minutes' => 'Minutes',
@@ -107,7 +113,10 @@ class AccountingDocument extends CActiveRecord
 		$criteria->compare('issue_date',$this->issue_date,true);
 		$criteria->compare('from_date',$this->from_date,true);
 		$criteria->compare('to_date',$this->to_date,true);
-		$criteria->compare('received_date',$this->received_date,true);
+		$criteria->compare('valid_received_date',$this->valid_received_date,true);
+		$criteria->compare('email_received_date',$this->email_received_date,true);
+		$criteria->compare('valid_received_hour',$this->valid_received_hour,true);
+		$criteria->compare('email_received_hour',$this->email_received_hour,true);
 		$criteria->compare('sent_date',$this->sent_date,true);
 		$criteria->compare('doc_number',$this->doc_number,true);
 		$criteria->compare('minutes',$this->minutes);

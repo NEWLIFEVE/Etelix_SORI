@@ -18,11 +18,11 @@ class Reader
     public $fecha;
     public $nombreArchivo;
 
-	private $nuevos=0;
-	private $actualizados=0;
-	private $fallas=0;
+    private $nuevos=0;
+    private $actualizados=0;
+    private $fallas=0;
     private $destino;
-	
+    
     protected $excel;
     
     //errores de log
@@ -30,15 +30,15 @@ class Reader
     //errores guardando en base de datos
     const ERROR_SAVE_DB=5;
     //el archivo no esta en el servidor
-	const ERROR_FILE=4;
-	//la fecha del archivo es incorrecta
-	const ERROR_DATE=3;
+    const ERROR_FILE=4;
+    //la fecha del archivo es incorrecta
+    const ERROR_DATE=3;
     //Ya esta registrado en el log
     const ERROR_EXISTS=2;
     // Error de estructura del archivo
     const ERROR_ESTRUC=1;
     //No hay errores
-	const ERROR_NONE=0;
+    const ERROR_NONE=0;
 
     /**
      *
@@ -65,19 +65,18 @@ class Reader
         $this->excel->read($ruta);
     }
 
-	/**
-     * Funcion de carga de archivos diarios
-     * @access public
-     * @param string $ruta: ruta absoluta de archivo que va a ser leido
-     * @return boolean
-	 */
-	public function diario($ruta)
-	{
-		//aumento el tiempo maximo de ejecucion
+    /**
+    * Funcion de carga de archivos diarios
+    * @param string $ruta: ruta absoluta de archivo que va a ser leido
+    * @return boolean
+    */
+    public function diario()
+    {
+        //aumento el tiempo maximo de ejecucion
         ini_set('max_execution_time', 1200);
         
-		for($i=5;$i<$this->excel->sheets[0]['numRows'];$i++)
-		{
+        for($i=5;$i<$this->excel->sheets[0]['numRows'];$i++)
+        {
             $valores=array();
             for($j=1;$j<=$this->excel->sheets[0]['numCols'];$j++)
             {
@@ -255,8 +254,7 @@ class Reader
                         }
                         else
                         {
-                            $this->model=new Balance;
-                            $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                            $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
                                     ':date'=>$this->fecha,
                                     ':destino'=>$valores[$this->destino],
                                     ':customer'=>$valores['id_carrier_customer'],
@@ -297,8 +295,8 @@ class Reader
                         }
                         break;
                 }
-			}//fin de for de $j
-		}//fin de for de $i
+            }//fin de for de $j
+        }//fin de for de $i
         if($this->fallas>0)
         {
             $this->error=self::ERROR_SAVE_DB;
@@ -309,40 +307,39 @@ class Reader
             $this->error=self::ERROR_NONE;
             return true;
         }
-	}
+    }
 
-	/**
-	 * Funcion de carga de archivos hora
-     * @access public
-     * @param string $ruta: ruta absoluta del archivo que va a ser leido
-     * @return boolean
-	 */
-	public function hora($ruta)
-	{
-		//importo la extension
-		Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
-		error_reporting(E_ALL ^ E_NOTICE);
+    /**
+    * Funcion de carga de archivos hora
+    * @param string $ruta: ruta absoluta del archivo que va a ser leido
+    * @return boolean
+    */
+    public function hora($ruta)
+    {
+        //importo la extension
+        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        error_reporting(E_ALL ^ E_NOTICE);
         /**
         * Verifico si el archivo existe en el servidor
         */
-		if(file_exists($ruta))
+        if(file_exists($ruta))
         {
-        	$data = new Spreadsheet_Excel_Reader();
+            $data = new Spreadsheet_Excel_Reader();
             /**
-             * se pasa primero a la codificacion de ISO-8859-1 porque ya que dio problemas usando utf-8 directamente
-             * pero al pasar los datos del nombre del carrier al modelo se convierten a utf-8
-             */
-			$data->setOutputEncoding('ISO-8859-1');
-			$data->read($ruta);
+            * se pasa primero a la codificacion de ISO-8859-1 porque ya que dio problemas usando utf-8 directamente
+            * pero al pasar los datos del nombre del carrier al modelo se convierten a utf-8
+            */
+            $data->setOutputEncoding('ISO-8859-1');
+            $data->read($ruta);
         }
         else
         {
-        	$this->error=self::ERROR_FILE;
-			return false;
+            $this->error=self::ERROR_FILE;
+            return false;
         }
         /**
-         * Verifico que la fecha del archivo sea correcta
-         */
+        * Verifico que la fecha del archivo sea correcta
+        */
         $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
         $fecha=date('Y-m-d');
         if($fecha!=$date_balance_time)
@@ -351,8 +348,8 @@ class Reader
             return false;
         }
         /**
-         * Valido que no este en el log
-         */
+        * Valido que no este en el log
+        */
         $numRows=$data->sheets[0]['numRows'];
         $numRows=$numRows-1;
         $this->horas=$data->sheets[0]['cells'][$numRows][1];
@@ -365,8 +362,8 @@ class Reader
             }
         }
         /**
-         * Valido la estructura de horas
-         */
+        * Valido la estructura de horas
+        */
         $actual=0;
         $contador=0;
         for ($i=5; $i<$data->sheets[0]['numRows']; $i++)
@@ -408,8 +405,8 @@ class Reader
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
         /**
-         * Comienzo a leer el archivo
-         */
+        * Comienzo a leer el archivo
+        */
         for($i=5;$i<$data->sheets[0]['numRows'];$i++)
         {
             for($j=1;$j<=$data->sheets[0]['numCols'];$j++)
@@ -634,7 +631,7 @@ class Reader
         }
         $this->error=self::ERROR_NONE;
         return true;
-	}
+    }
 
     /*
     * Funcion de carga de archivos de rerate
@@ -832,10 +829,9 @@ class Reader
         }   */                
     }
     /**
-     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
-     * @access public
-     */
-	public static function nombre($nombre)
+    * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
+    */
+    public static function nombre($nombre)
     {
         $primero="Ruta ";
         $segundo="External ";
@@ -856,51 +852,47 @@ class Reader
         return $nuevoNombre;     
     }
     /**
-     * Encargada de definir atributos para proceder a la lectura del archivo
-     * @access public
-     */
-	public function define($nombre)
-	{
-		if(stripos($nombre,"internal"))
-		{
-			$this->tipo="internal";
+    * Encargada de definir atributos para proceder a la lectura del archivo
+    */
+    public function define($nombre)
+    {
+        if(stripos($nombre,"internal"))
+        {
+            $this->tipo="internal";
             $this->destino="id_destination_int";
-    	}
-    	else
-    	{
-    		$this->tipo="external";
+        }
+        else
+        {
+            $this->tipo="external";
             $this->destino="id_destination";
-    	}
-	}
+        }
+    }
     /**
-     * Funcion a la que se le pasa una lista donde el orden incluido debe ser cumplido por el archivo que se esta evaluando
-     * @access public
-     * @param array $lista lista de elementos que debe cumplir las columnas
-     */
+    * Funcion a la que se le pasa una lista donde el orden incluido debe ser cumplido por el archivo que se esta evaluando
+    * @param array $lista lista de elementos que debe cumplir las columnas
+    */
     public function validarColumnas($lista)
     {
-        $this->error=self::ERROR_NONE;
-        $this->errorComment.="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene las columnas ";
         foreach ($lista as $key => $campo)
         {
             $pos=$key+1;
             if($campo!=$this->excel->sheets[0]['cells'][2][$pos])
             {
                 $this->error=self::ERROR_ESTRUC;
-                $this->errorComment.=", ".$this->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo;
+                $this->errorComment.="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene la columna ".$this->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
+                return false;
             }
         }
-        $this->errorComment.=".</h5>";
+        $this->error=self::ERROR_NONE;
         return true;
     }
     /**
-     * Encargado de traer los nombres de los archivos que coinciden con la lista dada
-     * @access public
-     * @param $directorio string ruta al directorio que se va a revisar
-     * @param $listaArchivos array lista de archivos que se vana buscar en el directorio
-     * @param $listaExtensiones array lista de extensiones que pueden tener los archivos
-     * @return $confirmados array lista de archivos que hay dentro del directorio consultado que coinciden con la lista dada
-     */
+    * Encargado de traer los nombres de los archivos que coinciden con la lista dada
+    * @param $directorio string ruta al directorio que se va a revisar
+    * @param $listaArchivos array lista de archivos que se vana buscar en el directorio
+    * @param $listaExtensiones array lista de extensiones que pueden tener los archivos
+    * @return $confirmados array lista de archivos que hay dentro del directorio consultado que coinciden con la lista dada
+    */
     public function getNombreArchivos($directorio,$listaArchivos,$listaExtensiones)
     {
         $confirmados=array();
@@ -931,7 +923,6 @@ class Reader
     /**
      * Valida que el archivo que se esta leyendo no este en log,
      * si existe deveulve verdadero de lo contrario falso y asigna el valor del log
-     * @access public
      * @param $key string con el nombre del archivo que se quiere verificar
      * @return boolean
      */
@@ -967,11 +958,9 @@ class Reader
             return false;
         }
     }
-
     /**
-     * @access public
-     * @param $fecha date
-     */
+    *
+    */
     public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
