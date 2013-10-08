@@ -111,6 +111,7 @@ class DestinationInt extends CActiveRecord
 			{
 				$model=new self;
 				$model->name=$nombre;
+				$model->id_geographic_zone=GeographicZone::getId('Sin Asignar');
 				if($model->save())
 				{
 					return $model->id;
