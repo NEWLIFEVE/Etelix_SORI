@@ -111,7 +111,7 @@ class AccountingDocumentTempController extends Controller
         $model->issue_date =$fechaEmision;
         $model->from_date = $desdeFecha;
         $model->to_date = $hastaFecha;
-        $model->received_date = $fechaRecepcion;
+        $model->valid_received_date = $fechaRecepcion;
         $model->sent_date = $fechaEnvio;
         $model->doc_number = $numDocumento;
         $model->minutes = $minutos;
@@ -201,7 +201,7 @@ class AccountingDocumentTempController extends Controller
         	$model->issue_date=$_POST['AccountingDocumentTemp']['issue_date'];
         	$model->from_date=$_POST['AccountingDocumentTemp']['from_date'];
         	$model->to_date=$_POST['AccountingDocumentTemp']['to_date'];
-        	$model->received_date=$_POST['AccountingDocumentTemp']['received_date'];
+        	$model->valid_received_date=$_POST['AccountingDocumentTemp']['valid_received_date'];
         	$model->sent_date=$_POST['AccountingDocumentTemp']['sent_date'];
         	$model->doc_number=$_POST['AccountingDocumentTemp']['doc_number'];
         	$model->minutes=$_POST['AccountingDocumentTemp']['minutes'];

@@ -113,7 +113,7 @@ class XMultiSelects extends CWidget
 		echo "<td>\n";
 		if(isset($this->leftTitle))
 		{
-			echo "<label for=\"leftTitle\">{$this->leftTitle}</label><br />\n";
+			echo "<label class='leftName' for=\"leftTitle\">{$this->leftTitle}</label><br />\n";
 		}
 		echo "<select name=\"{$this->leftName}\" id=\"select_left\" multiple=\"multiple\" size=\"{$this->size}\" style=\"width:{$this->width}\">\n";
 		foreach($this->leftList as $value=>$label)
@@ -131,7 +131,7 @@ class XMultiSelects extends CWidget
 		echo "<td>\n";
 		if(isset($this->rightTitle))
 		{
-			echo "<label for=\"rightTitle\">{$this->rightTitle}</label><br />\n";
+			echo "<label  class='rigthName' for=\"rightTitle\">{$this->rightTitle}</label><br />\n";
 		}
 		echo "<select name=\"{$this->rightName}\" id=\"select_right\" multiple=\"multiple\" size=\"{$this->size}\" style=\"width:{$this->width}\">\n";
 		foreach($this->rightList as $value=>$label)

@@ -263,7 +263,7 @@ $('#botAsignarContrato').click('on',function(e)
     var credito=$("#Contrato_id_limite_credito").val();
     var compra=$("#Contrato_id_limite_compra").val();
     
-    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1' ||dias_disputa<'1'){
+    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1'){
         var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                     $("body").append(stop)
                     stop.fadeIn('fast');
@@ -510,7 +510,7 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
                         var desA = 'Dsasignarle:';
                     }
                     var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>\n\
-                                        Esta a punto de realizar actualizar "+tipoDestino+" la Zona Geográfica: \n\
+                                        Esta a punto de actualizar "+tipoDestino+" la Zona Geográfica: \n\
                                         <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
                                         "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
                                         "+NoAsigNames+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar\n\
@@ -609,8 +609,33 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
+   var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
+   var fechaDeEnvio= $('.fechaDeEnvio');
+   var fechaDeRecepcion= $('.fechaDeRecepcion');
+   var emailReceivedDate=$('.emailReceivedDate');
+   
+    if (tipoDocument=='2'||tipoDocument=='3')
+        {
+           fechaDeEnvio.hide('slow'); 
+           if(tipoDocument=='2')
+             {alert('siiii, es 2!!!!');
+              emailReceivedDate.show('slow');
+             }
+        }else{
+             fechaDeEnvio.show('slow'); 
+             emailReceivedDate.hide('slow');
+        }
+        
+    if (tipoDocument=='1'||tipoDocument=='4')
+        {
+       fechaDeRecepcion.hide('slow'); 
+        }else{
+             fechaDeRecepcion.show('slow'); 
+        }
+
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
+    $('div.CarrierDocument').fadeIn('slow');
 });
 $('div.hacerUnaNota').click('on',function()
 {
@@ -628,19 +653,18 @@ $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
     var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
-    alert(selecTipoDoc);
     var idCarrier=$('#AccountingDocumentTemp_id_carrier').val();
     var fechaEmision=$('#AccountingDocumentTemp_issue_date').val();
     var desdeFecha=$('#AccountingDocumentTemp_from_date').val();
     var hastaFecha=$('#AccountingDocumentTemp_to_date').val();
-    var fechaRecepcion=$('#AccountingDocumentTemp_received_date').val();
+    var fechaRecepcion=$('#AccountingDocumentTemp_valid_received_date').val();
     var fechaEnvio=$('#AccountingDocumentTemp_sent_date').val();
     var numDocumento=$('#AccountingDocumentTemp_doc_number').val();
     var minutos=$('#AccountingDocumentTemp_minutes').val();
     var cantidad=$('#AccountingDocumentTemp_amount').val();
     var nota=$('#AccountingDocumentTemp_note').val();
-                    
-    if(idCarrier==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||fechaRecepcion==''||fechaEnvio==''||numDocumento==''||minutos==''||cantidad=='')
+//                    ||fechaRecepcion=='' ||fechaEnvio==''
+    if(idCarrier==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||numDocumento==''||minutos==''||cantidad=='')
     {
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
         $("body").append(msjIndicador);
@@ -651,7 +675,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         }, 1000);
     }
     else
-    {
+    {alert (fechaRecepcion);
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",

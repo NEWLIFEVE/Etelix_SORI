@@ -64,7 +64,7 @@
                     'rightName' => 'Asignados[]',
                     'rightList' =>array(),
                     'size' => 15,  
-                    'width' => '400px',
+//                    'width' => '400px',
                 ));
                 ?>
                 <?php echo $form->error($model,'lastname'); ?>  

@@ -124,7 +124,6 @@ $SORI.UI=(function()
 		        data: "idCarrier="+idCarrier,
 		        success: function(data)
 		        {
-                            console.dir(data);
 		            obj=JSON.parse(data);
 		            $("#Contrato_id_company").val(obj.company);
 		            if(obj.company!='')

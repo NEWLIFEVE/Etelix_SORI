@@ -23,13 +23,15 @@
         <?php echo $form->dropDownList($model,'id_type_accounting_document',TypeAccountingDocument::getListTypeAccountingDocument(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_type_accounting_document'); ?>
     </div>
+    
+    <div class="CarrierDocument AccountingDocumentTemp_id_type_accounting_document">
+        <?php echo $form->labelEx($model,'id_carrier'); ?>
+        <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+        <?php echo $form->error($model,'id_carrier'); ?>
+    </div>
+    
     <div class="formularioDocumento">
         <div class="valoresDocumento">
-            <div class="AccountingDocumentTemp_id_type_accounting_document contratoForm">
-                <?php echo $form->labelEx($model,'id_carrier'); ?>
-                <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
-                <?php echo $form->error($model,'id_carrier'); ?>
-            </div>
             <div class="contratoForm">
                 <?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -83,12 +85,12 @@
                 ?>
                 <?php echo $form->error($model,'to_date'); ?>
             </div>
-            <div class="contratoForm">
-                <?php echo $form->labelEx($model,'received_date'); ?>
+            <div class="contratoForm fechaDeRecepcion">
+                <?php echo $form->labelEx($model,'valid_received_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                         'model'=>$model,
-                        'attribute'=>'received_date',
+                        'attribute'=>'valid_received_date',
                         'options'=>array(
                             'dateFormat'=>'yy-mm-dd'
                             ),
@@ -99,9 +101,16 @@
                         )
                     ); 
                 ?>
-                <?php echo $form->error($model,'received_date'); ?>
+                <?php echo $form->error($model,'valid_received_date'); ?>
             </div>
-            <div class="contratoForm">
+            
+            <div class="contratoForm emailReceivedDate">
+                
+                cualquier vaina
+                
+            </div>
+            
+            <div class="contratoForm fechaDeEnvio">
                 <?php echo $form->labelEx($model,'sent_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
