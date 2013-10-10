@@ -705,12 +705,14 @@ $('#botAgregarDatosContable').click('on',function(e)
     var minutos=$('#AccountingDocumentTemp_minutes').val();
     var cantidad=$('#AccountingDocumentTemp_amount').val();
     var nota=$('#AccountingDocumentTemp_note').val();
-//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||numDocumento==''||minutos==''||cantidad==''
-    if(idCarrier=='')
+//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
+    if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
     {
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
         $("body").append(msjIndicador);
         msjIndicador.fadeIn('fast');
+        
+        
         setTimeout(function()
         {
             msjIndicador.fadeOut('fast');

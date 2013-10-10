@@ -175,7 +175,7 @@
                     <td> Fecha de Emisión </td>
                     <td> Inicio Periodo a Facturar </td>
                     <td> Fin Periodo a Facturar </td>
-                    <td> Fecha Recep/Email</td>
+                    <td> Fecha Recep(Email)</td>
                     <td> Fecha Recep Valida</td>
                     <td> Hora Recep (Email)</td>
                     <td> Hora Recep Valida</td>
