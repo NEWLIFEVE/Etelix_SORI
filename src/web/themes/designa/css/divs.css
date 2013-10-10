@@ -447,7 +447,10 @@ width: 20%;
 @media screen and (max-width: 600px) {
     .CarrierDocument{ width: 66%; margin-right: -64px;float: right;margin-top: -15.5%;}
 }
-
+/*.ReceivedDateCobro
+{
+    display:block;
+}*/
 .tablaVistDocTemporales 
 {
     background:rgba(111,204,187,1);
@@ -484,6 +487,7 @@ width: 20%;
     font-weight:bold;
     text-align:center;
     border: none;
+    border-bottom-color: rgba(111,204,187,1);
 }
 .vistaTemp
 {
@@ -494,6 +498,7 @@ width: 20%;
 {
     background:rgba(143, 206, 194, 1);
     color: white;
+    border-bottom-color: rgba(111,204,187,1);
 }
 
 #botAgregarDatosContableFinal

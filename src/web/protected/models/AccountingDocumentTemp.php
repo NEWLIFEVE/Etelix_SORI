@@ -76,12 +76,12 @@ class AccountingDocumentTemp extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'issue_date' => 'Fecha de Emisión',
-			'from_date' => 'Fecha de inicio',
-			'to_date' => 'fecha final',
+			'from_date' => 'Inicio Periodo a Facturar',
+			'to_date' => 'Fin Periodo a Facturar',
 			'valid_received_date' => 'Valid Received Date',
-			'email_received_date' => 'Email Received Date',
+			'email_received_date' => 'Fecha de recepción de Email',
 			'valid_received_hour' => 'Valid Received Hour',
-			'email_received_hour' => 'Email Received Hour',
+			'email_received_hour' => 'Hora de recepción de Email',
 			'sent_date' => 'Fecha de envio',
 			'doc_number' => 'Número de documento',
 			'minutes' => 'Minutos',
@@ -159,8 +159,8 @@ class AccountingDocumentTemp extends CActiveRecord
 	 */
 	public static function listaGuardados($usuario)
 	{
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier
-			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, d.email_received_hour, d.valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier
+			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c
 			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier  ORDER BY id DESC";
@@ -168,5 +168,34 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
+        
+        
+        public static function traeFechaValida($EmailfechaRecepcion,$dia)
+        {    
+            switch ($dia) {
+                
+                case 1:
+                      return date('Y-m-d', strtotime('+1 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 2:
+                      return date('Y-m-d', strtotime('+6 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 3:
+                      return date('Y-m-d', strtotime('+5 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 4:
+                      return date('Y-m-d', strtotime('+4 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 5:
+                      return date('Y-m-d', strtotime('+3 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 6:
+                      return date('Y-m-d', strtotime('+2 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+                case 7:
+                      return date('Y-m-d', strtotime('+1 day', strtotime ( $EmailfechaRecepcion ))) ;
+                      break;
+             }                                                             
+        }
 
 }

@@ -87,54 +87,117 @@ class AccountingDocumentTempController extends Controller
 	/**
 	 * @access public
 	 */
-	public function actionGuardarListaTemp()
-	{
-		$selecTipoDoc=$_GET['selecTipoDoc'];
-		$idCarrier=$_GET['idCarrier'];
-		$fechaEmision=$_GET['fechaEmision'];
-		$desdeFecha=$_GET['desdeFecha'];
-		$hastaFecha=$_GET['hastaFecha'];
-		$fechaRecepcion=$_GET['fechaRecepcion'];
-		$fechaEnvio=$_GET['fechaEnvio'];
-		$numDocumento=$_GET['numDocumento'];
-		$minutos=$_GET['minutos'];
-		$cantidad=$_GET['cantidad'];
-		$nota=$_GET['nota'];
-		$idCarrierName="";
-		$selecTipoDocName="";
-		$idCarrierName.= Carrier::getName($idCarrier);
-		$selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+	public function actionGuardarListaTemp() {
+            
+            $selecTipoDoc = $_GET['selecTipoDoc'];
+            $idCarrier = $_GET['idCarrier'];
+            $fechaEmision = $_GET['fechaEmision'];
+            $desdeFecha = $_GET['desdeFecha'];
+            $hastaFecha = $_GET['hastaFecha'];
+            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
+            $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
+            $fechaEnvio = $_GET['fechaEnvio'];
+            $numDocumento = $_GET['numDocumento'];
+            $minutos = $_GET['minutos'];
+            $cantidad = $_GET['cantidad'];
+            $nota = $_GET['nota'];
+            $idCarrierName = "";
+            $selecTipoDocName = "";
+            $idCarrierName.= Carrier::getName($idCarrier);
+            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $valid_received_hour = '';
+            $valid_received_date = '';
 
-		$model=new AccountingDocumentTemp;
-        $model->id_type_accounting_document = $selecTipoDoc;
-        $model->id_carrier = $idCarrier;
-        $model->issue_date =$fechaEmision;
-        $model->from_date = $desdeFecha;
-        $model->to_date = $hastaFecha;
-        $model->valid_received_date = $fechaRecepcion;
-        $model->sent_date = $fechaEnvio;
-        $model->doc_number = $numDocumento;
-        $model->minutes = $minutos;
-        $model->amount = $cantidad;
-        $model->note = $nota;
-     
+            $model = new AccountingDocumentTemp;
+            $model->id_type_accounting_document = $selecTipoDoc;
+            $model->id_carrier = $idCarrier;
+            if ($fechaEmision == '') {
+                $model->issue_date = NULL;
+            } else {
+                $model->issue_date = $fechaEmision;
+            }
+            if ($desdeFecha == '') {
+                $model->from_date = NULL;
+            } else {
+                $model->from_date = $desdeFecha;
+            }
+            if ($hastaFecha == '') {
+                $model->to_date = NULL;
+            } else {
+                $model->to_date = $hastaFecha;
+            }
+            if ($selecTipoDoc == '4') {
+                $model->email_received_hour = NULL;
+                $model->valid_received_hour = NULL;
+                $model->email_received_date = NULL;
+                $model->valid_received_date = $EmailfechaRecepcion;
+            } 
+            if ($selecTipoDoc == '2') {
+            $fecha = strtotime($EmailfechaRecepcion);
+            $dia = date("N", $fecha);
+                if ($dia == 1 || $dia == 2) {
+                    if ($EmailHoraRecepcion > '08:00' && $EmailHoraRecepcion <= '17:00') {
+                        $model->valid_received_date = $EmailfechaRecepcion;
+                        $model->valid_received_hour = $EmailHoraRecepcion;
+                        $model->email_received_date = $EmailfechaRecepcion;
+                        $model->email_received_hour = $EmailHoraRecepcion;
+                      
+                    } else {
+                        $model->valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
+                        $model->valid_received_hour = '08:00';
+                        $model->email_received_date = $EmailfechaRecepcion;
+                        $model->email_received_hour = $EmailHoraRecepcion;
+                    }
+                } else {
+                    $model->valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
+                    $model->valid_received_hour = '08:00';
+                    $model->email_received_date = $EmailfechaRecepcion;
+                    $model->email_received_hour = $EmailHoraRecepcion;
+                }
+            }
+            if ($fechaEnvio == '') {
+                $model->sent_date = NULL;
+            } else {
+                $model->sent_date = $fechaEnvio;
+            }
+            $model->doc_number = $numDocumento;
+            $model->minutes = $minutos;
+            $model->amount = $cantidad;
+            $model->note = $nota;
 
-             if($model->save()){ 
-                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                 Log::registrarLog($idAction, NULL, $model->id);
-                    $params['idCarrierNameTemp']=$idCarrierName;    
-                    $params['selecTipoDocNameTemp']=$selecTipoDocName;    
-                    $params['fechaEmisionTemp']=$fechaEmision;    
-                    $params['desdeFechaTemp']=$desdeFecha;    
-                    $params['hastaFechaTemp']=$hastaFecha;    
-                    $params['fechaRecepcionTemp']=$fechaRecepcion;    
-                    $params['fechaEnvioTemp']=$fechaEnvio;    
-                    $params['numDocumentoTemp']=$numDocumento;    
-                    $params['minutosTemp']=$minutos;    
-                    $params['cantidadTemp']=$cantidad;    
-                       echo json_encode($params);
-             }
-        }
+
+            if ($model->save()) {
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+                $params['idCarrierNameTemp'] = $model->id_carrier;
+                $params['selecTipoDocNameTemp'] = $model->id_type_accounting_document;
+                $params['fechaEmisionTemp'] = $model->issue_date;
+                $params['desdeFechaTemp'] =  $model->from_date;
+                $params['hastaFechaTemp'] =  $model->to_date;
+                $params['EmailfechaRecepcionTemp'] = $model->email_received_date;
+                $params['EmailHoraRecepcionTemp'] = $model->email_received_hour;
+                $params['valid_received_dateTemp'] = $model->valid_received_date;
+                $params['valid_received_hourTemp'] = $model->valid_received_hour;
+                $params['fechaEnvioTemp'] = $model->sent_date;
+                $params['numDocumentoTemp'] = $model->doc_number;
+                $params['minutosTemp'] = $model->minutes;
+                $params['cantidadTemp'] = $model->amount;
+//                $params['idCarrierNameTemp'] = $idCarrierName;
+//                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+//                $params['fechaEmisionTemp'] = $fechaEmision;
+//                $params['desdeFechaTemp'] = $desdeFecha;
+//                $params['hastaFechaTemp'] = $hastaFecha;
+//                $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
+//                $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
+//                $params['valid_received_dateTemp'] = $valid_received_date;
+//                $params['valid_received_hourTemp'] = $valid_received_hour;
+//                $params['fechaEnvioTemp'] = $fechaEnvio;
+//                $params['numDocumentoTemp'] = $numDocumento;
+//                $params['minutosTemp'] = $minutos;
+//                $params['cantidadTemp'] = $cantidad;
+                echo json_encode($params);
+            }
+    }
         
         public function actionGuardarListaFinal()
         {
@@ -201,7 +264,8 @@ class AccountingDocumentTempController extends Controller
         	$model->issue_date=$_POST['AccountingDocumentTemp']['issue_date'];
         	$model->from_date=$_POST['AccountingDocumentTemp']['from_date'];
         	$model->to_date=$_POST['AccountingDocumentTemp']['to_date'];
-        	$model->valid_received_date=$_POST['AccountingDocumentTemp']['valid_received_date'];
+        	$model->email_received_date=$_POST['AccountingDocumentTemp']['email_received_date'];
+        	$model->email_received_hour=$_POST['AccountingDocumentTemp']['email_received_hour'];
         	$model->sent_date=$_POST['AccountingDocumentTemp']['sent_date'];
         	$model->doc_number=$_POST['AccountingDocumentTemp']['doc_number'];
         	$model->minutes=$_POST['AccountingDocumentTemp']['minutes'];

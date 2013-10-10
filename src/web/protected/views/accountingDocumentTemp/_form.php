@@ -32,7 +32,7 @@
     
     <div class="formularioDocumento">
         <div class="valoresDocumento">
-            <div class="contratoForm">
+            <div class="contratoForm fechaDeEmision">
                 <?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                     'model'=>$model,
@@ -49,7 +49,7 @@
                 ?>
                 <?php echo $form->error($model,'issue_date'); ?>
             </div>
-            <div class="contratoForm">
+            <div class="contratoForm fechaDeInicio">
                 <?php echo $form->labelEx($model,'from_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -67,7 +67,7 @@
                 ?>
                 <?php echo $form->error($model,'from_date'); ?>
             </div>
-            <div class="contratoForm">
+            <div class="contratoForm fechaFinal">
                 <?php echo $form->labelEx($model,'to_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -87,7 +87,7 @@
             </div>
 
             <div class="contratoForm emailReceivedDate">
-                <?php echo $form->labelEx($model,'email_received_date'); ?>
+                <label class='emailRecDate'>Fecha de recepción de Email</label>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                         'model'=>$model,
@@ -97,12 +97,18 @@
                             ),
                         'htmlOptions'=>array(
                             'size'=>'10', // textField size
-                            'maxlength' => '10', // textField maxlength
+                            'maxlength'=>'10', // textField maxlength
                             )
                         )
                     ); 
                 ?>
                 <?php echo $form->error($model,'email_received_date'); ?>
+            </div>
+            
+            <div class="contratoForm emailReceivedTime">
+                <?php echo $form->labelEx($model,'email_received_hour'); ?>
+                <?php echo $form->textField($model,'email_received_hour'); ?>
+                <?php echo $form->error($model,'email_received_hour'); ?>
             </div>
             
             <div class="contratoForm fechaDeEnvio">
@@ -123,17 +129,17 @@
                 ?>
                 <?php echo $form->error($model,'sent_date'); ?>
             </div>
-            <div class="contratoForm">
+            <div class="contratoForm numDocument">
                 <?php echo $form->labelEx($model,'doc_number'); ?>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
                 <?php echo $form->error($model,'doc_number'); ?>
             </div>
-            <div class="contratoForm">
+            <div class="contratoForm minutosDoc">
                 <?php echo $form->labelEx($model,'minutes'); ?>
                 <?php echo $form->textField($model,'minutes'); ?>
                 <?php echo $form->error($model,'minutes'); ?>
             </div>
-            <div class="contratoForm">
+            <div class="contratoForm montoDoc">
                 <?php echo $form->labelEx($model,'amount'); ?>
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
@@ -167,9 +173,12 @@
                     <td> Tipo de Doc </td>
                     <td> Carrier </td>
                     <td> Fecha de Emisión </td>
-                    <td> Fecha de Inicio </td>
-                    <td> Fecha de Culminación </td>
-                    <td> Fecha Recep(Email)</td>
+                    <td> Inicio Periodo a Facturar </td>
+                    <td> Fin Periodo a Facturar </td>
+                    <td> Fecha Recep/Email</td>
+                    <td> Fecha Recep Valida</td>
+                    <td> Hora Recep (Email)</td>
+                    <td> Hora Recep Valida</td>
                     <td> Fecha Envio </td>
                     <td> N°Documento </td>
                     <td> Minutos </td>
@@ -187,7 +196,10 @@
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
                                     <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                    <td id='AccountingDocumentTemp[received_date]'>".$value->email_received_date."</td>
+                                    <td id='AccountingDocumentTemp[email_received_date]'>".$value->email_received_date."</td>
+                                    <td id='AccountingDocumentTemp[valid_received_date]'>".$value->valid_received_date."</td>
+                                    <td id='AccountingDocumentTemp[email_received_hour]'>".$value->email_received_hour."</td>
+                                    <td id='AccountingDocumentTemp[valid_received_hour]'>".$value->valid_received_hour."</td>
                                     <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>

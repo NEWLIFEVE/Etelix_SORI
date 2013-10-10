@@ -609,29 +609,69 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
-   var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
-   var fechaDeEnvio= $('.fechaDeEnvio');
-   var fechaDeRecepcion= $('.fechaDeRecepcion');
-   var emailReceivedDate=$('.emailReceivedDate');
-   
-    if (tipoDocument=='2'||tipoDocument=='3')
-        {
-           fechaDeEnvio.hide('slow'); 
-           if(tipoDocument=='2')
-             {alert('siiii, es 2!!!!');
-              emailReceivedDate.show('slow');
-             }
-        }else{
-             fechaDeEnvio.show('slow'); 
-             emailReceivedDate.hide('slow');
-        }
-        
-    if (tipoDocument=='1'||tipoDocument=='4')
-        {
-       fechaDeRecepcion.hide('slow'); 
-        }else{
-             fechaDeRecepcion.show('slow'); 
-        }
+                      var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
+                      var fechaDeEnvio= $('.fechaDeEnvio');
+                      var emailReceivedDate=$('.emailReceivedDate');
+                      var emailRecDate=$('.emailRecDate');
+                      var fechaDeEmision=$('.fechaDeEmision');
+                      var fechaDeInicio=$('.fechaDeInicio');
+                      var fechaFinal=$('.fechaFinal');
+                      var emailReceivedTime=$('.emailReceivedTime');
+
+            if (tipoDocument=='1')
+                {
+                      fechaDeEnvio.show('slow'); 
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      emailRecDate.html('Fecha de recepción de Email');
+                      fechaDeEmision.show('slow');
+                      fechaDeInicio.show('slow');
+                      fechaFinal.show('slow');
+                      $("#AccountingDocumentTemp_email_received_date").val('');
+                      $("#AccountingDocumentTemp_email_received_hour").val('');
+                }
+            if (tipoDocument=='2')
+                {
+                      fechaDeEnvio.hide('slow'); 
+                      emailReceivedDate.show('slow'); 
+                      emailReceivedTime.show('slow');
+                      emailRecDate.html('Fecha de recepción de Email');
+                      fechaDeEmision.show('slow');
+                      fechaDeInicio.show('slow');
+                      fechaFinal.show('slow');
+                      $("#AccountingDocumentTemp_sent_date").val('');
+                }
+            if (tipoDocument=='3')
+                {
+                      fechaDeEnvio.show('slow'); 
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      emailRecDate.html('Fecha de recepción de Email');
+                      fechaDeEmision.hide('slow');
+                      fechaDeInicio.hide('slow');
+                      fechaFinal.hide('slow');
+                      $("#AccountingDocumentTemp_email_received_date").val('');
+                      $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_issue_date").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                }
+            if (tipoDocument=='4')
+                {
+                      fechaDeEnvio.hide('slow'); 
+                      emailReceivedDate.show('slow'); 
+                      emailRecDate.html('Fecha de recepción');
+                      emailReceivedTime.hide('slow');
+                      fechaDeEmision.hide('slow');
+                      fechaDeInicio.hide('slow');
+                      fechaFinal.hide('slow');
+                      $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_sent_date").val('');
+                      $("#AccountingDocumentTemp_issue_date").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                }
+                
 
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
@@ -649,6 +689,7 @@ $('.quitaNota').click('on',function()
     $('div.contratoFormTextArea').hide('slow');
     $('textarea#AccountingDocumentTemp_note').hide('slow');
 });
+
 $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
@@ -657,14 +698,15 @@ $('#botAgregarDatosContable').click('on',function(e)
     var fechaEmision=$('#AccountingDocumentTemp_issue_date').val();
     var desdeFecha=$('#AccountingDocumentTemp_from_date').val();
     var hastaFecha=$('#AccountingDocumentTemp_to_date').val();
-    var fechaRecepcion=$('#AccountingDocumentTemp_valid_received_date').val();
+    var EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val();
+    var EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val();
     var fechaEnvio=$('#AccountingDocumentTemp_sent_date').val();
     var numDocumento=$('#AccountingDocumentTemp_doc_number').val();
     var minutos=$('#AccountingDocumentTemp_minutes').val();
     var cantidad=$('#AccountingDocumentTemp_amount').val();
     var nota=$('#AccountingDocumentTemp_note').val();
-//                    ||fechaRecepcion=='' ||fechaEnvio==''
-    if(idCarrier==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||numDocumento==''||minutos==''||cantidad=='')
+//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''||numDocumento==''||minutos==''||cantidad==''
+    if(idCarrier=='')
     {
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
         $("body").append(msjIndicador);
@@ -675,12 +717,11 @@ $('#botAgregarDatosContable').click('on',function(e)
         }, 1000);
     }
     else
-    {alert (fechaRecepcion);
+     { 
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&fechaRecepcion="+fechaRecepcion+"\
-                    &fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
 
               success: function(data) 
                       {
@@ -690,7 +731,10 @@ $('#botAgregarDatosContable').click('on',function(e)
                     fechaEmisionTemp=obj.fechaEmisionTemp,
                     desdeFechaTemp=obj.desdeFechaTemp,
                     hastaFechaTemp=obj.hastaFechaTemp,
-                    fechaRecepcionTemp=obj.fechaRecepcionTemp,
+                    EmailfechaRecepcionTemp=obj.EmailfechaRecepcionTemp,
+                    valid_received_dateTemp=obj.valid_received_dateTemp,
+                    EmailHoraRecepcionTemp=obj.EmailHoraRecepcionTemp,
+                    valid_received_hourTemp=obj.valid_received_hourTemp,
                     fechaEnvioTemp=obj.fechaEnvioTemp,
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
@@ -702,7 +746,10 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[received_date]'>"+fechaRecepcionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[email_received_date]'>"+EmailfechaRecepcionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[valid_received_dateTemp]'>"+valid_received_dateTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[email_received_hour]'>"+EmailHoraRecepcionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[valid_received_hour]'>"+valid_received_hourTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
@@ -715,6 +762,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
 
                                     $SORI.UI.init();
+                                    $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_doc_number").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
