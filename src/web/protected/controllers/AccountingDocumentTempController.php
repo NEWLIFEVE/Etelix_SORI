@@ -136,20 +136,24 @@ class AccountingDocumentTempController extends Controller
             $fecha = strtotime($EmailfechaRecepcion);
             $dia = date("N", $fecha);
                 if ($dia == 1 || $dia == 2) {
-                    if ($EmailHoraRecepcion > '08:00' && $EmailHoraRecepcion <= '17:00') {
+                    if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
                         $model->valid_received_date = $EmailfechaRecepcion;
                         $model->valid_received_hour = $EmailHoraRecepcion;
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                       
                     } else {
-                        $model->valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
+                        if($EmailHoraRecepcion < '08:00'){
+                            $model->valid_received_date = $EmailfechaRecepcion;
+                        }else{
+                            $model->valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                        }
                         $model->valid_received_hour = '08:00';
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                     }
                 } else {
-                    $model->valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
+                    $model->valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
                     $model->valid_received_hour = '08:00';
                     $model->email_received_date = $EmailfechaRecepcion;
                     $model->email_received_hour = $EmailHoraRecepcion;
@@ -169,8 +173,8 @@ class AccountingDocumentTempController extends Controller
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-                $params['idCarrierNameTemp'] = $model->id_carrier;
-                $params['selecTipoDocNameTemp'] = $model->id_type_accounting_document;
+                $params['idCarrierNameTemp'] = $idCarrierName;
+                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
                 $params['fechaEmisionTemp'] = $model->issue_date;
                 $params['desdeFechaTemp'] =  $model->from_date;
                 $params['hastaFechaTemp'] =  $model->to_date;
