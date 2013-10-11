@@ -170,7 +170,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         
         
-        public static function traeFechaValida($EmailfechaRecepcion,$dia)
+        public static function getValidDate($EmailfechaRecepcion,$dia)
         {    
             switch ($dia) {
                 
@@ -196,6 +196,36 @@ class AccountingDocumentTemp extends CActiveRecord
                       return date('Y-m-d', strtotime('+1 day', strtotime ( $EmailfechaRecepcion ))) ;
                       break;
              }                                                             
+        }
+        
+        public function getDates($EmailfechaRecepcion,$EmailHoraRecepcion){
+            $fecha = strtotime($EmailfechaRecepcion);
+            $dia = date("N", $fecha);
+            $Dates = array();
+                if ($dia == 1 || $dia == 2) {
+                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '5:00 PM') {
+                        $Dates['validDate'] = $EmailfechaRecepcion;
+                        $Dates['validHour'] = $EmailHoraRecepcion;
+                        $Dates['emailDate'] = $EmailfechaRecepcion;
+                        $Dates['emailHour'] = $EmailHoraRecepcion;
+                      
+                    } else {
+                        if($EmailHoraRecepcion < '08:00 AM'){
+                            $Dates['validDate'] = $EmailfechaRecepcion;
+                        }else{
+                            $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
+                        }
+                        $Dates['validHour'] = '08:00 AM';
+                        $Dates['emailDate'] = $EmailfechaRecepcion;
+                        $Dates['emailHour'] = $EmailHoraRecepcion;
+                    }
+                } else {
+                    $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
+                    $Dates['validHour'] = '08:00 AM';
+                    $Dates['emailDate'] = $EmailfechaRecepcion;
+                    $Dates['emailHour'] = $EmailHoraRecepcion;
+                }
+                return $Dates;
         }
 
 }

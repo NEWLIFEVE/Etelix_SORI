@@ -28,9 +28,13 @@ $SORI.UI=(function()
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
 			input.value=obj[0].children[i].innerHTML;
-			if(i>=2 && i<=6)
+			if(i>=2 && i<=7)
 			{
 				$(input).datepicker();
+			}
+                        if(i>=8 && i<=9)
+			{
+				$(input).clockpick();
 			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);

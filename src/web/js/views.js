@@ -92,9 +92,9 @@ function valForm(objeto)
 $("#botAsignar").on("click",function asignadosAnoasignados()
 {
     $("#carriers select option").prop("selected",true);
-    var manager=$("#CarrierManagers_id_managers").val();
-    var asignados=$("#select_left").val();
-    var noasignados=$("#select_right").val();
+    var manager=$("#CarrierManagers_id_managers").val(),
+    asignados=$("#select_left").val(),
+    noasignados=$("#select_right").val();
 
     if(manager=="")
     {
@@ -114,10 +114,10 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
             data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
             success: function(data)
             {
-                var carriers=data.split("/");
-                var managerName=carriers[0].split(",");
-                var asigname=carriers[2].split(",");
-                var noasigname=carriers[1].split(",");
+                var carriers=data.split("/"),
+                managerName=carriers[0].split(","),
+                asigname=carriers[2].split(","),
+                noasigname=carriers[1].split(",");
                                   
                 if(asigname<="1" && noasigname<="1")
                 {
@@ -166,10 +166,10 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                 data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
                                 success: function(data)
                                 {
-                                    var carriers=data.split("/");
-                                    var managerName=carriers[0].split(",");
-                                    var asigname=carriers[2].split(",");
-                                    var noasigname=carriers[1].split(",");
+                                    var carriers=data.split("/"),
+                                    managerName=carriers[0].split(","),
+                                    asigname=carriers[2].split(","),
+                                    noasigname=carriers[1].split(",");
 
                                     if(asigname=="")
                                     {
@@ -249,19 +249,19 @@ $('#botAsignarContrato').click('on',function(e)
     $("#Contrato_id_company").prop("disabled", false);
     $("#Contrato_end_date").prop("disabled", false);
     $("#Contrato_sign_date").prop("disabled", false);
-    var carrier = $("#Contrato_id_carrier").val();
-    var company = $("#Contrato_id_company").val();
-    var termino_pago = $("#Contrato_id_termino_pago").val();
-    var monetizable = $("#Contrato_id_monetizable").val();
-    var diasDisputaOculto = $("#dias_disputa_Oculto").val();
-    var F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val();
-    var F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val();
-    var monetizableOculto = $("#monetizable_Oculto").val();      
-    var TPOculto = $("#TerminoP_Oculto").val();
+    var carrier = $("#Contrato_id_carrier").val(),
+    company = $("#Contrato_id_company").val(),
+    termino_pago = $("#Contrato_id_termino_pago").val(),
+    monetizable = $("#Contrato_id_monetizable").val(),
+    diasDisputaOculto = $("#dias_disputa_Oculto").val(),
+    F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val(),
+    F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val(),
+    monetizableOculto = $("#monetizable_Oculto").val(),      
+    TPOculto = $("#TerminoP_Oculto").val();
     
-    var dias_disputa=$("#Contrato_id_disputa").val();
-    var credito=$("#Contrato_id_limite_credito").val();
-    var compra=$("#Contrato_id_limite_compra").val();
+    var dias_disputa=$("#Contrato_id_disputa").val(),
+    credito=$("#Contrato_id_limite_credito").val(),
+    compra=$("#Contrato_id_limite_compra").val();
     
     if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1'){
         var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
@@ -277,18 +277,18 @@ $('#botAsignarContrato').click('on',function(e)
         data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
         success: function(data)
         {
-            obj=JSON.parse(data);
-            var carrierName=obj.carrierName;
-            var companyName=obj.companyName;
-            var termino_pName=obj.termino_pName;
-            var monetizableName=obj.monetizableName;
-            var sign_date = $("#Contrato_sign_date").val();
-            var production_date = $("#Contrato_production_date").val();
-            var end_date=$("#Contrato_end_date").val();
-            var monetizableNameO=obj.monetizableNameO;
-            var termino_pNameO=obj.termino_pNameO;
-            var creditoO = $("#credito_Oculto").val();
-            var compraO = $("#compra_Oculto").val();
+            var obj=JSON.parse(data),
+            carrierName=obj.carrierName,
+            companyName=obj.companyName,
+            termino_pName=obj.termino_pName,
+            monetizableName=obj.monetizableName,
+            sign_date = $("#Contrato_sign_date").val(),
+            production_date = $("#Contrato_production_date").val(),
+            end_date=$("#Contrato_end_date").val(),
+            monetizableNameO=obj.monetizableNameO,
+            termino_pNameO=obj.termino_pNameO,
+            creditoO = $("#credito_Oculto").val(),
+            compraO = $("#compra_Oculto").val();
 
             if(TPOculto==false && monetizableOculto==false)
             {
@@ -442,10 +442,10 @@ $('#botAsignarContrato').click('on',function(e)
 $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
 {
     $("#carriers select option").prop("selected",true);
-    var GeographicZone = $("#GeographicZone_id").val();
-    var asignados = $("#select_right").val();
-    var noasignados = $("#select_left").val(); 
-    var destinos = $('#GeographicZone_id_destination').val();
+    var GeographicZone = $("#GeographicZone_id").val(),
+    asignados = $("#select_right").val(),
+    noasignados = $("#select_left").val(), 
+    destinos = $('#GeographicZone_id_destination').val();
 
     if(GeographicZone=="")
     {
@@ -461,9 +461,9 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
     {
         if(destinos==1)
         {
-            var tipoDestino="Destinos Externos";
-            var elijeDestinationBuscaName="../Destination/BuscaNombresDes";
-            var destination_update="../Destination/UpdateZonaDestination";
+            var tipoDestino="Destinos Externos",
+            elijeDestinationBuscaName="../Destination/BuscaNombresDes",
+            destination_update="../Destination/UpdateZonaDestination";
         }
         if(destinos==2)
         {
@@ -477,10 +477,10 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
             data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
             success: function(data)
             {
-                obj = JSON.parse(data);
-                var GeographicZoneName = (obj.GeographicZoneName);
-                var AsigNames = (obj.asigNames);
-                var NoAsigNames = (obj.noasigNames);
+                var obj = JSON.parse(data),
+                GeographicZoneName = (obj.GeographicZoneName),
+                AsigNames = (obj.asigNames),
+                NoAsigNames = (obj.noasigNames);
                 if(AsigNames<1&&NoAsigNames<1)
                 {
                     var NoHayDatos = $("<div class='cargando'></div><div class='mensaje'><h3>No hay datos que cambiar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
@@ -609,14 +609,14 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
-                      var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
-                      var fechaDeEnvio= $('.fechaDeEnvio');
-                      var emailReceivedDate=$('.emailReceivedDate');
-                      var emailRecDate=$('.emailRecDate');
-                      var fechaDeEmision=$('.fechaDeEmision');
-                      var fechaDeInicio=$('.fechaDeInicio');
-                      var fechaFinal=$('.fechaFinal');
-                      var emailReceivedTime=$('.emailReceivedTime');
+                      var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
+                      fechaDeEnvio= $('.fechaDeEnvio'),
+                      emailReceivedDate=$('.emailReceivedDate'),
+                      emailRecDate=$('.emailRecDate'),
+                      fechaDeEmision=$('.fechaDeEmision'),
+                      fechaDeInicio=$('.fechaDeInicio'),
+                      fechaFinal=$('.fechaFinal'),
+                      emailReceivedTime=$('.emailReceivedTime');
 
             if (tipoDocument=='1')
                 {
@@ -693,31 +693,49 @@ $('.quitaNota').click('on',function()
 $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
-    var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
-    var idCarrier=$('#AccountingDocumentTemp_id_carrier').val();
-    var fechaEmision=$('#AccountingDocumentTemp_issue_date').val();
-    var desdeFecha=$('#AccountingDocumentTemp_from_date').val();
-    var hastaFecha=$('#AccountingDocumentTemp_to_date').val();
-    var EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val();
-    var EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val();
-    var fechaEnvio=$('#AccountingDocumentTemp_sent_date').val();
-    var numDocumento=$('#AccountingDocumentTemp_doc_number').val();
-    var minutos=$('#AccountingDocumentTemp_minutes').val();
-    var cantidad=$('#AccountingDocumentTemp_amount').val();
-    var nota=$('#AccountingDocumentTemp_note').val();
-//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
-    if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
-    {
-        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(msjIndicador);
-        msjIndicador.fadeIn('fast');
-        
-        
-        setTimeout(function()
+    var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
+    idCarrier=$('#AccountingDocumentTemp_id_carrier').val(),
+    fechaEmision=$('#AccountingDocumentTemp_issue_date').val(),
+    desdeFecha=$('#AccountingDocumentTemp_from_date').val(),
+    hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
+    EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
+    EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
+    fechaEnvio=$('#AccountingDocumentTemp_sent_date').val(),
+    numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
+    minutos=$('#AccountingDocumentTemp_minutes').val(),
+    cantidad=$('#AccountingDocumentTemp_amount').val(),
+    nota=$('#AccountingDocumentTemp_note').val();
+    
+    
+    
+//    ||fechaEnvio==''
+                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                  $("body").append(msjIndicador);
+      if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='' )
         {
-            msjIndicador.fadeOut('fast');
-        }, 1000);
-    }
+                  msjIndicador.fadeIn('fast');
+                  setTimeout(function()
+                  {
+                      msjIndicador.fadeOut('fast');
+                  }, 1000); 
+                  
+        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
+           {  
+                  msjIndicador.fadeIn('fast');
+                  setTimeout(function()
+                  {
+                      msjIndicador.fadeOut('fast');
+                  }, 1000);
+           }
+           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
+           {  
+                  msjIndicador.fadeIn('fast');
+                  setTimeout(function()
+                  {
+                      msjIndicador.fadeOut('fast');
+                  }, 1000);
+           
+        }
     else
      { 
         $.ajax({
@@ -733,11 +751,11 @@ $('#botAgregarDatosContable').click('on',function(e)
                     fechaEmisionTemp=obj.fechaEmisionTemp,
                     desdeFechaTemp=obj.desdeFechaTemp,
                     hastaFechaTemp=obj.hastaFechaTemp,
+                    fechaEnvioTemp=obj.fechaEnvioTemp,
                     EmailfechaRecepcionTemp=obj.EmailfechaRecepcionTemp,
                     valid_received_dateTemp=obj.valid_received_dateTemp,
                     EmailHoraRecepcionTemp=obj.EmailHoraRecepcionTemp,
                     valid_received_hourTemp=obj.valid_received_hourTemp,
-                    fechaEnvioTemp=obj.fechaEnvioTemp,
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp;
@@ -747,12 +765,12 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
+                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[email_received_date]'>"+EmailfechaRecepcionTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[valid_received_dateTemp]'>"+valid_received_dateTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[email_received_hour]'>"+EmailHoraRecepcionTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[valid_received_hour]'>"+valid_received_hourTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
@@ -765,9 +783,11 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                                     $SORI.UI.init();
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
+                                    $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_doc_number").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
+                                    $("#AccountingDocumentTemp_sent_date").val('');
                                     $("#AccountingDocumentTemp_note").val('');
                       }          
         }); 

@@ -125,24 +125,32 @@ class AccountingDocumentTempController extends Controller
             $fecha = strtotime($EmailfechaRecepcion);
             $dia = date("N", $fecha);
                 if ($dia == 1 || $dia == 2) {
-                    if ($EmailHoraRecepcion > '08:00' && $EmailHoraRecepcion <= '17:00') {
+
+                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '5:00 PM') {
                         $valid_received_date = $EmailfechaRecepcion;
                         $model->valid_received_date = $valid_received_date;
-                        $model->valid_received_hour = $EmailHoraRecepcion;
+                        $valid_received_hour = $EmailHoraRecepcion;
+                        $model->valid_received_hour = $valid_received_hour;
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                       
                     } else {
-                        $valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
-                        $model->valid_received_date = $valid_received_date;
-                        $model->valid_received_hour = '08:00';
+                        if($EmailHoraRecepcion < '08:00 AM'){
+                            $model->valid_received_date = $EmailfechaRecepcion;
+                        }else{
+                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                            $model->valid_received_date = $valid_received_date;
+                        }
+                        $valid_received_hour = '08:00 AM';
+                        $model->valid_received_hour = $valid_received_hour;
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                     }
                 } else {
-                    $valid_received_date = $model->traeFechaValida($EmailfechaRecepcion, $dia);
+                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
                     $model->valid_received_date = $valid_received_date;
-                    $model->valid_received_hour = '08:00';
+                    $valid_received_hour = '08:00 AM';
+                    $model->valid_received_hour = $valid_received_hour;
                     $model->email_received_date = $EmailfechaRecepcion;
                     $model->email_received_hour = $EmailHoraRecepcion;
                 }
@@ -157,6 +165,7 @@ class AccountingDocumentTempController extends Controller
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
+   
                 $params['idCarrierNameTemp'] = $idCarrierName;
                 $params['selecTipoDocNameTemp'] = $selecTipoDocName;
                 $params['fechaEmisionTemp'] = $fechaEmision;

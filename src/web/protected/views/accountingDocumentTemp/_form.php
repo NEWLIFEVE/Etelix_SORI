@@ -107,7 +107,27 @@
             
             <div class="contratoForm emailReceivedTime">
                 <?php echo $form->labelEx($model,'email_received_hour'); ?>
-                <?php echo $form->textField($model,'email_received_hour'); ?>
+                <?php
+                    $this->widget('webroot.protected.extensions.clockpick.EClockpick', array(
+                        'model'=>$model,
+                        'attribute'=>'email_received_hour',
+                        'options'=>array(
+                            'starthour'=>7,
+                            'endhour'=>20,
+                            'showminutes'=>TRUE,
+                            'minutedivisions'=>12,
+                            'military'=>false,
+                            'event'=>'focus',
+                            'layout'=>'horizontal'
+                            ),
+                        'htmlOptions'=>array(
+                            'size'=>10,
+                            'maxlength'=>10,
+                            'readonly'=>'readonly'
+                            )
+                        )
+                    );
+                ?>
                 <?php echo $form->error($model,'email_received_hour'); ?>
             </div>
             
@@ -175,11 +195,11 @@
                     <td> Fecha de Emisión </td>
                     <td> Inicio Periodo a Facturar </td>
                     <td> Fin Periodo a Facturar </td>
+                    <td> Fecha Envio </td>
                     <td> Fecha Recep(Email)</td>
                     <td> Fecha Recep Valida</td>
                     <td> Hora Recep (Email)</td>
                     <td> Hora Recep Valida</td>
-                    <td> Fecha Envio </td>
                     <td> N°Documento </td>
                     <td> Minutos </td>
                     <td> Cantidad </td>
@@ -196,11 +216,11 @@
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
                                     <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[email_received_date]'>".$value->email_received_date."</td>
                                     <td id='AccountingDocumentTemp[valid_received_date]'>".$value->valid_received_date."</td>
                                     <td id='AccountingDocumentTemp[email_received_hour]'>".$value->email_received_hour."</td>
                                     <td id='AccountingDocumentTemp[valid_received_hour]'>".$value->valid_received_hour."</td>
-                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
