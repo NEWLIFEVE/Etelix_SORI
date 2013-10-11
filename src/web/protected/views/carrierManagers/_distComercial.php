@@ -49,7 +49,7 @@
         'rightName' => 'No_Asignados[]',
         'rightList' =>Managers::model()->getListCarriersNOAsignados(),
         'size' => 15,  
-        'width' => '400px',
+//        'width' => '400px',
     ));
     ?>
 		<?php echo $form->error($model,'lastname'); ?>  

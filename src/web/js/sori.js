@@ -28,16 +28,20 @@ $SORI.UI=(function()
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
 			input.value=obj[0].children[i].innerHTML;
-			if(i>=2 && i<=6)
+			if(i>=2 && i<=7)
 			{
 				$(input).datepicker();
+			}
+                        if(i>=8 && i<=9)
+			{
+				$(input).clockpick();
 			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[10].innerHTML="";
-		obj[0].children[10].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[13].innerHTML="";
+		obj[0].children[13].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -56,8 +60,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[10].innerHTML="";
-		obj[0].children[10].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[13].innerHTML="";
+		obj[0].children[13].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -124,7 +128,6 @@ $SORI.UI=(function()
 		        data: "idCarrier="+idCarrier,
 		        success: function(data)
 		        {
-                            console.dir(data);
 		            obj=JSON.parse(data);
 		            $("#Contrato_id_company").val(obj.company);
 		            if(obj.company!='')
