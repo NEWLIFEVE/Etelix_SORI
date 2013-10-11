@@ -94,5 +94,21 @@ Class Utility
             return false;
         }
     }
+    
+    /**
+     * retorna NULL si la variable viene vacia...
+     * @access public
+     * @param type $var Variable de entrada.
+     * @return type Null si la vaiable de entrada es vacia, de lo contrario, la variable.
+     */
+    public static function snull($var)
+    {
+        if($var==NULL || $var=='')
+        {
+            return NULL;
+        }else{
+            return $var;
+        }
+    }
 }
 ?>
