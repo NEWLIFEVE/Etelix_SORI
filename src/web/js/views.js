@@ -709,32 +709,33 @@ $('#botAgregarDatosContable').click('on',function(e)
     
     
 //    ||fechaEnvio==''
-                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                  $("body").append(msjIndicador);
+                 
       if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='' )
         {
-                  msjIndicador.fadeIn('fast');
+                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                  $("body").append(msjIndicador);
+                 msjIndicador.fadeIn('fast');
                   setTimeout(function()
                   {
                       msjIndicador.fadeOut('fast');
                   }, 1000); 
                   
-        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-           {  
-                  msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000);
-           }
-           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-           {  
-                  msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000);
-           
+//        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
+//           {  
+//                  msjIndicador.fadeIn('fast');
+//                  setTimeout(function()
+//                  {
+//                      msjIndicador.fadeOut('fast');
+//                  }, 1000);
+//           }
+//           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
+//           {  
+//                  msjIndicador.fadeIn('fast');
+//                  setTimeout(function()
+//                  {
+//                      msjIndicador.fadeOut('fast');
+//                  }, 1000);
+//           
         }
     else
      { 
