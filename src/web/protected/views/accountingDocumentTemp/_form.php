@@ -112,11 +112,11 @@
                         'model'=>$model,
                         'attribute'=>'email_received_hour',
                         'options'=>array(
-                            'starthour'=>7,
-                            'endhour'=>20,
+                            'starthour'=>00,
+                            'endhour'=>23,
                             'showminutes'=>TRUE,
                             'minutedivisions'=>12,
-                            'military'=>false,
+                            'military'=>TRUE,
                             'event'=>'focus',
                             'layout'=>'horizontal'
                             ),
@@ -178,7 +178,7 @@
             </div>
             <br>
             <div id="botAgregarDatosContable" class="row buttons">
-                <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
+                <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar a Temporales' : 'Save'); ?>
             </div>
         </div>
     </div>
@@ -186,7 +186,7 @@
     <div class="VistDocTemporales">
         <br>
         <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista==null){echo "style='display:none;'";}?>>
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
             <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
                 <tr>
