@@ -151,7 +151,13 @@ class ContratoController extends Controller
                     }else{
                         $production_date=NULL;
                     }
-                    $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
+                    $modelAux=Contrato::model()->find('id_carrier=:carrier',array(':carrier'=>$carrier));
+                    /*
+                     * ESTE CAMBIO ES PROVISIONAL, MIENTRAS NO SE POSEA LA INFORMACION DE LAS FECHAS
+                     *SE HIZO ESTE CAMBIO PARA EVITAR QUE EL CODIGO GENERE NUEVOS CONTRATOS A LA HORA DE MODIFICAR,
+                     * POR OTRO LADO, ASI EL CODIGO NO PERMITE CREAR CONTRATOS NUEVOS PARA CARRIER YA EXISTENTES EN LA TABLA CONTRATO
+                     */
+//                    $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
 			if($modelAux != NULL){
                             /*YA EXISTE*/
                                 $modelAux->sign_date=$sign_date;
