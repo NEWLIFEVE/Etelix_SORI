@@ -140,17 +140,10 @@ class ContratoController extends Controller
                     $text='';
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
+                    $sign_date.=Utility::snull($sign_date);
+                    $production_date.=Utility::snull($production_date);
 
-                    if($sign_date!='' || $sign_date!=NULL){
-                        $sign_date=$sign_date;
-                    }else{
-                        $sign_date=NULL;
-                    }
-                    if($production_date!='' || $production_date!=NULL){
-                        $production_date=$production_date;
-                    }else{
-                        $production_date=NULL;
-                    }
+
                     $modelAux=Contrato::model()->find('id_carrier=:carrier',array(':carrier'=>$carrier));
                     /*
                      * ESTE CAMBIO ES PROVISIONAL, MIENTRAS NO SE POSEA LA INFORMACION DE LAS FECHAS
@@ -158,16 +151,14 @@ class ContratoController extends Controller
                      * POR OTRO LADO, ASI EL CODIGO NO PERMITE CREAR CONTRATOS NUEVOS PARA CARRIER YA EXISTENTES EN LA TABLA CONTRATO
                      */
 //                    $modelAux=Contrato::model()->find('sign_date=:sign_date AND id_carrier=:carrier and end_date IS NULL',array(':sign_date'=>$sign_date,':carrier'=>$carrier));
+
 			if($modelAux != NULL){
                             /*YA EXISTE*/
                                 $modelAux->sign_date=$sign_date;
                                 $modelAux->production_date=$production_date;
                                 $modelAux->id_company=$company;
-                                if ($end_date!='' || $end_date!=NULL){
-                                    $modelAux->end_date=$end_date;
-                                }else{
-                                    $modelAux->end_date=NULL;
-                                }
+                                $modelAux->end_date = Utility::snull($end_date);
+
                                 /*TERMINO PAGO*/
                                                 
                                 $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
