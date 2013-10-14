@@ -125,7 +125,6 @@ class AccountingDocumentTempController extends Controller
                 $model->valid_received_hour = NULL;
                 $model->email_received_date = NULL;
                 $valid_received_date = $EmailfechaRecepcion;
-
                 $EmailfechaRecepcion = '';
                 $model->valid_received_date = $valid_received_date;
             } 
@@ -141,18 +140,17 @@ class AccountingDocumentTempController extends Controller
                         $valid_received_hour = $EmailHoraRecepcion;
                         $model->valid_received_date = $valid_received_date;
                         $model->valid_received_hour = $valid_received_hour;
-
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                       
                     } else {
                         if($EmailHoraRecepcion < '08:00'){
-                            $model->valid_received_date = $EmailfechaRecepcion;
                             $valid_received_date = $EmailfechaRecepcion;
+                            $model->valid_received_date = $EmailfechaRecepcion;
                         }else{
-                            $model->valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                            $model->valid_received_date = $valid_received_date;
                         }
-
                         $valid_received_hour = '08:00';
                         $model->valid_received_hour = $valid_received_hour;
                         $model->email_received_date = $EmailfechaRecepcion;
