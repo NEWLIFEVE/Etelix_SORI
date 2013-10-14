@@ -125,6 +125,11 @@
                      <?php echo $form->textField($model, 'id_limite_compra'); ?> 
                      <?php echo $form->error($model, 'id_limite_compra'); ?>
                 </div>
+                <div class="contratoForm">
+                    <?php echo $form->labelEx($model, 'up'); ?>
+                    <?php echo $form->dropDownList($model, 'up',array('prompt' => 'Seleccione', 0=>"Ventas", 1=>"Presidencia")); ?> 
+                    <?php echo $form->error($model, 'up'); ?>
+                </div>
                      <input type="hidden" id="dias_disputa_Oculto"  value="">
                      <input type="hidden" id="credito_Oculto"  value="">
                      <input type="hidden" id="compra_Oculto"  value="">
