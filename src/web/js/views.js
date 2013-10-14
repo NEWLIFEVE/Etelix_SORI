@@ -705,37 +705,17 @@ $('#botAgregarDatosContable').click('on',function(e)
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
     nota=$('#AccountingDocumentTemp_note').val();
-    
-    
-    
-//    ||fechaEnvio==''
-                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                  $("body").append(msjIndicador);
-      if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='' )
+//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
+    if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
+    {
+        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+        $("body").append(msjIndicador);
+        msjIndicador.fadeIn('fast');
+        setTimeout(function()
         {
-                  msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000); 
-                  
-        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-           {  
-                  msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000);
-           }
-           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-           {  
-                  msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000);
-           
-        }
+            msjIndicador.fadeOut('fast');
+        }, 1000);
+    }
     else
      { 
         $.ajax({

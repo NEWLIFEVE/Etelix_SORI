@@ -112,16 +112,16 @@
                         'model'=>$model,
                         'attribute'=>'email_received_hour',
                         'options'=>array(
-                            'starthour'=>7,
-                            'endhour'=>20,
+                            'starthour'=>0,
+                            'endhour'=>23,
                             'showminutes'=>TRUE,
                             'minutedivisions'=>12,
-                            'military'=>false,
+                            'military'=>TRUE,
                             'event'=>'focus',
                             'layout'=>'horizontal'
                             ),
                         'htmlOptions'=>array(
-                            'size'=>10,
+                            'size'=>20,
                             'maxlength'=>10,
                             'readonly'=>'readonly'
                             )

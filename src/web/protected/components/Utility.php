@@ -110,5 +110,59 @@ Class Utility
             return $var;
         }
     }
+    
+    /**
+    * @param $hora time la hora a formatear
+    * @return $horaMod string hora formateada para base de datos
+    */	
+    public static function ChangeTime($hora)
+	{
+		$doce = 12;
+		if($hora[1] == ':')
+		{
+			if($hora[5] == 'A')
+			{
+				$horaMod = '0'.substr($hora, -7, 4).':00';
+			}
+			else
+			{
+				$horaMod = substr($hora, -7, 2)+$doce.substr($hora, -6, 3).':00';
+			}
+		}
+		else if($hora[1] == '2')
+		{
+			if($hora[6] == 'A')
+			{
+				$horaMod = '00'.substr($hora, -6, 3).':00';
+			}
+			else
+			{
+				$horaMod = substr($hora, -8, 5).':00';
+			}
+		}
+		else
+		{
+			if($hora[6] == 'A')
+			{
+				$horaMod = substr($hora, -8, 5).':00';
+			}
+			else
+			{
+				$horaMod = substr($hora, -8, 2)+$doce.substr($hora, -6, 3).':00';
+			}
+		}
+		return $horaMod;
+	}
+    /**
+    * @param $var time la hora a formatear
+    * @return $horaAmPm string hora formateada para base de datos
+    */	
+   public static function ChangeTimeAmPm($var)
+	{
+                $hora = strtotime($var);
+                //substr
+                $horaAmPm = date("h:i:s A",$hora); 
+                return $horaAmPm;
+        }
 }
 ?>
