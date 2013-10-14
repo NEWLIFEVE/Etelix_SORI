@@ -152,6 +152,8 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                       \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
                                       "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
                                       class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                        $(".cargando").hide();
+                        $(".mensaje").hide();
                         $("body").append(revisa);
                             revisa.fadeIn('fast');
                     }
