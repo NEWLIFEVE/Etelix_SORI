@@ -114,48 +114,61 @@ class AccountingDocumentTempController extends Controller
             $model->issue_date = Utility::snull($fechaEmision);
             $model->from_date = Utility::snull($desdeFecha);
             $model->to_date = Utility::snull($hastaFecha);
+            $model->sent_date = Utility::snull($fechaEnvio);
+            $model->doc_number = $numDocumento;
+            $model->minutes = Utility::snull($minutos);
+            $model->amount = Utility::snull($cantidad);
+            $model->note = Utility::snull($nota);
             
             if ($selecTipoDoc == '4') {
                 $model->email_received_hour = NULL;
                 $model->valid_received_hour = NULL;
                 $model->email_received_date = NULL;
                 $valid_received_date = $EmailfechaRecepcion;
+
+                $EmailfechaRecepcion = '';
                 $model->valid_received_date = $valid_received_date;
-            }else{ 
+            } 
+
             if ($selecTipoDoc == '2') {
             $fecha = strtotime($EmailfechaRecepcion);
             $dia = date("N", $fecha);
                 if ($dia == 1 || $dia == 2) {
 
                     if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
-                        $model->valid_received_date = $EmailfechaRecepcion;
-                        $model->valid_received_hour = $EmailHoraRecepcion;
+
+                        $valid_received_date = $EmailfechaRecepcion;
+                        $valid_received_hour = $EmailHoraRecepcion;
+                        $model->valid_received_date = $valid_received_date;
+                        $model->valid_received_hour = $valid_received_hour;
+
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                       
                     } else {
                         if($EmailHoraRecepcion < '08:00'){
                             $model->valid_received_date = $EmailfechaRecepcion;
+                            $valid_received_date = $EmailfechaRecepcion;
                         }else{
                             $model->valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
                         }
-                        $model->valid_received_hour = '08:00';
+
+                        $valid_received_hour = '08:00';
+                        $model->valid_received_hour = $valid_received_hour;
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
                     }
                 } else {
-                    $model->valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-                    $model->valid_received_hour = '08:00';
+
+                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                    $valid_received_hour = '08:00';
+                    $model->valid_received_date = $valid_received_date;
+                    $model->valid_received_hour = $valid_received_hour;
                     $model->email_received_date = $EmailfechaRecepcion;
                     $model->email_received_hour = $EmailHoraRecepcion;
                 }
-            }
-            }
-            $model->sent_date = Utility::snull($fechaEnvio);
-            $model->doc_number = $numDocumento;
-            $model->minutes = $minutos;
-            $model->amount = $cantidad;
-            $model->note = $nota;
+            }         
+
 
 
             if ($model->save()) {

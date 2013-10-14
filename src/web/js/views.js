@@ -705,6 +705,7 @@ $('#botAgregarDatosContable').click('on',function(e)
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
     nota=$('#AccountingDocumentTemp_note').val();
+
 //                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
     if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
     {
