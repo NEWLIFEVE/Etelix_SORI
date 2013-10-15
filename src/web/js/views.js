@@ -446,7 +446,7 @@ $('#botAsignarContrato').click('on',function(e)
                     });
                     $("#Contrato_id_company").prop("disabled", true);
                     $("#Contrato_end_date").prop("disabled", false);
-                    $("#Contrato_sign_date").prop("disabled", true);
+                    $("#Contrato_sign_date").prop("disabled", false);
                 }
                 else
                 {
