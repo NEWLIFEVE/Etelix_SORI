@@ -28,7 +28,7 @@ class GeographicZoneController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino'),
+				'actions'=>array('index','create','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino','CreateZoneColor'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -215,4 +215,13 @@ class GeographicZoneController extends Controller
                 echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
             }
         } 
+        
+        public function actionCreateZoneColor()
+	{
+            $model=new GeographicZone;
+
+		$this->render('_zonaGeo_color',array(
+			'model'=>$model,
+		));
+	}
 }

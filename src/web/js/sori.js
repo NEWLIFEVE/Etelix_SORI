@@ -114,6 +114,7 @@ $SORI.UI=(function()
 		    $("#Contrato_production_date").val('');
 		    $("#Contrato_id_termino_pago").val('');
 		    $("#Contrato_id_monetizable").val('');
+		    $("#Contrato_up").val('');
 		    $("#Contrato_id_disputa").val('');
 		    $("#F_Firma_Contrato_Oculto").val('');
 		    $("#F_P_produccion_Oculto").val('');
@@ -153,6 +154,8 @@ $SORI.UI=(function()
 		            $("#Contrato_id_monetizable").val(obj.monetizable);
 		            $("#Contrato_id_managers").val(obj.manager);
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
+		            $("#Contrato_up").val(obj.Contrato_up);
+		            $("#Contrato_upOculto").val(obj.Contrato_up);
 		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
 		            $("#F_P_produccion_Oculto").val(obj.production_date);
 		            $("#TerminoP_Oculto").val(obj.termino_pago);

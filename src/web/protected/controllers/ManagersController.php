@@ -28,7 +28,7 @@ class ManagersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','createCM'),
+				'actions'=>array('index','view','create','createCM'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,7 +36,7 @@ class ManagersController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','create'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -131,17 +131,17 @@ class ManagersController extends Controller
 	/**
 	 * Manages all models.
 	 */
-//	public function actionAdmin()
-//	{
-//		$model=new Managers('search');
-//		$model->unsetAttributes();  // clear any default values
-//		if(isset($_GET['Managers']))
-//			$model->attributes=$_GET['Managers'];
-//
-//		$this->render('admin',array(
-//			'model'=>$model,
-//		));
-//	}
+	public function actionAdmin()
+	{
+		$model=new Managers('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Managers']))
+			$model->attributes=$_GET['Managers'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -169,25 +169,5 @@ class ManagersController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-        
-//         public function actionCreateCM()
-//	{
-//		$model=new Managers;
-//               $model->scenario="CarrierManagers";
-//		// Uncomment the following line if AJAX validation is needed
-//		// $this->performAjaxValidation($model);
-//
-//		if(isset($_POST['CarrierManagers']))
-//		{
-//			$model->attributes=$_POST['CarrierManagers'];
-//			if($model->save())
-//				$this->redirect(array('view','id'=>$model->id));
-//		}
-//
-//		$this->render('admin',array(
-//			'model'=>$model,
-//		));
-//	}
-        
+	}     
 }

@@ -60,11 +60,11 @@ class Managers extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'address' => 'Address',
-			'record_date' => 'Record Date',
-			'position' => 'Position',
-			'lastname' => 'Lastname',
+			'name' => 'Nombre',
+			'address' => 'Direccion',
+			'record_date' => 'Fecha de ingreso',
+			'position' => 'Posición',
+			'lastname' => 'Apellido',
 		);
 	}
 
