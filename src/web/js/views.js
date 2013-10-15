@@ -152,6 +152,8 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                       \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
                                       "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
                                       class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                        $(".cargando").hide();
+                        $(".mensaje").hide();
                         $("body").append(revisa);
                             revisa.fadeIn('fast');
                     }
@@ -253,17 +255,19 @@ $('#botAsignarContrato').click('on',function(e)
     company = $("#Contrato_id_company").val(),
     termino_pago = $("#Contrato_id_termino_pago").val(),
     monetizable = $("#Contrato_id_monetizable").val(),
+    Contrato_up = $("#Contrato_up").val(),
     diasDisputaOculto = $("#dias_disputa_Oculto").val(),
     F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val(),
     F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val(),
     monetizableOculto = $("#monetizable_Oculto").val(),      
-    TPOculto = $("#TerminoP_Oculto").val();
+    TPOculto = $("#TerminoP_Oculto").val(),
+    Contrato_upOculto = $("#Contrato_upOculto").val();
     
     var dias_disputa=$("#Contrato_id_disputa").val(),
     credito=$("#Contrato_id_limite_credito").val(),
     compra=$("#Contrato_id_limite_compra").val();
     
-    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1'){
+    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1' || Contrato_up==''){
         var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                     $("body").append(stop)
                     stop.fadeIn('fast');
@@ -274,7 +278,7 @@ $('#botAsignarContrato').click('on',function(e)
     $.ajax({
         type: "GET",
         url: "ContratoConfirma",
-        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
+        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
         success: function(data)
         {
             var obj=JSON.parse(data),
@@ -282,6 +286,7 @@ $('#botAsignarContrato').click('on',function(e)
             companyName=obj.companyName,
             termino_pName=obj.termino_pName,
             monetizableName=obj.monetizableName,
+            Contrato_upC=obj.Contrato_upConfirma,
             sign_date = $("#Contrato_sign_date").val(),
             production_date = $("#Contrato_production_date").val(),
             end_date=$("#Contrato_end_date").val(),
@@ -298,6 +303,7 @@ $('#botAsignarContrato').click('on',function(e)
                                 <p><h6>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
                                 <p>Dias de disputa: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
                                 <p>Limite de Compra: "+compra+"</p>\n\
+                                <p>Unidad de producción: "+Contrato_upC+"</p>\n\
                                 <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
                                 <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
                                 </h6>\n\
@@ -325,7 +331,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backF_Firma ="Fecha de firma de contrato: ";
-                }       
+                }  
                 if(F_P_produccion_Oculto!=production_date)
                 {
                     var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ";
@@ -333,7 +339,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backProduccion ="Fecha de Puesta en Produccion: ";
-                }       
+                }
                 if(TPOculto!=termino_pago)
                 {
                     var backTPago="Terminos de pago de: "+termino_pNameO+" a ";
@@ -366,6 +372,23 @@ $('#botAsignarContrato').click('on',function(e)
                 {
                     backCompra="Limite de Compra: ";  
                 }
+                if(Contrato_upOculto==''){
+                     backUP="Unidad de producción: ";  
+                }else{
+                    if(Contrato_upOculto != Contrato_up)
+                    {
+                        if (Contrato_upOculto==0){
+                            Contrato_upOculto='Ventas';
+                        }else if(Contrato_upOculto==1){
+                            Contrato_upOculto='Presidencia';
+                        }
+                        var backUP="Unidad de producción de: "+Contrato_upOculto+" a "; 
+                    }
+                    else
+                    {
+                        backUP="Unidad de producción: ";  
+                    }
+                }
                 if(end_date!="")
                 {
                     var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
@@ -379,6 +402,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                    "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
                                                    "+backCredito+" "+credito+"<p>\n\
                                                    "+backCompra+" "+compra+"<p>\n\
+                                                   "+backUP+" "+Contrato_upC+"<p>\n\
                                                <p>"+backF_Firma+" "+sign_date+"<p> \n\
                                                    "+backProduccion+" "+production_date+"<p>";
                 }
@@ -397,7 +421,7 @@ $('#botAsignarContrato').click('on',function(e)
                     $.ajax({
                         type: "GET",
                         url: "Contrato",
-                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra,
+                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up,
                         success: function(data) 
                         {  
                             
@@ -409,7 +433,7 @@ $('#botAsignarContrato').click('on',function(e)
                             else
                             {
                                 efectivo="<h4>"+guardoEdito+"\n\
-                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
                                                </h6><p><img src='/images/si.png'width='90px' height='50px'/>";
                             }
                             var exito=$('.mensaje').html(efectivo).hide().fadeIn('fast');
@@ -422,7 +446,7 @@ $('#botAsignarContrato').click('on',function(e)
                     });
                     $("#Contrato_id_company").prop("disabled", true);
                     $("#Contrato_end_date").prop("disabled", false);
-                    $("#Contrato_sign_date").prop("disabled", true);
+                    $("#Contrato_sign_date").prop("disabled", false);
                 }
                 else
                 {
@@ -705,38 +729,18 @@ $('#botAgregarDatosContable').click('on',function(e)
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
     nota=$('#AccountingDocumentTemp_note').val();
-    
-    
-    
-//    ||fechaEnvio==''
-                 
-      if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='' )
+
+//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
+    if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
+    {
+        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+        $("body").append(msjIndicador);
+        msjIndicador.fadeIn('fast');
+        setTimeout(function()
         {
-                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                  $("body").append(msjIndicador);
-                 msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000); 
-                  
-//        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-//           {  
-//                  msjIndicador.fadeIn('fast');
-//                  setTimeout(function()
-//                  {
-//                      msjIndicador.fadeOut('fast');
-//                  }, 1000);
-//           }
-//           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-//           {  
-//                  msjIndicador.fadeIn('fast');
-//                  setTimeout(function()
-//                  {
-//                      msjIndicador.fadeOut('fast');
-//                  }, 1000);
-//           
-        }
+            msjIndicador.fadeOut('fast');
+        }, 1000);
+    }
     else
      { 
         $.ajax({

@@ -112,6 +112,7 @@
                         'model'=>$model,
                         'attribute'=>'email_received_hour',
                         'options'=>array(
+
                             'starthour'=>00,
                             'endhour'=>23,
                             'showminutes'=>TRUE,
@@ -121,7 +122,7 @@
                             'layout'=>'horizontal'
                             ),
                         'htmlOptions'=>array(
-                            'size'=>10,
+                            'size'=>20,
                             'maxlength'=>10,
                             'readonly'=>'readonly'
                             )

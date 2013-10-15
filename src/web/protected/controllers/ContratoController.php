@@ -83,6 +83,7 @@ class ContratoController extends Controller
                     $carrier=$_GET['id_carrier'];
                     $termino_pago=$_GET['id_termino_pago'];
                     $monetizable=$_GET['id_monetizable'];
+                    $Contrato_up=$_GET['Contrato_up'];
                     $termino_pagoO=$_GET['id_TP_Oculto'];
                     $monetizableO=$_GET['id_M_Oculto'];
                     $companyName='';
@@ -105,10 +106,16 @@ class ContratoController extends Controller
                         $termino_pNameO.= TerminoPago::getName($termino_pagoO);
                         $monetizableNameO.= Monetizable::getName($monetizableO);
                         }
+                       if ($Contrato_up==0) {
+                           $Contrato_up="Ventas";
+                       }else if($Contrato_up==1){
+                           $Contrato_up="Presidencia";
+                       }
                     $params['carrierName']=$carrierName;    
                     $params['companyName']=$companyName;    
                     $params['termino_pName']=$termino_pName;    
                     $params['monetizableName']=$monetizableName;    
+                    $params['Contrato_upConfirma']=$Contrato_up;    
                     $params['monetizableNameO']=$monetizableNameO;    
                     $params['termino_pNameO']=$termino_pNameO;    
                     echo json_encode($params);
@@ -133,6 +140,7 @@ class ContratoController extends Controller
                     $dias_disputa=$_GET['dias_disputa'];
                     $credito=$_GET['credito'];
                     $compra=$_GET['compra'];
+                    $Contrato_up=$_GET['Contrato_up'];
                     $termino_pName='';
                     $monetizaName='';
                     $companyName='';
@@ -163,6 +171,7 @@ class ContratoController extends Controller
                                 $modelAux->sign_date=$sign_date;
                                 $modelAux->production_date=$production_date;
                                 $modelAux->id_company=$company;
+                                $modelAux->up=$Contrato_up;
                                 if ($end_date!='' || $end_date!=NULL){
                                     $modelAux->end_date=$end_date;
                                 }else{
@@ -292,6 +301,7 @@ class ContratoController extends Controller
                                 $model->sign_date=$sign_date;
                                 $model->production_date=$production_date;
                                 $model->end_date=NULL;
+                                $model->up=$Contrato_up;
                                 $model->save();  
                                 Log::registrarLog(LogAction::getId('Crear Contrato'),NULL, $model->id);
                                 /*TERMINO PAGO*/
@@ -338,7 +348,7 @@ class ContratoController extends Controller
                                 }                                
                         }                   
 //		}
-             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra;
+             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up;
 
 	}
 
@@ -442,10 +452,10 @@ class ContratoController extends Controller
                 $params['sign_date']=$model->sign_date;
                 $params['production_date']=$model->production_date;
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
-                $params['monetizable']=  ContratoMonetizable::getMonetizableId($model->id);
+                $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
-                
-                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
+                $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);
+//                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
                 
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
@@ -462,7 +472,7 @@ class ContratoController extends Controller
                 $params['termino_pago']='';
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
-                $params['managerUP']=Managers::getUP(CarrierManagers::getIdManager($_GET['idCarrier']));;
+                $params['Contrato_up']='Seleccione';
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';
