@@ -26,9 +26,17 @@
 		<?php echo $form->error($model,'name_zona'); ?>
 	</div>
 
-	<div class="row colorpicker">
+	<div class="row">
 		<?php echo $form->labelEx($model,'color_zona'); ?>
-		<?php echo $form->textField($model,'color_zona',array('size'=>50,'maxlength'=>50)); ?>
+		<?php 
+                $this->widget('ext.colorpicker.ColorPicker', array(
+                    'model' => $model,
+                    'attribute' => 'color_zona',
+                    'options' => array( // Optional
+                        'pickerDefault' => "ccc", // Configuration Object for JS
+                    ),
+                ));
+                ?>
 		<?php echo $form->error($model,'color_zona'); ?>
 	</div>
 
@@ -39,19 +47,18 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-<script>
-var colorpickerOptions = {
-    parts: ['map', 'bar', 'hex', 'hsv', 'rgb', 'alpha', 'preview', 'swatches', 'footer'],
-    altProperties: 'background-color',
-    altField: '.colorpicker',
-    color: 'fe9810',
-    select: function (event, color) {
-        var color_in_hex_format = color.formatted;
-        console.log(color_in_hex_format);
-    }
-    
-    ,inline: false
-};
-
-$('.colorpicker').colorpicker(colorpickerOptions);
-</script>
+ <div>
+     <label for="color1">Color 1</label>
+     <input id="color1" type="text" name="color1" value="#333399" />
+ </div>
+    <script language="javascript">
+      jQuery(document).ready(function($) {
+        $('#color1').colorPicker();
+      });
+      
+      
+      $( ".colorPicker-swatch" ).click(function() {
+        var text = $( this ).text();
+        $( "#colorPicker_hex-0" ).val( text );
+      });
+    </script>
