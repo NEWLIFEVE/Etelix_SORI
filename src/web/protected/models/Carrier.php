@@ -8,6 +8,8 @@
  * @property string $name
  * @property string $address
  * @property string $record_date
+ * @property integer $id_carrier_groups
+ * @property integer $group_leader
  *
  * The followings are the available model relations:
  * @property Balance[] $balances
@@ -38,7 +40,7 @@ class Carrier extends CActiveRecord
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, address, record_date', 'safe', 'on'=>'search'),
+			array('id, name, address, record_date, id_carrier_groups, group_leader', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,10 +52,11 @@ class Carrier extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'carrierGroups' => array(self::BELONGS_TO, 'CarrierGroups', 'id_carrier_groups'),
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_carrier'),
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
-			'$accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
-			'$accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
+			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
+			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
 		);
 	}
 
@@ -67,6 +70,8 @@ class Carrier extends CActiveRecord
 			'name' => 'Nombre',
 			'address' => 'Direccion',
 			'record_date' => 'Fecha Registro',
+			'id_carrier_groups' => 'Grupo',
+			'group_leader' => 'Principal',
 		);
 	}
 
@@ -92,6 +97,8 @@ class Carrier extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('record_date',$this->record_date,true);
+		$criteria->compare('id_carrier_groups',$this->id_carrier_groups,true);
+		$criteria->compare('group_leader',$this->group_leader,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
