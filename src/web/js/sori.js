@@ -34,8 +34,8 @@ $SORI.UI=(function()
 			}
                         if(i>=8 && i<=9)
 			{
-				$(input).clockpick();
-			}
+				$(input).clockpick({ starthour: "00", endhour: "23", military: "TRUE" });
+			} 
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
 			input=null;
