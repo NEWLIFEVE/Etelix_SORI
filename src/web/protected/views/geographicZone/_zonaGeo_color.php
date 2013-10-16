@@ -42,21 +42,21 @@
 
     
         <div class='paletaColores'>
-          <button class='color1'>red</button>
-          <button class='color2'>azul</button>
-          <button class='color3'>gris</button>
-          <button class='color4'>verde</button>
-          <button class='color5'>morado</button>
-          <button class='color6'>amarillo</button>
-          <button class='color7'>red</button>
-          <button class='color8'>azul</button>
-          <button class='color9'>gris</button>
-          <button class='color10'>verde</button>
-          <button class='color11'>morado</button>
-          <button class='color12'>amarillo</button>
-          <button class='color13'>gris</button>
-          <button class='color14'>verde</button>
-          <button class='color15'>morado</button>
-          <button class='color16'>amarillo</button>
+          <button class='color1' id='red'>Rojo</button>
+          <button class='color2' id='red'>azul</button>
+          <button class='color3' id='red'>gris</button>
+          <button class='color4' id='red'>verde</button>
+          <button class='color5' id='red'>morado</button>
+          <button class='color6' id='red'>amarillo</button>
+          <button class='color7' id='red'>red</button>
+          <button class='color8' id='red'>azul</button>
+          <button class='color9' id='red'>gris</button>
+          <button class='color10' id='red'>verde</button>
+          <button class='color11' id='red'>morado</button>
+          <button class='color12' id='red'>amarillo</button>
+          <button class='color13' id='red'>gris</button>
+          <button class='color14' id='red'>verde</button>
+          <button class='color15' id='red'>morado</button>
+          <button class='color16' id='red'>amarillo</button>
          
         </div>

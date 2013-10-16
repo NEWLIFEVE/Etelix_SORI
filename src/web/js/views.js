@@ -925,8 +925,9 @@ $(".seleColor").on("click",function()
 });
 $( "button" ).click(function() {
     var paleta=$('.paletaColores');
-    var text = $( this ).text();
+    var text = $( this ).attr('id');
     $( "input#GeographicZone_color_zona" ).val( text );
+    $( "input#GeographicZone_color_zona" ).css( "background-color", text ).css( "opacity", '0.2' );
     paleta.hide("slow");
 });
 
