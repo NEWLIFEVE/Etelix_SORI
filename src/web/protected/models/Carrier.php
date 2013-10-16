@@ -63,7 +63,7 @@ class Carrier extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Grupos',
 			'name' => 'Nombre',
 			'address' => 'Direccion',
 			'record_date' => 'Fecha Registro',

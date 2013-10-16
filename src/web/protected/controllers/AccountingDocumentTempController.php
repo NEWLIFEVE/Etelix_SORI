@@ -96,7 +96,7 @@ class AccountingDocumentTempController extends Controller
             $hastaFecha = $_GET['hastaFecha'];
             $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
             $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
-            $fechaEnvio = $_GET['fechaEnvio'];
+//            $fechaEnvio = $_GET['fechaEnvio'];
             $numDocumento = $_GET['numDocumento'];
             $minutos = $_GET['minutos'];
             $cantidad = $_GET['cantidad'];
@@ -105,8 +105,10 @@ class AccountingDocumentTempController extends Controller
             $selecTipoDocName = "";
             $idCarrierName.= Carrier::getName($idCarrier);
             $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-            $valid_received_hour = '';
-            $valid_received_date = '';
+            $valid_received_hour = "";
+            $valid_received_date = "";
+            $minutosTemp = "";
+            $minutosTemp.= Utility::snull($minutos);
 
             $model = new AccountingDocumentTemp;
             $model->id_type_accounting_document = $selecTipoDoc;
@@ -114,9 +116,9 @@ class AccountingDocumentTempController extends Controller
             $model->issue_date = Utility::snull($fechaEmision);
             $model->from_date = Utility::snull($desdeFecha);
             $model->to_date = Utility::snull($hastaFecha);
-            $model->sent_date = Utility::snull($fechaEnvio);
+            $model->sent_date = Utility::snull($fechaEmision);
             $model->doc_number = $numDocumento;
-            $model->minutes = Utility::snull($minutos);
+            $model->minutes = $minutosTemp;
             $model->amount = Utility::snull($cantidad);
             $model->note = Utility::snull($nota);
             
@@ -182,9 +184,9 @@ class AccountingDocumentTempController extends Controller
                 $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
                 $params['valid_received_dateTemp'] = $valid_received_date;
                 $params['valid_received_hourTemp'] = $valid_received_hour;
-                $params['fechaEnvioTemp'] = $fechaEnvio;
+                $params['fechaEnvioTemp'] = $fechaEmision;
                 $params['numDocumentoTemp'] = $model->doc_number;
-                $params['minutosTemp'] = $model->minutes;
+                $params['minutosTemp'] = $minutosTemp;
                 $params['cantidadTemp'] = $model->amount;
                 
                 echo json_encode($params);

@@ -634,72 +634,99 @@ $('#GeographicZone_id').change(function()
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
                       var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
-                      fechaDeEnvio= $('.fechaDeEnvio'),
+//                      fechaDeEnvio= $('.fechaDeEnvio'),
+                      CarrierDocument=$('.CarrierDocument'),
+                      GrupoDocument=$('.GrupoDocument'),
                       emailReceivedDate=$('.emailReceivedDate'),
                       emailRecDate=$('.emailRecDate'),
                       fechaDeEmision=$('.fechaDeEmision'),
                       fechaDeInicio=$('.fechaDeInicio'),
                       fechaFinal=$('.fechaFinal'),
-                      emailReceivedTime=$('.emailReceivedTime');
+                      emailReceivedTime=$('.emailReceivedTime'),
+                      minutosDoc=$('.minutosDoc');
 
             if (tipoDocument=='1')
                 {
-                      fechaDeEnvio.show('slow'); 
+//                      fechaDeEnvio.show('slow'); 
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
+                      GrupoDocument.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
                       fechaDeEmision.show('slow');
                       fechaDeInicio.show('slow');
                       fechaFinal.show('slow');
+                      CarrierDocument.show('slow');
+                      minutosDoc.show('slow');
                       $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_issue_date").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
             if (tipoDocument=='2')
                 {
-                      fechaDeEnvio.hide('slow'); 
+//                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
                       emailReceivedTime.show('slow');
                       emailRecDate.html('Fecha de recepción de Email');
                       fechaDeEmision.show('slow');
                       fechaDeInicio.show('slow');
                       fechaFinal.show('slow');
-                      $("#AccountingDocumentTemp_sent_date").val('');
+                      CarrierDocument.show('slow');
+                      minutosDoc.show('slow');
+                      GrupoDocument.hide('slow');
+                      $("#AccountingDocumentTemp_issue_date").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
             if (tipoDocument=='3')
                 {
-                      fechaDeEnvio.show('slow'); 
+//                      fechaDeEnvio.show('slow'); 
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
                       fechaDeEmision.hide('slow');
                       fechaDeInicio.hide('slow');
                       fechaFinal.hide('slow');
+                      minutosDoc.hide('slow');
+//                      GrupoDocument.show('slow');
+//                      CarrierDocument.hide('slow');
                       $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_id_carrier").val('');
                       $("#AccountingDocumentTemp_issue_date").val('');
                       $("#AccountingDocumentTemp_from_date").val('');
                       $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
             if (tipoDocument=='4')
                 {
-                      fechaDeEnvio.hide('slow'); 
+//                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
+                      CarrierDocument.show('slow');
                       emailRecDate.html('Fecha de recepción');
                       emailReceivedTime.hide('slow');
                       fechaDeEmision.hide('slow');
                       fechaDeInicio.hide('slow');
                       fechaFinal.hide('slow');
+                      minutosDoc.hide('slow');
+                      GrupoDocument.hide('slow');
+                      $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
                       $("#AccountingDocumentTemp_sent_date").val('');
                       $("#AccountingDocumentTemp_issue_date").val('');
                       $("#AccountingDocumentTemp_from_date").val('');
                       $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
                 
 
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
     $('div.CarrierDocument').fadeIn('slow');
+//    $('div.GrupoDocument').fadeIn('slow');
 });
 $('div.hacerUnaNota').click('on',function()
 {
@@ -724,14 +751,14 @@ $('#botAgregarDatosContable').click('on',function(e)
     hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
     EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
     EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
-    fechaEnvio=$('#AccountingDocumentTemp_sent_date').val(),
+//    fechaEnvio=$('#AccountingDocumentTemp_sent_date').val(),
     numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
     nota=$('#AccountingDocumentTemp_note').val();
 
 //                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
-    if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='')
+    if(idCarrier==''|| numDocumento==''|| cantidad=='')
     {
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
         $("body").append(msjIndicador);
@@ -746,7 +773,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
 
               success: function(data) 
                       {
@@ -779,6 +806,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[moneda]'> ??? </td>\n\
                                                         <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
 
@@ -788,12 +816,12 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                                     $SORI.UI.init();
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
-                                    $("#AccountingDocumentTemp_email_received_hour").val('');
-                                    $("#AccountingDocumentTemp_doc_number").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
-                                    $("#AccountingDocumentTemp_sent_date").val('');
                                     $("#AccountingDocumentTemp_note").val('');
+                                    if (selecTipoDoc=='3'||selecTipoDoc=='4'){
+                                         $("#AccountingDocumentTemp_doc_number").val('');
+                                     } 
                       }          
         }); 
      }
@@ -886,3 +914,22 @@ $(function($)
 //                                     <td> Tipo de Doc </td><td> Carrier </td><td> Fecha de Emisión </td><td>\n\
 //                                     Monto </td></tr></table><p><img src='/images/si.png'width='95px' height='95px'/></p>");
 
+//**
+//modulo de colores por zona geografica
+//*
+
+$(".seleColor").on("click",function()
+{
+    var paleta=$('.paletaColores');
+    paleta.toggle("slow");
+});
+$( "button" ).click(function() {
+    var paleta=$('.paletaColores');
+    var text = $( this ).text();
+    $( "input#GeographicZone_color_zona" ).val( text );
+    paleta.hide("slow");
+});
+
+//**
+//fin modulo de colores por zona geografica
+//**

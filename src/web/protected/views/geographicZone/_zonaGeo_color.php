@@ -26,18 +26,10 @@
 		<?php echo $form->error($model,'name_zona'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row seleColor">
 		<?php echo $form->labelEx($model,'color_zona'); ?>
-		<?php 
-                $this->widget('ext.colorpicker.ColorPicker', array(
-                    'model' => $model,
-                    'attribute' => 'color_zona',
-                    'options' => array( // Optional
-                        'pickerDefault' => "ccc", // Configuration Object for JS
-                    ),
-                ));
-                ?>
-		<?php echo $form->error($model,'color_zona'); ?>
+		<?php echo $form->textField($model,'color_zona',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->error($model,'color_zona'); ?>
 	</div>
 
 	<div class="row buttons">
@@ -46,19 +38,25 @@
 
 <?php $this->endWidget(); ?>
 
-</div><!-- form -->
- <div>
-     <label for="color1">Color 1</label>
-     <input id="color1" type="text" name="color1" value="#333399" />
- </div>
-    <script language="javascript">
-      jQuery(document).ready(function($) {
-        $('#color1').colorPicker();
-      });
-      
-      
-      $( ".colorPicker-swatch" ).click(function() {
-        var text = $( this ).text();
-        $( "#colorPicker_hex-0" ).val( text );
-      });
-    </script>
+</div> 
+
+    
+        <div class='paletaColores'>
+          <button class='color1'>red</button>
+          <button class='color2'>azul</button>
+          <button class='color3'>gris</button>
+          <button class='color4'>verde</button>
+          <button class='color5'>morado</button>
+          <button class='color6'>amarillo</button>
+          <button class='color7'>red</button>
+          <button class='color8'>azul</button>
+          <button class='color9'>gris</button>
+          <button class='color10'>verde</button>
+          <button class='color11'>morado</button>
+          <button class='color12'>amarillo</button>
+          <button class='color13'>gris</button>
+          <button class='color14'>verde</button>
+          <button class='color15'>morado</button>
+          <button class='color16'>amarillo</button>
+         
+        </div>
