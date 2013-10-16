@@ -19,6 +19,7 @@
  * @property string $email_received_date
  * @property string $valid_received_hour
  * @property string $email_received_hour
+ * @property integer $id_currency
  *
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -48,10 +49,10 @@ class AccountingDocumentTemp extends CActiveRecord
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 
-			array('issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date', 'safe'),
+			array('issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, id_currency', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +66,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		return array(
 			'idTypeAccountingDocument' => array(self::BELONGS_TO, 'TypeAccountingDocument', 'id_type_accounting_document'),
                         'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
+                        'idCurrency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
 		);
 	}
 
@@ -89,6 +91,7 @@ class AccountingDocumentTemp extends CActiveRecord
 			'note' => 'Nota',
 			'id_type_accounting_document' => 'Tipo de documento contable',
 			'id_carrier' => 'Carrier',
+			'id_currency' => 'Moneda',
 		);
 	}
 
@@ -125,6 +128,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('note',$this->note,true);
 		$criteria->compare('id_type_accounting_document',$this->id_type_accounting_document);
 		$criteria->compare('id_carrier',$this->id_carrier);
+		$criteria->compare('id_currency',$this->id_currency);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
