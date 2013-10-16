@@ -18,16 +18,21 @@
     ?>
     <?php echo $form->errorSummary($model); ?>
     <p class="note">Fields with <span class="required">*</span> are required.</p>
-    <div class="AccountingDocumentTemp_id_type_accounting_document">
+    <div class="input_largos">
         <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
         <?php echo $form->dropDownList($model,'id_type_accounting_document',TypeAccountingDocument::getListTypeAccountingDocument(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_type_accounting_document'); ?>
     </div>
     
-    <div class="CarrierDocument AccountingDocumentTemp_id_type_accounting_document">
+    <div class="CarrierDocument input_largos">
         <?php echo $form->labelEx($model,'id_carrier'); ?>
         <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_carrier'); ?>
+    </div>
+    <div class="CarrierDocument input_largos">
+        <?php echo $form->labelEx($model,'carrier_groups'); ?>
+        <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
+        <?php echo $form->error($model,'carrier_groups'); ?>
     </div>
 
     <div class="formularioDocumento">
@@ -159,7 +164,12 @@
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
             </div>
-            
+                
+            <div class="contratoForm montoDoc">
+                <?php echo $form->labelEx($model,'id_currency'); ?>
+                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_currency'); ?>
+            </div>
             <!--<div class='contratoForm'>-->
                 <?php // echo $form->labelEx($model,'moneda'); ?>
                 <?php // echo $form->dropDownList($model,'id',GeographicZone::getListGeo(),

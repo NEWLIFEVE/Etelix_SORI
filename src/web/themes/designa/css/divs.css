@@ -413,7 +413,7 @@ width: 20%;
 {
     padding-top: 2%;
 }
-.AccountingDocumentTemp_id_type_accounting_document
+.input_largos
 {
     width: 76%; 
 }
@@ -622,7 +622,7 @@ width: 20%;
     .carrierSelect {width: 189%; margin-left: 3%;}
     .contratoForm {width: 96%; margin-left: 3%;}
     /*.GrupoOperadores {width: 96%; margin-left: 0%;}*/
-    .AccountingDocumentTemp_id_type_accounting_document{width: 144%; margin-left: 3%;}
+    .input_largos{width: 144%; margin-left: 3%;}
     .CarrierDocument {margin-top: 0.9%; width: 144%; margin-right: -141px;}
     #AccountingDocumentTemp_note {width: 94%; margin-left: 1%;}
     #Managers_address {width: 55%; margin-left: 1%;}

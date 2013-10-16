@@ -95,4 +95,10 @@ class CarrierGroups extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+                
+        public static function getListGroups()
+        {
+            return CHtml::listData(CarrierGroups::model()->findAll(array('order' => 'name')), 'id', 'name');
+        }
 }

@@ -96,4 +96,10 @@ class Currency extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+                
+        public static function getListCurrency()
+        {
+            return CHtml::listData(Currency::model()->findAll(array('order' => 'name')), 'id', 'name');
+        }
 }

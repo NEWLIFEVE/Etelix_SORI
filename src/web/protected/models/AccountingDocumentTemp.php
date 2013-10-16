@@ -34,7 +34,8 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return 'accounting_document_temp';
 	}
-
+        
+        public $carrier_groups;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
