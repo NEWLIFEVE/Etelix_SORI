@@ -44,7 +44,7 @@ class CarrierGroups extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'carriers' => array(self::HAS_MANY, 'Carrier', 'carrier_groups_id'),
+			'carriers' => array(self::HAS_MANY, 'Carrier', 'id_carrier_groups'),
 		);
 	}
 
