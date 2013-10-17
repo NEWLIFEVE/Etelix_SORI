@@ -28,7 +28,7 @@ class GeographicZoneController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','create','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino','CreateZoneColor'),
+				'actions'=>array('index','create','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino','CreateZoneColor','_geographicZoneAdmin','GuardarZoneColor'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -218,10 +218,36 @@ class GeographicZoneController extends Controller
         
         public function actionCreateZoneColor()
 	{
+            
             $model=new GeographicZone;
+
+		if(isset($_POST['GeographicZone']))
+		{
+			$model->attributes=$_POST['GeographicZone'];
+			if($model->save())
+				$this->render('_geographicZoneAdmin',array('model'=>$model));
+		}
 
 		$this->render('_zonaGeo_color',array(
 			'model'=>$model,
 		));
 	}
+        
+        public function actionGuardarZoneColor()
+	{
+             $name_zona = $_GET['name_zona'];
+             $color_zona = $_GET['color_zona'];
+            
+            $model=new GeographicZone;
+            $model->name_zona = $name_zona;
+            $model->color_zona = $color_zona;
+
+            if($model->save())	
+            {
+                $params['name_zonaG'] =$model->name_zona;
+                $params['color_zonaG'] = $model->color_zona;
+
+                echo json_encode($params); 
+            }
+        }
 }

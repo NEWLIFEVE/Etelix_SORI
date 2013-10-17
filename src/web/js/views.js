@@ -927,10 +927,52 @@ $( "button" ).click(function() {
     var paleta=$('.paletaColores');
     var text = $( this ).attr('id');
     $( "input#GeographicZone_color_zona" ).val( text );
-    $( "input#GeographicZone_color_zona" ).css( "background-color", text ).css( "opacity", '0.2' );
+    var color=("#"+text+"");
+    $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' );
     paleta.hide("slow");
 });
 
+$('.botGuardarZonaColor').click('on',function(e)
+{
+    e.preventDefault();
+    var name_zona=$('#GeographicZone_name_zona').val(),
+    color_zona=$('#GeographicZone_color_zona').val();
+    
+        if(name_zona==''|| color_zona=='')
+    {  
+        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(msjIndicador);
+                    msjIndicador.fadeIn('fast');
+                        setTimeout(function()
+                        {msjIndicador.fadeOut('fast');
+                        }, 1000);
+    }else{
+        $.ajax({
+            type: "GET",
+            url: "GuardarZoneColor",
+            data: "&name_zona="+name_zona+"&color_zona="+color_zona,
+
+              success: function(data) 
+                      {
+                obj = JSON.parse(data);
+                var name_zonaSave=obj.name_zonaG, 
+                color_zonaSave=obj.color_zonaG;
+
+                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                        $("body").append(msjIndicador);
+                        msjIndicador.fadeIn('fast');
+                            setTimeout(function()
+                            {msjIndicador.fadeOut('fast');
+                            }, 2000);
+            $("#GeographicZone_name_zona").val('');
+            $("#GeographicZone_color_zona").val('');
+            $( "input#GeographicZone_color_zona" ).css( "background-color","white" ).css( "opacity", '1' );
+                      }
+        });
+        
+    }
+    
+});
 //**
 //fin modulo de colores por zona geografica
 //**
