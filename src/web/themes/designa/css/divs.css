@@ -437,7 +437,7 @@ width: 20%;
     color:rgba(111,204,187,1);
     width: 5%;
 }
-.CarrierDocument
+.CarrierDocument,.GrupoDocument
 {
     width: 76%;
     float: right;
@@ -446,15 +446,6 @@ width: 20%;
     margin-right: -271px;
     display: none;
 }
-/*.GrupoDocument
-{
-    width: 51%;
-}*/
-
-/*.GrupoOperadores
-{
-    width: 76%; 
-}*/
 
 @media screen and (max-width: 914px) { 
     .CarrierDocument{ width: 76%; margin-top: -10.3%; margin-right: -199px;}

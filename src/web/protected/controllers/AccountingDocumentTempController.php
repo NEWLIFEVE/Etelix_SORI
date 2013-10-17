@@ -100,6 +100,7 @@ class AccountingDocumentTempController extends Controller
             $numDocumento = $_GET['numDocumento'];
             $minutos = $_GET['minutos'];
             $cantidad = $_GET['cantidad'];
+            $currency = $_GET['currency'];
             $nota = $_GET['nota'];
             $idCarrierName = "";
             $selecTipoDocName = "";
@@ -109,6 +110,8 @@ class AccountingDocumentTempController extends Controller
             $valid_received_date = "";
             $minutosTemp = "";
             $minutosTemp.= Utility::snull($minutos);
+            $moneda= "";
+            $moneda.= Currency::getName($currency);
 
             $model = new AccountingDocumentTemp;
             $model->id_type_accounting_document = $selecTipoDoc;
@@ -120,6 +123,7 @@ class AccountingDocumentTempController extends Controller
             $model->doc_number = $numDocumento;
             $model->minutes = $minutosTemp;
             $model->amount = Utility::snull($cantidad);
+            $model->id_currency = Utility::snull($currency);
             $model->note = Utility::snull($nota);
             
             if ($selecTipoDoc == '4') {
@@ -188,6 +192,7 @@ class AccountingDocumentTempController extends Controller
                 $params['numDocumentoTemp'] = $model->doc_number;
                 $params['minutosTemp'] = $minutosTemp;
                 $params['cantidadTemp'] = $model->amount;
+                $params['currencyTemp'] = $moneda;
                 
                 echo json_encode($params);
             }

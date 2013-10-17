@@ -687,16 +687,15 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
-                      fechaDeEmision.hide('slow');
+                      fechaDeEmision.show('slow');
                       fechaDeInicio.hide('slow');
                       fechaFinal.hide('slow');
                       minutosDoc.hide('slow');
-//                      GrupoDocument.show('slow');
-//                      CarrierDocument.hide('slow');
+                      GrupoDocument.show('slow');
+                      CarrierDocument.hide('slow');
                       $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
                       $("#AccountingDocumentTemp_id_carrier").val('');
-                      $("#AccountingDocumentTemp_issue_date").val('');
                       $("#AccountingDocumentTemp_from_date").val('');
                       $("#AccountingDocumentTemp_to_date").val('');
                       $("#AccountingDocumentTemp_doc_number").val('');
@@ -725,7 +724,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
-    $('div.CarrierDocument').fadeIn('slow');
+//    $('div.CarrierDocument').fadeIn('slow');
 //    $('div.GrupoDocument').fadeIn('slow');
 });
 $('div.hacerUnaNota').click('on',function()
@@ -755,10 +754,11 @@ $('#botAgregarDatosContable').click('on',function(e)
     numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
+    currency=$('#AccountingDocumentTemp_id_currency').val(),
     nota=$('#AccountingDocumentTemp_note').val();
 
-//                  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
-    if(idCarrier==''|| numDocumento==''|| cantidad=='')
+//                idCarrier==''||  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
+    if( numDocumento==''|| cantidad=='')
     {
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
         $("body").append(msjIndicador);
@@ -773,7 +773,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency,
 
               success: function(data) 
                       {
@@ -790,7 +790,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                     valid_received_hourTemp=obj.valid_received_hourTemp,
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
-                    cantidadTemp=obj.cantidadTemp;
+                    cantidadTemp=obj.cantidadTemp,
+                    currencyTemp=obj.currencyTemp;
                 
                 $(".tablaVistDocTemporales").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
@@ -806,7 +807,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[moneda]'> ??? </td>\n\
+                                                        <td id='AccountingDocumentTemp[currency]'> "+currencyTemp+" </td>\n\
                                                         <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
 
@@ -818,6 +819,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
+                                    $("#AccountingDocumentTemp_id_currency").val('');
                                     $("#AccountingDocumentTemp_note").val('');
                                     if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                                          $("#AccountingDocumentTemp_doc_number").val('');
