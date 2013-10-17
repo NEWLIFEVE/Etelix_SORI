@@ -18,20 +18,37 @@
     ?>
     <?php echo $form->errorSummary($model); ?>
     <p class="note">Fields with <span class="required">*</span> are required.</p>
-    <div class="AccountingDocumentTemp_id_type_accounting_document">
+    <div class="input_largos">
         <?php echo $form->labelEx($model,'id_type_accounting_document'); ?>
         <?php echo $form->dropDownList($model,'id_type_accounting_document',TypeAccountingDocument::getListTypeAccountingDocument(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_type_accounting_document'); ?>
     </div>
     
-    <div class="CarrierDocument AccountingDocumentTemp_id_type_accounting_document">
+    <div class="CarrierDocument input_largos">
         <?php echo $form->labelEx($model,'id_carrier'); ?>
         <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
-    
+    <div class="CarrierDocument input_largos">
+        <?php echo $form->labelEx($model,'carrier_groups'); ?>
+        <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
+        <?php echo $form->error($model,'carrier_groups'); ?>
+    </div>
+
     <div class="formularioDocumento">
         <div class="valoresDocumento">
+            
+<!--            <div class="GrupoDocument contratoForm">
+                <label>Grupo *</label>-->
+<!--                <select class='GrupoOperadores'>
+                    <option>Selecione</option>
+                    <option>BSG</option>
+                    <option>Otro</option>
+                </select>-->
+                <?php // echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+                <?php // echo $form->error($model,'id_carrier'); ?>
+            <!--</div>-->
+            
             <div class="contratoForm fechaDeEmision">
                 <?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -132,24 +149,6 @@
                 <?php echo $form->error($model,'email_received_hour'); ?>
             </div>
             
-            <div class="contratoForm fechaDeEnvio">
-                <?php echo $form->labelEx($model,'sent_date'); ?>
-                <?php 
-                    $this->widget('zii.widgets.jui.CJuiDatePicker',array(
-                        'model'=>$model,
-                        'attribute'=>'sent_date',
-                        'options'=>array(
-                            'dateFormat'=>'yy-mm-dd'
-                            ),
-                        'htmlOptions'=>array(
-                            'size'=>'10', // textField size
-                            'maxlength'=>'10', // textField maxlength
-                            )
-                        )
-                    ); 
-                ?>
-                <?php echo $form->error($model,'sent_date'); ?>
-            </div>
             <div class="contratoForm numDocument">
                 <?php echo $form->labelEx($model,'doc_number'); ?>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
@@ -165,6 +164,22 @@
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
             </div>
+                
+            <div class="contratoForm montoDoc">
+                <?php echo $form->labelEx($model,'id_currency'); ?>
+                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_currency'); ?>
+            </div>
+            <!--<div class='contratoForm'>-->
+                <?php // echo $form->labelEx($model,'moneda'); ?>
+                <?php // echo $form->dropDownList($model,'id',GeographicZone::getListGeo(),
+//                 array(
+//                    'prompt'=>'Seleccione'
+//                     )
+//                ); ?>
+                <?php // echo $form->error($model,'id'); ?>
+            <!--</div>-->
+            
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
@@ -204,6 +219,7 @@
                     <td> N°Documento </td>
                     <td> Minutos </td>
                     <td> Cantidad </td>
+                    <td> Moneda </td>
                     <td> Acciones </td>
                 </tr>
                 <?php
@@ -225,6 +241,7 @@
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[moneda]'>???</td>
                                     <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
                         }

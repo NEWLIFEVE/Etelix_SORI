@@ -1,6 +1,6 @@
 <?php
 
-class CarrierController extends Controller
+class CarrierGroupsController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class CarrierController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','contrato','NewGroupCarrier'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -51,10 +51,8 @@ class CarrierController extends Controller
 	 */
 	public function actionView($id)
 	{
-                $nombre =  Carrier::model()->findByPk($id)->name;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
-                        'nombre'=>$nombre,
 		));
 	}
 
@@ -64,15 +62,14 @@ class CarrierController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Carrier;
-		$model->scenario="create";
+		$model=new CarrierGroups;
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Carrier']))
+		if(isset($_POST['CarrierGroups']))
 		{
-			$model->attributes=$_POST['Carrier'];
-			$model->fecha_registro=date("Y-m-d", time());
+			$model->attributes=$_POST['CarrierGroups'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -94,9 +91,9 @@ class CarrierController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Carrier']))
+		if(isset($_POST['CarrierGroups']))
 		{
-			$model->attributes=$_POST['Carrier'];
+			$model->attributes=$_POST['CarrierGroups'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -125,17 +122,9 @@ class CarrierController extends Controller
 	 */
 	public function actionIndex()
 	{
-//		$dataProvider=new CActiveDataProvider('Carrier');
-//		$this->render('index',array(
-//			'dataProvider'=>$dataProvider,
-//		));
-            		$model=new Carrier('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Carrier']))
-			$model->attributes=$_GET['Carrier'];
-
-		$this->render('admin',array(
-			'model'=>$model,
+		$dataProvider=new CActiveDataProvider('CarrierGroups');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -144,10 +133,10 @@ class CarrierController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Carrier('search');
+		$model=new CarrierGroups('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Carrier']))
-			$model->attributes=$_GET['Carrier'];
+		if(isset($_GET['CarrierGroups']))
+			$model->attributes=$_GET['CarrierGroups'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -158,12 +147,12 @@ class CarrierController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Carrier the loaded model
+	 * @return CarrierGroups the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Carrier::model()->findByPk($id);
+		$model=CarrierGroups::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -171,24 +160,14 @@ class CarrierController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Carrier $model the model to be validated
+	 * @param CarrierGroups $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='carrier-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='carrier-groups-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
-
-        	public function actionNewGroupCarrier()
-	{
-		$model=new Carrier;
-		
-		$this->render('NewGroupCarrier',array(
-			'model'=>$model,
-		));
-	}
-        
 }
