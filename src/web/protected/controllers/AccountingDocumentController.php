@@ -63,6 +63,7 @@ class AccountingDocumentController extends Controller
 	public function actionCreate()
 	{
 		$model=new AccountingDocument;
+                $lista=AccountingDocument::listaFacturasEnviadas(Yii::app()->user->id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -75,7 +76,7 @@ class AccountingDocumentController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model,'lista'=>$lista
 		));
 	}
 
