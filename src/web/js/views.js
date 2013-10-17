@@ -978,3 +978,141 @@ $('.botGuardarZonaColor').click('on',function(e)
 //**
 //fin modulo de colores por zona geografica
 //**
+
+//**
+//modulo de grupo carriers
+//**
+
+$('#Carrier_id').change(function()
+{
+    var grupo=$('#Carrier_id').val();
+        $.ajax({
+            type: "POST",
+            url: "../CarrierGroups/DynamicCarrierAsignados",
+            data:   'grupo='+grupo,
+            success: function(data)
+            {
+                $('#select_left').empty().append(data);   
+            }
+        });
+});
+
+$(".AsignarCarrierGroup").on( "click",function(e)
+{
+    e.preventDefault();
+    $("#carriers select option").prop("selected",true);
+    var grupo=$('#Carrier_id').val(),
+    asignados=$('#select_left').val(),
+    noasignados=$('#select_right').val();
+    if(grupo<1)
+    {
+        var aguanta=$("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ningun grupo</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+        $("body").append(aguanta)
+            aguanta.fadeIn('fast');
+            setTimeout(function()
+            {
+                aguanta.fadeOut('fast');
+            }, 3000);$("#carriers select option").prop("selected",false);
+    }else 
+    {
+        $.ajax({
+            type: "GET",
+            url: "../Carrier/BuscaNombres",
+            data: "asignados="+asignados+"&noasignados="+noasignados+"&grupo="+grupo,
+            success: function(data)
+            {
+                obj = JSON.parse(data);
+                        var grupoName=obj.grupo, 
+                        asigname=obj.asignados,
+                        noasigname=obj.noasignados;
+                      
+                if(asigname<="1" && noasigname<="1")
+                     {
+                        var nohaynada=$("<div class='cargando'></div><div class='mensaje'><h3>No hay carriers preselccionados <br> para asignar o \n\
+                                                     desasignar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        $("body").append(nohaynada);
+                            nohaynada.fadeIn('fast');
+                            setTimeout(function()
+                            {
+                                nohaynada.fadeOut('fast');
+                            }, 4000);$("#carriers select option").prop("selected",false);
+                    }
+                    else
+                    {
+                        if(asigname=="")
+                        {
+                            var asig="";
+                        }
+                        else
+                        {
+                            var asig='Asignarle: ';
+                        }
+                        if(noasigname=="")
+                        {
+                            var desA="";
+                        }
+                        else
+                        {
+                            var desA='Dsasignarle:';
+                        }
+                        var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el grupo\n\
+                                      <br><b>"+grupoName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
+                                      "+noasigname+"</h6><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                        $(".cargando").hide();
+                        $(".mensaje").hide();
+                        $("body").append(revisa);
+                            revisa.fadeIn('fast');
+
+                $('#confirma,#cancelar').on('click', function()
+                {
+                    var tipo=$(this).attr('id');
+                    if(tipo=="confirma"&& grupo!="")
+                    {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Carrier/SaveCarrierGroup",
+                            data:   '&grupo='+grupo+'&asignados='+asignados+'&noasignados='+noasignados,
+                            success: function(data)
+                            {
+                                obj = JSON.parse(data);
+                                var grupoSave=obj.grupo;
+
+                                        if(asigname=="")
+                                        {
+                                            var pudo="Le fue";
+                                        }
+                                        else
+                                        {
+                                            var pudo='Le fue asignado:';
+                                        }
+                                        if(noasigname=="")
+                                        {
+                                            var nopudo="";
+                                        }
+                                        else
+                                        {
+                                            var nopudo='Desasignado:';
+                                        }
+                                            var aguanta=$('.mensaje').html("<h3>El grupo <b>" + grupoSave + "</b><p>Fue modificado con exito</h3><br><h5>" + pudo + "<br><b>" + asigname + "</b><p>" + nopudo + "<br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                            setTimeout(function()
+                                            {
+                                                aguanta.fadeOut('fast');
+                                                $('.cargando').fadeOut('fast');
+                                            }, 4000);
+                                                $('#Carrier_id').val('');
+                                                $("#carriers select option").prop("selected",false);
+                            }
+                        });
+                    }else{
+                       revisa.fadeOut();
+                    }
+                });
+              }
+            }
+      });
+   }
+});
+//**
+//fin modulo de grupo carriers
+//**

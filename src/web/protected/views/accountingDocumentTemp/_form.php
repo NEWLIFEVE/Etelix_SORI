@@ -37,18 +37,6 @@
 
     <div class="formularioDocumento">
         <div class="valoresDocumento">
-            
-<!--            <div class="GrupoDocument contratoForm">
-                <label>Grupo *</label>-->
-<!--                <select class='GrupoOperadores'>
-                    <option>Selecione</option>
-                    <option>BSG</option>
-                    <option>Otro</option>
-                </select>-->
-                <?php // echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
-                <?php // echo $form->error($model,'id_carrier'); ?>
-            <!--</div>-->
-            
             <div class="contratoForm fechaDeEmision">
                 <?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -170,16 +158,7 @@
                 <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
-            <!--<div class='contratoForm'>-->
-                <?php // echo $form->labelEx($model,'moneda'); ?>
-                <?php // echo $form->dropDownList($model,'id',GeographicZone::getListGeo(),
-//                 array(
-//                    'prompt'=>'Seleccione'
-//                     )
-//                ); ?>
-                <?php // echo $form->error($model,'id'); ?>
-            <!--</div>-->
-            
+
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>

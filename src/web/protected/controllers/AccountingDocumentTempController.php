@@ -173,7 +173,11 @@ class AccountingDocumentTempController extends Controller
                 }
             }         
 
-
+            if ($selecTipoDoc == '1'){
+                $model->confirm = 0;
+            }else{
+                $model->confirm = 1;
+            }
 
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
@@ -272,6 +276,8 @@ class AccountingDocumentTempController extends Controller
         	$model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
         	$model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
         	$model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+        	$id_currency=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
+        	$model->id_currency=$id_currency;
 			if($model->save())
 				return "Actualizado id: ".$model->id;
 			else

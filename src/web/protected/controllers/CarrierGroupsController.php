@@ -28,7 +28,7 @@ class CarrierGroupsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','DynamicCarrierAsignados'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -170,4 +170,16 @@ class CarrierGroupsController extends Controller
 			Yii::app()->end();
 		}
 	}
+        public function actionDynamicCarrierAsignados()
+        { 
+            
+            $grupo=($_POST['grupo']);
+            $data = Carrier::getListCarriersGrupo($grupo);
+
+            foreach($data as $value=>$name)
+            {
+                echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+            }
+            
+        }
 }

@@ -28,7 +28,7 @@ class CarrierController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','contrato','NewGroupCarrier'),
+				'actions'=>array('index','view','contrato','NewGroupCarrier','SaveCarrierGroup','BuscaNombres'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -182,13 +182,71 @@ class CarrierController extends Controller
 		}
 	}
 
-        	public function actionNewGroupCarrier()
+        public function actionNewGroupCarrier()
 	{
 		$model=new Carrier;
 		
 		$this->render('NewGroupCarrier',array(
 			'model'=>$model,
 		));
+	}
+        public function actionSaveCarrierGroup()
+	{
+            $grupo=$_GET['grupo'];
+            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+
+            $asigSave="";
+            $noasigSave="";
+            $grupoSave="";
+            $grupoSave.= CarrierGroups::getName($grupo);
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+                $modelAsig->id_carrier_groups = $grupo;
+                if($modelAsig->save()){                  
+                    $asigSave.= $modelAsig->name.", ";     
+                }               
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+                $modelNoAsig->id_carrier_groups = NULL;
+                if($modelNoAsig->save()){
+                $noasigSave.=$modelNoAsig->name.", ";
+                }
+            }
+            
+                    $params['grupo']=$grupoSave;    
+                    $params['asignados']=$asigSave;    
+                    $params['noasignados']=$noasigSave;    
+                       echo json_encode($params);
+	}
+//        pendiente "group_leader"
+        
+         public function actionBuscaNombres()
+	{
+            $grupo=$_GET['grupo'];
+            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+
+            $asigNames="";
+            $noasigNames="";
+            $grupoName="";
+            $grupoName.= CarrierGroups::getName($grupo);
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+                if ($modelAsig->id_carrier_groups != $grupo)
+                    $asigNames.= $modelAsig->name.", ";      
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_carrier_groups != NULL)  
+                $noasigNames.=$modelNoAsig->name.", ";
+            }
+
+                    $params['grupo']=$grupoName;    
+                    $params['asignados']=$asigNames;    
+                    $params['noasignados']=$noasigNames;    
+                       echo json_encode($params);
 	}
         
 }
