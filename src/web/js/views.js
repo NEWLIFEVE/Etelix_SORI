@@ -221,6 +221,7 @@ $("#options_right").on( "click",function asignadosAnoasignados()
         $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
     });
 });
+
 $("#options_left").on( "click",  function noasignadosAasignados()
 {
     $('#select_right :selected').each(function(i,selected)
@@ -229,6 +230,7 @@ $("#options_left").on( "click",  function noasignadosAasignados()
         $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
     });
 });
+
 $("#CarrierManagers_id_managers").change(function()
 {
     $.ajax({
@@ -626,7 +628,9 @@ $('#GeographicZone_id').change(function()
         });
     }
 });
-//     fin de adm de zonas y destinos
+/**
+ *   fin de adm de zonas y destinos
+ */
 
 /**
  * admin de documentos contables
@@ -746,22 +750,20 @@ $('#botAgregarDatosContable').click('on',function(e)
     hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
     EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
     EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
-//    fechaEnvio=$('#AccountingDocumentTemp_sent_date').val(),
     numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
     currency=$('#AccountingDocumentTemp_id_currency').val(),
     nota=$('#AccountingDocumentTemp_note').val();
+    
+    var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+    $("body").append(msjIndicador);
 
-//                idCarrier==''||  ||EmailHoraRecepcion==''  ||EmailfechaRecepcion=='' ||fechaEnvio==''||fechaEmision==''||desdeFecha==''||hastaFecha==''
-    if( numDocumento==''|| cantidad=='')
+    if( selecTipoDoc==''|| cantidad==''||numDocumento==''||fechaEmision=='')
     {
-        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(msjIndicador);
         msjIndicador.fadeIn('fast');
         setTimeout(function()
-        {
-            msjIndicador.fadeOut('fast');
+        { msjIndicador.fadeOut('fast');
         }, 1000);
     }
     else
@@ -819,6 +821,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                     $("#AccountingDocumentTemp_note").val('');
                                     if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                                          $("#AccountingDocumentTemp_doc_number").val('');
+                                         $("#AccountingDocumentTemp_issue_date").val('');
                                      } 
                       }          
         }); 
