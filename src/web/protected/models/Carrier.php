@@ -167,4 +167,9 @@ class Carrier extends CActiveRecord
             $id = self::getId('Unknown_Carrier');
             return CHtml::listData(Carrier::model()->findAll("id !=:id order by name ASC",array(":id"=>$id)), 'id', 'name');
         } 
+        public static function getCarrierLeader($idGrupo)
+        {
+            return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo))->id;
+        } 
+        
 }
