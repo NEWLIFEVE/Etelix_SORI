@@ -758,8 +758,8 @@ $('#botAgregarDatosContable').click('on',function(e)
     
     var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
     $("body").append(msjIndicador);
-
-    if( selecTipoDoc==''|| cantidad==''||numDocumento==''||fechaEmision=='')
+//cantidad==''||numDocumento==''||fechaEmision==''
+    if( selecTipoDoc=='')
     {
         msjIndicador.fadeIn('fast');
         setTimeout(function()
