@@ -170,6 +170,11 @@ class CarrierGroupsController extends Controller
 			Yii::app()->end();
 		}
 	}
+         /**
+	 *  recibe el valor de $grupo 
+         *  va a ejecutar una de las consultas al modelo
+         * trae los nombres de carriers pertenecientes al grupo, hasta views.js para ser vistos en la vista
+	 */
         public function actionDynamicCarrierAsignados()
         { 
             
@@ -181,5 +186,11 @@ class CarrierGroupsController extends Controller
                 echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
             }
             
+        }
+         /**
+         * 
+         */
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
 }

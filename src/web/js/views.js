@@ -634,7 +634,6 @@ $('#GeographicZone_id').change(function()
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
                       var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
-//                      fechaDeEnvio= $('.fechaDeEnvio'),
                       CarrierDocument=$('.CarrierDocument'),
                       GrupoDocument=$('.GrupoDocument'),
                       emailReceivedDate=$('.emailReceivedDate'),
@@ -647,7 +646,6 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 
             if (tipoDocument=='1')
                 {
-//                      fechaDeEnvio.show('slow'); 
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       GrupoDocument.hide('slow');
@@ -666,7 +664,6 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 }
             if (tipoDocument=='2')
                 {
-//                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
                       emailReceivedTime.show('slow');
                       emailRecDate.html('Fecha de recepción de Email');
@@ -683,7 +680,6 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 }
             if (tipoDocument=='3')
                 {
-//                      fechaDeEnvio.show('slow'); 
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
@@ -702,16 +698,15 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 }
             if (tipoDocument=='4')
                 {
-//                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
-                      CarrierDocument.show('slow');
+                      GrupoDocument.show('slow');
+                      CarrierDocument.hide('slow');
                       emailRecDate.html('Fecha de recepción');
                       emailReceivedTime.hide('slow');
                       fechaDeEmision.hide('slow');
                       fechaDeInicio.hide('slow');
                       fechaFinal.hide('slow');
                       minutosDoc.hide('slow');
-                      GrupoDocument.hide('slow');
                       $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
                       $("#AccountingDocumentTemp_sent_date").val('');
@@ -745,6 +740,7 @@ $('#botAgregarDatosContable').click('on',function(e)
     e.preventDefault();
     var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
     idCarrier=$('#AccountingDocumentTemp_id_carrier').val(),
+    idGrupo=$('#AccountingDocumentTemp_carrier_groups').val(),
     fechaEmision=$('#AccountingDocumentTemp_issue_date').val(),
     desdeFecha=$('#AccountingDocumentTemp_from_date').val(),
     hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
@@ -773,7 +769,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency,
 
               success: function(data) 
                       {
@@ -934,13 +930,50 @@ $( "button" ).click(function() {
     paleta.hide("slow");
 });
 
+$('#GeographicZone_acciones').change(function()
+{
+    var acciones=$('#GeographicZone_acciones').val();
+    if (acciones==1){
+        $('div.valoresDocumento').slideDown('slow');
+        $('input#GeographicZone_name_zona').slideDown('slow');
+        $('select#GeographicZone_name_zona').hide('slow');
+        $('.acciones').html('Acciones');
+    }
+    if (acciones==2){
+        $('div.valoresDocumento').slideDown('slow');
+        $('select#GeographicZone_name_zona').slideDown('slow');
+        $('input#GeographicZone_name_zona').hide('slow');
+        $('.acciones').html('Acciones');
+    }
+    
+});
+
+$('select#GeographicZone_name_zona').change(function()
+{
+     var id_zonaSelect= $( "select#GeographicZone_name_zona" ).val();
+     $.ajax({
+            type: "GET",
+            url: "buscaColor",
+            data: "&id_zonaSelect="+id_zonaSelect,
+
+            success: function(data) 
+            {
+               $( "input#GeographicZone_color_zona" ).val( data );
+               var color=("#"+data+"");
+               $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' ); 
+            }
+     });
+});
+
 $('.botGuardarZonaColor').click('on',function(e)
 {
     e.preventDefault();
-    var name_zona=$('#GeographicZone_name_zona').val(),
+    var acciones=$('#GeographicZone_acciones').val(),
+    name_zona=$('input#GeographicZone_name_zona').val(),
+    name_zonaSelect=$('select#GeographicZone_name_zona').val(),
     color_zona=$('#GeographicZone_color_zona').val();
-    
-        if(name_zona==''|| color_zona=='')
+
+        if(acciones=='' || color_zona=='')
     {  
         var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                     $("body").append(msjIndicador);
@@ -949,10 +982,15 @@ $('.botGuardarZonaColor').click('on',function(e)
                         {msjIndicador.fadeOut('fast');
                         }, 1000);
     }else{
+                if (acciones==1){
+                    var Action="GuardarZoneColor";
+                }if(acciones==2){
+                    Action="UpdateZoneColor";
+                }
         $.ajax({
             type: "GET",
-            url: "GuardarZoneColor",
-            data: "&name_zona="+name_zona+"&color_zona="+color_zona,
+            url: Action,
+            data: "&name_zona="+name_zona+"&color_zona="+color_zona+"&name_zonaSelect="+name_zonaSelect,
 
               success: function(data) 
                       {
@@ -965,15 +1003,15 @@ $('.botGuardarZonaColor').click('on',function(e)
                         msjIndicador.fadeIn('fast');
                             setTimeout(function()
                             {msjIndicador.fadeOut('fast');
-                            }, 2000);
-            $("#GeographicZone_name_zona").val('');
+                            }, 3000);
+            $("select#GeographicZone_acciones").val('');
+            $("input#GeographicZone_name_zona").val('');
+            $( "select#GeographicZone_name_zona" ).val('');
             $("#GeographicZone_color_zona").val('');
             $( "input#GeographicZone_color_zona" ).css( "background-color","white" ).css( "opacity", '1' );
                       }
         });
-        
     }
-    
 });
 //**
 //fin modulo de colores por zona geografica

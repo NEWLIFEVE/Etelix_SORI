@@ -91,12 +91,12 @@ class AccountingDocumentTempController extends Controller
             
             $selecTipoDoc = $_GET['selecTipoDoc'];
             $idCarrier = $_GET['idCarrier'];
+            $idGrupo = $_GET['idGrupo'];
             $fechaEmision = $_GET['fechaEmision'];
             $desdeFecha = $_GET['desdeFecha'];
             $hastaFecha = $_GET['hastaFecha'];
             $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
             $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
-//            $fechaEnvio = $_GET['fechaEnvio'];
             $numDocumento = $_GET['numDocumento'];
             $minutos = $_GET['minutos'];
             $cantidad = $_GET['cantidad'];
@@ -104,18 +104,16 @@ class AccountingDocumentTempController extends Controller
             $nota = $_GET['nota'];
             $idCarrierName = "";
             $selecTipoDocName = "";
-            $idCarrierName.= Carrier::getName($idCarrier);
-            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
             $valid_received_hour = "";
             $valid_received_date = "";
             $minutosTemp = "";
-            $minutosTemp.= Utility::snull($minutos);
             $moneda= "";
-            $moneda.= Currency::getName($currency);
+            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $minutosTemp.= Utility::snull($minutos);
+//            $moneda.= Currency::getName($currency);
 
             $model = new AccountingDocumentTemp;
             $model->id_type_accounting_document = $selecTipoDoc;
-            $model->id_carrier = $idCarrier;
             $model->issue_date = Utility::snull($fechaEmision);
             $model->from_date = Utility::snull($desdeFecha);
             $model->to_date = Utility::snull($hastaFecha);
@@ -123,9 +121,24 @@ class AccountingDocumentTempController extends Controller
             $model->doc_number = $numDocumento;
             $model->minutes = $minutosTemp;
             $model->amount = Utility::snull($cantidad);
-            $model->id_currency = Utility::snull($currency);
             $model->note = Utility::snull($nota);
             
+                if ($idCarrier==''||$idCarrier==NULL){
+                    $idCarrierName.= CarrierGroups::getName($idGrupo);
+                    $grupoCarrier = Carrier::getId($idCarrierName);
+                    $model->id_carrier = $grupoCarrier;
+                }else{
+                $model->id_carrier = $idCarrier;
+                $idCarrierName.= Carrier::getName($idCarrier);
+                }
+                
+                if ($currency==''||$currency==NULL){
+                    $model->id_currency='1';
+                    $moneda.=Currency::getName(1);
+                }else{
+                    $model->id_currency =$currency;
+                    $moneda.= Currency::getName($currency);
+                }
             if ($selecTipoDoc == '4') {
                 $model->email_received_hour = NULL;
                 $model->valid_received_hour = NULL;

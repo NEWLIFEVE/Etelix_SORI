@@ -776,3 +776,8 @@ width: 20%;
 {
     margin-top: 3%;
 }
+
+input#GeographicZone_name_zona, select#GeographicZone_name_zona
+{
+    display:none;
+}

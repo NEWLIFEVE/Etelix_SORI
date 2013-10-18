@@ -181,7 +181,9 @@ class CarrierController extends Controller
 			Yii::app()->end();
 		}
 	}
-
+         /**
+         *solo rebnderiza a la vista de nuevogrupocarrier
+	 */
         public function actionNewGroupCarrier()
 	{
 		$model=new Carrier;
@@ -190,6 +192,11 @@ class CarrierController extends Controller
 			'model'=>$model,
 		));
 	}
+         /**
+	 *  recibe el valor de $grupo $asignados $noasignados
+         *  va a ejecutar una de las consultas al modelo
+         * guarda la asignacion de carriers a los grupos, y asigna el valor de principal al grupo, si ya esta asignado, solo actualiza y devuelve a views .js para ser vistos en la vista
+	 */
         public function actionSaveCarrierGroup()
 	{
             $grupo=$_GET['grupo'];
@@ -200,6 +207,13 @@ class CarrierController extends Controller
             $noasigSave="";
             $grupoSave="";
             $grupoSave.= CarrierGroups::getName($grupo);
+            
+            $idCarrierName= CarrierGroups::getName($grupo);
+            $grupoCarrier = Carrier::getId($idCarrierName);
+            $model=$this->loadModel($grupoCarrier);
+            $model->group_leader = '1';
+            $model->save();
+                        
             foreach ($asignados as $key => $value) {
                 $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
                 $modelAsig->id_carrier_groups = $grupo;
@@ -214,14 +228,16 @@ class CarrierController extends Controller
                 $noasigSave.=$modelNoAsig->name.", ";
                 }
             }
-            
                     $params['grupo']=$grupoSave;    
                     $params['asignados']=$asigSave;    
                     $params['noasignados']=$noasigSave;    
                        echo json_encode($params);
 	}
-//        pendiente "group_leader"
-        
+         /**
+	 *  recibe el valor de $grupo $asignados $noasignados
+         *  va a ejecutar una de las consultas al modelo
+         * trae los nombres pertenecientes a views .js para ser vistos en la vista
+	 */
          public function actionBuscaNombres()
 	{
             $grupo=$_GET['grupo'];

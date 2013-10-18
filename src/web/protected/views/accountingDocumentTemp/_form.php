@@ -230,7 +230,7 @@
             </div>
         </div><!-- form -->
    <div class='mensajeFinal'>
-         <h3>El documento contable fue guardado con exito</h3>
+         <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
          <table border="4" class='tablamensaje'>
             <tr>
                 <td> Tipo de Doc </td>
@@ -239,5 +239,6 @@
                 <td> Monto </td>
             </tr>
         </table>
+         <p><i>Recuerde confirmar las facturas enviadas</i></p>
         <p><img src='/images/si.png'width='95px' height='95px'/></p>
    </div>

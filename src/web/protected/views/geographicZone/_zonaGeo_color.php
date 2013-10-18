@@ -20,9 +20,22 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
+        <div class='row'>
+            <label class='acciones'>Elija una Accion para comenzar *</label>
+                <?php echo $form->dropDownList($model,'acciones', 
+                array(
+                    ' '=>'Seleccione',
+                    '1'=>'Nueva Zona Geográfica',
+                    '2'=>'Editar Zona Geográfica',
+                     )
+                ); ?>
+        </div>
+   <div class="formularioDocumento">
+        <div class="valoresDocumento">
 	<div class="row">
 		<?php echo $form->labelEx($model,'name_zona'); ?>
 		<?php echo $form->textField($model,'name_zona',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->dropDownList($model,'name_zona', GeographicZone::getListGeo(),array('prompt'=>'Seleccione')); ?>
 		<?php echo $form->error($model,'name_zona'); ?>
 	</div>
 
@@ -38,6 +51,8 @@
 
 <?php $this->endWidget(); ?>
 
+        </div> 
+   </div> 
 </div> 
 
     
