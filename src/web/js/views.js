@@ -1157,3 +1157,52 @@ $(".AsignarCarrierGroup").on( "click",function(e)
 //**
 //fin modulo de grupo carriers
 //**
+//**
+//agregar managers
+//**
+
+$(".G_ManagerNuevo").on( "click",function(e)
+{
+    e.preventDefault();
+    alert('hola');
+     var name=$('#Managers_name').val(),
+     lastname=$('#Managers_lastname').val(),
+     record_date=$('#Managers_record_date').val(),
+     position=$('#Managers_position').val(),
+     address=$('#Managers_address').val();
+     
+        $.ajax({
+            type: "GET",
+            url: "../Managers/GuardarManager",
+            data:   'name='+name+'&lastname='+lastname+'&record_date='+record_date+'&address='+address+'&position='+position,
+            success: function(data)
+            {
+                        var obj = JSON.parse(data),
+                        nameSave=obj.nameSave, 
+                        lastnameSave=obj.lastnameSave,
+                        addressSave=obj.addressSave,
+                        record_dateSave=obj.record_dateSave,
+                        positionSave=obj.positionSave;
+
+                        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El Manager <p><b>"+nameSave+" "+lastnameSave+"</b></h3><p>Fue almacenado con exito con los siguientes datos:\n\
+                                            <p><h5>Fecha de Ingreso: <b>"+record_dateSave+"</b><p>Posición: <b>"+positionSave+"</b><p>Dirección: <b>"+addressSave+"</b></h5><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(msjIndicador);
+                                msjIndicador.fadeIn('fast');
+                                    setTimeout(function()
+                                    {msjIndicador.fadeOut('fast');
+                                    }, 4000);
+                
+                 $('#Managers_name').val('');
+                 $('#Managers_lastname').val('');
+                 $('#Managers_record_date').val('');
+                 $('#Managers_position').val('');
+                 $('#Managers_address').val('');
+            
+            }
+        });
+    
+});
+
+//**
+//fin agregar managers
+//**
