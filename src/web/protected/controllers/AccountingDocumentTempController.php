@@ -125,7 +125,7 @@ class AccountingDocumentTempController extends Controller
             
                 if ($idCarrier==''||$idCarrier==NULL){
                     $idCarrierName.= CarrierGroups::getName($idGrupo);
-                    $grupoCarrier = Carrier::getId($idCarrierName);
+                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
                     $model->id_carrier = $grupoCarrier;
                 }else{
                 $model->id_carrier = $idCarrier;
