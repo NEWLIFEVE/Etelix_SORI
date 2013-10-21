@@ -81,30 +81,6 @@ class AccountingDocumentController extends Controller
 	}
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['AccountingDocument']))
-		{
-			$model->attributes=$_POST['AccountingDocument'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
@@ -170,5 +146,43 @@ class AccountingDocumentController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate()
+	{
+//            $fechaEmision = ($_GET['AccountingDocument']['fechaEmision']);
+//            $desdeFecha = ($_GET['AccountingDocument']['desdeFecha']);
+//            $hastaFecha = ($_GET['AccountingDocument']['hastaFecha']);
+//            $numDocumento = ($_GET['AccountingDocument']['numDocumento']);
+//            $minutos = ($_GET['AccountingDocument']['minutos']);
+//            $cantidad = ($_GET['AccountingDocument']['cantidad']);
+//            $currency = ($_GET['AccountingDocument']['currency']);
+	          $id=  AccountingDocument::getConfirmID(0); 
+                  $model=$this->loadModel($id);
+//        	$model->issue_date=$fechaEmision;
+//        	$model->from_date=$desdeFecha;
+//        	$model->to_date=$hastaFecha;
+//        	$model->doc_number=$numDocumento;
+//        	$model->minutes=$minutos;
+//        	$model->amount=$cantidad;
+//        	$model->id_currency=$currency;
+        	  $model->confirm=1;
+                  $model->save();
+			if($model->save()){
+                            echo 'guardo';
+//				 $params['fechaEmisionS'] = $fechaEmision;
+//				 $params['desdeFechaS'] = $desdeFecha;
+//				 $params['hastaFechaS'] = $hastaFecha;
+//				 $params['numDocumentoS'] = $numDocumento;
+//				 $params['minutosS'] = $minutos;
+//				 $params['cantidadS'] = $cantidad;
+//				 $params['currencyS'] = $currency;
+//                                   echo json_encode($params);
+                        }
 	}
 }

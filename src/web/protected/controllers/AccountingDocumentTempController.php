@@ -250,63 +250,61 @@ class AccountingDocumentTempController extends Controller
         }
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @access public
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
+         * Updates a particular model.
+         * If update is successful, the browser will be redirected to the 'view' page.
+         * @access public
+         * @param integer $id the ID of the model to be updated
+         */
+        public function actionUpdate($id)
+        {
+                $model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		/*if(isset($_POST['AccountingDocumentTemp']))
-		{
-			$model->attributes=$_POST['AccountingDocumentTemp'];
-			$model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
-			$model->id_carrier=Carrier::getId($model->id_carrier);
-			if($model->save())
-				return "Actualizado id: ".$model->id;
-			else
-				return "Algo salio mal";
-		}*/
-		if(isset($_POST['AccountingDocumentTemp']))
-		{
+                // Uncomment the following line if AJAX validation is needed
+                // $this->performAjaxValidation($model);
+                /*if(isset($_POST['AccountingDocumentTemp']))
+                {
+                        $model->attributes=$_POST['AccountingDocumentTemp'];
+                        $model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
+                        $model->id_carrier=Carrier::getId($model->id_carrier);
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }*/
+                if(isset($_POST['AccountingDocumentTemp']))
+                {
                     
-			$model->attributes=$_POST['AccountingDocumentTemp'];
-//			$model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-//			$model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+                        $model->attributes=$_POST['AccountingDocumentTemp'];
+//                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+//                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
                               
-        	$model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
-        	$model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
-        	$model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
-        	$model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
-        	$model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
-        	$model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
-        	$model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
-        	$model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
-        	$model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
-        	$model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
-        	$model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
-        	$id_currency=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
-        	$model->id_currency=$id_currency;
-			if($model->save())
-				return "Actualizado id: ".$model->id;
-			else
-				return "Algo salio mal";
-		}
-		/*$this->render('update',array(
-			'model'=>$model,
-		));*/
-	}
+                $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
+                $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
+                $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
+                $model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
+                $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
+                $model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
+                $model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
+                $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
+                $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
+                $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }
+                /*$this->render('update',array(
+                        'model'=>$model,
+                ));*/
+        }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @access public
-	 * @param integer $id the ID of the model to be deleted
-	 */
+        /**
+         * Deletes a particular model.
+         * If deletion is successful, the browser will be redirected to the 'admin' page.
+         * @access public
+         * @param integer $id the ID of the model to be deleted
+         */
 	/*public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();

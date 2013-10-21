@@ -151,14 +151,17 @@ class AccountingDocument extends CActiveRecord
         	
         public static function listaFacturasEnviadas($usuario)
 	{
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier
-			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43) and confirm = 0 and id_type_accounting_document = 1)d, type_accounting_document t, carrier c
-			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier  ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43)and confirm = 0 and id_type_accounting_document = 1)d, type_accounting_document t, carrier c, currency e
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
   
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
 	}
+        public static function getConfirmID($confirm){           
+            return self::model()->find("confirm=:confirm", array(':confirm'=>$confirm))->id;
+        }
 }

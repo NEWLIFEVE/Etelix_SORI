@@ -880,6 +880,33 @@ $('#botAgregarDatosContable').click('on',function(e)
                 }
            });
      });
+     
+  
+     $('#botConfirmarDatosContableFinal').click('on',function()
+    {           
+//        alert('hola');        
+//                 var fechaEmision=$('tr td#AccountingDocument[issue_date]')[0].innerHTML,
+//                 desdeFecha=$('tr td#AccountingDocument[from_date]')[1].innerHTML,
+//                 hastaFecha=$('tr td#AccountingDocument[to_date]')[2].innerHTML,
+//                 numDocumento=$('tr td#AccountingDocument[doc_number]')[3].innerHTML,
+//                 minutos=$('tr td#AccountingDocument[minutes]')[4].innerHTML,
+//                 cantidad=$('tr td#AccountingDocument[amount]')[5].innerHTML,
+//                 currency=$('tr td#AccountingDocument[id_currency]')[6].innerHTML;
+
+              
+                 $.ajax({ 
+                         type: "GET",
+                         url: "../AccountingDocument/Update",
+//                         data: "&fechaEmision="+fechaEmision+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&currency="+currency,
+                         success: function(data) 
+                         {
+                         alert(data);
+                         console.dir(data);
+                         } 
+                 });
+              
+    });
+     
 /**Vista Uploads*/
 $(function() 
 {
@@ -1205,4 +1232,22 @@ $(".G_ManagerNuevo").on( "click",function(e)
 
 //**
 //fin agregar managers
+//**
+
+//**
+//check marcar 
+//**
+function marcar(source)
+{
+    checkboxes = document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+    for (i = 0; i < checkboxes.length; i++) //recoremos todos los controles
+    {
+        if (checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+        {
+            checkboxes[i].checked = source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+        }
+    }
+};
+//**
+//fin check marcar
 //**
