@@ -21,7 +21,7 @@
 	<?php echo $form->errorSummary($model); ?>
 
         <div class='row'>
-            <label class='acciones'>Elija una Accion para comenzar *</label>
+            <label class='acciones'>Elija una Acción para comenzar *</label>
                 <?php echo $form->dropDownList($model,'acciones', 
                 array(
                     ' '=>'Seleccione',
