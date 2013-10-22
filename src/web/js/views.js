@@ -884,45 +884,41 @@ $('#botAgregarDatosContable').click('on',function(e)
   
      $('#botConfirmarDatosContableFinal').click('on',function()
     {       
-                var count=0,
-                 revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de confirmar las siguientes facturas enviadas<p></h6><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
-                //revisa.remove();
-                $("body").append(revisa);
-                revisa.fadeIn('fast'); 
-                
-                $('#confirma,#cancelar').on('click',function()
+             var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
+            $("body").append(revisa);
+            revisa.fadeIn('fast'); 
+
+            $('#confirma,#cancelar').on('click',function()
+             {
+                 var tipo=$(this).attr('id');
+                 if(tipo=="confirma")
                  {
-                     var tipo=$(this).attr('id');
-                     if(tipo=="confirma")
-                     {
-                         $("input[type=checkbox]:checked").each(function(){
-                        var id=($(this).val());
-                        var paraBorrar=$('#'+id);
-                        count ++;
-                        
- 
-     //                -----------------------------------
-                      $.ajax({ 
-                              type: "GET",
-                              url: "../AccountingDocument/Confirmar/"+id,
-                              success: function(data) 
-                              {
-                                 paraBorrar.empty(); 
-                                 revisa.fadeOut('slow');
-                                 revisa=null;
-                                 
-                              }
-                      });
-                      });
-     //                 ---------------------------------
-                     }else{
-                        revisa.fadeOut('slow'); 
-                        revisa=null;
-                     }
-                 });             
-                    console.log(count);
+                    var array= $("input[type=checkbox]:checked").each(function(){
+                    var id=($(this).val()),
+                    paraBorrar=$('#'+id);
+                    
+                    $.ajax({ 
+                            type: "GET",
+                            url: "../AccountingDocument/Confirmar/"+id,
+                            success: function(data) 
+                            {
+                               var cuantos=array.length;
+                               paraBorrar.empty(); 
+                                         var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                         setTimeout(function()
+                                         { exito.fadeOut('fast');
+                                             $('.cargando').fadeOut('fast');
+                                         }, 4000);   
+                               revisa=null;
+                            }
+                    });
+                  });
+                 }else{
+                    revisa.fadeOut('slow'); 
+                    revisa=null;
+                 }
+             });             
     });
-     
 /**Vista Uploads*/
 $(function() 
 {
