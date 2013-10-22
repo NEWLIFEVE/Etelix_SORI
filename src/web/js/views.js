@@ -883,7 +883,7 @@ $('#botAgregarDatosContable').click('on',function(e)
      
   
      $('#botConfirmarDatosContableFinal').click('on',function()
-    {       
+    {    
              var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
             $("body").append(revisa);
             revisa.fadeIn('fast'); 
@@ -892,7 +892,11 @@ $('#botAgregarDatosContable').click('on',function(e)
              {
                  var tipo=$(this).attr('id');
                  if(tipo=="confirma")
-                 {
+                 {             var cuantos=array.length;
+                               if (id=='#on')
+                                   {
+                                       cuantos=cuantos-1;
+                                   }
                     var array= $("input[type=checkbox]:checked").each(function(){
                     var id=($(this).val()),
                     paraBorrar=$('#'+id);
@@ -902,7 +906,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                             url: "../AccountingDocument/Confirmar/"+id,
                             success: function(data) 
                             {
-                               var cuantos=array.length;
+      
                                paraBorrar.empty(); 
                                          var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                                          setTimeout(function()
