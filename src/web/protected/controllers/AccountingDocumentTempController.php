@@ -255,7 +255,7 @@ class AccountingDocumentTempController extends Controller
          * @access public
          * @param integer $id the ID of the model to be updated
          */
-public function actionUpdate($id)
+        public function actionUpdate($id)
         {
                 $model=$this->loadModel($id);
 

@@ -897,9 +897,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                             console.dir(data);
 
                             if (tabla==id||tabla==id){
-                              $('886').empty();
-                              $(valor).empty();
-                              $(tabla).empty();
+                              id=null;
                             }
                          }
                  });
