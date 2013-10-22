@@ -28,7 +28,7 @@ class CarrierGroupsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','DynamicCarrierAsignados'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -170,4 +170,27 @@ class CarrierGroupsController extends Controller
 			Yii::app()->end();
 		}
 	}
+         /**
+	 *  recibe el valor de $grupo 
+         *  va a ejecutar una de las consultas al modelo
+         * trae los nombres de carriers pertenecientes al grupo, hasta views.js para ser vistos en la vista
+	 */
+        public function actionDynamicCarrierAsignados()
+        { 
+            
+            $grupo=($_POST['grupo']);
+            $data = Carrier::getListCarriersGrupo($grupo);
+
+            foreach($data as $value=>$name)
+            {
+                echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+            }
+            
+        }
+         /**
+         * 
+         */
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 }

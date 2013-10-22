@@ -28,7 +28,7 @@ class ManagersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','create','createCM'),
+				'actions'=>array('index','view','create','createCM','GuardarManager'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,5 +169,36 @@ class ManagersController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}     
+	}   
+        	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionGuardarManager()
+	{
+            $name=$_GET['name'];
+            $lastname=$_GET['lastname'];
+            $record_date=$_GET['record_date'];
+            $address=$_GET['address'];
+            $position=$_GET['position'];
+            
+		$model=new Managers;
+
+                $model->name=$name;
+                $model->lastname=$lastname;
+                $model->address=Utility::snull($address);
+                $model->record_date=Utility::snull($record_date);
+                $model->position=Utility::snull($position);
+                
+                  if ($model->save()) {
+                    $params['nameSave'] = $name;
+                    $params['lastnameSave'] = $lastname;
+                    $params['addressSave'] = $address;
+                    $params['record_dateSave'] = $record_date;
+                    $params['positionSave'] = $position;
+
+                    echo json_encode($params);
+                  }
+
+	}
 }

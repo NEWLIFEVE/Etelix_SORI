@@ -29,7 +29,7 @@
         <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
-    <div class="CarrierDocument input_largos">
+    <div class="GrupoDocument input_largos ">
         <?php echo $form->labelEx($model,'carrier_groups'); ?>
         <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'carrier_groups'); ?>
@@ -37,18 +37,6 @@
 
     <div class="formularioDocumento">
         <div class="valoresDocumento">
-            
-<!--            <div class="GrupoDocument contratoForm">
-                <label>Grupo *</label>-->
-<!--                <select class='GrupoOperadores'>
-                    <option>Selecione</option>
-                    <option>BSG</option>
-                    <option>Otro</option>
-                </select>-->
-                <?php // echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
-                <?php // echo $form->error($model,'id_carrier'); ?>
-            <!--</div>-->
-            
             <div class="contratoForm fechaDeEmision">
                 <?php echo $form->labelEx($model,'issue_date'); ?>
                 <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -165,21 +153,12 @@
                 <?php echo $form->error($model,'amount'); ?>
             </div>
                 
-            <div class="contratoForm montoDoc">
+            <div class="contratoForm">
                 <?php echo $form->labelEx($model,'id_currency'); ?>
                 <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
-            <!--<div class='contratoForm'>-->
-                <?php // echo $form->labelEx($model,'moneda'); ?>
-                <?php // echo $form->dropDownList($model,'id',GeographicZone::getListGeo(),
-//                 array(
-//                    'prompt'=>'Seleccione'
-//                     )
-//                ); ?>
-                <?php // echo $form->error($model,'id'); ?>
-            <!--</div>-->
-            
+
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
@@ -241,7 +220,7 @@
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[moneda]'>???</td>
+//                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
                                     <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
                         }
@@ -251,7 +230,7 @@
             </div>
         </div><!-- form -->
    <div class='mensajeFinal'>
-         <h3>El documento contable fue guardado con exito</h3>
+         <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
          <table border="4" class='tablamensaje'>
             <tr>
                 <td> Tipo de Doc </td>
@@ -260,5 +239,6 @@
                 <td> Monto </td>
             </tr>
         </table>
+         <p><i>Recuerde confirmar las facturas enviadas</i></p>
         <p><img src='/images/si.png'width='95px' height='95px'/></p>
    </div>

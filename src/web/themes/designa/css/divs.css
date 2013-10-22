@@ -418,7 +418,7 @@ width: 20%;
     width: 76%; 
 }
 
-#botAsignar,#botAsignarContrato,#botAgregarDatosContable ,#botAgregarDatosContableFinal
+#botAsignar,#botAsignarContrato,#botAgregarDatosContable ,#botAgregarDatosContableFinal, #botConfirmarDatosContableFinal
 {
     margin-left: 20%;width: 24%;
 }
@@ -437,7 +437,7 @@ width: 20%;
     color:rgba(111,204,187,1);
     width: 5%;
 }
-.CarrierDocument
+.CarrierDocument,.GrupoDocument
 {
     width: 76%;
     float: right;
@@ -446,15 +446,6 @@ width: 20%;
     margin-right: -271px;
     display: none;
 }
-/*.GrupoDocument
-{
-    width: 51%;
-}*/
-
-/*.GrupoOperadores
-{
-    width: 76%; 
-}*/
 
 @media screen and (max-width: 914px) { 
     .CarrierDocument{ width: 76%; margin-top: -10.3%; margin-right: -199px;}
@@ -626,9 +617,10 @@ width: 20%;
     .CarrierDocument {margin-top: 0.9%; width: 144%; margin-right: -141px;}
     #AccountingDocumentTemp_note {width: 94%; margin-left: 1%;}
     #Managers_address {width: 55%; margin-left: 1%;}
+    #GeographicZone_name_zona,#GeographicZone_color_zona {width: 87%; margin-left: 2%;}
     
     #botAsignarContrato{margin-left: -52%;}
-    #botAsignar, .AsignarCarrierGroup{margin-left: -53%;margin-top: 12%;} 
+    #botAsignar, .AsignarCarrierGroup, .botGuardarZonaColor{margin-left: -53%;margin-top: 12%;} 
     .botAsignarDestination{margin-left: -47%; margin-top: 30%;}
     #botAgregarDatosContable, #botAgregarDatosContableFinal, .G_ManagerNuevo{margin-left: -52%;}  
 }
@@ -657,8 +649,7 @@ width: 20%;
 {   font-size: 0px;
     width: 23%;
     height: 22%;
-    background: red;
-    color: red;
+    background: #2ECCFA;
     float: left;
 }
 .color2
@@ -666,7 +657,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: blue;
+    background: #00FF80;
     float: left;
 }
 .color3
@@ -674,7 +665,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: green;
+    background: #F4FA58;
     float: left;
 }
 .color4
@@ -682,7 +673,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: yellow;
+    background: #FE9A2E;
     float: left;
 }
 .color5
@@ -690,7 +681,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: slateblue;
+    background: #FF0000;
     float: left;
 }
 .color6
@@ -698,7 +689,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: sandybrown;
+    background: #D7DF01;
     float: left;
 }
 .color7
@@ -706,7 +697,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: red;
+    background: #BDBDBD;
     float: left;
 }
 .color8
@@ -714,7 +705,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: blue;
+    background: #2E2E2E;
     float: left;
 }
 .color9
@@ -722,7 +713,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: green;
+    background: #F5BCA9;
     float: left;
 }
 .color10
@@ -730,7 +721,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: yellow;
+    background: #F6D8CE;
     float: left;
 }
 .color11
@@ -738,7 +729,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: slateblue;
+    background: #4B610B;
     float: left;
 }
 .color12
@@ -746,7 +737,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: sandybrown;
+    background: #0B3B2E;
     float: left;
 }
 .color13
@@ -754,7 +745,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: green;
+    background: #0A2A1B;
     float: left;
 }
 .color14
@@ -762,7 +753,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: yellow;
+    background: #0B610B;
     float: left;
 }
 .color15
@@ -770,7 +761,7 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: slateblue;
+    background: #2EFE9A;
     float: left;
 }
 .color16
@@ -778,6 +769,19 @@ width: 20%;
     font-size: 0px;
     width: 23%;
     height: 22%;
-    background: sandybrown;
+    background: #81BEF7;
     float: left;
+}
+.botGuardarZonaColor
+{
+    margin-top: 3%;
+}
+
+input#GeographicZone_name_zona, select#GeographicZone_name_zona
+{
+    display:none;
+}
+.clockhide
+{
+    display:none;
 }

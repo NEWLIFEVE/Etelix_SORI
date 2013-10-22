@@ -154,10 +154,22 @@ class Carrier extends CActiveRecord
         {
             return CHtml::listData(Carrier::model()->findAll(array('order' => 'name')), 'id', 'name');
         }
+        public static function getListCarriersSinGrupo()
+        {
+            return CHtml::listData(Carrier::model()->findAll("id_carrier_groups is null order by name ASC"), 'id', 'name');
+        }
+        public static function getListCarriersGrupo($id_grupo)
+        {
+            return CHtml::listData(Carrier::model()->findAll("id_carrier_groups =:grupo order by name ASC",array(":grupo"=>$id_grupo)), 'id', 'name');
+        }
         public static function getListCarrierNoUNKNOWN()
         {
             $id = self::getId('Unknown_Carrier');
             return CHtml::listData(Carrier::model()->findAll("id !=:id order by name ASC",array(":id"=>$id)), 'id', 'name');
-        }
-
+        } 
+        public static function getCarrierLeader($idGrupo)
+        {
+            return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo))->id;
+        } 
+        
 }

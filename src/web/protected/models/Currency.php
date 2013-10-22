@@ -102,4 +102,18 @@ class Currency extends CActiveRecord
         {
             return CHtml::listData(Currency::model()->findAll(array('order' => 'name')), 'id', 'name');
         }
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
+        public static function getID($name){           
+            $model=self::model()->find('name like :nombre',array(':nombre'=>$name));
+		if($model!=null)
+		{
+			return $model->id;
+		}
+		else
+		{
+			return false;
+		}
+        }
 }

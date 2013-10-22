@@ -28,7 +28,7 @@ class CarrierController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','contrato','NewGroupCarrier'),
+				'actions'=>array('index','view','contrato','NewGroupCarrier','SaveCarrierGroup','BuscaNombres'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -181,14 +181,88 @@ class CarrierController extends Controller
 			Yii::app()->end();
 		}
 	}
-
-        	public function actionNewGroupCarrier()
+         /**
+         *solo rebnderiza a la vista de nuevogrupocarrier
+	 */
+        public function actionNewGroupCarrier()
 	{
 		$model=new Carrier;
 		
 		$this->render('NewGroupCarrier',array(
 			'model'=>$model,
 		));
+	}
+         /**
+	 *  recibe el valor de $grupo $asignados $noasignados
+         *  va a ejecutar una de las consultas al modelo
+         * guarda la asignacion de carriers a los grupos, y asigna el valor de principal al grupo, si ya esta asignado, solo actualiza y devuelve a views .js para ser vistos en la vista
+	 */
+        public function actionSaveCarrierGroup()
+	{
+            $grupo=$_GET['grupo'];
+            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+
+            $asigSave="";
+            $noasigSave="";
+            $grupoSave="";
+            $grupoSave.= CarrierGroups::getName($grupo);
+            
+            $idCarrierName= CarrierGroups::getName($grupo);
+            $grupoCarrier = Carrier::getId($idCarrierName);
+            $model=$this->loadModel($grupoCarrier);
+            $model->group_leader = '1';
+            $model->save();
+                        
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+                $modelAsig->id_carrier_groups = $grupo;
+                if($modelAsig->save()){                  
+                    $asigSave.= $modelAsig->name.", ";     
+                }               
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+                $modelNoAsig->id_carrier_groups = NULL;
+                if($modelNoAsig->save()){
+                $noasigSave.=$modelNoAsig->name.", ";
+                }
+            }
+                    $params['grupo']=$grupoSave;    
+                    $params['asignados']=$asigSave;    
+                    $params['noasignados']=$noasigSave;    
+                       echo json_encode($params);
+	}
+         /**
+	 *  recibe el valor de $grupo $asignados $noasignados
+         *  va a ejecutar una de las consultas al modelo
+         * trae los nombres pertenecientes a views .js para ser vistos en la vista
+	 */
+         public function actionBuscaNombres()
+	{
+            $grupo=$_GET['grupo'];
+            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+
+            $asigNames="";
+            $noasigNames="";
+            $grupoName="";
+            $grupoName.= CarrierGroups::getName($grupo);
+            foreach ($asignados as $key => $value) {
+                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+                if ($modelAsig->id_carrier_groups != $grupo)
+                    $asigNames.= $modelAsig->name.", ";      
+            }
+            foreach ($noasignados as $key => $value) {
+                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+                if ($modelNoAsig->id_carrier_groups != NULL)  
+                $noasigNames.=$modelNoAsig->name.", ";
+            }
+
+                    $params['grupo']=$grupoName;    
+                    $params['asignados']=$asigNames;    
+                    $params['noasignados']=$noasigNames;    
+                       echo json_encode($params);
 	}
         
 }

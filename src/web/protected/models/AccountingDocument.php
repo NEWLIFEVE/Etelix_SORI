@@ -20,6 +20,7 @@
  * @property string $valid_received_hour
  * @property string $email_received_hour
  * @property integer $id_currency
+ * @property integer $confirm
  *
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -34,7 +35,7 @@ class AccountingDocument extends CActiveRecord
 	{
 		return 'accounting_document';
 	}
-
+        public $carrier_groups;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -48,10 +49,10 @@ class AccountingDocument extends CActiveRecord
 			array('minutes, amount', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
-			array('issue_date, from_date, to_date, valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, id_currency', 'safe'),
+			array('issue_date, from_date, to_date, valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, id_currency, confirm', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency, confirm', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,6 +92,7 @@ class AccountingDocument extends CActiveRecord
 			'id_type_accounting_document' => 'Tipo de documento contable',
 			'id_carrier' => 'Carrier',
 			'id_currency' => 'Moneda',
+			'confirm' => 'Confirmada',
 		);
 	}
 
@@ -128,6 +130,7 @@ class AccountingDocument extends CActiveRecord
 		$criteria->compare('id_type_accounting_document',$this->id_type_accounting_document);
                 $criteria->compare('id_carrier',$this->id_carrier);
                 $criteria->compare('id_currency',$this->id_currency);
+                $criteria->compare('confirm',$this->confirm);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -144,4 +147,21 @@ class AccountingDocument extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        	
+        public static function listaFacturasEnviadas($usuario)
+	{
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
+			  	   FROM accounting_document
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43)and confirm = 0 and id_type_accounting_document = 1)d, type_accounting_document t, carrier c, currency e
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+  
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
+        public static function getConfirmID($confirm){           
+            return self::model()->find("confirm=:confirm", array(':confirm'=>$confirm))->id;
+        }
 }

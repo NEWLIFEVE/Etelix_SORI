@@ -21,7 +21,16 @@
 
 	<div class="row SelectGrupo">
 		<?php echo $form->labelEx($model,'id'); ?>
-                <?php echo $form->dropDownList($model,'id',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->dropDownList($model,'id',CarrierGroups::getListGroups(),
+                    array(
+//                    'ajax'=>array(
+//                        'type'=>'POST',
+//                        'url'=>CController::createUrl('DynamicAsignados'),
+//                        'update'=>'#select_right',
+//                    ),
+                    'prompt'=>'Seleccione'
+                     )
+                ); ?>
                 <?php echo $form->error($model,'id'); ?>
 	</div>
 
@@ -33,7 +42,7 @@
                 'leftList' => array(),
                 'rightTitle' => 'Carriers No Asignados',
                 'rightName' => 'No_Asignados[]',
-                'rightList' =>Managers::model()->getListCarriersNOAsignados(),
+                'rightList' =>Carrier::model()->getListCarriersSinGrupo(),
                 'size' => 15,  
         //        'width' => '400px',
             ));
