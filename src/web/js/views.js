@@ -883,28 +883,27 @@ $('#botAgregarDatosContable').click('on',function(e)
      
   
      $('#botConfirmarDatosContableFinal').click('on',function()
-    {           
-//        alert('hola');        
-//                 var fechaEmision=$('tr td#AccountingDocument[issue_date]')[0].innerHTML,
-//                 desdeFecha=$('tr td#AccountingDocument[from_date]')[1].innerHTML,
-//                 hastaFecha=$('tr td#AccountingDocument[to_date]')[2].innerHTML,
-//                 numDocumento=$('tr td#AccountingDocument[doc_number]')[3].innerHTML,
-//                 minutos=$('tr td#AccountingDocument[minutes]')[4].innerHTML,
-//                 cantidad=$('tr td#AccountingDocument[amount]')[5].innerHTML,
-//                 currency=$('tr td#AccountingDocument[id_currency]')[6].innerHTML;
+    {     
+        var tabla=$('.vistaTemp').val();
+        var valor=$("input[type=checkbox]:checked").each(function(){
+        var id=($(this).val());
 
-              
                  $.ajax({ 
                          type: "GET",
-                         url: "../AccountingDocument/Update",
-//                         data: "&fechaEmision="+fechaEmision+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&currency="+currency,
+                         url: "../AccountingDocument/Update/"+id,
                          success: function(data) 
                          {
-                         alert(data);
-                         console.dir(data);
-                         } 
+                            alert(data);
+                            console.dir(data);
+
+                            if (tabla==id||tabla==id){
+                              $('886').empty();
+                              $(valor).empty();
+                              $(tabla).empty();
+                            }
+                         }
                  });
-              
+       });
     });
      
 /**Vista Uploads*/

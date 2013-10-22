@@ -153,36 +153,14 @@ class AccountingDocumentController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate()
+	public function actionUpdate($id)
 	{
-//            $fechaEmision = ($_GET['AccountingDocument']['fechaEmision']);
-//            $desdeFecha = ($_GET['AccountingDocument']['desdeFecha']);
-//            $hastaFecha = ($_GET['AccountingDocument']['hastaFecha']);
-//            $numDocumento = ($_GET['AccountingDocument']['numDocumento']);
-//            $minutos = ($_GET['AccountingDocument']['minutos']);
-//            $cantidad = ($_GET['AccountingDocument']['cantidad']);
-//            $currency = ($_GET['AccountingDocument']['currency']);
-	          $id=  AccountingDocument::getConfirmID(0); 
+//	          $id=  AccountingDocument::getConfirmID(0); 
                   $model=$this->loadModel($id);
-//        	$model->issue_date=$fechaEmision;
-//        	$model->from_date=$desdeFecha;
-//        	$model->to_date=$hastaFecha;
-//        	$model->doc_number=$numDocumento;
-//        	$model->minutes=$minutos;
-//        	$model->amount=$cantidad;
-//        	$model->id_currency=$currency;
         	  $model->confirm=1;
                   $model->save();
 			if($model->save()){
                             echo 'guardo';
-//				 $params['fechaEmisionS'] = $fechaEmision;
-//				 $params['desdeFechaS'] = $desdeFecha;
-//				 $params['hastaFechaS'] = $hastaFecha;
-//				 $params['numDocumentoS'] = $numDocumento;
-//				 $params['minutosS'] = $minutos;
-//				 $params['cantidadS'] = $cantidad;
-//				 $params['currencyS'] = $currency;
-//                                   echo json_encode($params);
                         }
 	}
 }

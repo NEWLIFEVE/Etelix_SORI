@@ -41,7 +41,7 @@
                     <td> Cantidad </td>
                     <td> Moneda </td>
                     <td> Acciones </td>
-                    <td> Confirm <input type="checkbox" value="true" id="todos" class="custom-checkbox" name="lista[todos]" onClick="marcar(this);"> </td>
+                    <td> Confirm <input type="checkbox"  id="todos" class="custom-checkbox" name="lista[todos]" onClick="marcar(this);"> </td>
                 </tr>
                 <?php
                     if($lista!=null)
@@ -64,7 +64,7 @@
                                     <td id='AccountingDocument[amount]'>".$value->amount."</td>
                                     <td id='AccountingDocument[id_currency]'>".$value->id_currency."</td>
                                     <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-                                    <td id='AccountingDocument[confirma]'><input type='checkbox' value='true' id='confirm' class='custom-checkbox' name='confirma'></td>
+                                    <td id='AccountingDocument[confirma]'><input type='checkbox' value='".$value->id."' class='custom-checkbox' name='confirma'></td>
                                   </tr>";  
                         }
                     }
@@ -73,7 +73,7 @@
             </div>
     
                         <br><div id="botConfirmarDatosContableFinal" class="row buttons" <?php if($lista==null){echo "style='display:none;'";}?>>
-                            <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar facturas confirmadas' : 'Save'); ?>
+                            <?php echo CHtml::submitButton($model->isNewRecord ? 'Confirmar facturas enviadas' : 'Save'); ?>
                         </div>
     
         </div><!-- form -->
