@@ -883,24 +883,56 @@ $('#botAgregarDatosContable').click('on',function(e)
      
   
      $('#botConfirmarDatosContableFinal').click('on',function()
-    {     
-        var tabla=$('.vistaTemp').val();
-        var valor=$("input[type=checkbox]:checked").each(function(){
+    {       
+        $("input[type=checkbox]:checked").each(function(){
         var id=($(this).val());
-
-                 $.ajax({ 
-                         type: "GET",
-                         url: "../AccountingDocument/Confirmar/"+id,
-                         success: function(data) 
-                         {
-                            alert(data);
-                            console.dir(data);
-
-                            if (tabla==id||tabla==id){
-                              id=null;
-                            }
-                         }
-                 });
+        var paraBorrar=$('#'+id);
+        
+                var datos = [];
+                $("input[type=checkbox]:checked").each(function(){
+                    datos.push($(this).val());
+                });
+        $.ajax({ 
+                type: "GET",
+                url: "../AccountingDocument/buscadatos/",
+                data:"datos="+datos,
+                success: function(data) 
+                {
+                    alert(data);
+                }
+//                    var obj = JSON.parse(data),
+//                    numDocument=obj.numDocument; 
+//                    
+//                   
+//                var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de confirmar las siguientes facturas enviadas<p>"+numDocument+"</h6><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+//                revisa.remove();
+//                $("body").append(revisa);
+//                revisa.fadeIn('fast'); 
+//                
+//                $('#confirma,#cancelar').on('click',function()
+//                 {
+//                     var tipo=$(this).attr('id');
+//                     if(tipo=="confirma")
+//                     {
+//     //                -----------------------------------
+//                      $.ajax({ 
+//                              type: "GET",
+//                              url: "../AccountingDocument/Confirmar/"+id,
+//                              success: function(data) 
+//                              {
+//                                 paraBorrar.empty(); 
+//                                 revisa.fadeOut('slow');
+//                                 revisa=null;
+//                              }
+//                      });
+//     //                 ---------------------------------
+//                     }else{
+//                        revisa.fadeOut('slow'); 
+//                        revisa=null;
+//                     }
+//                 });       
+//                }
+            });       
        });
     });
      

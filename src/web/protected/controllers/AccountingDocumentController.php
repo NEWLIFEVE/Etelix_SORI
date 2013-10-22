@@ -28,7 +28,7 @@ class AccountingDocumentController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','Confirmar','Borrar'),
+				'actions'=>array('index','view','Confirmar','Borrar','buscadatos'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -207,4 +207,19 @@ class AccountingDocumentController extends Controller
 	{
 		$this->loadModel($id)->delete();
 	}
+         /**
+         *busca los numeros de documentos con el id provenientes de la vista de confirmar
+         */
+        public function actionbuscadatos()
+        {
+               $id = explode(',', $_GET['datos']);
+               $numDocument='';
+                foreach($id as $key => $value)
+                {
+                    $numDocument.=  AccountingDocument::getDocNum($id);
+//                    $params['numDocument'] = $numDocument;
+                }
+               echo 'numero de factura:'.$numDocument.'<p>';
+//                echo json_encode($params);
+        }
 }

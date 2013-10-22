@@ -164,4 +164,8 @@ class AccountingDocument extends CActiveRecord
         public static function getConfirmID($confirm){           
             return self::model()->find("confirm=:confirm", array(':confirm'=>$confirm))->id;
         }
+        
+        public static function getDocNum($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->doc_number;
+        }
 }
