@@ -77,10 +77,10 @@
                     <td> Inicio Periodo a Facturar </td>
                     <td> Fin Periodo a Facturar </td>
                     <td> Fecha Envio </td>
-                    <td> Fecha Recep(Email)</td>
+<!--                    <td> Fecha Recep(Email)</td>
                     <td> Fecha Recep Valida</td>
                     <td> Hora Recep (Email)</td>
-                    <td> Hora Recep Valida</td>
+                    <td> Hora Recep Valida</td>-->
                     <td> N°Documento </td>
                     <td> Minutos </td>
                     <td> Cantidad </td>
@@ -102,10 +102,7 @@
                                     <td id='AccountingDocument[from_date]'>".$value->from_date."</td>
                                     <td id='AccountingDocument[to_date]'>".$value->to_date."</td>
                                     <td id='AccountingDocument[sent_date]'>".$value->sent_date."</td>
-                                    <td id='AccountingDocument[email_received_date]'>".$value->email_received_date."</td>
-                                    <td id='AccountingDocument[valid_received_date]'>".$value->valid_received_date."</td>
-                                    <td id='AccountingDocument[email_received_hour]'>".$value->email_received_hour."</td>
-                                    <td id='AccountingDocument[valid_received_hour]'>".$value->valid_received_hour."</td>
+
                                     <td id='AccountingDocument[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocument[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocument[amount]'>".$value->amount."</td>
