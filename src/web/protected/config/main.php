@@ -49,7 +49,7 @@ return array(
             'username'=>'postgres',
             'password'=>'Nsusfd8263',
 
-//            'password'=>'123',
+            'password'=>'123',
             'charset'=>'utf8',
             ),
         'errorHandler'=>array(
