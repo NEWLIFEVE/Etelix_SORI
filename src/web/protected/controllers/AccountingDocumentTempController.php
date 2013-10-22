@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -255,7 +255,7 @@ class AccountingDocumentTempController extends Controller
          * @access public
          * @param integer $id the ID of the model to be updated
          */
-        public function actionUpdate($id)
+public function actionUpdate($id)
         {
                 $model=$this->loadModel($id);
 
@@ -289,7 +289,8 @@ class AccountingDocumentTempController extends Controller
                 $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
                 $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
                 $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
-                $model->id_currency=Utility::snull($_POST['AccountingDocumentTemp']['id_currency']);
+                 $id_currency=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
+-               $model->id_currency=$id_currency;
                         if($model->save())
                                 return "Actualizado id: ".$model->id;
                         else

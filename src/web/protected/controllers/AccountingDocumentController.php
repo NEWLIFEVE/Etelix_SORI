@@ -149,9 +149,6 @@ class AccountingDocumentController extends Controller
 	}
         
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionConfirmar($id)
 	{
@@ -164,7 +161,7 @@ class AccountingDocumentController extends Controller
                         }
 	}
         
-        	/**
+        /**
          * Updates a particular model.
          * If update is successful, the browser will be redirected to the 'view' page.
          * @access public
@@ -186,7 +183,8 @@ class AccountingDocumentController extends Controller
                 $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
                 $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
                 $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
-                $model->id_currency=Utility::snull($_POST['AccountingDocument']['id_currency']);
+                 $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
+-               $model->id_currency=$id_currency;
                         if($model->save())
                                 return "Actualizado id: ".$model->id;
                         else
