@@ -892,11 +892,7 @@ $('#botAgregarDatosContable').click('on',function(e)
              {
                  var tipo=$(this).attr('id');
                  if(tipo=="confirma")
-                 {             var cuantos=array.length;
-                               if (id=='#on')
-                                   {
-                                       cuantos=cuantos-1;
-                                   }
+                 {             
                     var array= $("input[type=checkbox]:checked").each(function(){
                     var id=($(this).val()),
                     paraBorrar=$('#'+id);
@@ -912,15 +908,18 @@ $('#botAgregarDatosContable').click('on',function(e)
                             }
                     });
                   });
-                 if (cuantos >0){
+                  var cuantos=array.length,
+                  id=($("input[type=checkbox]:checked").val());
+                  if (cuantos >0){
+                     if(id=='on'){
+                         cuantos=array.length-1;
+                     }
                       var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                                          setTimeout(function()
                                          { exito.fadeOut('fast');
                                              $('.cargando').fadeOut('fast');
                                          }, 3000);   
                  }
-             
-                    
                 }else{
                     revisa.fadeOut('slow'); 
                     revisa=null;
