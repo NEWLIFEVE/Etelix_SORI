@@ -904,16 +904,20 @@ $('#botAgregarDatosContable').click('on',function(e)
                             {
                                var cuantos=array.length;
                                paraBorrar.empty(); 
-                                         var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                                         setTimeout(function()
-                                         { exito.fadeOut('fast');
-                                             $('.cargando').fadeOut('fast');
-                                         }, 4000);   
                                revisa=null;
                             }
                     });
                   });
-                 }else{
+                 if (cuantos >0){
+                      var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                         setTimeout(function()
+                                         { exito.fadeOut('fast');
+                                             $('.cargando').fadeOut('fast');
+                                         }, 3000);   
+                 }
+             
+                    
+                }else{
                     revisa.fadeOut('slow'); 
                     revisa=null;
                  }
