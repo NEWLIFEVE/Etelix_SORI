@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -91,35 +91,54 @@ class AccountingDocumentTempController extends Controller
             
             $selecTipoDoc = $_GET['selecTipoDoc'];
             $idCarrier = $_GET['idCarrier'];
+            $idGrupo = $_GET['idGrupo'];
             $fechaEmision = $_GET['fechaEmision'];
             $desdeFecha = $_GET['desdeFecha'];
             $hastaFecha = $_GET['hastaFecha'];
             $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
             $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
-            $fechaEnvio = $_GET['fechaEnvio'];
             $numDocumento = $_GET['numDocumento'];
             $minutos = $_GET['minutos'];
             $cantidad = $_GET['cantidad'];
+            $currency = $_GET['currency'];
             $nota = $_GET['nota'];
             $idCarrierName = "";
             $selecTipoDocName = "";
-            $idCarrierName.= Carrier::getName($idCarrier);
+            $valid_received_hour = "";
+            $valid_received_date = "";
+            $minutosTemp = "";
+            $moneda= "";
             $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-            $valid_received_hour = '';
-            $valid_received_date = '';
+            $minutosTemp.= Utility::snull($minutos);
+//            $moneda.= Currency::getName($currency);
 
             $model = new AccountingDocumentTemp;
             $model->id_type_accounting_document = $selecTipoDoc;
-            $model->id_carrier = $idCarrier;
             $model->issue_date = Utility::snull($fechaEmision);
             $model->from_date = Utility::snull($desdeFecha);
             $model->to_date = Utility::snull($hastaFecha);
-            $model->sent_date = Utility::snull($fechaEnvio);
+            $model->sent_date = Utility::snull($fechaEmision);
             $model->doc_number = $numDocumento;
-            $model->minutes = Utility::snull($minutos);
+            $model->minutes = $minutosTemp;
             $model->amount = Utility::snull($cantidad);
             $model->note = Utility::snull($nota);
             
+                if ($idCarrier==''||$idCarrier==NULL){
+                    $idCarrierName.= CarrierGroups::getName($idGrupo);
+                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
+                    $model->id_carrier = $grupoCarrier;
+                }else{
+                $model->id_carrier = $idCarrier;
+                $idCarrierName.= Carrier::getName($idCarrier);
+                }
+                
+                if ($currency==''||$currency==NULL){
+                    $model->id_currency='1';
+                    $moneda.=Currency::getName(1);
+                }else{
+                    $model->id_currency =$currency;
+                    $moneda.= Currency::getName($currency);
+                }
             if ($selecTipoDoc == '4') {
                 $model->email_received_hour = NULL;
                 $model->valid_received_hour = NULL;
@@ -167,7 +186,11 @@ class AccountingDocumentTempController extends Controller
                 }
             }         
 
-
+            if ($selecTipoDoc == '1'){
+                $model->confirm = 0;
+            }else{
+                $model->confirm = 1;
+            }
 
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
@@ -182,10 +205,11 @@ class AccountingDocumentTempController extends Controller
                 $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
                 $params['valid_received_dateTemp'] = $valid_received_date;
                 $params['valid_received_hourTemp'] = $valid_received_hour;
-                $params['fechaEnvioTemp'] = $fechaEnvio;
+                $params['fechaEnvioTemp'] = $fechaEmision;
                 $params['numDocumentoTemp'] = $model->doc_number;
-                $params['minutosTemp'] = $model->minutes;
+                $params['minutosTemp'] = $minutosTemp;
                 $params['cantidadTemp'] = $model->amount;
+                $params['currencyTemp'] = $moneda;
                 
                 echo json_encode($params);
             }
@@ -226,61 +250,63 @@ class AccountingDocumentTempController extends Controller
         }
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @access public
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
+         * Updates a particular model.
+         * If update is successful, the browser will be redirected to the 'view' page.
+         * @access public
+         * @param integer $id the ID of the model to be updated
+         */
+        public function actionUpdate($id)
+        {
+                $model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		/*if(isset($_POST['AccountingDocumentTemp']))
-		{
-			$model->attributes=$_POST['AccountingDocumentTemp'];
-			$model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
-			$model->id_carrier=Carrier::getId($model->id_carrier);
-			if($model->save())
-				return "Actualizado id: ".$model->id;
-			else
-				return "Algo salio mal";
-		}*/
-		if(isset($_POST['AccountingDocumentTemp']))
-		{
+                // Uncomment the following line if AJAX validation is needed
+                // $this->performAjaxValidation($model);
+                /*if(isset($_POST['AccountingDocumentTemp']))
+                {
+                        $model->attributes=$_POST['AccountingDocumentTemp'];
+                        $model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
+                        $model->id_carrier=Carrier::getId($model->id_carrier);
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }*/
+                if(isset($_POST['AccountingDocumentTemp']))
+                {
                     
-			$model->attributes=$_POST['AccountingDocumentTemp'];
-//			$model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-//			$model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+                        $model->attributes=$_POST['AccountingDocumentTemp'];
+//                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+//                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
                               
-        	$model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
-        	$model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
-        	$model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
-        	$model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
-        	$model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
-        	$model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
-        	$model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
-        	$model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
-        	$model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
-        	$model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
-        	$model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
-			if($model->save())
-				return "Actualizado id: ".$model->id;
-			else
-				return "Algo salio mal";
-		}
-		/*$this->render('update',array(
-			'model'=>$model,
-		));*/
-	}
+                $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
+                $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
+                $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
+                $model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
+                $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
+                $model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
+                $model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
+                $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
+                $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
+                $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+                 $id_currency=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
+-               $model->id_currency=$id_currency;
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }
+                /*$this->render('update',array(
+                        'model'=>$model,
+                ));*/
+        }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @access public
-	 * @param integer $id the ID of the model to be deleted
-	 */
+        /**
+         * Deletes a particular model.
+         * If deletion is successful, the browser will be redirected to the 'admin' page.
+         * @access public
+         * @param integer $id the ID of the model to be deleted
+         */
 	/*public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();

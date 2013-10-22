@@ -366,6 +366,11 @@ width: 20%;
     position:relative;
     margin-top: 50px;  
 }
+.SelectGrupo
+{
+    position:relative;
+    margin-top: 50px;  
+}
 .lineabajo
 {
     background: url(../img/lineabajo.png) no-repeat 90% 0;
@@ -394,7 +399,7 @@ width: 20%;
     width: 156%;
     padding-bottom: 75px
 }
-.botAsignarDestination
+.botAsignarDestination,.AsignarCarrierGroup
 {
     margin-left: 20%;
     width: 24%;
@@ -408,17 +413,17 @@ width: 20%;
 {
     padding-top: 2%;
 }
-.AccountingDocumentTemp_id_type_accounting_document
+.input_largos
 {
     width: 76%; 
 }
 
-#botAsignar,#botAsignarContrato,#botAgregarDatosContable ,#botAgregarDatosContableFinal
+#botAsignar,#botAsignarContrato,#botAgregarDatosContable ,#botAgregarDatosContableFinal, #botConfirmarDatosContableFinal
 {
     margin-left: 20%;width: 24%;
 }
 @media screen and (max-width: 600px) { /* 13 / 390 */
-   #botAsignar,#botAsignarContrato,#botAgregarDatosContable, #botAgregarDatosContableFinal{ margin-left: 1%;}
+   #botAsignar,#botAsignarContrato,#botAgregarDatosContable, #botAgregarDatosContableFinal, .AsignarCarrierGroup{ margin-left: 1%;}
 }
 
 
@@ -432,7 +437,7 @@ width: 20%;
     color:rgba(111,204,187,1);
     width: 5%;
 }
-.CarrierDocument
+.CarrierDocument,.GrupoDocument
 {
     width: 76%;
     float: right;
@@ -441,6 +446,7 @@ width: 20%;
     margin-right: -271px;
     display: none;
 }
+
 @media screen and (max-width: 914px) { 
     .CarrierDocument{ width: 76%; margin-top: -10.3%; margin-right: -199px;}
 }
@@ -564,6 +570,11 @@ width: 20%;
     width: 24%;
 }
 
+.SelectGrupo
+{
+    margin-left:25%;
+}
+
 @media screen and (max-width: 1034px) { 
     #select_right, #select_left{ width: 314px}
     .botAsignarDestination{margin-left: 14%;}
@@ -598,19 +609,179 @@ width: 20%;
     .mensajeFinal {margin-left: 0%; margin-top: 100%; width: 77%; position:absolute;}
     .tablamensaje {margin-left: -9%}
     
+    .SelectGrupo {width: 143%; margin-left: 3%;}
     .carrierSelect {width: 189%; margin-left: 3%;}
     .contratoForm {width: 96%; margin-left: 3%;}
-    .AccountingDocumentTemp_id_type_accounting_document{width: 144%; margin-left: 3%;}
-    .CarrierDocument  {margin-top: 0.9%; width: 144%; margin-right: -141px;}
+    /*.GrupoOperadores {width: 96%; margin-left: 0%;}*/
+    .input_largos{width: 144%; margin-left: 3%;}
+    .CarrierDocument {margin-top: 0.9%; width: 144%; margin-right: -141px;}
     #AccountingDocumentTemp_note {width: 94%; margin-left: 1%;}
     #Managers_address {width: 55%; margin-left: 1%;}
+    #GeographicZone_name_zona,#GeographicZone_color_zona {width: 87%; margin-left: 2%;}
     
     #botAsignarContrato{margin-left: -52%;}
-    #botAsignar{margin-left: -53%;margin-top: 12%;} 
+    #botAsignar, .AsignarCarrierGroup, .botGuardarZonaColor{margin-left: -53%;margin-top: 12%;} 
     .botAsignarDestination{margin-left: -47%; margin-top: 30%;}
     #botAgregarDatosContable, #botAgregarDatosContableFinal, .G_ManagerNuevo{margin-left: -52%;}  
 }
 #Managers_address
 {
     width: 94.5%;
+}
+
+.paletaColores
+{
+    width: 12em;
+    height: 10em;
+    background: rgba(111,204,187,1);
+    padding: 1% 0% 0% 1%;
+    display: none;
+    margin-left: 45%;
+    margin-top: -12%;
+    position: absolute;
+    display: none;
+}
+.paletaColores:hover
+{
+    background: white;
+}
+.color1
+{   font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #2ECCFA;
+    float: left;
+}
+.color2
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #00FF80;
+    float: left;
+}
+.color3
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #F4FA58;
+    float: left;
+}
+.color4
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #FE9A2E;
+    float: left;
+}
+.color5
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #FF0000;
+    float: left;
+}
+.color6
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #D7DF01;
+    float: left;
+}
+.color7
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #BDBDBD;
+    float: left;
+}
+.color8
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #2E2E2E;
+    float: left;
+}
+.color9
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #F5BCA9;
+    float: left;
+}
+.color10
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #F6D8CE;
+    float: left;
+}
+.color11
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #4B610B;
+    float: left;
+}
+.color12
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #0B3B2E;
+    float: left;
+}
+.color13
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #0A2A1B;
+    float: left;
+}
+.color14
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #0B610B;
+    float: left;
+}
+.color15
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #2EFE9A;
+    float: left;
+}
+.color16
+{
+    font-size: 0px;
+    width: 23%;
+    height: 22%;
+    background: #81BEF7;
+    float: left;
+}
+.botGuardarZonaColor
+{
+    margin-top: 3%;
+}
+
+input#GeographicZone_name_zona, select#GeographicZone_name_zona
+{
+    display:none;
+}
+.clockhide
+{
+    display:none;
 }

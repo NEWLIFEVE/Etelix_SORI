@@ -1,6 +1,6 @@
 <?php
 
-class ManagersController extends Controller
+class CarrierGroupsController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class ManagersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','create','createCM','GuardarManager'),
+				'actions'=>array('index','view','DynamicCarrierAsignados'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,7 +36,7 @@ class ManagersController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create'),
+				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -62,14 +62,14 @@ class ManagersController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Managers;
+		$model=new CarrierGroups;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Managers']))
+		if(isset($_POST['CarrierGroups']))
 		{
-			$model->attributes=$_POST['Managers'];
+			$model->attributes=$_POST['CarrierGroups'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -91,9 +91,9 @@ class ManagersController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Managers']))
+		if(isset($_POST['CarrierGroups']))
 		{
-			$model->attributes=$_POST['Managers'];
+			$model->attributes=$_POST['CarrierGroups'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,7 +122,7 @@ class ManagersController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Managers');
+		$dataProvider=new CActiveDataProvider('CarrierGroups');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -133,10 +133,10 @@ class ManagersController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Managers('search');
+		$model=new CarrierGroups('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Managers']))
-			$model->attributes=$_GET['Managers'];
+		if(isset($_GET['CarrierGroups']))
+			$model->attributes=$_GET['CarrierGroups'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -147,12 +147,12 @@ class ManagersController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Managers the loaded model
+	 * @return CarrierGroups the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Managers::model()->findByPk($id);
+		$model=CarrierGroups::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -160,45 +160,37 @@ class ManagersController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Managers $model the model to be validated
+	 * @param CarrierGroups $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='managers-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='carrier-groups-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}   
-        	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionGuardarManager()
-	{
-            $name=$_GET['name'];
-            $lastname=$_GET['lastname'];
-            $record_date=$_GET['record_date'];
-            $address=$_GET['address'];
-            $position=$_GET['position'];
-            
-		$model=new Managers;
-
-                $model->name=$name;
-                $model->lastname=$lastname;
-                $model->address=Utility::snull($address);
-                $model->record_date=Utility::snull($record_date);
-                $model->position=Utility::snull($position);
-                
-                  if ($model->save()) {
-                    $params['nameSave'] = $name;
-                    $params['lastnameSave'] = $lastname;
-                    $params['addressSave'] = $address;
-                    $params['record_dateSave'] = $record_date;
-                    $params['positionSave'] = $position;
-
-                    echo json_encode($params);
-                  }
-
 	}
+         /**
+	 *  recibe el valor de $grupo 
+         *  va a ejecutar una de las consultas al modelo
+         * trae los nombres de carriers pertenecientes al grupo, hasta views.js para ser vistos en la vista
+	 */
+        public function actionDynamicCarrierAsignados()
+        { 
+            
+            $grupo=($_POST['grupo']);
+            $data = Carrier::getListCarriersGrupo($grupo);
+
+            foreach($data as $value=>$name)
+            {
+                echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+            }
+            
+        }
+         /**
+         * 
+         */
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
 }

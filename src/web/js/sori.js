@@ -34,14 +34,14 @@ $SORI.UI=(function()
 			}
                         if(i>=8 && i<=9)
 			{
-				$(input).clockpick();
-			}
+				$(input).clockpick({ starthour: "00", endhour: "23", military: "TRUE" });
+			} 
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[14].innerHTML="";
+		obj[0].children[14].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -60,8 +60,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[14].innerHTML="";
+		obj[0].children[14].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}

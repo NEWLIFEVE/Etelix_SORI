@@ -28,7 +28,7 @@ class AccountingDocumentController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','Confirmar','Borrar'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -63,6 +63,7 @@ class AccountingDocumentController extends Controller
 	public function actionCreate()
 	{
 		$model=new AccountingDocument;
+                $lista=AccountingDocument::listaFacturasEnviadas(Yii::app()->user->id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -75,31 +76,7 @@ class AccountingDocumentController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['AccountingDocument']))
-		{
-			$model->attributes=$_POST['AccountingDocument'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'lista'=>$lista
 		));
 	}
 
@@ -169,5 +146,65 @@ class AccountingDocumentController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        
+	/**
+	 */
+	public function actionConfirmar($id)
+	{
+//	          $id=  AccountingDocument::getConfirmID(0); 
+                  $model=$this->loadModel($id);
+        	  $model->confirm=1;
+                  $model->save();
+			if($model->save()){
+                            echo 'guardo';
+                        }
+	}
+        
+        /**
+         * Updates a particular model.
+         * If update is successful, the browser will be redirected to the 'view' page.
+         * @access public
+         * @param integer $id the ID of the model to be updated
+         */
+        public function actionUpdate($id)
+        {
+                $model=$this->loadModel($id);
+
+                if(isset($_POST['AccountingDocument']))
+                {
+                    
+                        $model->attributes=$_POST['AccountingDocument'];
+//                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+//                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
+                              
+                $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
+                $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
+                $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
+                $model->email_received_date=Utility::snull($_POST['AccountingDocument']['email_received_date']);
+                $model->valid_received_date=Utility::snull($_POST['AccountingDocument']['valid_received_date']);
+                $model->email_received_hour=Utility::snull($_POST['AccountingDocument']['email_received_hour']);
+                $model->valid_received_hour=Utility::snull($_POST['AccountingDocument']['valid_received_hour']);
+                $model->sent_date=Utility::snull($_POST['AccountingDocument']['sent_date']);
+                $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
+                $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
+                $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
+                 $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
+-               $model->id_currency=$id_currency;
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }
+        }
+         /**
+         * eliminar a particular model.
+         * If update is successful, the browser will be redirected to the 'view' page.
+         * @access public
+         * @param integer $id the ID of the model to be delete
+         */
+        public function actionBorrar($id)
+	{
+		$this->loadModel($id)->delete();
 	}
 }
