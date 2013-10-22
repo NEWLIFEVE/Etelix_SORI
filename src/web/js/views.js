@@ -884,6 +884,19 @@ $('#botAgregarDatosContable').click('on',function(e)
   
      $('#botConfirmarDatosContableFinal').click('on',function()
     {    
+        var dato=$('input[type="checkbox"]').filter(function()
+        {
+            return $(this).is(':checked');
+        });
+        if(dato.length<=0)
+        {
+                        var stop= $("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ninguna factura para confirmar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();   
+                         $("body").append(stop);
+                        stop.fadeIn('fast');
+                        setTimeout(function()
+                        { stop.fadeOut('fast');
+                        }, 1000);
+        }else{
              var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
             $("body").append(revisa);
             revisa.fadeIn('fast'); 
@@ -924,7 +937,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                     revisa.fadeOut('slow'); 
                     revisa=null;
                  }
-             });             
+             });   
+        }      
     });
 /**Vista Uploads*/
 $(function() 
