@@ -28,7 +28,7 @@ class AccountingDocumentController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','Confirmar'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -153,7 +153,7 @@ class AccountingDocumentController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionConfirmar($id)
 	{
 //	          $id=  AccountingDocument::getConfirmID(0); 
                   $model=$this->loadModel($id);
@@ -163,4 +163,34 @@ class AccountingDocumentController extends Controller
                             echo 'guardo';
                         }
 	}
+        
+        	/**
+         * Updates a particular model.
+         * If update is successful, the browser will be redirected to the 'view' page.
+         * @access public
+         * @param integer $id the ID of the model to be updated
+         */
+        public function actionUpdate($id)
+        {
+                $model=$this->loadModel($id);
+
+                if(isset($_POST['AccountingDocument']))
+                {
+                    
+                        $model->attributes=$_POST['AccountingDocument'];
+                
+                $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
+                $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
+                $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
+                $model->sent_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
+                $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
+                $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
+                $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
+                $model->id_currency=Utility::snull($_POST['AccountingDocument']['id_currency']);
+                        if($model->save())
+                                return "Actualizado id: ".$model->id;
+                        else
+                                return "Algo salio mal";
+                }
+        }
 }

@@ -781,3 +781,7 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
 {
     display:none;
 }
+.clockhide
+{
+    display:none;
+}

@@ -289,6 +289,7 @@ class AccountingDocumentTempController extends Controller
                 $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
                 $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
                 $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+                $model->id_currency=Utility::snull($_POST['AccountingDocumentTemp']['id_currency']);
                         if($model->save())
                                 return "Actualizado id: ".$model->id;
                         else

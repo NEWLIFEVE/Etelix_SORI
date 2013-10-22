@@ -890,7 +890,7 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                  $.ajax({ 
                          type: "GET",
-                         url: "../AccountingDocument/Update/"+id,
+                         url: "../AccountingDocument/Confirmar/"+id,
                          success: function(data) 
                          {
                             alert(data);

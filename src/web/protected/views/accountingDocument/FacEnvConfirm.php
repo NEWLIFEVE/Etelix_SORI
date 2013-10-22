@@ -16,14 +16,59 @@
         );
     ?>
     <?php echo $form->errorSummary($model); ?>
-    <p class="note">Fields with <span class="required">*</span> are required.</p>
+     <p class="note">Fields with <span class="required">*</span> are required.</p>
+    <div class="formularioDocumento">
+        
+            <div class="clockhide">
+                <?php echo $form->labelEx($model,'issue_date'); ?>
+                <?php $this->widget('zii.widgets.jui.CJuiDatePicker',array(
+                    'model'=>$model,
+                    'attribute'=>'issue_date',
+                    'options'=>array(
+                        'dateFormat'=>'yy-mm-dd'
+                        ),
+                    'htmlOptions'=>array(
+                        'size'=>'10', // textField size
+                        'maxlength'=>'10', // textField maxlength
+                        ),
+                    )
+                    ); 
+                ?>
+                <?php echo $form->error($model,'issue_date'); ?>
+            </div>
+        
+            <div class="clockhide">
+                <?php echo $form->labelEx($model,'email_received_hour'); ?>
+                <?php
+                    $this->widget('webroot.protected.extensions.clockpick.EClockpick', array(
+                        'model'=>$model,
+                        'attribute'=>'email_received_hour',
+                        'options'=>array(
 
+                            'starthour'=>00,
+                            'endhour'=>23,
+                            'showminutes'=>TRUE,
+                            'minutedivisions'=>12,
+                            'military'=>TRUE,
+                            'event'=>'focus',
+                            'layout'=>'horizontal'
+                            ),
+                        'htmlOptions'=>array(
+                            'size'=>20,
+                            'maxlength'=>10,
+                            'readonly'=>'readonly'
+                            )
+                        )
+                    );
+                ?>
+                <?php echo $form->error($model,'email_received_hour'); ?>
+            </div>
+    </div>
+     
     <?php $this->endWidget(); ?>
+     
     <div class="VistDocTemporales">
-        <!--<br>-->
-<!--        <div id="botAgregarDatosContableFinal" class="row buttons" <?php // if($lista==null){echo "style='display:none;'";}?>>
-            <?php // echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
-        </div>-->
+
             <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
                 <tr>
                     <td> Tipo de Doc </td>
