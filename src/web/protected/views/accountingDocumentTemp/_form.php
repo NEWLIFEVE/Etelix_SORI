@@ -155,7 +155,7 @@
                 
             <div class="contratoForm">
                 <?php echo $form->labelEx($model,'id_currency'); ?>
-                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency()); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
 
