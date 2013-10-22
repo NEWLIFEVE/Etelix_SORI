@@ -30,7 +30,8 @@
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
     <div class="GrupoDocument input_largos ">
-        <?php echo $form->labelEx($model,'carrier_groups'); ?>
+        <?php // echo $form->labelEx($model,'carrier_groups'); ?>
+        <label>Grupo</label>
         <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'carrier_groups'); ?>
     </div>

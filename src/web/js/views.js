@@ -883,7 +883,20 @@ $('#botAgregarDatosContable').click('on',function(e)
      
   
      $('#botConfirmarDatosContableFinal').click('on',function()
-    {       
+    {    
+        var dato=$('input[type="checkbox"]').filter(function()
+        {
+            return $(this).is(':checked');
+        });
+        if(dato.length<=0)
+        {
+                        var stop= $("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ninguna factura para confirmar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();   
+                         $("body").append(stop);
+                        stop.fadeIn('fast');
+                        setTimeout(function()
+                        { stop.fadeOut('fast');
+                        }, 1000);
+        }else{
              var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
             $("body").append(revisa);
             revisa.fadeIn('fast'); 
@@ -892,7 +905,7 @@ $('#botAgregarDatosContable').click('on',function(e)
              {
                  var tipo=$(this).attr('id');
                  if(tipo=="confirma")
-                 {
+                 {             
                     var array= $("input[type=checkbox]:checked").each(function(){
                     var id=($(this).val()),
                     paraBorrar=$('#'+id);
@@ -902,26 +915,30 @@ $('#botAgregarDatosContable').click('on',function(e)
                             url: "../AccountingDocument/Confirmar/"+id,
                             success: function(data) 
                             {
-                               var cuantos=array.length;
+      
                                paraBorrar.empty(); 
                                revisa=null;
                             }
                     });
                   });
-                 if (cuantos >0){
+                  var cuantos=array.length,
+                  id=($("input[type=checkbox]:checked").val());
+                  if (cuantos >0){
+                     if(id=='on'){
+                         cuantos=array.length-1;
+                     }
                       var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                                          setTimeout(function()
                                          { exito.fadeOut('fast');
                                              $('.cargando').fadeOut('fast');
                                          }, 3000);   
                  }
-             
-                    
                 }else{
                     revisa.fadeOut('slow'); 
                     revisa=null;
                  }
-             });             
+             });   
+        }      
     });
 /**Vista Uploads*/
 $(function() 

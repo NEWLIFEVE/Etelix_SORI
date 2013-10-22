@@ -43,12 +43,18 @@ return array(
             ),
         'db'=>array(
 
-            'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_sori',
-//            'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
+   //         'connectionString'=>'pgsql:host=localhost;port=5432;dbname=dev_sori',
+            'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
             'emulatePrepare'=>true,
             'username'=>'postgres',
+<<<<<<< HEAD
             'password'=>'Nsusfd8263',           
 //            'password'=>'123',
+=======
+   //         'password'=>'Nsusfd8263',
+
+            'password'=>'123',
+>>>>>>> 06b7d225ca3cefa3f49e61cd70a85e1f50c07af2
             'charset'=>'utf8',
             ),
         'errorHandler'=>array(
