@@ -817,7 +817,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
-                                    $("#AccountingDocumentTemp_id_currency").val('');
+//                                    $("#AccountingDocumentTemp_id_currency").val('');
                                     $("#AccountingDocumentTemp_note").val('');
                                     if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                                          $("#AccountingDocumentTemp_doc_number").val('');
