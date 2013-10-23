@@ -34,14 +34,14 @@ $SORI.UI=(function()
 			}
                         if(i>=8 && i<=9)
 			{
-				$(input).clockpick();
-			}
+				$(input).clockpick({ starthour: "00", endhour: "23", military: "TRUE" });
+			} 
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[14].innerHTML="";
+		obj[0].children[14].innerHTML="<img name='save' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -60,8 +60,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[14].innerHTML="";
+		obj[0].children[14].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -114,6 +114,7 @@ $SORI.UI=(function()
 		    $("#Contrato_production_date").val('');
 		    $("#Contrato_id_termino_pago").val('');
 		    $("#Contrato_id_monetizable").val('');
+		    $("#Contrato_up").val('');
 		    $("#Contrato_id_disputa").val('');
 		    $("#F_Firma_Contrato_Oculto").val('');
 		    $("#F_P_produccion_Oculto").val('');
@@ -153,6 +154,8 @@ $SORI.UI=(function()
 		            $("#Contrato_id_monetizable").val(obj.monetizable);
 		            $("#Contrato_id_managers").val(obj.manager);
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
+		            $("#Contrato_up").val(obj.Contrato_up);
+		            $("#Contrato_upOculto").val(obj.Contrato_up);
 		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
 		            $("#F_P_produccion_Oculto").val(obj.production_date);
 		            $("#TerminoP_Oculto").val(obj.termino_pago);
@@ -165,13 +168,8 @@ $SORI.UI=(function()
 
 		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
 		            	fechaManagerCarrier=(obj.fechaManager),
-		            	ManagerUP=(obj.managerUP);
-                                        if(ManagerUP=='1'){
-                                           var ManagerUPName='Presidencia';
-                                          }else{
-                                               ManagerUPName='Ventas';
-                                          }
-		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +ManagerUPName+"  / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>");
+
+		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>");
 		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\ -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
 		            $('.manageractual').append(managerA);
 		            managerA.slideDown('slow');

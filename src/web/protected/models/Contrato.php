@@ -10,6 +10,7 @@
  * @property string $end_date
  * @property integer $id_carrier
  * @property integer $id_company
+ * @property integer $up
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
@@ -49,7 +50,7 @@ class Contrato extends CActiveRecord
 			array('production_date, end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, sign_date, production_date, end_date, id_carrier, id_company', 'safe', 'on'=>'search'),
+			array('id, sign_date, production_date, end_date, id_carrier, id_company, up', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,8 +87,9 @@ class Contrato extends CActiveRecord
 			'id_monetizable' => 'Monetizable',
 			'id_limite_credito' => 'Limite de Credito',
 			'id_limite_compra' => 'Limite de Compra',
-                        'id_managers' => 'Account Manager:',
-                        'id_disputa' => 'Dias para disputas:',
+                        'id_managers' => 'Account Manager',
+                        'id_disputa' => 'Dias para disputas',
+                        'up' => 'Unidad de Produccion',
 		);
 	}
 
@@ -115,6 +117,7 @@ class Contrato extends CActiveRecord
 		$criteria->compare('end_date',$this->end_date,true);
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_company',$this->id_company);
+		$criteria->compare('up',$this->up);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -145,5 +148,8 @@ class Contrato extends CActiveRecord
         public static function DatosContrato($carrier)
         {
            return self::model()->find("id_carrier=:carrier and end_date IS NULL", array(':carrier'=>$carrier));       
-        }     
+        }   
+        public static function getUP($id){           
+            return self::model()->find("id_carrier=:id_carrier", array(':id_carrier'=>$id))->up;
+        }
 }

@@ -20,6 +20,7 @@ class GeographicZone extends CActiveRecord
 	 * @return string the associated database table name
 	 */
     public $id_destination;
+    public $acciones;
     
     /**
      *
@@ -67,8 +68,9 @@ class GeographicZone extends CActiveRecord
 	{
 		return array(
 			'id' => 'Zona Geografica',
-			'name_zona' => 'Name Zona',
+			'name_zona' => 'Nombre Zona',
 			'color_zona' => 'Color Zona',
+			'acciones' => 'Acciones',
 
 		);
 	}
@@ -117,31 +119,38 @@ class GeographicZone extends CActiveRecord
 	public static function getName($GeographicZone)
 	{
 	    return self::model()->find("id=:id", array(':id'=>$GeographicZone))->name_zona;
-    }
+        }
 
-    /**
-     *
-     */
-    public static function getListGeo()
-    {
-        return CHtml::listData(GeographicZone::model()->findAll(array('order'=>'name_zona')),'id','name_zona');
-    } 
+        /**
+         *
+         */
+        public static function getListGeo()
+        {
+            return CHtml::listData(GeographicZone::model()->findAll(array('order'=>'name_zona')),'id','name_zona');
+        } 
 
-    /**
-     * Retorna el id de una busqueda especifica
-     * @access public
-     * @param string $name nombre del tipo de zona geografica
-     * @return int $id
-     */
-    public static function getId($name)
-    {
-    	if($name!=null)
-    	{
-    		 return self::model()->find('name_zona=:name',array(':name'=>$name))->id;
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
+        /**
+         * Retorna el id de una busqueda especifica
+         * @access public
+         * @param string $name nombre del tipo de zona geografica
+         * @return int $id
+         */
+        public static function getId($name)
+        {
+            if($name!=null)
+            {
+                     return self::model()->find('name_zona=:name',array(':name'=>$name))->id;
+            }
+            else
+            {
+                    return false;
+            }
+        }
+         /**
+	 *
+	 */
+	public static function getColor($id)
+	{
+	    return self::model()->find("id=:id", array(':id'=>$id))->color_zona;
+        }
 }

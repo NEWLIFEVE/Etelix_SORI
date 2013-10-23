@@ -28,7 +28,7 @@ class GeographicZoneController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino'),
+				'actions'=>array('index','create','view','DynamicAsignados','ElijeTipoDestination','UpdateZonaDestino','CreateZoneColor','_geographicZoneAdmin','GuardarZoneColor','UpdateZoneColor','buscaColor'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -215,4 +215,76 @@ class GeographicZoneController extends Controller
                 echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
             }
         } 
+        /**
+         *envia a la vista de nueva zona geograica
+	 */
+        public function actionCreateZoneColor()
+	{
+            
+            $model=new GeographicZone;
+
+		if(isset($_POST['GeographicZone']))
+		{
+			$model->attributes=$_POST['GeographicZone'];
+			if($model->save())
+				$this->render('_geographicZoneAdmin',array('model'=>$model));
+		}
+
+		$this->render('_zonaGeo_color',array(
+			'model'=>$model,
+		));
+	}
+        /**
+	 *  recibe el valor de name_zona y color_zona
+         *  va a ejecutar una de las consultas al modelo
+         * guarda una nueva zona geografica  y devuelve a views.js
+	 */
+        public function actionGuardarZoneColor()
+	{
+             $name_zona = $_GET['name_zona'];
+             $color_zona = $_GET['color_zona'];
+            
+            $model=new GeographicZone;
+            $model->name_zona = $name_zona;
+            $model->color_zona = $color_zona;
+
+            if($model->save())	
+            {
+                $params['name_zonaG'] =$model->name_zona;
+                $params['color_zonaG'] = $model->color_zona;
+
+                echo json_encode($params); 
+            }
+        }
+        /**
+	 *  recibe el valor de name_zonaSelect y color_zona
+         *  va a ejecutar una de las consultas al modelo
+         * actualiza la zona geografica y devuelve a views.js
+	 */
+        public function actionUpdateZoneColor()
+	{
+             $name_zonaSelect = $_GET['name_zonaSelect'];
+             $color_zona = $_GET['color_zona'];
+             $name_zonaG=GeographicZone::getName($name_zonaSelect);
+               $model=$this->loadModel($name_zonaSelect);
+               $model->color_zona = $color_zona;
+
+            if($model->save())	
+           {
+               $params['name_zonaG'] =$name_zonaG;
+               $params['color_zonaG'] = $model->color_zona;
+               echo json_encode($params); 
+           }	
+        }
+         /**
+	 *  recibe el valor de id_zonaSelect 
+         *  va a ejecutar una de las consultas al modelo
+         * trae el color al input en la vista, dependiendo del id
+	 */
+        public function actionbuscaColor()
+        {
+           $id_zonaSelect = $_GET['id_zonaSelect']; 
+           $color_zona=GeographicZone::getColor($id_zonaSelect);
+           echo $color_zona;
+        }
 }
