@@ -152,6 +152,8 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                       \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
                                       "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
                                       class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                        $(".cargando").hide();
+                        $(".mensaje").hide();
                         $("body").append(revisa);
                             revisa.fadeIn('fast');
                     }
@@ -219,6 +221,7 @@ $("#options_right").on( "click",function asignadosAnoasignados()
         $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
     });
 });
+
 $("#options_left").on( "click",  function noasignadosAasignados()
 {
     $('#select_right :selected').each(function(i,selected)
@@ -227,6 +230,7 @@ $("#options_left").on( "click",  function noasignadosAasignados()
         $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
     });
 });
+
 $("#CarrierManagers_id_managers").change(function()
 {
     $.ajax({
@@ -253,17 +257,19 @@ $('#botAsignarContrato').click('on',function(e)
     company = $("#Contrato_id_company").val(),
     termino_pago = $("#Contrato_id_termino_pago").val(),
     monetizable = $("#Contrato_id_monetizable").val(),
+    Contrato_up = $("#Contrato_up").val(),
     diasDisputaOculto = $("#dias_disputa_Oculto").val(),
     F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val(),
     F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val(),
     monetizableOculto = $("#monetizable_Oculto").val(),      
-    TPOculto = $("#TerminoP_Oculto").val();
+    TPOculto = $("#TerminoP_Oculto").val(),
+    Contrato_upOculto = $("#Contrato_upOculto").val();
     
     var dias_disputa=$("#Contrato_id_disputa").val(),
     credito=$("#Contrato_id_limite_credito").val(),
     compra=$("#Contrato_id_limite_compra").val();
     
-    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1'){
+    if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1' || Contrato_up==''){
         var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                     $("body").append(stop)
                     stop.fadeIn('fast');
@@ -274,7 +280,7 @@ $('#botAsignarContrato').click('on',function(e)
     $.ajax({
         type: "GET",
         url: "ContratoConfirma",
-        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
+        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
         success: function(data)
         {
             var obj=JSON.parse(data),
@@ -282,6 +288,7 @@ $('#botAsignarContrato').click('on',function(e)
             companyName=obj.companyName,
             termino_pName=obj.termino_pName,
             monetizableName=obj.monetizableName,
+            Contrato_upC=obj.Contrato_upConfirma,
             sign_date = $("#Contrato_sign_date").val(),
             production_date = $("#Contrato_production_date").val(),
             end_date=$("#Contrato_end_date").val(),
@@ -298,6 +305,7 @@ $('#botAsignarContrato').click('on',function(e)
                                 <p><h6>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
                                 <p>Dias de disputa: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
                                 <p>Limite de Compra: "+compra+"</p>\n\
+                                <p>Unidad de producción: "+Contrato_upC+"</p>\n\
                                 <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
                                 <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
                                 </h6>\n\
@@ -325,7 +333,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backF_Firma ="Fecha de firma de contrato: ";
-                }       
+                }  
                 if(F_P_produccion_Oculto!=production_date)
                 {
                     var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ";
@@ -333,7 +341,7 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     backProduccion ="Fecha de Puesta en Produccion: ";
-                }       
+                }
                 if(TPOculto!=termino_pago)
                 {
                     var backTPago="Terminos de pago de: "+termino_pNameO+" a ";
@@ -366,6 +374,23 @@ $('#botAsignarContrato').click('on',function(e)
                 {
                     backCompra="Limite de Compra: ";  
                 }
+                if(Contrato_upOculto==''){
+                     backUP="Unidad de producción: ";  
+                }else{
+                    if(Contrato_upOculto != Contrato_up)
+                    {
+                        if (Contrato_upOculto==0){
+                            Contrato_upOculto='Ventas';
+                        }else if(Contrato_upOculto==1){
+                            Contrato_upOculto='Presidencia';
+                        }
+                        var backUP="Unidad de producción de: "+Contrato_upOculto+" a "; 
+                    }
+                    else
+                    {
+                        backUP="Unidad de producción: ";  
+                    }
+                }
                 if(end_date!="")
                 {
                     var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
@@ -379,6 +404,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                    "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
                                                    "+backCredito+" "+credito+"<p>\n\
                                                    "+backCompra+" "+compra+"<p>\n\
+                                                   "+backUP+" "+Contrato_upC+"<p>\n\
                                                <p>"+backF_Firma+" "+sign_date+"<p> \n\
                                                    "+backProduccion+" "+production_date+"<p>";
                 }
@@ -397,7 +423,7 @@ $('#botAsignarContrato').click('on',function(e)
                     $.ajax({
                         type: "GET",
                         url: "Contrato",
-                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra,
+                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up,
                         success: function(data) 
                         {  
                             
@@ -409,7 +435,7 @@ $('#botAsignarContrato').click('on',function(e)
                             else
                             {
                                 efectivo="<h4>"+guardoEdito+"\n\
-                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
                                                </h6><p><img src='/images/si.png'width='90px' height='50px'/>";
                             }
                             var exito=$('.mensaje').html(efectivo).hide().fadeIn('fast');
@@ -422,7 +448,7 @@ $('#botAsignarContrato').click('on',function(e)
                     });
                     $("#Contrato_id_company").prop("disabled", true);
                     $("#Contrato_end_date").prop("disabled", false);
-                    $("#Contrato_sign_date").prop("disabled", true);
+                    $("#Contrato_sign_date").prop("disabled", false);
                 }
                 else
                 {
@@ -602,7 +628,9 @@ $('#GeographicZone_id').change(function()
         });
     }
 });
-//     fin de adm de zonas y destinos
+/**
+ *   fin de adm de zonas y destinos
+ */
 
 /**
  * admin de documentos contables
@@ -610,72 +638,93 @@ $('#GeographicZone_id').change(function()
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
                       var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
-                      fechaDeEnvio= $('.fechaDeEnvio'),
+                      CarrierDocument=$('.CarrierDocument'),
+                      GrupoDocument=$('.GrupoDocument'),
                       emailReceivedDate=$('.emailReceivedDate'),
                       emailRecDate=$('.emailRecDate'),
                       fechaDeEmision=$('.fechaDeEmision'),
                       fechaDeInicio=$('.fechaDeInicio'),
                       fechaFinal=$('.fechaFinal'),
-                      emailReceivedTime=$('.emailReceivedTime');
+                      emailReceivedTime=$('.emailReceivedTime'),
+                      minutosDoc=$('.minutosDoc');
 
             if (tipoDocument=='1')
                 {
-                      fechaDeEnvio.show('slow'); 
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
+                      GrupoDocument.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
                       fechaDeEmision.show('slow');
                       fechaDeInicio.show('slow');
                       fechaFinal.show('slow');
+                      CarrierDocument.show('slow');
+                      minutosDoc.show('slow');
                       $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_issue_date").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
             if (tipoDocument=='2')
                 {
-                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
                       emailReceivedTime.show('slow');
                       emailRecDate.html('Fecha de recepción de Email');
                       fechaDeEmision.show('slow');
                       fechaDeInicio.show('slow');
                       fechaFinal.show('slow');
-                      $("#AccountingDocumentTemp_sent_date").val('');
-                }
-            if (tipoDocument=='3')
-                {
-                      fechaDeEnvio.show('slow'); 
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      emailRecDate.html('Fecha de recepción de Email');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.hide('slow');
-                      fechaFinal.hide('slow');
-                      $("#AccountingDocumentTemp_email_received_date").val('');
-                      $("#AccountingDocumentTemp_email_received_hour").val('');
+                      CarrierDocument.show('slow');
+                      minutosDoc.show('slow');
+                      GrupoDocument.hide('slow');
                       $("#AccountingDocumentTemp_issue_date").val('');
                       $("#AccountingDocumentTemp_from_date").val('');
                       $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
+                }
+            if (tipoDocument=='3')
+                {
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      emailRecDate.html('Fecha de recepción de Email');
+                      fechaDeEmision.show('slow');
+                      fechaDeInicio.hide('slow');
+                      fechaFinal.hide('slow');
+                      minutosDoc.hide('slow');
+                      GrupoDocument.show('slow');
+                      CarrierDocument.hide('slow');
+                      $("#AccountingDocumentTemp_email_received_date").val('');
+                      $("#AccountingDocumentTemp_email_received_hour").val('');
+                      $("#AccountingDocumentTemp_id_carrier").val('');
+                      $("#AccountingDocumentTemp_from_date").val('');
+                      $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
             if (tipoDocument=='4')
                 {
-                      fechaDeEnvio.hide('slow'); 
                       emailReceivedDate.show('slow'); 
+                      GrupoDocument.show('slow');
+                      CarrierDocument.hide('slow');
                       emailRecDate.html('Fecha de recepción');
                       emailReceivedTime.hide('slow');
                       fechaDeEmision.hide('slow');
                       fechaDeInicio.hide('slow');
                       fechaFinal.hide('slow');
+                      minutosDoc.hide('slow');
+                      $("#AccountingDocumentTemp_email_received_date").val('');
                       $("#AccountingDocumentTemp_email_received_hour").val('');
                       $("#AccountingDocumentTemp_sent_date").val('');
                       $("#AccountingDocumentTemp_issue_date").val('');
                       $("#AccountingDocumentTemp_from_date").val('');
                       $("#AccountingDocumentTemp_to_date").val('');
+                      $("#AccountingDocumentTemp_doc_number").val('');
                 }
                 
 
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
-    $('div.CarrierDocument').fadeIn('slow');
+//    $('div.CarrierDocument').fadeIn('slow');
+//    $('div.GrupoDocument').fadeIn('slow');
 });
 $('div.hacerUnaNota').click('on',function()
 {
@@ -695,54 +744,34 @@ $('#botAgregarDatosContable').click('on',function(e)
     e.preventDefault();
     var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
     idCarrier=$('#AccountingDocumentTemp_id_carrier').val(),
+    idGrupo=$('#AccountingDocumentTemp_carrier_groups').val(),
     fechaEmision=$('#AccountingDocumentTemp_issue_date').val(),
     desdeFecha=$('#AccountingDocumentTemp_from_date').val(),
     hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
     EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
     EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
-    fechaEnvio=$('#AccountingDocumentTemp_sent_date').val(),
     numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
     minutos=$('#AccountingDocumentTemp_minutes').val(),
     cantidad=$('#AccountingDocumentTemp_amount').val(),
+    currency=$('#AccountingDocumentTemp_id_currency').val(),
     nota=$('#AccountingDocumentTemp_note').val();
     
-    
-    
-//    ||fechaEnvio==''
-                 
-      if(idCarrier==''|| numDocumento==''|| minutos==''|| cantidad=='' )
-        {
-                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                  $("body").append(msjIndicador);
-                 msjIndicador.fadeIn('fast');
-                  setTimeout(function()
-                  {
-                      msjIndicador.fadeOut('fast');
-                  }, 1000); 
-                  
-//        }else if(selecTipoDoc==2 && EmailHoraRecepcion=='' || EmailfechaRecepcion=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-//           {  
-//                  msjIndicador.fadeIn('fast');
-//                  setTimeout(function()
-//                  {
-//                      msjIndicador.fadeOut('fast');
-//                  }, 1000);
-//           }
-//           else if(selecTipoDoc==1 || fechaEnvio=='' || fechaEmision==''|| desdeFecha==''|| hastaFecha=='')     
-//           {  
-//                  msjIndicador.fadeIn('fast');
-//                  setTimeout(function()
-//                  {
-//                      msjIndicador.fadeOut('fast');
-//                  }, 1000);
-//           
-        }
+    var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+    $("body").append(msjIndicador);
+//cantidad==''||numDocumento==''||fechaEmision==''
+    if( selecTipoDoc=='')
+    {
+        msjIndicador.fadeIn('fast');
+        setTimeout(function()
+        { msjIndicador.fadeOut('fast');
+        }, 1000);
+    }
     else
      { 
         $.ajax({
             type: "GET",
             url: "guardarListaTemp",
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&fechaEnvio="+fechaEnvio+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency,
 
               success: function(data) 
                       {
@@ -759,7 +788,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                     valid_received_hourTemp=obj.valid_received_hourTemp,
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
-                    cantidadTemp=obj.cantidadTemp;
+                    cantidadTemp=obj.cantidadTemp,
+                    currencyTemp=obj.currencyTemp;
                 
                 $(".tablaVistDocTemporales").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
@@ -775,6 +805,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[currency]'> "+currencyTemp+" </td>\n\
                                                         <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
 
@@ -784,12 +815,14 @@ $('#botAgregarDatosContable').click('on',function(e)
 
                                     $SORI.UI.init();
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
-                                    $("#AccountingDocumentTemp_email_received_hour").val('');
-                                    $("#AccountingDocumentTemp_doc_number").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
-                                    $("#AccountingDocumentTemp_sent_date").val('');
+//                                    $("#AccountingDocumentTemp_id_currency").val('');
                                     $("#AccountingDocumentTemp_note").val('');
+                                    if (selecTipoDoc=='3'||selecTipoDoc=='4'){
+                                         $("#AccountingDocumentTemp_doc_number").val('');
+                                         $("#AccountingDocumentTemp_issue_date").val('');
+                                     } 
                       }          
         }); 
      }
@@ -847,6 +880,66 @@ $('#botAgregarDatosContable').click('on',function(e)
                 }
            });
      });
+     
+  
+     $('#botConfirmarDatosContableFinal').click('on',function()
+    {    
+        var dato=$('input[type="checkbox"]').filter(function()
+        {
+            return $(this).is(':checked');
+        });
+        if(dato.length<=0)
+        {
+                        var stop= $("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ninguna factura para confirmar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();   
+                         $("body").append(stop);
+                        stop.fadeIn('fast');
+                        setTimeout(function()
+                        { stop.fadeOut('fast');
+                        }, 1000);
+        }else{
+             var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
+            $("body").append(revisa);
+            revisa.fadeIn('fast'); 
+
+            $('#confirma,#cancelar').on('click',function()
+             {
+                 var tipo=$(this).attr('id');
+                 if(tipo=="confirma")
+                 {             
+                    var array= $("input[type=checkbox]:checked").each(function(){
+                    var id=($(this).val()),
+                    paraBorrar=$('#'+id);
+                    
+                    $.ajax({ 
+                            type: "GET",
+                            url: "../AccountingDocument/Confirmar/"+id,
+                            success: function(data) 
+                            {
+      
+                               paraBorrar.empty(); 
+                               revisa=null;
+                            }
+                    });
+                  });
+                  var cuantos=array.length,
+                  id=($("input[type=checkbox]:checked").val());
+                  if (cuantos >0){
+                     if(id=='on'){
+                         cuantos=array.length-1;
+                     }
+                      var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                         setTimeout(function()
+                                         { exito.fadeOut('fast');
+                                             $('.cargando').fadeOut('fast');
+                                         }, 3000);   
+                 }
+                }else{
+                    revisa.fadeOut('slow'); 
+                    revisa=null;
+                 }
+             });   
+        }      
+    });
 /**Vista Uploads*/
 $(function() 
 {
@@ -882,3 +975,312 @@ $(function($)
 //                                     <td> Tipo de Doc </td><td> Carrier </td><td> Fecha de Emisión </td><td>\n\
 //                                     Monto </td></tr></table><p><img src='/images/si.png'width='95px' height='95px'/></p>");
 
+//**
+//modulo de colores por zona geografica
+//*
+
+$(".seleColor").on("click",function()
+{
+    var paleta=$('.paletaColores');
+    paleta.toggle("slow");
+});
+$( "button" ).click(function() {
+    var paleta=$('.paletaColores');
+    var text = $( this ).attr('id');
+    $( "input#GeographicZone_color_zona" ).val( text );
+    var color=("#"+text+"");
+    $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' );
+    paleta.hide("slow");
+});
+
+$('#GeographicZone_acciones').change(function()
+{
+    var acciones=$('#GeographicZone_acciones').val();
+    if (acciones==1){
+        $('div.valoresDocumento').slideDown('slow');
+        $('input#GeographicZone_name_zona').slideDown('slow');
+        $('select#GeographicZone_name_zona').hide('slow');
+        $('.acciones').html('Acciones');
+    }
+    if (acciones==2){
+        $('div.valoresDocumento').slideDown('slow');
+        $('select#GeographicZone_name_zona').slideDown('slow');
+        $('input#GeographicZone_name_zona').hide('slow');
+        $('.acciones').html('Acciones');
+    }
+    
+});
+
+$('select#GeographicZone_name_zona').change(function()
+{
+     var id_zonaSelect= $( "select#GeographicZone_name_zona" ).val();
+     $.ajax({
+            type: "GET",
+            url: "buscaColor",
+            data: "&id_zonaSelect="+id_zonaSelect,
+
+            success: function(data) 
+            {
+               $( "input#GeographicZone_color_zona" ).val( data );
+               var color=("#"+data+"");
+               $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' ); 
+            }
+     });
+});
+
+$('.botGuardarZonaColor').click('on',function(e)
+{
+    e.preventDefault();
+    var acciones=$('#GeographicZone_acciones').val(),
+    name_zona=$('input#GeographicZone_name_zona').val(),
+    name_zonaSelect=$('select#GeographicZone_name_zona').val(),
+    color_zona=$('#GeographicZone_color_zona').val();
+
+        if(acciones=='' || color_zona=='')
+    {  
+        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                    $("body").append(msjIndicador);
+                    msjIndicador.fadeIn('fast');
+                        setTimeout(function()
+                        {msjIndicador.fadeOut('fast');
+                        }, 1000);
+    }else{
+                if (acciones==1){
+                    var Action="GuardarZoneColor";
+                }if(acciones==2){
+                    Action="UpdateZoneColor";
+                }
+        $.ajax({
+            type: "GET",
+            url: Action,
+            data: "&name_zona="+name_zona+"&color_zona="+color_zona+"&name_zonaSelect="+name_zonaSelect,
+
+              success: function(data) 
+                      {
+                obj = JSON.parse(data);
+                var name_zonaSave=obj.name_zonaG, 
+                color_zonaSave=obj.color_zonaG;
+
+                  var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                        $("body").append(msjIndicador);
+                        msjIndicador.fadeIn('fast');
+                            setTimeout(function()
+                            {msjIndicador.fadeOut('fast');
+                            }, 3000);
+            $("select#GeographicZone_acciones").val('');
+            $("input#GeographicZone_name_zona").val('');
+            $( "select#GeographicZone_name_zona" ).val('');
+            $("#GeographicZone_color_zona").val('');
+            $( "input#GeographicZone_color_zona" ).css( "background-color","white" ).css( "opacity", '1' );
+                      }
+        });
+    }
+});
+//**
+//fin modulo de colores por zona geografica
+//**
+
+//**
+//modulo de grupo carriers
+//**
+
+$('#Carrier_id').change(function()
+{
+    var grupo=$('#Carrier_id').val();
+        $.ajax({
+            type: "POST",
+            url: "../CarrierGroups/DynamicCarrierAsignados",
+            data:   'grupo='+grupo,
+            success: function(data)
+            {
+                $('#select_left').empty().append(data);   
+            }
+        });
+});
+
+$(".AsignarCarrierGroup").on( "click",function(e)
+{
+    e.preventDefault();
+    $("#carriers select option").prop("selected",true);
+    var grupo=$('#Carrier_id').val(),
+    asignados=$('#select_left').val(),
+    noasignados=$('#select_right').val();
+    if(grupo<1)
+    {
+        var aguanta=$("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ningun grupo</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+        $("body").append(aguanta)
+            aguanta.fadeIn('fast');
+            setTimeout(function()
+            {
+                aguanta.fadeOut('fast');
+            }, 3000);$("#carriers select option").prop("selected",false);
+    }else 
+    {
+        $.ajax({
+            type: "GET",
+            url: "../Carrier/BuscaNombres",
+            data: "asignados="+asignados+"&noasignados="+noasignados+"&grupo="+grupo,
+            success: function(data)
+            {
+                obj = JSON.parse(data);
+                        var grupoName=obj.grupo, 
+                        asigname=obj.asignados,
+                        noasigname=obj.noasignados;
+                      
+                if(asigname<="1" && noasigname<="1")
+                     {
+                        var nohaynada=$("<div class='cargando'></div><div class='mensaje'><h3>No hay carriers preselccionados <br> para asignar o \n\
+                                                     desasignar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        $("body").append(nohaynada);
+                            nohaynada.fadeIn('fast');
+                            setTimeout(function()
+                            {
+                                nohaynada.fadeOut('fast');
+                            }, 4000);$("#carriers select option").prop("selected",false);
+                    }
+                    else
+                    {
+                        if(asigname=="")
+                        {
+                            var asig="";
+                        }
+                        else
+                        {
+                            var asig='Asignarle: ';
+                        }
+                        if(noasigname=="")
+                        {
+                            var desA="";
+                        }
+                        else
+                        {
+                            var desA='Dsasignarle:';
+                        }
+                        var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el grupo\n\
+                                      <br><b>"+grupoName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
+                                      "+noasigname+"</h6><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
+                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+                        $(".cargando").hide();
+                        $(".mensaje").hide();
+                        $("body").append(revisa);
+                            revisa.fadeIn('fast');
+
+                $('#confirma,#cancelar').on('click', function()
+                {
+                    var tipo=$(this).attr('id');
+                    if(tipo=="confirma"&& grupo!="")
+                    {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Carrier/SaveCarrierGroup",
+                            data:   '&grupo='+grupo+'&asignados='+asignados+'&noasignados='+noasignados,
+                            success: function(data)
+                            {
+                                obj = JSON.parse(data);
+                                var grupoSave=obj.grupo;
+
+                                        if(asigname=="")
+                                        {
+                                            var pudo="Le fue";
+                                        }
+                                        else
+                                        {
+                                            var pudo='Le fue asignado:';
+                                        }
+                                        if(noasigname=="")
+                                        {
+                                            var nopudo="";
+                                        }
+                                        else
+                                        {
+                                            var nopudo='Desasignado:';
+                                        }
+                                            var aguanta=$('.mensaje').html("<h3>El grupo <b>" + grupoSave + "</b><p>Fue modificado con exito</h3><br><h5>" + pudo + "<br><b>" + asigname + "</b><p>" + nopudo + "<br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                            setTimeout(function()
+                                            {
+                                                aguanta.fadeOut('fast');
+                                                $('.cargando').fadeOut('fast');
+                                            }, 4000);
+                                                $('#Carrier_id').val('');
+                                                $("#carriers select option").prop("selected",false);
+                            }
+                        });
+                    }else{
+                       revisa.fadeOut();
+                    }
+                });
+              }
+            }
+      });
+   }
+});
+//**
+//fin modulo de grupo carriers
+//**
+//**
+//agregar managers
+//**
+
+$(".G_ManagerNuevo").on( "click",function(e)
+{
+    e.preventDefault();
+    alert('hola');
+     var name=$('#Managers_name').val(),
+     lastname=$('#Managers_lastname').val(),
+     record_date=$('#Managers_record_date').val(),
+     position=$('#Managers_position').val(),
+     address=$('#Managers_address').val();
+     
+        $.ajax({
+            type: "GET",
+            url: "../Managers/GuardarManager",
+            data:   'name='+name+'&lastname='+lastname+'&record_date='+record_date+'&address='+address+'&position='+position,
+            success: function(data)
+            {
+                        var obj = JSON.parse(data),
+                        nameSave=obj.nameSave, 
+                        lastnameSave=obj.lastnameSave,
+                        addressSave=obj.addressSave,
+                        record_dateSave=obj.record_dateSave,
+                        positionSave=obj.positionSave;
+
+                        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El Manager <p><b>"+nameSave+" "+lastnameSave+"</b></h3><p>Fue almacenado con exito con los siguientes datos:\n\
+                                            <p><h5>Fecha de Ingreso: <b>"+record_dateSave+"</b><p>Posición: <b>"+positionSave+"</b><p>Dirección: <b>"+addressSave+"</b></h5><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(msjIndicador);
+                                msjIndicador.fadeIn('fast');
+                                    setTimeout(function()
+                                    {msjIndicador.fadeOut('fast');
+                                    }, 4000);
+                
+                 $('#Managers_name').val('');
+                 $('#Managers_lastname').val('');
+                 $('#Managers_record_date').val('');
+                 $('#Managers_position').val('');
+                 $('#Managers_address').val('');
+            
+            }
+        });
+    
+});
+
+//**
+//fin agregar managers
+//**
+
+//**
+//check marcar 
+//**
+function marcar(source)
+{
+    checkboxes = document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+    for (i = 0; i < checkboxes.length; i++) //recoremos todos los controles
+    {
+        if (checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+        {
+            checkboxes[i].checked = source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+        }
+    }
+};
+//**
+//fin check marcar
+//**

@@ -19,6 +19,8 @@
  * @property string $email_received_date
  * @property string $valid_received_hour
  * @property string $email_received_hour
+ * @property integer $id_currency
+ * @property integer $confirm
  *
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -33,7 +35,8 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return 'accounting_document_temp';
 	}
-
+        
+        public $carrier_groups;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -48,10 +51,10 @@ class AccountingDocumentTemp extends CActiveRecord
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 
-			array('issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date', 'safe'),
+			array('issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, id_currency, confirm', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency, confirm', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +68,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		return array(
 			'idTypeAccountingDocument' => array(self::BELONGS_TO, 'TypeAccountingDocument', 'id_type_accounting_document'),
                         'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
+                        'idCurrency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
 		);
 	}
 
@@ -89,6 +93,8 @@ class AccountingDocumentTemp extends CActiveRecord
 			'note' => 'Nota',
 			'id_type_accounting_document' => 'Tipo de documento contable',
 			'id_carrier' => 'Carrier',
+			'id_currency' => 'Moneda',
+			'confirm' => 'Confirmar',
 		);
 	}
 
@@ -125,6 +131,8 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('note',$this->note,true);
 		$criteria->compare('id_type_accounting_document',$this->id_type_accounting_document);
 		$criteria->compare('id_carrier',$this->id_carrier);
+		$criteria->compare('id_currency',$this->id_currency);
+		$criteria->compare('confirm',$this->confirm);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -159,11 +167,11 @@ class AccountingDocumentTemp extends CActiveRecord
 	 */
 	public static function listaGuardados($usuario)
 	{
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier
-			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c
-			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier  ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -198,34 +206,33 @@ class AccountingDocumentTemp extends CActiveRecord
              }                                                             
         }
         
-        public function getDates($EmailfechaRecepcion,$EmailHoraRecepcion){
-            $fecha = strtotime($EmailfechaRecepcion);
-            $dia = date("N", $fecha);
-            $Dates = array();
-                if ($dia == 1 || $dia == 2) {
-                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '5:00 PM') {
-                        $Dates['validDate'] = $EmailfechaRecepcion;
-                        $Dates['validHour'] = $EmailHoraRecepcion;
-                        $Dates['emailDate'] = $EmailfechaRecepcion;
-                        $Dates['emailHour'] = $EmailHoraRecepcion;
-                      
-                    } else {
-                        if($EmailHoraRecepcion < '08:00 AM'){
-                            $Dates['validDate'] = $EmailfechaRecepcion;
-                        }else{
-                            $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-                        }
-                        $Dates['validHour'] = '08:00 AM';
-                        $Dates['emailDate'] = $EmailfechaRecepcion;
-                        $Dates['emailHour'] = $EmailHoraRecepcion;
-                    }
-                } else {
-                    $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-                    $Dates['validHour'] = '08:00 AM';
-                    $Dates['emailDate'] = $EmailfechaRecepcion;
-                    $Dates['emailHour'] = $EmailHoraRecepcion;
-                }
-                return $Dates;
-        }
-
+//        public function getDates($EmailfechaRecepcion,$EmailHoraRecepcion){
+//            $fecha = strtotime($EmailfechaRecepcion);
+//            $dia = date("N", $fecha);
+//            $Dates = array();
+//                if ($dia == 1 || $dia == 2) {
+//                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '05:00 PM') {
+//                        $Dates['validDate'] = $EmailfechaRecepcion;
+//                        $Dates['validHour'] = $EmailHoraRecepcion;
+//                        $Dates['emailDate'] = $EmailfechaRecepcion;
+//                        $Dates['emailHour'] = $EmailHoraRecepcion;
+//                      
+//                    } else {
+//                        if($EmailHoraRecepcion < '08:00 AM'){
+//                            $Dates['validDate'] = $EmailfechaRecepcion;
+//                        }else{
+//                            $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
+//                        }
+//                        $Dates['validHour'] = '08:00 AM';
+//                        $Dates['emailDate'] = $EmailfechaRecepcion;
+//                        $Dates['emailHour'] = $EmailHoraRecepcion;
+//                    }
+//                } else {
+//                    $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
+//                    $Dates['validHour'] = '08:00 AM';
+//                    $Dates['emailDate'] = $EmailfechaRecepcion;
+//                    $Dates['emailHour'] = $EmailHoraRecepcion;
+//                }
+//                return $Dates;
+//        }
 }

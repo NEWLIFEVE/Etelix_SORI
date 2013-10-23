@@ -10,7 +10,6 @@
  * @property string $record_date
  * @property string $position
  * @property string $lastname
- * @property integer $up
  *
  * The followings are the available model relations:
  * @property CarrierManagers[] $carrierManagers
@@ -38,7 +37,7 @@ class Managers extends CActiveRecord
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, address, record_date, position, lastname,up', 'safe', 'on'=>'search'),
+			array('id, name, address, record_date, position, lastname', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,12 +60,11 @@ class Managers extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'address' => 'Address',
-			'record_date' => 'Record Date',
-			'position' => 'Position',
-			'lastname' => 'Lastname',
-			'lastname' => 'Unidad de Produccion',
+			'name' => 'Nombre',
+			'address' => 'Direccion',
+			'record_date' => 'Fecha de ingreso',
+			'position' => 'Posición',
+			'lastname' => 'Apellido',
 		);
 	}
 
@@ -94,7 +92,6 @@ class Managers extends CActiveRecord
 		$criteria->compare('record_date',$this->record_date,true);
 		$criteria->compare('position',$this->position,true);
 		$criteria->compare('lastname',$this->lastname,true);
-		$criteria->compare('up',$this->up,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -136,9 +133,7 @@ class Managers extends CActiveRecord
         {
             return CHtml::listData(Managers::model()->findAll(array('order'=>'lastname')),'id','lastname');
         }
-        public static function getUP($id){           
-            return self::model()->find("id=:id", array(':id'=>$id))->up;
-        }
+
                
                 
                 
