@@ -188,7 +188,7 @@ class CarrierController extends Controller
 	{
 		$model=new Carrier;
 		
-		$this->render('NewGroupCarrier',array(
+		$this->render('newGroupCarrier',array(
 			'model'=>$model,
 		));
 	}
