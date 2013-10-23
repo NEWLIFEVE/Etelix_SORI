@@ -199,39 +199,41 @@ class CarrierController extends Controller
 	 */
         public function actionSaveCarrierGroup()
 	{
-            $grupo=$_GET['grupo'];
+            $grupo=$_GET['grupo'];//el valor es un id de grupo
             $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
             $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
-
             $asigSave="";
             $noasigSave="";
-            $grupoSave="";
-            $grupoSave.= CarrierGroups::getName($grupo);
-            
-            $idCarrierName= CarrierGroups::getName($grupo);
-            $grupoCarrier = Carrier::getId($idCarrierName);
-            $model=$this->loadModel($grupoCarrier);
-            $model->group_leader = '1';
-            $model->save();
-                        
             foreach ($asignados as $key => $value) {
                 $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
                 $modelAsig->id_carrier_groups = $grupo;
                 if($modelAsig->save()){                  
-                    $asigSave.= $modelAsig->name.", ";     
+                    $asigSave.= $modelAsig->name.", ";   
                 }               
             }
             foreach ($noasignados as $key => $value) {
                 $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
                 $modelNoAsig->id_carrier_groups = NULL;
+                $modelNoAsig->group_leader = NULL;
                 if($modelNoAsig->save()){
                 $noasigSave.=$modelNoAsig->name.", ";
                 }
             }
-                    $params['grupo']=$grupoSave;    
-                    $params['asignados']=$asigSave;    
-                    $params['noasignados']=$noasigSave;    
-                       echo json_encode($params);
+            $buscaUno=Carrier::getSerchOne($grupo);            //busca si hay algun carrier con el id_carrier_group sea igual a $grupo y carrier_Leader sea igual a'1' 
+            
+            if($buscaUno==NULL){
+                $grupoCarrier = Carrier::getID_G($grupo);      //* con la id de grupo, busca el id carrier donde el id_carrier_groups sea igual a $grupo
+                $model=$this->loadModel($grupoCarrier);        //* carga la fila donde el id sea igual a $grupoCarrier para actualizarlo y colocarle en
+                                                               //group_leader el valor 1, solo lo agregara al primero que consiga...
+                $model->group_leader = '1';
+                $model->save();
+            }
+            $idCarrierName= CarrierGroups::getName($grupo);//* esto solo es para traer el nombre del grupo, que sera mostrado en el msj
+
+            $params['grupo']=$idCarrierName;    
+            $params['asignados']=$asigSave;    
+            $params['noasignados']=$noasigSave;    
+               echo json_encode($params);
 	}
          /**
 	 *  recibe el valor de $grupo $asignados $noasignados
