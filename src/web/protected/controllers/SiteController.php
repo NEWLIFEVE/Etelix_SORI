@@ -142,7 +142,7 @@ class SiteController extends Controller
                             array('label'=>'Destinos y Zonas Geográficas', 'url'=>array('/GeographicZone/create')),
                             array('label'=>'Zonas Geográficas', 'url'=>array('/GeographicZone/CreateZoneColor')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
-                            array('label'=>'Confirmar Doc. Contables', 'url'=>array('/AccountingDocument/create')),
+                            array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
                             array('label'=>'Admin. Carrier-Groups', 'url'=>array('/carrier/NewGroupCarrier')),
                             array('label'=>'Log', 'url'=>array('/log/admin')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)

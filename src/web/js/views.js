@@ -817,7 +817,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
-                                    $("#AccountingDocumentTemp_id_currency").val('');
+//                                    $("#AccountingDocumentTemp_id_currency").val('');
                                     $("#AccountingDocumentTemp_note").val('');
                                     if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                                          $("#AccountingDocumentTemp_doc_number").val('');
@@ -883,29 +883,63 @@ $('#botAgregarDatosContable').click('on',function(e)
      
   
      $('#botConfirmarDatosContableFinal').click('on',function()
-    {     
-        var tabla=$('.vistaTemp').val();
-        var valor=$("input[type=checkbox]:checked").each(function(){
-        var id=($(this).val());
+    {    
+        var dato=$('input[type="checkbox"]').filter(function()
+        {
+            return $(this).is(':checked');
+        });
+        if(dato.length<=0)
+        {
+                        var stop= $("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ninguna factura para confirmar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();   
+                         $("body").append(stop);
+                        stop.fadeIn('fast');
+                        setTimeout(function()
+                        { stop.fadeOut('fast');
+                        }, 1000);
+        }else{
+             var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
+            $("body").append(revisa);
+            revisa.fadeIn('fast'); 
 
-                 $.ajax({ 
-                         type: "GET",
-                         url: "../AccountingDocument/Confirmar/"+id,
-                         success: function(data) 
-                         {
-                            alert(data);
-                            console.dir(data);
-
-                            if (tabla==id||tabla==id){
-                              $('886').empty();
-                              $(valor).empty();
-                              $(tabla).empty();
+            $('#confirma,#cancelar').on('click',function()
+             {
+                 var tipo=$(this).attr('id');
+                 if(tipo=="confirma")
+                 {             
+                    var array= $("input[type=checkbox]:checked").each(function(){
+                    var id=($(this).val()),
+                    paraBorrar=$('#'+id);
+                    
+                    $.ajax({ 
+                            type: "GET",
+                            url: "../AccountingDocument/Confirmar/"+id,
+                            success: function(data) 
+                            {
+      
+                               paraBorrar.empty(); 
+                               revisa=null;
                             }
-                         }
-                 });
-       });
+                    });
+                  });
+                  var cuantos=array.length,
+                  id=($("input[type=checkbox]:checked").val());
+                  if (cuantos >0){
+                     if(id=='on'){
+                         cuantos=array.length-1;
+                     }
+                      var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                                         setTimeout(function()
+                                         { exito.fadeOut('fast');
+                                             $('.cargando').fadeOut('fast');
+                                         }, 3000);   
+                 }
+                }else{
+                    revisa.fadeOut('slow'); 
+                    revisa=null;
+                 }
+             });   
+        }      
     });
-     
 /**Vista Uploads*/
 $(function() 
 {

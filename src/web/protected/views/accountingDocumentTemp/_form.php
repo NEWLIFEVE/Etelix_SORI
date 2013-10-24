@@ -30,7 +30,8 @@
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
     <div class="GrupoDocument input_largos ">
-        <?php echo $form->labelEx($model,'carrier_groups'); ?>
+        <?php // echo $form->labelEx($model,'carrier_groups'); ?>
+        <label>Grupo</label>
         <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'carrier_groups'); ?>
     </div>
@@ -155,7 +156,7 @@
                 
             <div class="contratoForm">
                 <?php echo $form->labelEx($model,'id_currency'); ?>
-                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency()); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
 
@@ -220,7 +221,7 @@
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-//                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
                                     <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
                         }

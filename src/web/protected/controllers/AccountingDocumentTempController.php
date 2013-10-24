@@ -133,7 +133,7 @@ class AccountingDocumentTempController extends Controller
                 }
                 
                 if ($currency==''||$currency==NULL){
-                    $model->id_currency='1';
+                    $model->id_currency=1;
                     $moneda.=Currency::getName(1);
                 }else{
                     $model->id_currency =$currency;
@@ -255,7 +255,7 @@ class AccountingDocumentTempController extends Controller
          * @access public
          * @param integer $id the ID of the model to be updated
          */
-public function actionUpdate($id)
+        public function actionUpdate($id)
         {
                 $model=$this->loadModel($id);
 
