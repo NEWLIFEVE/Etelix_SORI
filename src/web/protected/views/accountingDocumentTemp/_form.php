@@ -181,12 +181,14 @@
     <?php $this->endWidget(); ?>
     <div class="VistDocTemporales">
         <br>
-        <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista==null){echo "style='display:none;'";}?>>
+        <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null){echo "style='display:block;'";}?>>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
-            <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
+        
+       
+        <label class="Label_F_Rec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>Facturas Recibidas:</label>
+        <table border="1" class="tablaVistDocTemporales lista_FacRec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>
                 <tr>
-                    <td> Tipo de Doc </td>
                     <td> Carrier </td>
                     <td> Fecha de Emisión </td>
                     <td> Inicio Periodo a Facturar </td>
@@ -196,19 +198,18 @@
                     <td> Fecha Recep Valida</td>
                     <td> Hora Recep (Email)</td>
                     <td> Hora Recep Valida</td>
-                    <td> N°Documento </td>
+                    <td> N°Doc </td>
                     <td> Minutos </td>
                     <td> Cantidad </td>
                     <td> Moneda </td>
                     <td> Acciones </td>
                 </tr>
                 <?php
-                    if($lista!=null)
+                    if($lista_FacRec!=null)
                     {
-                        foreach ($lista as $key => $value)
+                        foreach ($lista_FacRec as $key => $value)
                         { 
                             echo "<tr class='vistaTemp' id='".$value->id."'>
-                                    <td id='AccountingDocumentTemp[id_type_accounting_document]'>".$value->id_type_accounting_document."</td>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
@@ -222,15 +223,141 @@
                                     <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
                                     <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
-                                    <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                    <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
                         }
                     }
                     ?>
-                </table>
-            </div>
-        </div><!-- form -->
-   <div class='mensajeFinal'>
+        </table>
+        
+        <br>
+        <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
+        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}{echo "style='background:silver;'";}?>>
+                <tr>
+                    <td> Carrier </td>
+                    <td> Fecha de Emisión </td>
+                    <td> Inicio Periodo a Facturar </td>
+                    <td> Fin Periodo a Facturar </td>
+                    <td> Fecha Envio </td>
+                    <td> N°Documento </td>
+                    <td> Minutos </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_FacEnv!=null)
+                    {
+                        foreach ($lista_FacEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
+                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>
+          
+         <br>
+         <label class='LabelCobros' <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>Cobros:</label>
+         <table border="1" class="tablaVistDocTemporales lista_Cobros" <?php if($lista_Cobros==null){echo "style='display:none;'";}{echo "style='background:rgba(123, 195, 236, 1);'";}?>>
+                <tr>
+                    <td> Grupo </td>
+                    <td> Fecha Recep Valida</td>
+                    <td> N°Documento </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_Cobros!=null)
+                    {
+                        foreach ($lista_Cobros as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[valid_received_date]'>".$value->valid_received_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>  
+         
+         <br>
+         <label class="LabelPagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}?>>Pagos:</label>
+         <table border="1" class="tablaVistDocTemporales lista_Pagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}{echo "style='background:rgba(226, 168, 140, 1);'";}?>>
+                <tr>
+                    <td> Grupo </td>
+                    <td> Fecha de Emisión </td>
+                    <td> Fecha Envio </td>
+                    <td> N°Documento </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_Pagos!=null)
+                    {
+                        foreach ($lista_Pagos as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>
+
+        
+        
+        
+     </div>
+</div><!-- form -->
+  
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class='mensajeFinal'>
          <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
          <table border="4" class='tablamensaje'>
             <tr>

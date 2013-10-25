@@ -648,7 +648,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       emailReceivedTime=$('.emailReceivedTime'),
                       minutosDoc=$('.minutosDoc');
 
-            if (tipoDocument=='1')
+            if (tipoDocument=='1')//facturas enviadas
                 {
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
@@ -666,7 +666,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       $("#AccountingDocumentTemp_to_date").val('');
                       $("#AccountingDocumentTemp_doc_number").val('');
                 }
-            if (tipoDocument=='2')
+            if (tipoDocument=='2')//facturas recibidas
                 {
                       emailReceivedDate.show('slow'); 
                       emailReceivedTime.show('slow');
@@ -682,7 +682,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       $("#AccountingDocumentTemp_to_date").val('');
                       $("#AccountingDocumentTemp_doc_number").val('');
                 }
-            if (tipoDocument=='3')
+            if (tipoDocument=='3')//pago
                 {
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
@@ -700,7 +700,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       $("#AccountingDocumentTemp_to_date").val('');
                       $("#AccountingDocumentTemp_doc_number").val('');
                 }
-            if (tipoDocument=='4')
+            if (tipoDocument=='4')//cobro
                 {
                       emailReceivedDate.show('slow'); 
                       GrupoDocument.show('slow');
@@ -790,9 +790,26 @@ $('#botAgregarDatosContable').click('on',function(e)
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp,
                     currencyTemp=obj.currencyTemp;
-                
-                $(".tablaVistDocTemporales").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_type_accounting_document]'>"+selecTipoDocNameTemp+"</td>\n\
+
+               if(selecTipoDoc=='1'){
+                $(".lista_FacEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
+                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
+                                                        <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
+
+                $('.lista_FacEnv').css("background", "silver").fadeIn('slow');
+                $('.Label_F_Env').fadeIn('slow');
+               }
+               if(selecTipoDoc=='2'){
+                $(".lista_FacRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
@@ -805,19 +822,47 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[currency]'> "+currencyTemp+" </td>\n\
-                                                        <td><img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
+                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
 
-                $('.tablaVistDocTemporales').fadeIn('slow');
-                
-                $('#botAgregarDatosContableFinal').fadeIn('slow');
+                $('.lista_FacRec').fadeIn('slow');
+                $('.Label_F_Rec').fadeIn('slow');
+               }
+               if(selecTipoDoc=='3'){
+                $(".lista_Pagos").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
+                                                        <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
 
+                $('.lista_Pagos').css("background", "rgba(226, 168, 140, 1)").fadeIn('slow');
+                $('.LabelPagos').fadeIn('slow');
+               }
+               if(selecTipoDoc=='4'){
+                $(".lista_Cobros").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[valid_received_dateTemp]'>"+valid_received_dateTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
+                                                        <td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
+
+                $('.lista_Cobros').css("background", "rgba(123, 195, 236, 1)").fadeIn('slow');
+                $('.LabelCobros').fadeIn('slow');
+               }
+
+                $('#botAgregarDatosContableFinal').fadeIn('slow');
+                
                                     $SORI.UI.init();
                                     $("#AccountingDocumentTemp_email_received_hour").val('');
                                     $("#AccountingDocumentTemp_minutes").val('');
                                     $("#AccountingDocumentTemp_amount").val('');
-//                                    $("#AccountingDocumentTemp_id_currency").val('');
                                     $("#AccountingDocumentTemp_note").val('');
                                     if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                                          $("#AccountingDocumentTemp_doc_number").val('');
@@ -869,8 +914,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                      }, 4000);
 
                                      exito=null;
-                                     $('#botAgregarDatosContableFinal').fadeOut('slow');
-                                      $('.tablaVistDocTemporales').fadeOut('slow');
+                                     $('#botAgregarDatosContableFinal,.tablaVistDocTemporales,.Label_F_Env,.Label_F_Rec,.LabelPagos,.LabelCobros').fadeOut('slow');
                                      $('.vistaTemp').empty();
                            }  
                          }  

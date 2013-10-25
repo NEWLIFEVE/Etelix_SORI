@@ -176,4 +176,8 @@ class Carrier extends CActiveRecord
         {
             return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo));
         } 
+        public static function getCarrierLeader($idGrupo)
+        {
+            return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo))->id;
+        } 
 }
