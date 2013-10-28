@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -86,12 +86,12 @@ class AccountingDocumentTempController extends Controller
 			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros
 		));
 	}
-
-	/**
-	 * @access public
-	 */
-	public function actionGuardarListaTemp() {
-            
+        /**
+        * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...
+        * @access public
+        **/
+        public function actionGuardarFac_RecTemp() 
+        {
             $selecTipoDoc = $_GET['selecTipoDoc'];
             $idCarrier = $_GET['idCarrier'];
             $idGrupo = $_GET['idGrupo'];
@@ -111,97 +111,148 @@ class AccountingDocumentTempController extends Controller
             $valid_received_date = "";
             $minutosTemp = "";
             $moneda= "";
+            $idGrupo.=NULL;
             $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $idCarrierName.= Carrier::getName($idCarrier);
             $minutosTemp.= Utility::snull($minutos);
-//            $moneda.= Currency::getName($currency);
+            $moneda.= Currency::getName($currency);
+            
+            $existe=  AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
+            
+            if($existe=NULL)
+            {
+                $model = new AccountingDocumentTemp;
 
-            $model = new AccountingDocumentTemp;
-            $model->id_type_accounting_document = $selecTipoDoc;
-            $model->issue_date = Utility::snull($fechaEmision);
-            $model->from_date = Utility::snull($desdeFecha);
-            $model->to_date = Utility::snull($hastaFecha);
-            $model->sent_date = Utility::snull($fechaEmision);
-            $model->doc_number = $numDocumento;
-            $model->minutes = $minutosTemp;
-            $model->amount = Utility::snull($cantidad);
-            $model->note = Utility::snull($nota);
-            $model->id_currency =$currency;
-                $moneda.= Currency::getName($currency);
-                if ($selecTipoDoc == '3'||$selecTipoDoc == '4'){
-                    $idCarrierName.= CarrierGroups::getName($idGrupo);
-                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
-                    $model->id_carrier = $grupoCarrier;
-                }else{
-                $model->id_carrier = $idCarrier;
-                $idCarrierName.= Carrier::getName($idCarrier);
-                }
-            if ($selecTipoDoc == '4') {
-                $model->email_received_hour = NULL;
-                $model->valid_received_hour = NULL;
-                $model->email_received_date = NULL;
-                $valid_received_date = $EmailfechaRecepcion;
-                $EmailfechaRecepcion = '';
-                $model->valid_received_date = $valid_received_date;
-            } 
+                    $model->id_type_accounting_document = $selecTipoDoc;
+                    $model->issue_date = Utility::snull($fechaEmision);
+                    $model->from_date = Utility::snull($desdeFecha);
+                    $model->to_date = Utility::snull($hastaFecha);
+                    $model->sent_date = Utility::snull($fechaEmision);
+                    $model->doc_number = $numDocumento;
+                    $model->minutes = $minutosTemp;
+                    $model->amount = Utility::snull($cantidad);
+                    $model->note = Utility::snull($nota);
+                    $model->id_currency =$currency;
+                    $model->id_carrier = $idCarrier;
+                    $model->confirm = 1;
 
-            if ($selecTipoDoc == '2') {
-            $fecha = strtotime($EmailfechaRecepcion);
-            $dia = date("N", $fecha);
-                if ($dia == 1 || $dia == 2) {
+                $fecha = strtotime($EmailfechaRecepcion);
+                $dia = date("N", $fecha);
+                    if ($dia == 1 || $dia == 2) {
 
-                    if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
+                        if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
 
-                        $valid_received_date = $EmailfechaRecepcion;
-                        $valid_received_hour = $EmailHoraRecepcion;
+                            $valid_received_date = $EmailfechaRecepcion;
+                            $valid_received_hour = $EmailHoraRecepcion;
+                            $model->valid_received_date = $valid_received_date;
+                            $model->valid_received_hour = $valid_received_hour;
+                            $model->email_received_date = $EmailfechaRecepcion;
+                            $model->email_received_hour = $EmailHoraRecepcion;
+
+                        } else {
+                            if($EmailHoraRecepcion < '08:00'){
+                                $valid_received_date = $EmailfechaRecepcion;
+                                $model->valid_received_date = $EmailfechaRecepcion;
+                            }else{
+                                $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                                $model->valid_received_date = $valid_received_date;
+                            }
+                            $valid_received_hour = '08:00';
+                            $model->valid_received_hour = $valid_received_hour;
+                            $model->email_received_date = $EmailfechaRecepcion;
+                            $model->email_received_hour = $EmailHoraRecepcion;
+                        }
+                    } else {
+
+                        $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+                        $valid_received_hour = '08:00';
                         $model->valid_received_date = $valid_received_date;
                         $model->valid_received_hour = $valid_received_hour;
                         $model->email_received_date = $EmailfechaRecepcion;
                         $model->email_received_hour = $EmailHoraRecepcion;
-                      
-                    } else {
-                        if($EmailHoraRecepcion < '08:00'){
-                            $valid_received_date = $EmailfechaRecepcion;
-                            $model->valid_received_date = $EmailfechaRecepcion;
-                        }else{
-                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-                            $model->valid_received_date = $valid_received_date;
-                        }
-                        $valid_received_hour = '08:00';
-                        $model->valid_received_hour = $valid_received_hour;
-                        $model->email_received_date = $EmailfechaRecepcion;
-                        $model->email_received_hour = $EmailHoraRecepcion;
                     }
-                } else {
+               if ($model->save()) {
+                    $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                    Log::registrarLog($idAction, NULL, $model->id);
 
-                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-                    $valid_received_hour = '08:00';
-                    $model->valid_received_date = $valid_received_date;
-                    $model->valid_received_hour = $valid_received_hour;
-                    $model->email_received_date = $EmailfechaRecepcion;
-                    $model->email_received_hour = $EmailHoraRecepcion;
-                }
-            }         
+                    $params['idDoc'] = $model->id;
+                    $params['idCarrierNameTemp'] = $idCarrierName;
+                    $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                    $params['fechaEmisionTemp'] = $fechaEmision;
+                    $params['desdeFechaTemp'] =  $desdeFecha;
+                    $params['hastaFechaTemp'] =  $hastaFecha;
+                    $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
+                    $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
+                    $params['valid_received_dateTemp'] = $valid_received_date;
+                    $params['valid_received_hourTemp'] = $valid_received_hour;
+                    $params['fechaEnvioTemp'] = $fechaEmision;
+                    $params['numDocumentoTemp'] = $model->doc_number;
+                    $params['minutosTemp'] = $minutosTemp;
+                    $params['cantidadTemp'] = $model->amount;
+                    $params['currencyTemp'] = $moneda;
 
-            if ($selecTipoDoc == '1'){
-                $model->confirm = 0;
+                    echo json_encode($params);
+                } 
             }else{
-                $model->confirm = 1;
+                
             }
-
+        }
+        /**
+        * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...
+        * @access public
+        **/
+        public function actionGuardarFac_EnvTemp() 
+        {
+            $selecTipoDoc = $_GET['selecTipoDoc'];
+            $idCarrier = $_GET['idCarrier'];
+            $idGrupo = $_GET['idGrupo'];
+            $fechaEmision = $_GET['fechaEmision'];
+            $desdeFecha = $_GET['desdeFecha'];
+            $hastaFecha = $_GET['hastaFecha'];
+            $numDocumento = $_GET['numDocumento'];
+            $minutos = $_GET['minutos'];
+            $cantidad = $_GET['cantidad'];
+            $currency = $_GET['currency'];
+            $nota = $_GET['nota'];
+            $idCarrierName = "";
+            $selecTipoDocName = "";
+            $minutosTemp = "";
+            $moneda= "";
+            $idGrupo.=NULL;
+            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $idCarrierName.= Carrier::getName($idCarrier);
+            $minutosTemp.= Utility::snull($minutos);
+            $moneda.= Currency::getName($currency);
+            
+            $model = new AccountingDocumentTemp;
+            
+                $model->id_type_accounting_document = $selecTipoDoc;
+                $model->issue_date = Utility::snull($fechaEmision);
+                $model->from_date = Utility::snull($desdeFecha);
+                $model->to_date = Utility::snull($hastaFecha);
+                $model->sent_date = Utility::snull($fechaEmision);
+                $model->doc_number = $numDocumento;
+                $model->minutes = $minutosTemp;
+                $model->amount = Utility::snull($cantidad);
+                $model->note = Utility::snull($nota);
+                $model->id_currency =$currency;
+                $model->id_carrier = $idCarrier;
+                $model->confirm = 0;
+                $model->valid_received_date = NULL;
+                $model->valid_received_hour = NULL;
+                $model->email_received_date = NULL;
+                $model->email_received_hour = NULL;
+             
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-                
+            
                 $params['idDoc'] = $model->id;
                 $params['idCarrierNameTemp'] = $idCarrierName;
                 $params['selecTipoDocNameTemp'] = $selecTipoDocName;
                 $params['fechaEmisionTemp'] = $fechaEmision;
                 $params['desdeFechaTemp'] =  $desdeFecha;
                 $params['hastaFechaTemp'] =  $hastaFecha;
-                $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
-                $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
-                $params['valid_received_dateTemp'] = $valid_received_date;
-                $params['valid_received_hourTemp'] = $valid_received_hour;
                 $params['fechaEnvioTemp'] = $fechaEmision;
                 $params['numDocumentoTemp'] = $model->doc_number;
                 $params['minutosTemp'] = $minutosTemp;
@@ -210,7 +261,246 @@ class AccountingDocumentTempController extends Controller
                 
                 echo json_encode($params);
             }
-    }
+        }
+        /**
+        * recibe los datos desde ajax y almacena solo los pagos doc temp...
+        * @access public
+        **/
+        public function actionGuardarPagoTemp() 
+        {
+            $selecTipoDoc = $_GET['selecTipoDoc'];
+            $idGrupo = $_GET['idGrupo'];
+            $fechaEmision = $_GET['fechaEmision'];
+            $numDocumento = $_GET['numDocumento'];
+            $cantidad = $_GET['cantidad'];
+            $currency = $_GET['currency'];
+            $nota = $_GET['nota'];
+            $idGrupoName = "";
+            $selecTipoDocName = "";
+            $moneda= "";
+            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
+            $idGrupoName.= CarrierGroups::getName($idGrupo);
+            $moneda.= Currency::getName($currency);
+             
+            $model = new AccountingDocumentTemp;
+
+                $model->id_type_accounting_document = $selecTipoDoc;
+                $model->issue_date = Utility::snull($fechaEmision);
+                $model->amount = Utility::snull($cantidad);
+                $model->note = Utility::snull($nota);
+                $model->id_carrier = $grupoCarrier;
+                $model->id_currency =$currency;
+                $model->doc_number = $numDocumento;
+                $model->confirm = 1;
+                $model->from_date = NULL;
+                $model->to_date = NULL;
+                $model->sent_date = NULL;
+                $model->minutes = NULL;
+                $model->valid_received_date = NULL;
+                $model->valid_received_hour = NULL;
+                $model->email_received_date = NULL;
+                $model->email_received_hour = NULL;
+                    
+            if ($model->save()) {
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+            
+                $params['idDoc'] = $model->id;
+                $params['idCarrierNameTemp'] = $idGrupoName;
+                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                $params['fechaEmisionTemp'] = $fechaEmision;
+                $params['fechaEnvioTemp'] = $fechaEmision;
+                $params['numDocumentoTemp'] = $model->doc_number;
+                $params['cantidadTemp'] = $model->amount;
+                $params['currencyTemp'] = $moneda;
+                
+                echo json_encode($params);
+            }
+
+        }
+        /**
+        * recibe los datos desde ajax y almacena solo los cobros doc temp...
+        * @access public
+        **/
+        public function actionGuardarCobroTemp() 
+        {
+            $selecTipoDoc = $_GET['selecTipoDoc'];
+            $idGrupo = $_GET['idGrupo'];
+            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
+            $numDocumento = $_GET['numDocumento'];
+            $cantidad = $_GET['cantidad'];
+            $currency = $_GET['currency'];
+            $nota = $_GET['nota'];
+            $selecTipoDocName = "";
+            $valid_received_date = "";
+            $idGrupoName = "";
+            $moneda= "";
+            $valid_received_date.=$EmailfechaRecepcion;
+            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+            $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
+            $idGrupoName.= CarrierGroups::getName($idGrupo);
+            $moneda.= Currency::getName($currency);
+            
+            $model = new AccountingDocumentTemp;
+            
+                $model->id_type_accounting_document = $selecTipoDoc;
+                $model->valid_received_date = $valid_received_date;
+                $model->amount = Utility::snull($cantidad);
+                $model->note = Utility::snull($nota);
+                $model->id_carrier = $grupoCarrier;
+                $model->doc_number = $numDocumento;
+                $model->id_currency =$currency;
+                $model->confirm = 1;
+                $model->to_date = NULL;
+                $model->from_date = NULL;
+                $model->sent_date = NULL;
+                $model->issue_date = NULL;
+                $model->email_received_hour = NULL;
+                $model->valid_received_hour = NULL;
+                $model->email_received_date = NULL;
+               
+            if ($model->save()) {
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+            
+                $params['idDoc'] = $model->id;
+                $params['idCarrierNameTemp'] = $idGrupoName;
+                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                $params['valid_received_dateTemp'] = $valid_received_date;
+                $params['numDocumentoTemp'] = $model->doc_number;
+                $params['cantidadTemp'] = $model->amount;
+                $params['currencyTemp'] = $moneda;
+                
+                echo json_encode($params);
+            }
+        }
+        /*
+        * este action no se usa, pero lo dejo hasta que no exista ningun problema en la nueva guardada
+        **/
+//        public function actionGuardarListaTemp() 
+//        {
+//            $selecTipoDoc = $_GET['selecTipoDoc'];
+//            $idCarrier = $_GET['idCarrier'];
+//            $idGrupo = $_GET['idGrupo'];
+//            $fechaEmision = $_GET['fechaEmision'];
+//            $desdeFecha = $_GET['desdeFecha'];
+//            $hastaFecha = $_GET['hastaFecha'];
+//            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
+//            $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
+//            $numDocumento = $_GET['numDocumento'];
+//            $minutos = $_GET['minutos'];
+//            $cantidad = $_GET['cantidad'];
+//            $currency = $_GET['currency'];
+//            $nota = $_GET['nota'];
+//            $idCarrierName = "";
+//            $selecTipoDocName = "";
+//            $valid_received_hour = "";
+//            $valid_received_date = "";
+//            $minutosTemp = "";
+//            $moneda= "";
+//            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
+//            $minutosTemp.= Utility::snull($minutos);
+//            $moneda.= Currency::getName($currency);
+////            $moneda.= Currency::getName($currency);
+////            $existe=  AccountingDocumentTemp::getIfExist($idCarrier, $numDocumento, $selecTipoDoc);    
+//            $model = new AccountingDocumentTemp;
+//            $model->id_type_accounting_document = $selecTipoDoc;
+//            $model->issue_date = Utility::snull($fechaEmision);
+//            $model->from_date = Utility::snull($desdeFecha);
+//            $model->to_date = Utility::snull($hastaFecha);
+//            $model->sent_date = Utility::snull($fechaEmision);
+//            $model->doc_number = $numDocumento;
+//            $model->minutes = $minutosTemp;
+//            $model->amount = Utility::snull($cantidad);
+//            $model->note = Utility::snull($nota);
+//            $model->id_currency =$currency;
+//                $moneda.= Currency::getName($currency);
+//                if ($selecTipoDoc == '3'||$selecTipoDoc == '4'){
+//                    $idCarrierName.= CarrierGroups::getName($idGrupo);
+//                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
+//                    $model->id_carrier = $grupoCarrier;
+//                }else{
+//                $model->id_carrier = $idCarrier;
+//                $idCarrierName.= Carrier::getName($idCarrier);
+//                }
+//            if ($selecTipoDoc == '4') {
+//                $model->email_received_hour = NULL;
+//                $model->valid_received_hour = NULL;
+//                $model->email_received_date = NULL;
+//                $valid_received_date = $EmailfechaRecepcion;
+//                $EmailfechaRecepcion = '';
+//                $model->valid_received_date = $valid_received_date;
+//            } 
+//
+//            if ($selecTipoDoc == '2') {
+//            $fecha = strtotime($EmailfechaRecepcion);
+//            $dia = date("N", $fecha);
+//                if ($dia == 1 || $dia == 2) {
+//
+//                    if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
+//
+//                        $valid_received_date = $EmailfechaRecepcion;
+//                        $valid_received_hour = $EmailHoraRecepcion;
+//                        $model->valid_received_date = $valid_received_date;
+//                        $model->valid_received_hour = $valid_received_hour;
+//                        $model->email_received_date = $EmailfechaRecepcion;
+//                        $model->email_received_hour = $EmailHoraRecepcion;
+//                      
+//                    } else {
+//                        if($EmailHoraRecepcion < '08:00'){
+//                            $valid_received_date = $EmailfechaRecepcion;
+//                            $model->valid_received_date = $EmailfechaRecepcion;
+//                        }else{
+//                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+//                            $model->valid_received_date = $valid_received_date;
+//                        }
+//                        $valid_received_hour = '08:00';
+//                        $model->valid_received_hour = $valid_received_hour;
+//                        $model->email_received_date = $EmailfechaRecepcion;
+//                        $model->email_received_hour = $EmailHoraRecepcion;
+//                    }
+//                } else {
+//
+//                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
+//                    $valid_received_hour = '08:00';
+//                    $model->valid_received_date = $valid_received_date;
+//                    $model->valid_received_hour = $valid_received_hour;
+//                    $model->email_received_date = $EmailfechaRecepcion;
+//                    $model->email_received_hour = $EmailHoraRecepcion;
+//                }
+//            }         
+
+//            if ($selecTipoDoc == '1'){
+//                $model->confirm = 0;
+//            }else{
+//                $model->confirm = 1;
+//            }
+
+//            if ($model->save()) {
+//                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+//                Log::registrarLog($idAction, NULL, $model->id);
+            
+//                $params['idDoc'] = $model->id;
+//                $params['idCarrierNameTemp'] = $idCarrierName;
+//                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+//                $params['fechaEmisionTemp'] = $fechaEmision;
+//                $params['desdeFechaTemp'] =  $desdeFecha;
+//                $params['hastaFechaTemp'] =  $hastaFecha;
+//                $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
+//                $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
+//                $params['valid_received_dateTemp'] = $valid_received_date;
+//                $params['valid_received_hourTemp'] = $valid_received_hour;
+//                $params['fechaEnvioTemp'] = $fechaEmision;
+//                $params['numDocumentoTemp'] = $model->doc_number;
+//                $params['minutosTemp'] = $minutosTemp;
+//                $params['cantidadTemp'] = $model->amount;
+//                $params['currencyTemp'] = $moneda;
+//                
+//                echo json_encode($params);
+//            }
+            
+//    }
         
         public function actionGuardarListaFinal()
         {

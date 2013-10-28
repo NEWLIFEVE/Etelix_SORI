@@ -766,10 +766,22 @@ $('#botAgregarDatosContable').click('on',function(e)
 //        }, 1000);
     
     else
-     { 
+     {
+        if (selecTipoDoc==1){//facturas enviadas
+              var action = "GuardarFac_EnvTemp";
+        }
+        if (selecTipoDoc==2){//facturas recibidas
+              action = "GuardarFac_RecTemp";
+        }
+        if (selecTipoDoc==3){//pago
+              action = "GuardarPagoTemp";
+        }
+        if (selecTipoDoc==4){//cobro
+              action = "GuardarCobroTemp";
+        }
         $.ajax({
             type: "GET",
-            url: "guardarListaTemp",
+            url: action,
             data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency,
 
               success: function(data) 
