@@ -302,7 +302,6 @@
                 <tr>
                     <td> Grupo </td>
                     <td> Fecha de Emisión </td>
-                    <td> Fecha Envio </td>
                     <td> N°Documento </td>
                     <td> Cantidad </td>
                     <td> Moneda </td>
@@ -316,7 +315,6 @@
                             echo "<tr class='vistaTemp' id='".$value->id."'>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
-                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
                                     <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
@@ -334,29 +332,7 @@
 </div><!-- form -->
   
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         <div class='mensajeFinal'>
          <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
          <table border="4" class='tablamensaje'>

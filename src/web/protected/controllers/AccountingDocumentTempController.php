@@ -293,7 +293,7 @@ class AccountingDocumentTempController extends Controller
                   
                 case 3:   
                     $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
-                    $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
+                    $model->sent_date=NULL;
                     $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
                     $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
 -                   $model->id_currency=$id_currency;

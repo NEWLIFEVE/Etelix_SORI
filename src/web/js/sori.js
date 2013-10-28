@@ -65,7 +65,7 @@ $SORI.UI=(function()
 			input=null;
 		}
 		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img name='save_Fac_Rec' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[13].innerHTML="<img name='save_Fac_Rec' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Rec' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -85,7 +85,7 @@ $SORI.UI=(function()
 			input=null;
 		}
 		obj[0].children[9].innerHTML="";
-		obj[0].children[9].innerHTML="<img name='save_Fac_Env' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[9].innerHTML="<img name='save_Fac_Env' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Env' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -105,7 +105,7 @@ $SORI.UI=(function()
 			input=null;
 		}
 		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img name='save_Cobros' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[5].innerHTML="<img name='save_Cobros' alt='save' src='/images/icon_check.png'><img name='cancel_Cobros' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -116,7 +116,7 @@ $SORI.UI=(function()
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
 			input.value=obj[0].children[i].innerHTML;
-			if(i>=1 && i<=2)
+			if(i>=1 && i<=1)
 			{
 				$(input).datepicker();
 			}
@@ -124,8 +124,8 @@ $SORI.UI=(function()
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[6].innerHTML="";
-		obj[0].children[6].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -135,21 +135,6 @@ $SORI.UI=(function()
 	 * @access private
 	 * @param obj obj es el objeto de la fila que se esta manipulando
 	 */
-	function _revert(obj)
-	{
-		var contenido=new Array();
-		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
-		{
-			contenido[i]=obj[0].children[i].children[0].value;
-			obj[0].children[i].children[0].remove();
-			obj[0].children[i].innerHTML=contenido[i];
-		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
-		obj=contenido=null;
-		accion();
-	}
-        
 	function _revert_Fac_Rec(obj)
 	{
 		var contenido=new Array();
@@ -201,8 +186,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[6].innerHTML="";
-		obj[0].children[6].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -213,54 +198,70 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='edit'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel']").on('click',function()
+		$("img[name='edit'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros']").on('click',function()
 		{
 			$fila=$(this).parent().parent();
-                        
+//                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
 				$fila.remove();
 				$SORI.AJAX.borrar($fila[0].id);
 			}
+//                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
 			{
 				_editar_Fac_Rec($fila);
 			}
-			if($(this).attr('name')=='edit_Fac_Env')
-			{
-				_editar_Fac_Env($fila);
-			}
-			if($(this).attr('name')=='edit_Cobros')
-			{
-				_editar_Cobros($fila);
-			}
-			if($(this).attr('name')=='edit_Pagos')
-			{
-				_editar_Pagos($fila);
-			}
-			if($(this).attr('name')=='save_Fac_Rec')
+                        if($(this).attr('name')=='save_Fac_Rec')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
 				_revert_Fac_Rec($fila);
 			}
-			if($(this).attr('name')=='save_Fac_Env')
+                        if($(this).attr('name')=='cancel_Fac_Rec')
+			{
+				_revert_Fac_Rec($fila);
+			}
+//                        FACTURAS ENVIADAS
+			if($(this).attr('name')=='edit_Fac_Env')
+			{
+				_editar_Fac_Env($fila);
+			}
+                        if($(this).attr('name')=='save_Fac_Env')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
 				_revert_Fac_Env($fila);
 			}
-			if($(this).attr('name')=='save_Cobros')
+                        if($(this).attr('name')=='cancel_Fac_Env')
+			{
+				_revert_Fac_Env($fila);
+			}
+//                        COBROS
+			if($(this).attr('name')=='edit_Cobros')
+			{
+				_editar_Cobros($fila);
+			}
+                        if($(this).attr('name')=='save_Cobros')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
 				_revert_Cobros($fila);
+			}
+                        if($(this).attr('name')=='cancel_Cobros')
+			{
+				_revert_Cobros($fila);
+			}
+//                        PAGOS
+			if($(this).attr('name')=='edit_Pagos')
+			{
+				_editar_Pagos($fila);
 			}
 			if($(this).attr('name')=='save_Pagos')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
 				_revert_Pagos($fila);
 			}
-			if($(this).attr('name')=='cancel')
+			if($(this).attr('name')=='cancel_Pagos')
 			{
-				_revert($fila);
+				_revert_Pagos($fila);
 			}
 		});
 		$fila=null;
