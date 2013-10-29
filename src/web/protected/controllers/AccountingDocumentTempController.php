@@ -67,7 +67,10 @@ class AccountingDocumentTempController extends Controller
 	public function actionCreate()
 	{
 		$model=new AccountingDocumentTemp;
-		$lista=AccountingDocumentTemp::listaGuardados(Yii::app()->user->id);
+		$lista_FacEnv=AccountingDocumentTemp::listaFacturasEnviadas(Yii::app()->user->id);
+		$lista_FacRec=AccountingDocumentTemp::listaFacRecibidas(Yii::app()->user->id);
+		$lista_Pagos=AccountingDocumentTemp::listaPagos(Yii::app()->user->id);
+		$lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -80,7 +83,7 @@ class AccountingDocumentTempController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,'lista'=>$lista
+			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros
 		));
 	}
 
@@ -122,22 +125,15 @@ class AccountingDocumentTempController extends Controller
             $model->minutes = $minutosTemp;
             $model->amount = Utility::snull($cantidad);
             $model->note = Utility::snull($nota);
-            
-                if ($idCarrier==''||$idCarrier==NULL){
+            $model->id_currency =$currency;
+                $moneda.= Currency::getName($currency);
+                if ($selecTipoDoc == '3'||$selecTipoDoc == '4'){
                     $idCarrierName.= CarrierGroups::getName($idGrupo);
                     $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
                     $model->id_carrier = $grupoCarrier;
                 }else{
                 $model->id_carrier = $idCarrier;
                 $idCarrierName.= Carrier::getName($idCarrier);
-                }
-                
-                if ($currency==''||$currency==NULL){
-                    $model->id_currency=1;
-                    $moneda.=Currency::getName(1);
-                }else{
-                    $model->id_currency =$currency;
-                    $moneda.= Currency::getName($currency);
                 }
             if ($selecTipoDoc == '4') {
                 $model->email_received_hour = NULL;
@@ -196,6 +192,7 @@ class AccountingDocumentTempController extends Controller
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
                 
+                $params['idDoc'] = $model->id;
                 $params['idCarrierNameTemp'] = $idCarrierName;
                 $params['selecTipoDocNameTemp'] = $selecTipoDocName;
                 $params['fechaEmisionTemp'] = $fechaEmision;
@@ -258,47 +255,71 @@ class AccountingDocumentTempController extends Controller
         public function actionUpdate($id)
         {
                 $model=$this->loadModel($id);
-
-                // Uncomment the following line if AJAX validation is needed
-                // $this->performAjaxValidation($model);
-                /*if(isset($_POST['AccountingDocumentTemp']))
-                {
-                        $model->attributes=$_POST['AccountingDocumentTemp'];
-                        $model->id_type_accounting_document=TypeAccountingDocument::getId($model->id_type_accounting_document);
-                        $model->id_carrier=Carrier::getId($model->id_carrier);
-                        if($model->save())
-                                return "Actualizado id: ".$model->id;
-                        else
-                                return "Algo salio mal";
-                }*/
+                $tipoID= '';
+                $id_currency= '';
+                $tipoID.= AccountingDocumentTemp::getTypeDoc($id);
+                $id_currency.=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
                 if(isset($_POST['AccountingDocumentTemp']))
                 {
-                    
                         $model->attributes=$_POST['AccountingDocumentTemp'];
-//                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-//                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-                              
-                $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
-                $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
-                $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
-                $model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
-                $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
-                $model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
-                $model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
-                $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
-                $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
-                $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
-                $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
-                 $id_currency=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
--               $model->id_currency=$id_currency;
+                  
+           switch ($tipoID) {
+                
+                case 1:   
+                    $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
+                    $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
+                    $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
+                    $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
+                    $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                    $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
+                    $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+-                   $model->id_currency=$id_currency;
+                      break;
+                  
+                case 2:   
+                    $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
+                    $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
+                    $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
+                    $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
+                    $model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
+                    $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
+                    $model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);
+                    $model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']);
+                    $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                    $model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']);
+                    $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+-                   $model->id_currency=$id_currency;
+                      break;
+                  
+                case 3:   
+                    $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
+                    $model->sent_date=NULL;
+                    $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                    $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+-                   $model->id_currency=$id_currency;
+                      break;
+                  
+                case 4:   
+                    $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
+                    $model->issue_date=NULL;
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->minutes=NULL;
+                    $model->sent_date=NULL;
+                    $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
+                    $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
+-                   $model->id_currency=$id_currency;
+                      break;
+
+           } 
                         if($model->save())
                                 return "Actualizado id: ".$model->id;
                         else
                                 return "Algo salio mal";
                 }
-                /*$this->render('update',array(
-                        'model'=>$model,
-                ));*/
         }
 
         /**

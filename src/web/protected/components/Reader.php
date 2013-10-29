@@ -211,7 +211,14 @@ class Reader
                         $valores['margin']=Utility::notNull($this->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                        if(stripos($this->log,"Preliminar"))
+                        $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                                    ':date'=>$this->fecha,
+                                    ':destino'=>$valores[$this->destino],
+                                    ':customer'=>$valores['id_carrier_customer'],
+                                    ':supplier'=>$valores['id_carrier_supplier']
+                                    )
+                            );
+                        if($this->model==null)
                         {
                             $this->model=new Balance;
                             $this->model->date_balance=$this->fecha;
@@ -254,13 +261,6 @@ class Reader
                         }
                         else
                         {
-                            $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
-                                    ':date'=>$this->fecha,
-                                    ':destino'=>$valores[$this->destino],
-                                    ':customer'=>$valores['id_carrier_customer'],
-                                    ':supplier'=>$valores['id_carrier_supplier']
-                                    )
-                            );
                             $this->model->minutes=$valores['minutes'];
                             $this->model->acd=$valores['acd'];
                             $this->model->asr=$valores['asr'];

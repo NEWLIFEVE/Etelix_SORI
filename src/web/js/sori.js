@@ -45,23 +45,149 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
+	function _editar_Fac_Rec(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=6)
+			{
+				$(input).datepicker();
+			}
+                        if(i>=7 && i<=8)
+			{
+				$(input).clockpick({ starthour: "00", endhour: "23", military: "TRUE" });
+			} 
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[13].innerHTML="";
+		obj[0].children[13].innerHTML="<img name='save_Fac_Rec' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Rec' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
+	function _editar_Fac_Env(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=4)
+			{
+				$(input).datepicker();
+			}
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[9].innerHTML="";
+		obj[0].children[9].innerHTML="<img name='save_Fac_Env' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Env' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
+	function _editar_Cobros(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=1)
+			{
+				$(input).datepicker();
+			}
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_Cobros' alt='save' src='/images/icon_check.png'><img name='cancel_Cobros' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
+	function _editar_Pagos(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=1)
+			{
+				$(input).datepicker();
+			}
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
 
 	/**
 	 * Metodo encargado de regresar la fila a su estado normal si estuvo en estado de edicion
 	 * @access private
 	 * @param obj obj es el objeto de la fila que se esta manipulando
 	 */
-	function _revert(obj)
+	function _revert_Fac_Rec(obj)
 	{
 		var contenido=new Array();
-		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
 		{
 			contenido[i]=obj[0].children[i].children[0].value;
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[14].innerHTML="";
-		obj[0].children[14].innerHTML="<img class='edit' name='edit' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[13].innerHTML="";
+		obj[0].children[13].innerHTML="<img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
+	function _revert_Fac_Env(obj)
+	{
+		var contenido=new Array();
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[9].innerHTML="";
+		obj[0].children[9].innerHTML="<img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
+	function _revert_Cobros(obj)
+	{
+		var contenido=new Array();
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
+	function _revert_Pagos(obj)
+	{
+		var contenido=new Array();
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -72,26 +198,70 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='edit'], img[name='delete'], img[name='save'], img[name='cancel']").on('click',function()
+		$("img[name='edit'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros']").on('click',function()
 		{
 			$fila=$(this).parent().parent();
+//                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
 				$fila.remove();
 				$SORI.AJAX.borrar($fila[0].id);
 			}
-			if($(this).attr('name')=='edit')
+//                        FACTURAS RECIBIDAS
+			if($(this).attr('name')=='edit_Fac_Rec')
 			{
-				_editar($fila);
+				_editar_Fac_Rec($fila);
 			}
-			if($(this).attr('name')=='save')
+                        if($(this).attr('name')=='save_Fac_Rec')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
-				_revert($fila);
+				_revert_Fac_Rec($fila);
 			}
-			if($(this).attr('name')=='cancel')
+                        if($(this).attr('name')=='cancel_Fac_Rec')
 			{
-				_revert($fila);
+				_revert_Fac_Rec($fila);
+			}
+//                        FACTURAS ENVIADAS
+			if($(this).attr('name')=='edit_Fac_Env')
+			{
+				_editar_Fac_Env($fila);
+			}
+                        if($(this).attr('name')=='save_Fac_Env')
+			{
+				$SORI.AJAX.actualizar($fila[0].id);
+				_revert_Fac_Env($fila);
+			}
+                        if($(this).attr('name')=='cancel_Fac_Env')
+			{
+				_revert_Fac_Env($fila);
+			}
+//                        COBROS
+			if($(this).attr('name')=='edit_Cobros')
+			{
+				_editar_Cobros($fila);
+			}
+                        if($(this).attr('name')=='save_Cobros')
+			{
+				$SORI.AJAX.actualizar($fila[0].id);
+				_revert_Cobros($fila);
+			}
+                        if($(this).attr('name')=='cancel_Cobros')
+			{
+				_revert_Cobros($fila);
+			}
+//                        PAGOS
+			if($(this).attr('name')=='edit_Pagos')
+			{
+				_editar_Pagos($fila);
+			}
+			if($(this).attr('name')=='save_Pagos')
+			{
+				$SORI.AJAX.actualizar($fila[0].id);
+				_revert_Pagos($fila);
+			}
+			if($(this).attr('name')=='cancel_Pagos')
+			{
+				_revert_Pagos($fila);
 			}
 		});
 		$fila=null;
@@ -154,6 +324,7 @@ $SORI.UI=(function()
 		            $("#Contrato_id_monetizable").val(obj.monetizable);
 		            $("#Contrato_id_managers").val(obj.manager);
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
+		            $("#Contrato_id_disputa_solved").val(obj.dias_disputa_solved);
 		            $("#Contrato_up").val(obj.Contrato_up);
 		            $("#Contrato_upOculto").val(obj.Contrato_up);
 		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
@@ -161,6 +332,7 @@ $SORI.UI=(function()
 		            $("#TerminoP_Oculto").val(obj.termino_pago);
 		            $("#monetizable_Oculto").val(obj.monetizable);
 		            $("#dias_disputa_Oculto").val(obj.dias_disputa);
+		            $("#dias_disputa_solved_Oculto").val(obj.dias_disputa_solved);
 		            $("#Contrato_id_limite_credito").val(obj.credito);
 		            $("#credito_Oculto").val(obj.credito);
 		            $("#Contrato_id_limite_compra").val(obj.compra);
@@ -236,6 +408,7 @@ $SORI.AJAX=(function()
 			success:function(data)
 			{
 				console.log(data);
+				console.log('actualizo');
 			}
 		});
 		id=null;

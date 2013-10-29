@@ -51,7 +51,7 @@
         </div>
 
 	<div class="row buttons AsignarCarrierGroup">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar Grupo' : 'Save'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
