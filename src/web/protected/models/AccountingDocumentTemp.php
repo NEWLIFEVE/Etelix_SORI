@@ -21,7 +21,13 @@
  * @property string $email_received_hour
  * @property integer $id_currency
  * @property integer $confirm
- *
+ * @property double $min_etx
+ * @property double $min_carrier
+ * @property double $rate_etx
+ * @property double $rate_carrier
+ * @property integer $id_accounting_document
+ * @property double $amount_note
+ * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
  * @property Carrier $idCarrier
@@ -45,16 +51,15 @@ class AccountingDocumentTemp extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier', 'numerical', 'integerOnly'=>true),
-			array('minutes, amount', 'numerical'),
+                        array('id_type_accounting_document', 'required'),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document', 'numerical', 'integerOnly'=>true),
+			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier, amount_note', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
-
-			array('issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, id_currency, confirm', 'safe'),
+			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date,  valid_received_date, email_received_date, valid_received_hour, email_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency, confirm', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, amount_note', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,6 +74,8 @@ class AccountingDocumentTemp extends CActiveRecord
 			'idTypeAccountingDocument' => array(self::BELONGS_TO, 'TypeAccountingDocument', 'id_type_accounting_document'),
                         'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
                         'idCurrency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
+                        'idAccountingDocument' => array(self::BELONGS_TO, 'AccountingDocument', 'id_accounting_document'),
+			
 		);
 	}
 
@@ -95,6 +102,12 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_carrier' => 'Carrier',
 			'id_currency' => 'Moneda',
 			'confirm' => 'Confirmar',
+                        'min_etx' => 'Min Etx',
+			'min_carrier' => 'Min Carrier',
+			'rate_etx' => 'Tarifa Etx',
+			'rate_carrier' => 'Tarifa Carrier',
+			'id_accounting_document' => 'Documento Relacionado',
+			'amount_note' => 'Monto Nota',
 		);
 	}
 
@@ -133,6 +146,12 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_currency',$this->id_currency);
 		$criteria->compare('confirm',$this->confirm);
+                $criteria->compare('min_etx',$this->min_etx);
+		$criteria->compare('min_carrier',$this->min_carrier);
+		$criteria->compare('rate_etx',$this->rate_etx);
+		$criteria->compare('rate_carrier',$this->rate_carrier);
+		$criteria->compare('id_accounting_document',$this->id_accounting_document);
+		$criteria->compare('amount_note',$this->amount_note);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

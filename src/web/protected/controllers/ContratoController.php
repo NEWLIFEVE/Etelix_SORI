@@ -138,6 +138,7 @@ class ContratoController extends Controller
                     $termino_pago=$_GET['id_termino_pago'];
                     $monetizable=$_GET['id_monetizable'];
                     $dias_disputa=$_GET['dias_disputa'];
+                    $dias_disputa_solved=$_GET['dias_disputa_solved'];
                     $credito=$_GET['credito'];
                     $compra=$_GET['compra'];
                     $Contrato_up=$_GET['Contrato_up'];
@@ -171,7 +172,10 @@ class ContratoController extends Controller
                                 $modelAux->sign_date=$sign_date;
                                 $modelAux->production_date=$production_date;
                                 $modelAux->id_company=$company;
+                                if ($Contrato_up != $modelAux->up){
                                 $modelAux->up=$Contrato_up;
+                                Log::registrarLog(LogAction::getId('Modificar UP'),NULL, $modelAux->id);
+                                }
                                 if ($end_date!='' || $end_date!=NULL){
                                     $modelAux->end_date=$end_date;
                                 }else{
@@ -246,6 +250,28 @@ class ContratoController extends Controller
                                         $modelCDNEW->days =$dias_disputa;
                                         $modelCDNEW->save();
                                         Log::registrarLog(LogAction::getId('Modificar Dias Max Disputa'),NULL, $modelCDNEW->id);
+                                }
+                                /*DIAS_DISPUTA_SOLVED*/
+                                $modelCDS= SolvedDaysDisputeHistory::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                if($modelCDS!=NULL){
+                                    if($modelCDS->days != $dias_disputa_solved){
+                                        $modelCDS->end_date=date('Y-m-d'); 
+                                        $modelCDS->save();
+                                        $modelCDSNEW = new SolvedDaysDisputeHistory;
+                                        $modelCDSNEW->id_contrato=$modelAux->id;
+                                        $modelCDSNEW->start_date=date('Y-m-d');
+                                        $modelCDSNEW->days =$dias_disputa_solved;
+                                        $modelCDSNEW->save();
+                                        Log::registrarLog(LogAction::getId('Modificar Dias Solventar Disputa'),NULL, $modelCDSNEW->id);
+                                        $text.= $dias_disputa.',';
+                                    }
+                                }else{
+                                        $modelCDSNEW = new SolvedDaysDisputeHistory;
+                                        $modelCDSNEW->id_contrato=$modelAux->id;
+                                        $modelCDSNEW->start_date=date('Y-m-d');
+                                        $modelCDSNEW->days =$dias_disputa_solved;
+                                        $modelCDSNEW->save();
+                                        Log::registrarLog(LogAction::getId('Modificar Dias Solventar Disputa'),NULL, $modelCDSNEW->id);
                                 }
                                 /*CREDITO*/
                                 $modelCLCredito= CreditLimit::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
@@ -326,6 +352,15 @@ class ContratoController extends Controller
                                 $modelCDNEW->id_contrato=$model->id;
                                 $modelCDNEW->start_date=date('Y-m-d');
                                 $modelCDNEW->days =$dias_disputa;
+                                $modelCDNEW->save();
+                                
+                                }                                
+                                /*DIAS_DISPUTA_SOLVED*/
+                                if($dias_disputa_solved!='' || $dias_disputa_solved!=NULL){
+                                $modelCDNEW = new SolvedDaysDisputeHistory;
+                                $modelCDNEW->id_contrato=$model->id;
+                                $modelCDNEW->start_date=date('Y-m-d');
+                                $modelCDNEW->days =$dias_disputa_solved;
                                 $modelCDNEW->save();
                                 
                                 }                                
@@ -458,6 +493,7 @@ class ContratoController extends Controller
 //                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
                 
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
+                $params['dias_disputa_solved']= SolvedDaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
 //                $params['credito']= ContratoLimites::getCredito($model->id);
 //                $params['compra']= ContratoLimites::getCompra($model->id);

@@ -259,6 +259,7 @@ $('#botAsignarContrato').click('on',function(e)
     monetizable = $("#Contrato_id_monetizable").val(),
     Contrato_up = $("#Contrato_up").val(),
     diasDisputaOculto = $("#dias_disputa_Oculto").val(),
+    diasDisputaSolvedOculto = $("#dias_disputa_solved_Oculto").val(),
     F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val(),
     F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val(),
     monetizableOculto = $("#monetizable_Oculto").val(),      
@@ -266,6 +267,7 @@ $('#botAsignarContrato').click('on',function(e)
     Contrato_upOculto = $("#Contrato_upOculto").val();
     
     var dias_disputa=$("#Contrato_id_disputa").val(),
+    dias_disputa_solved=$("#Contrato_id_disputa_solved").val(),
     credito=$("#Contrato_id_limite_credito").val(),
     compra=$("#Contrato_id_limite_compra").val();
     
@@ -303,7 +305,8 @@ $('#botAsignarContrato').click('on',function(e)
                 var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
                                 <br><b>( "+carrierName+" / "+companyName+" )</b></h4><p>Con las siguientes condiciones comerciales:\n\
                                 <p><h6>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
-                                <p>Dias de disputa: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
+                                <p>Dias max para disputar: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
+                                <p>Dias para solventar disputas: "+dias_disputa_solved+"</p>\n\
                                 <p>Limite de Compra: "+compra+"</p>\n\
                                 <p>Unidad de producción: "+Contrato_upC+"</p>\n\
                                 <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
@@ -320,11 +323,19 @@ $('#botAsignarContrato').click('on',function(e)
                 guardoEdito=" Se realizaron los siguientes cambios en el Contrato";  
                 if(diasDisputaOculto!=dias_disputa )
                 {
-                    var backDiasDiasputa="Dias de Disputa de: "+diasDisputaOculto+" a ";
+                    var backDiasDiasputa="Dias max para disputar de: "+diasDisputaOculto+" a ";
                 }
                 else
                 {
-                    backDiasDiasputa=" Dias de Disputa: ";
+                    backDiasDiasputa="Dias max para disputar: ";
+                }
+                if(diasDisputaSolvedOculto!=dias_disputa_solved )
+                {
+                    var backDiasDiasputaSolved="Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ";
+                }
+                else
+                {
+                    backDiasDiasputaSolved="Dias para solventar disputas: ";
                 }
                 if(F_Firma_Contrato_Oculto!=sign_date)
                 {
@@ -402,6 +413,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                <h6>"+backTPago+ ""+termino_pName+"<p>\n\
                                                <p>"+backMonetizable+" "+monetizableName+"<p>\n\
                                                    "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
+                                                   "+backDiasDiasputaSolved+" "+dias_disputa_solved+"<p>\n\
                                                    "+backCredito+" "+credito+"<p>\n\
                                                    "+backCompra+" "+compra+"<p>\n\
                                                    "+backUP+" "+Contrato_upC+"<p>\n\
@@ -423,7 +435,7 @@ $('#botAsignarContrato').click('on',function(e)
                     $.ajax({
                         type: "GET",
                         url: "Contrato",
-                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up,
+                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up,
                         success: function(data) 
                         {  
                             
@@ -435,7 +447,7 @@ $('#botAsignarContrato').click('on',function(e)
                             else
                             {
                                 efectivo="<h4>"+guardoEdito+"\n\
-                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias de disputa:"+dias_disputa+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
                                                </h6><p><img src='/images/si.png'width='90px' height='50px'/>";
                             }
                             var exito=$('.mensaje').html(efectivo).hide().fadeIn('fast');
