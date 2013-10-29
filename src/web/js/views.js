@@ -800,8 +800,11 @@ $('#botAgregarDatosContable').click('on',function(e)
                     numDocumentoTemp=obj.numDocumentoTemp,
                     minutosTemp=obj.minutosTemp,
                     cantidadTemp=obj.cantidadTemp,
-                    currencyTemp=obj.currencyTemp;
-
+                    currencyTemp=obj.currencyTemp,
+                    ExisteTemp=obj.ExisteTemp,
+                    ExisteFin=obj.ExisteFin;
+            if(ExisteTemp==null&&ExisteFin==null||ExisteTemp==""&&ExisteFin=="")
+            {
                if(selecTipoDoc=='1'){
                 $(".lista_FacEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
@@ -838,6 +841,14 @@ $('#botAgregarDatosContable').click('on',function(e)
                 $('.lista_FacRec').fadeIn('slow');
                 $('.Label_F_Rec').fadeIn('slow');
                }
+            }else{
+                var YaExiste = $("<div class='cargando'></div><div class='mensaje'><h4>La <b>"+selecTipoDocNameTemp+"</b><br> que intenta registrar, <br>la cual es del carrier: <b>"+idCarrierNameTemp+"</b>, <br>en el periodo: <b>"+desdeFechaTemp+"</b> / <b>"+hastaFechaTemp+"</b><br> ya se encuantra registrada bajo <br>el N°: <b>"+numDocumentoTemp+"</b></h4>Por favor revise los datos a almacenar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                $("body").append(YaExiste);
+                YaExiste.fadeIn('slow');
+                setTimeout(function()
+                { YaExiste.fadeOut('slow');
+                }, 8000);
+            }
                if(selecTipoDoc=='3'){
                 $(".lista_Pagos").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\

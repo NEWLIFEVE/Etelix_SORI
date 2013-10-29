@@ -233,7 +233,7 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
         { 
-            return self::model()->find("id_carrier =:idCarrier and doc_number = numDoc and id_type_accounting_document = tipoDoc and from_date = desde and to_date = hasta",array(":idCarrier"=>$idCarrier),array(":numDoc"=>$numDocumento),array(":tipoDoc"=>$selecTipoDoc),array(":desde"=>$desdeFecha),array(":hasta"=>$hastaFecha));
+            return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
         
         public static function getValidDate($EmailfechaRecepcion,$dia)

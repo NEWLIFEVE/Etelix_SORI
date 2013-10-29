@@ -117,9 +117,10 @@ class AccountingDocumentTempController extends Controller
             $minutosTemp.= Utility::snull($minutos);
             $moneda.= Currency::getName($currency);
             
-            $existe=  AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-            
-            if($existe=NULL)
+            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
+            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
+
+            if($existeTemp==NULL&&$existeFin==NULL||$existeTemp==""&&$existeFin=="")
             {
                 $model = new AccountingDocumentTemp;
 
@@ -190,11 +191,21 @@ class AccountingDocumentTempController extends Controller
                     $params['minutosTemp'] = $minutosTemp;
                     $params['cantidadTemp'] = $model->amount;
                     $params['currencyTemp'] = $moneda;
-
+                    $params['ExisteTemp'] = $existeTemp;
+                    $params['ExisteFin'] = $existeFin;
+                    
                     echo json_encode($params);
                 } 
             }else{
-                
+                    $params['idCarrierNameTemp'] = $idCarrierName;
+                    $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                    $params['desdeFechaTemp'] =  $desdeFecha;
+                    $params['hastaFechaTemp'] =  $hastaFecha;
+                    $params['numDocumentoTemp'] = $numDocumento;
+                    $params['ExisteTemp'] = $existeTemp;
+                    $params['ExisteFin'] = $existeFin;
+                    
+                    echo json_encode($params);
             }
         }
         /**
@@ -224,42 +235,58 @@ class AccountingDocumentTempController extends Controller
             $minutosTemp.= Utility::snull($minutos);
             $moneda.= Currency::getName($currency);
             
-            $model = new AccountingDocumentTemp;
-            
-                $model->id_type_accounting_document = $selecTipoDoc;
-                $model->issue_date = Utility::snull($fechaEmision);
-                $model->from_date = Utility::snull($desdeFecha);
-                $model->to_date = Utility::snull($hastaFecha);
-                $model->sent_date = Utility::snull($fechaEmision);
-                $model->doc_number = $numDocumento;
-                $model->minutes = $minutosTemp;
-                $model->amount = Utility::snull($cantidad);
-                $model->note = Utility::snull($nota);
-                $model->id_currency =$currency;
-                $model->id_carrier = $idCarrier;
-                $model->confirm = 0;
-                $model->valid_received_date = NULL;
-                $model->valid_received_hour = NULL;
-                $model->email_received_date = NULL;
-                $model->email_received_hour = NULL;
-             
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-            
-                $params['idDoc'] = $model->id;
-                $params['idCarrierNameTemp'] = $idCarrierName;
-                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
-                $params['fechaEmisionTemp'] = $fechaEmision;
-                $params['desdeFechaTemp'] =  $desdeFecha;
-                $params['hastaFechaTemp'] =  $hastaFecha;
-                $params['fechaEnvioTemp'] = $fechaEmision;
-                $params['numDocumentoTemp'] = $model->doc_number;
-                $params['minutosTemp'] = $minutosTemp;
-                $params['cantidadTemp'] = $model->amount;
-                $params['currencyTemp'] = $moneda;
-                
-                echo json_encode($params);
+            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
+            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
+
+            if($existeTemp==NULL&&$existeFin==NULL||$existeTemp==""&&$existeFin=="")
+            {
+                $model = new AccountingDocumentTemp;
+
+                    $model->id_type_accounting_document = $selecTipoDoc;
+                    $model->issue_date = Utility::snull($fechaEmision);
+                    $model->from_date = Utility::snull($desdeFecha);
+                    $model->to_date = Utility::snull($hastaFecha);
+                    $model->sent_date = Utility::snull($fechaEmision);
+                    $model->doc_number = $numDocumento;
+                    $model->minutes = $minutosTemp;
+                    $model->amount = Utility::snull($cantidad);
+                    $model->note = Utility::snull($nota);
+                    $model->id_currency =$currency;
+                    $model->id_carrier = $idCarrier;
+                    $model->confirm = 0;
+                    $model->valid_received_date = NULL;
+                    $model->valid_received_hour = NULL;
+                    $model->email_received_date = NULL;
+                    $model->email_received_hour = NULL;
+
+                if ($model->save()) {
+                    $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                    Log::registrarLog($idAction, NULL, $model->id);
+
+                    $params['idDoc'] = $model->id;
+                    $params['idCarrierNameTemp'] = $idCarrierName;
+                    $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                    $params['fechaEmisionTemp'] = $fechaEmision;
+                    $params['desdeFechaTemp'] =  $desdeFecha;
+                    $params['hastaFechaTemp'] =  $hastaFecha;
+                    $params['fechaEnvioTemp'] = $fechaEmision;
+                    $params['numDocumentoTemp'] = $model->doc_number;
+                    $params['minutosTemp'] = $minutosTemp;
+                    $params['cantidadTemp'] = $model->amount;
+                    $params['currencyTemp'] = $moneda;
+
+                    echo json_encode($params);
+                }
+            }else{
+                    $params['idCarrierNameTemp'] = $idCarrierName;
+                    $params['selecTipoDocNameTemp'] = $selecTipoDocName;
+                    $params['desdeFechaTemp'] =  $desdeFecha;
+                    $params['hastaFechaTemp'] =  $hastaFecha;
+                    $params['numDocumentoTemp'] = $numDocumento;
+                    $params['ExisteTemp'] = $existeTemp;
+                    $params['ExisteFin'] = $existeFin;
+                    
+                    echo json_encode($params);
             }
         }
         /**
