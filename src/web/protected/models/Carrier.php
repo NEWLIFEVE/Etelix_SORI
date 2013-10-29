@@ -57,6 +57,7 @@ class Carrier extends CActiveRecord
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
+                        'destinationSupplier' => array(self::HAS_MANY, 'DestinationSupplier', 'id_carrier'),
 		);
 	}
 
