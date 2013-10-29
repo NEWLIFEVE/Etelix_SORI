@@ -139,22 +139,36 @@
             </div>
             
             <div class="contratoForm numDocument">
-                <?php echo $form->labelEx($model,'doc_number'); ?>
+                <label class="doc_number">Numero de Documento</label>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
                 <?php echo $form->error($model,'doc_number'); ?>
             </div>
+            
+              <div class="contratoForm DestinoDisp">
+                <label class="DestDisp">Destino</label>
+                <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_carrier'); ?>
+              </div>
             <div class="contratoForm minutosDoc">
-                <?php echo $form->labelEx($model,'minutes'); ?>
+                <label class="MinutosE">Minutos</label>
                 <?php echo $form->textField($model,'minutes'); ?>
                 <?php echo $form->error($model,'minutes'); ?>
             </div>
+            <div class="contratoForm minutosDocProveedor">
+               <label class="MinutosP">Minutos Proveedor</label>
+               <input id="AccountingDocumentTemp_MinutosProvee"type="text" name="AccountingDocumentTemp[MinutosProvee]"><!-- esto hay que arreglarlo bien-->
+            </div>
             <div class="contratoForm montoDoc">
-                <?php echo $form->labelEx($model,'amount'); ?>
+                <label class="MontoE">Monto</label>
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
             </div>
+            <div class="contratoForm montoDocProveedor">
+                <label class="MontoP">Tarifa Proveedor</label>
+                <input id="AccountingDocumentTemp_MontoProvee"type="text" name="AccountingDocumentTemp[MontoProvee]"><!-- esto hay que arreglarlo bien-->
+            </div>
                 
-            <div class="contratoForm">
+            <div class="contratoForm Moneda">
                 <?php echo $form->labelEx($model,'id_currency'); ?>
                 <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency()); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
