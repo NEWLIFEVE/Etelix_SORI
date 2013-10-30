@@ -263,6 +263,20 @@ $SORI.UI=(function()
 			{
 				_revert_Pagos($fila);
 			}
+//                        DISPUTAS RECIBIDAS
+			if($(this).attr('name')=='edit_Pagos')
+			{
+				_editar_Pagos($fila);
+			}
+			if($(this).attr('name')=='save_Pagos')
+			{
+				$SORI.AJAX.actualizar($fila[0].id);
+				_revert_Pagos($fila);
+			}
+			if($(this).attr('name')=='cancel_Pagos')
+			{
+				_revert_Pagos($fila);
+			}
 		});
 		$fila=null;
 	}

@@ -264,11 +264,11 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         public static function lista_DispRec($usuario)
 	{
-		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
-			  FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier, d.amount, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination e
+			  WHERE d.id_type_accounting_document=5 AND t.id = d.id_type_accounting_document AND f.id = d.id_accounting_document AND e.id = d.id_destination AND c.id=d.id_carrier ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -287,18 +287,7 @@ class AccountingDocumentTemp extends CActiveRecord
         { 
             return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
-        /**
-         * busca el numero de factura que contengan carrier y fechas(ini-fin)para disputar
-         * @param type $CarrierDisp
-         * @param type $desdeDisp
-         * @param type $hastaDisp
-         * @return type
-         */
-        public static function getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp)
-        { 
-            return CHtml::listData(AccountingDocumentTemp::model()->findAll("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp)), 'id','doc_number');
-//            return self::model()->find("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp));
-        } 
+
         /**
          * calcula los dias y hora para registrar en facturas recibidas
          * @param type $EmailfechaRecepcion
@@ -362,4 +351,6 @@ class AccountingDocumentTemp extends CActiveRecord
 //                }
 //                return $Dates;
 //        }
+        
+        
 }

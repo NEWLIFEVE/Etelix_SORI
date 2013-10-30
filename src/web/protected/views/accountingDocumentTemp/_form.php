@@ -344,12 +344,17 @@
          <label class="Label_DispRec" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>Disputas Recibidas:</label>
          <table border="1" class="tablaVistDocTemporales lista_DispRec" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>
                 <tr>
-                    <td> Grupo </td>
-                    <td> Fecha de Emisión </td>
-                    <td> N°Documento </td>
-                    <td> Cantidad </td>
-                    <td> Moneda </td>
-                    <td> Acciones </td>
+                   <td> Carrier </td>
+                   <td> Inicio Periodo a Facturar </td>
+                   <td> Fin Periodo a Facturar </td>
+                   <td> Num. Factura </td>
+                   <td> Minutos Etx </td>
+                   <td> Minutos Prov </td>
+                   <td> Tarifa Etx </td>
+                   <td> Tarifa Prov </td>
+                   <td> Monto </td>
+                   <td> Destino </td>
+                   <td> Acciones </td>
                 </tr>
                 <?php
                     if($lista_DispRec!=null)
@@ -358,12 +363,17 @@
                         { 
                             echo "<tr class='vistaTemp' id='".$value->id."'>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
-                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
-                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
+                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[min_etx]'>".$value->min_etx."</td>
+                                    <td id='AccountingDocumentTemp[min_carrier]'>".$value->min_carrier."</td>
+                                    <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
+                                    <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td id='AccountingDocumentTemp[id_destination]'>".$value->id_destination."</td>
                                     <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-                                  </tr>";  
+                                  </tr>";     
                         }
                     }
                     ?>

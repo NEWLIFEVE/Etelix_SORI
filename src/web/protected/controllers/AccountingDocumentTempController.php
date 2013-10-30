@@ -413,7 +413,8 @@ class AccountingDocumentTempController extends Controller
             $idCarrier = $_GET['idCarrier'];
             $DesdeFecha = $_GET['desdeFecha'];
             $HastaFecha = $_GET['hastaFecha'];
-            $idAccDocument = $_GET['numDocumento'];
+//            $idAccDocument = $_GET['numDocumento'];
+            $idAccDocument =945;//esto es provisional
             $DestinoDispRec = $_GET['DestinoDispRec'];
             $MinutosEtelix = $_GET['minutos'];
             $MinutosProveedor = $_GET['minutosDocProveedor'];
@@ -421,12 +422,15 @@ class AccountingDocumentTempController extends Controller
             $MontoProveedor = $_GET['montoDocProveedor'];
             $Nota = $_GET['nota'];
             $idCarrierName = "";
+            $facturaNumber = "";
             $selecTipoDocName = "";
             $monto = "";
+            $destinoDispRecName = "";
             $monto.=$MinutosProveedor*$MontoProveedor;
-            $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);
-            $idCarrierName.= Carrier::getName($idCarrier);
-      
+            $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);//busca el name del tipo de documento, en este caso, disputas recibidas
+            $idCarrierName.= Carrier::getName($idCarrier);//busca el name del carier
+            $facturaNumber.=AccountingDocument::getDocNum($idAccDocument);//busca el numero de factura
+            $destinoDispRecName.=Destination::getName($DestinoDispRec);//busca el name del destino
             $model = new AccountingDocumentTemp;
             
                 $model->id_type_accounting_document = $SelecTipoDoc;
@@ -440,9 +444,7 @@ class AccountingDocumentTempController extends Controller
                 $model->rate_etx = $MontoEtelix;
                 $model->rate_carrier = $MontoProveedor;
                 $model->note = Utility::snull($Nota);
-//                $model->id_accounting_document = $idAccDocument;
-                $model->id_accounting_document = NULL;//hay que obtener el id de la factura
-                
+                $model->id_accounting_document = $idAccDocument;
                 $model->confirm = 1;
                 $model->id_destination_supplier = NULL;
                 $model->email_received_hour = NULL;
@@ -459,10 +461,18 @@ class AccountingDocumentTempController extends Controller
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-            
-                $params['idCarrierNameTemp'] =$idCarrierName;
-        
                
+                $params['idDoc'] = $model->id;
+                $params['idCarrierNameTemp']=$idCarrierName;
+                $params['desdeFechaTemp']=$DesdeFecha;
+                $params['hastaFechaTemp']=$HastaFecha;
+                $params['numDocumentoTemp']=$facturaNumber;
+                $params['minutosTemp'] =$MinutosEtelix;
+                $params['MinutosProv'] =$MinutosProveedor;
+                $params['TarifaEtx'] =$MontoEtelix;
+                $params['TarifaProv'] =$MontoProveedor;
+                $params['Destino'] =$destinoDispRecName;
+                $params['cantidadTemp'] =$monto;
                 
                 echo json_encode($params);
             }
@@ -786,7 +796,7 @@ class AccountingDocumentTempController extends Controller
             $desdeDisp = $_GET['desdeDisp'];
             $hastaDisp = $_GET['hastaDisp']; 
         
-            $factura=AccountingDocumentTemp::getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp);
+            $factura=AccountingDocument::getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp);
               $facturasFin=implode(',',$factura);  
                 echo $facturasFin;  
         }
