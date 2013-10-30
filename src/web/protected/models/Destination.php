@@ -11,6 +11,8 @@
  * The followings are the available model relations:
  * @property GeographicZone $idGeographicZone
  * @property Balance[] $balances
+ * @property AccountingDocument[] accountingDocument
+ * @property AccountingDocumentTemp[] accountingDocumentTemp
  */
 class Destination extends CActiveRecord
 {
@@ -49,6 +51,8 @@ class Destination extends CActiveRecord
 		return array(
 			'idGeographicZone' => array(self::BELONGS_TO, 'GeographicZone', 'id_geographic_zone'),
 			'balances' => array(self::HAS_MANY, 'Balance', 'id_destination'),
+			'accountingDocument' => array(self::HAS_MANY, 'AccountingDocument', 'id_destination'),
+			'accountingDocumentTemp' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_destination'),
 		);
 	}
 

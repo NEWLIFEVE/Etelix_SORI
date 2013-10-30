@@ -26,14 +26,18 @@
  * @property double $rate_etx
  * @property double $rate_carrier
  * @property integer $id_accounting_document
- * @property double $amount_note
+ * @property integer $id_destination
+ * @property integer $id_destination_supplier
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
  * @property Currency $idCurrency
  * @property TypeAccountingDocument $idTypeAccountingDocument
  * @property AccountingDocument $idAccountingDocument
+ * @property Destination $id_destination
+ * @property DestinationSupplier $id_destination_supplier
  * @property AccountingDocument[] $accountingDocuments
+ * @property AccountingDocumentTemp[] $accountingDocuments
  */
 class AccountingDocument extends CActiveRecord
 {
@@ -54,14 +58,14 @@ class AccountingDocument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document', 'numerical', 'integerOnly'=>true),
-			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier, amount_note', 'numerical'),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
+			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, amount_note', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +83,8 @@ class AccountingDocument extends CActiveRecord
 			'idAccountingDocument' => array(self::BELONGS_TO, 'AccountingDocument', 'id_accounting_document'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_accounting_document'),
                         'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_accounting_document'),
+                        'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
+                        'idDestinationSupplier' => array(self::BELONGS_TO, 'DestinationSupplier', 'id_destination_supplier'),
 		);
 	}
 
@@ -110,7 +116,8 @@ class AccountingDocument extends CActiveRecord
 			'rate_etx' => 'Tarifa Etx',
 			'rate_carrier' => 'Tarifa Carrier',
 			'id_accounting_document' => 'Documento Relacionado',
-			'amount_note' => 'Monto Nota',
+                        'id_destination' => 'Destino Etelix',
+			'id_destination_supplier' => 'Destino Proveedor',
 		);
 	}
 
@@ -154,7 +161,8 @@ class AccountingDocument extends CActiveRecord
 		$criteria->compare('rate_etx',$this->rate_etx);
 		$criteria->compare('rate_carrier',$this->rate_carrier);
 		$criteria->compare('id_accounting_document',$this->id_accounting_document);
-		$criteria->compare('amount_note',$this->amount_note);
+                $criteria->compare('$id_destination',$this->id_destination);
+		$criteria->compare('$id_destination_supplier',$this->id_destination_supplier);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

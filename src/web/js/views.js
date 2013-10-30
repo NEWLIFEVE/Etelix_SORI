@@ -878,9 +878,9 @@ $('#botAgregarDatosContable').click('on',function(e)
     currency=$('#AccountingDocumentTemp_id_currency').val(),
     nota=$('#AccountingDocumentTemp_note').val(),
     Select_doc_number=$('select#AccountingDocumentTemp_doc_number').val(),
-    minutosDocProveedor=$('.minutosDocProveedor').val(),
-    DestinoDispRec=$('.DestinoDisp').val(),
-    montoDocProveedor=$('.montoDocProveedor').val();
+    minutosDocProveedor=$('#AccountingDocumentTemp_MinutosProvee').val(),
+    DestinoDispRec=$('#AccountingDocumentTemp_id_destination').val(),
+    montoDocProveedor=$('#AccountingDocumentTemp_MontoProvee').val();
     
     var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
     $("body").append(msjIndicador);
