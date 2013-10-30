@@ -146,7 +146,8 @@
             </div>
             
               <div class="contratoForm DestinoDisp">
-                <label class="DestDisp">Destino</label>
+<!--                <label >Destino</label>-->
+                <?php echo $form->labelEx($model,'id_destination'); ?>
                 <?php echo $form->dropDownList($model,'id_destination',Destination::getDesList(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_destination'); ?>
               </div>
