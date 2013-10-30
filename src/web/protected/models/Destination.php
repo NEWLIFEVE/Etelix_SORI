@@ -147,4 +147,9 @@ class Destination extends CActiveRecord
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
+        
+        public static function getDesList()
+        {
+            return CHtml::listData(Destination::model()->findAll(array('order'=>'name')),'id','name');
+        }
 }

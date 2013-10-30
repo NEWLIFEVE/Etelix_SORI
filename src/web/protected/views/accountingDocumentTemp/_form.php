@@ -141,13 +141,14 @@
             <div class="contratoForm numDocument">
                 <label class="doc_number">Numero de Documento</label>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->dropDownList($model,'doc_number',array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'doc_number'); ?>
             </div>
             
               <div class="contratoForm DestinoDisp">
                 <label class="DestDisp">Destino</label>
-                <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
-                <?php echo $form->error($model,'id_carrier'); ?>
+                <?php echo $form->dropDownList($model,'id_Destino',Destination::getDesList(),array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_Destino'); ?>
               </div>
             <div class="contratoForm minutosDoc">
                 <label class="MinutosE">Minutos</label>

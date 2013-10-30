@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -402,6 +402,66 @@ class AccountingDocumentTempController extends Controller
                 echo json_encode($params);
             }
         }
+        /**
+        * recibe los datos desde ajax y almacena solo las disputas recibidas doc temp...
+        * @access public
+        **/
+        public function actionGuardarDispRecibida() 
+        {
+            $SelecTipoDoc = $_GET['selecTipoDoc'];
+            $idCarrier = $_GET['idCarrier'];
+            $DesdeFecha = $_GET['desdeFecha'];
+            $HastaFecha = $_GET['hastaFecha'];
+            $NumeroFactura = $_GET['Select_doc_number'];
+            $DestinoDispRec = $_GET['DestinoDispRec'];
+            $MinutosEtelix = $_GET['minutos'];
+            $MinutosProveedor = $_GET['minutosDocProveedor'];
+            $MontoEtelix = $_GET['cantidad'];
+            $MontoProveedor = $_GET['montoDocProveedor'];
+            $Nota = $_GET['nota'];
+            $idCarrierName = "";
+            $selecTipoDocName = "";
+            $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);
+            $idCarrierName.= Carrier::getName($idCarrier);
+      
+            $model = new AccountingDocumentTemp;
+            
+                $model->id_type_accounting_document = $SelecTipoDoc;
+                $model->id_carrier = $idCarrier;
+                $model->doc_number = $NumeroFactura;
+                $model->to_date = $HastaFecha;
+                $model->from_date = $DesdeFecha;
+                $model->destino = $DestinoDispRec;//falta destino
+                $model->amount = $MontoEtelix;
+                $model->min_etx = Utility::snull($MinutosEtelix);
+                $model->min_carrier = $MinutosProveedor;
+                $model->rate_etx = $MontoEtelix;
+                $model->rate_carrier = $MontoProveedor;
+                $model->note = Utility::snull($Nota);
+                $model->id_accounting_document = NULL;
+                
+                $model->confirm = 1;
+                $model->email_received_hour = NULL;
+                $model->email_received_date = NULL;
+                $model->valid_received_date = NULL;
+                $model->valid_received_hour = NULL;
+                $model->sent_date = NULL;
+                $model->issue_date = NULL;
+                $model->id_currency =NULL;
+                
+               
+            if ($model->save()) {
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+            
+                $params['idDoc'] = $model->id;
+                $params['idDoc'] = $model->id;
+                $params['idDoc'] = $model->id;
+               
+                
+                echo json_encode($params);
+            }
+        }
         /*
         * este action no se usa, pero lo dejo hasta que no exista ningun problema en la nueva guardada
         **/
@@ -711,4 +771,18 @@ class AccountingDocumentTempController extends Controller
 			Yii::app()->end();
 		}
 	}
+        /**
+         * esta funcion busca la factura para disputas, 
+         * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
+         */
+        public function actionBuscaFactura() 
+        {
+            $CarrierDisp = $_GET['CarrierDisp'];
+            $desdeDisp = $_GET['desdeDisp'];
+            $hastaDisp = $_GET['hastaDisp']; 
+        
+            $factura=AccountingDocumentTemp::getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp);
+              $facturasFin=implode(',',$factura);  
+                echo $facturasFin;  
+        }
 }

@@ -27,6 +27,7 @@
  * @property double $rate_carrier
  * @property integer $id_accounting_document
  * @property double $amount_note
+ * @property double $id_destino
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -43,6 +44,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         
         public $carrier_groups;
+        public $id_Destino;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -108,6 +110,7 @@ class AccountingDocumentTemp extends CActiveRecord
 			'rate_carrier' => 'Tarifa Carrier',
 			'id_accounting_document' => 'Documento Relacionado',
 			'amount_note' => 'Monto Nota',
+			'id_Destino' => 'Destino',
 		);
 	}
 
@@ -248,13 +251,38 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
-        
+        /**
+         * comprueba que no existan facturas en a_d_temp....
+         * @param type $idCarrier
+         * @param type $numDocumento
+         * @param type $selecTipoDoc
+         * @param type $desdeFecha
+         * @param type $hastaFecha
+         * @return type
+         */
         
         public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
         { 
             return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
-        
+        /**
+         * busca el numero de factura que contengan carrier y fechas(ini-fin)para disputar
+         * @param type $CarrierDisp
+         * @param type $desdeDisp
+         * @param type $hastaDisp
+         * @return type
+         */
+        public static function getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp)
+        { 
+            return CHtml::listData(AccountingDocumentTemp::model()->findAll("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp)), 'id','doc_number');
+//            return self::model()->find("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp));
+        } 
+        /**
+         * calcula los dias y hora para registrar en facturas recibidas
+         * @param type $EmailfechaRecepcion
+         * @param type $dia
+         * @return type
+         */
         public static function getValidDate($EmailfechaRecepcion,$dia)
         {    
             switch ($dia) {
