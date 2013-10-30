@@ -69,9 +69,9 @@
      
     <div class="VistDocTemporales">
 
-            <table border="1" class="tablaVistDocTemporales" <?php if($lista==null){echo "style='display:none;'";}?>>
+            <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista==null){echo "style='display:none;'";}?>>
                 <tr>
-                    <td> Tipo de Doc </td>
+                    
                     <td> Carrier </td>
                     <td> Fecha de Emisión </td>
                     <td> Inicio Periodo a Facturar </td>
@@ -96,7 +96,7 @@
                         foreach ($lista as $key => $value)
                         { 
                             echo "<tr class='vistaTemp' id='".$value->id."'>
-                                    <td id='AccountingDocument[id_type_accounting_document]'>".$value->id_type_accounting_document."</td>
+                                   
                                     <td id='AccountingDocument[id_carrier]'>".$value->id_carrier."</td>
                                     <td id='AccountingDocument[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocument[from_date]'>".$value->from_date."</td>

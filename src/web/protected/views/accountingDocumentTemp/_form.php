@@ -232,7 +232,7 @@
         
         <br>
         <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
-        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}{echo "style='background:silver;'";}?>>
+        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
                 <tr>
                     <td> Carrier </td>
                     <td> Fecha de Emisión </td>
@@ -269,7 +269,7 @@
           
          <br>
          <label class='LabelCobros' <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>Cobros:</label>
-         <table border="1" class="tablaVistDocTemporales lista_Cobros" <?php if($lista_Cobros==null){echo "style='display:none;'";}{echo "style='background:rgba(123, 195, 236, 1);'";}?>>
+         <table border="1" class="tablaVistDocTemporales lista_Cobros" <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>
                 <tr>
                     <td> Grupo </td>
                     <td> Fecha Recep Valida</td>
@@ -298,7 +298,7 @@
          
          <br>
          <label class="LabelPagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}?>>Pagos:</label>
-         <table border="1" class="tablaVistDocTemporales lista_Pagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}{echo "style='background:rgba(226, 168, 140, 1);'";}?>>
+         <table border="1" class="tablaVistDocTemporales lista_Pagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}{echo "style='background:;'";}?>>
                 <tr>
                     <td> Grupo </td>
                     <td> Fecha de Emisión </td>
