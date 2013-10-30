@@ -52,6 +52,8 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         
         public $carrier_groups;
+        public $amount_etx;
+        public $dispute;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -264,7 +266,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         public static function lista_DispRec($usuario)
 	{
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier, d.amount, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier, d.amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-d.amount) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination e
