@@ -10,6 +10,8 @@
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
+ * @property AccountingDocument[] accountingDocument
+ * @property AccountingDocumentTemp[] accountingDocumentTemp
  */
 class DestinationSupplier extends CActiveRecord
 {
@@ -47,6 +49,8 @@ class DestinationSupplier extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
+                    	'accountingDocument' => array(self::HAS_MANY, 'AccountingDocument', 'id_destination_supplier'),
+			'accountingDocumentTemp' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_destination_supplier'),
 		);
 	}
 
