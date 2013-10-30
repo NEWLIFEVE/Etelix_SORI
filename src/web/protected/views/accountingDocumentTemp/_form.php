@@ -313,7 +313,7 @@
          
          <br>
          <label class="LabelPagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}?>>Pagos:</label>
-         <table border="1" class="tablaVistDocTemporales lista_Pagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}{echo "style='background:;'";}?>>
+         <table border="1" class="tablaVistDocTemporales lista_Pagos" <?php if($lista_Pagos==null){echo "style='display:none;'";}?>>
                 <tr>
                     <td> Grupo </td>
                     <td> Fecha de Emisión </td>
@@ -326,6 +326,35 @@
                     if($lista_Pagos!=null)
                     {
                         foreach ($lista_Pagos as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>
+         
+         <br>
+         <label class="Label_DispRec" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>Disputas Recibidas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_DispRec" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                    <td> Grupo </td>
+                    <td> Fecha de Emisión </td>
+                    <td> N°Documento </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_DispRec!=null)
+                    {
+                        foreach ($lista_DispRec as $key => $value)
                         { 
                             echo "<tr class='vistaTemp' id='".$value->id."'>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>

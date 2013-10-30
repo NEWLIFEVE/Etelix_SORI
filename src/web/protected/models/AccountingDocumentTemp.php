@@ -262,6 +262,17 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
+        public static function lista_DispRec($usuario)
+	{
+		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+			  FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
+			  	   FROM accounting_document_temp
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
+			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
         /**
          * comprueba que no existan facturas en a_d_temp....
          * @param type $idCarrier

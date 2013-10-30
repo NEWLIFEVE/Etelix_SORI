@@ -71,6 +71,7 @@ class AccountingDocumentTempController extends Controller
 		$lista_FacRec=AccountingDocumentTemp::listaFacRecibidas(Yii::app()->user->id);
 		$lista_Pagos=AccountingDocumentTemp::listaPagos(Yii::app()->user->id);
 		$lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
+		$lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -83,7 +84,7 @@ class AccountingDocumentTempController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros
+			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec
 		));
 	}
         /**
@@ -412,7 +413,7 @@ class AccountingDocumentTempController extends Controller
             $idCarrier = $_GET['idCarrier'];
             $DesdeFecha = $_GET['desdeFecha'];
             $HastaFecha = $_GET['hastaFecha'];
-            $NumeroFactura = $_GET['Select_doc_number'];
+            $idAccDocument = $_GET['numDocumento'];
             $DestinoDispRec = $_GET['DestinoDispRec'];
             $MinutosEtelix = $_GET['minutos'];
             $MinutosProveedor = $_GET['minutosDocProveedor'];
@@ -421,6 +422,8 @@ class AccountingDocumentTempController extends Controller
             $Nota = $_GET['nota'];
             $idCarrierName = "";
             $selecTipoDocName = "";
+            $monto = "";
+            $monto.=$MinutosProveedor*$MontoProveedor;
             $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);
             $idCarrierName.= Carrier::getName($idCarrier);
       
@@ -428,35 +431,37 @@ class AccountingDocumentTempController extends Controller
             
                 $model->id_type_accounting_document = $SelecTipoDoc;
                 $model->id_carrier = $idCarrier;
-                $model->doc_number = $NumeroFactura;
-                $model->to_date = $HastaFecha;
                 $model->from_date = $DesdeFecha;
-                $model->destino = $DestinoDispRec;//falta destino
-                $model->amount = $MontoEtelix;
-                $model->min_etx = Utility::snull($MinutosEtelix);
+                $model->to_date = $HastaFecha;
+                $model->id_destination = $DestinoDispRec;
+                $model->amount = $monto;
+                $model->min_etx = $MinutosEtelix;
                 $model->min_carrier = $MinutosProveedor;
                 $model->rate_etx = $MontoEtelix;
                 $model->rate_carrier = $MontoProveedor;
                 $model->note = Utility::snull($Nota);
-                $model->id_accounting_document = NULL;
+//                $model->id_accounting_document = $idAccDocument;
+                $model->id_accounting_document = NULL;//hay que obtener el id de la factura
                 
                 $model->confirm = 1;
+                $model->id_destination_supplier = NULL;
                 $model->email_received_hour = NULL;
                 $model->email_received_date = NULL;
                 $model->valid_received_date = NULL;
                 $model->valid_received_hour = NULL;
+                $model->minutes = NULL;
                 $model->sent_date = NULL;
                 $model->issue_date = NULL;
                 $model->id_currency =NULL;
+                $model->doc_number = NULL;
                 
                
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
             
-                $params['idDoc'] = $model->id;
-                $params['idDoc'] = $model->id;
-                $params['idDoc'] = $model->id;
+                $params['idCarrierNameTemp'] =$idCarrierName;
+        
                
                 
                 echo json_encode($params);

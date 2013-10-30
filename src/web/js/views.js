@@ -929,11 +929,12 @@ $('#botAgregarDatosContable').click('on',function(e)
         }
         if (selecTipoDoc==5){//cobro
               action = "GuardarDispRecibida";
+              numDocumento=Select_doc_number;
         }
         $.ajax({
             type: "GET",
             url: action,
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&Select_doc_number="+Select_doc_number+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoDispRec="+DestinoDispRec+"&montoDocProveedor="+montoDocProveedor,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoDispRec="+DestinoDispRec+"&montoDocProveedor="+montoDocProveedor,
 
               success: function(data) 
                       {
@@ -1027,6 +1028,23 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                     </tr>");
                 $('.lista_Cobros').css("background", "rgba(123, 195, 236, 1)").fadeIn('slow');
                 $('.LabelCobros').fadeIn('slow');
+               }
+               
+                if(selecTipoDoc=='5'){
+                    alert(idCarrierNameTemp);
+                    console.log(idCarrierNameTemp);
+                    
+                     $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
+                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
+                $('.lista_DispRec').fadeIn('slow');
+                $('.Label_DispRec').fadeIn('slow');
+                    
                }
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
                 

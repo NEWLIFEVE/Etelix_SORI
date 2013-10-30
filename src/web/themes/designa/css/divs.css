@@ -519,6 +519,19 @@ width: 20%;
     background: rgba(226, 168, 140, 1);
     color: white;   
 }
+/*****DISPUTAS RECIBIDAS*****/
+.lista_DispRec{
+    background: rgba(152, 198, 213, 1);
+    border-bottom-color: rgba(152, 198, 213, 1);
+}
+.lista_DispRec td{
+    width: 8em;
+    height: 25px;
+}
+.lista_DispRec tr:hover{
+    background: rgba(152, 198, 213, 1);
+    color: white;
+}
 
 .tablaVistDocTemporales tr td input
 {
