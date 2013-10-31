@@ -807,7 +807,6 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                               hastaDisp=$('#AccountingDocumentTemp_to_date').val();
 
                           if (CarrierDisp && desdeDisp && hastaDisp){
-                          alert('siiiii-- :)');
                           $.ajax({
                               type: "GET",
                               url: "BuscaFactura",
@@ -1032,19 +1031,21 @@ $('#botAgregarDatosContable').click('on',function(e)
                }
                
                 if(selecTipoDoc=='5'){
-                    alert(idCarrierNameTemp);
                     console.log(idCarrierNameTemp);
+                    var cantidadEtx=minutosTemp*TarifaEtx,
+                        dispute=cantidadEtx-cantidadTemp;
+                    
                      $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
+                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
                                                         <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
                                                         <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
                                                         <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
                 $('.lista_DispRec').fadeIn('slow');

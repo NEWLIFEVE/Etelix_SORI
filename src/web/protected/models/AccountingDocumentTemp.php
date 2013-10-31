@@ -201,6 +201,13 @@ class AccountingDocumentTemp extends CActiveRecord
         {
            return self::model()->find("id =:id",array(":id"=>$id))->id_type_accounting_document;
         }
+        /*
+        * con el id de documento me trae el id de carrier
+        */
+        public static function getIDcarrier($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->id_carrier;
+        }
 
         /**
 	 * @access public

@@ -129,6 +129,22 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
+	function _editar_DispRec(obj)
+	{
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[10].innerHTML="";
+		obj[0].children[10].innerHTML="<img name='save_DispRec' alt='save' src='/images/icon_check.png'><img name='cancel_DispRec' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
 
 	/**
 	 * Metodo encargado de regresar la fila a su estado normal si estuvo en estado de edicion
@@ -191,6 +207,20 @@ $SORI.UI=(function()
 		obj=contenido=null;
 		accion();
 	}
+	function _revert_DispRec(obj)
+	{
+		var contenido=new Array();
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[10].innerHTML="";
+		obj[0].children[10].innerHTML="<img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
 	/**
 	 * Metodo encargado de ejecutar las repectivas llamadas
 	 * @access public
@@ -198,7 +228,7 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='edit'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros']").on('click',function()
+		$("img[name='edit'],img[name='edit_DispRec'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec']").on('click',function()
 		{
 			$fila=$(this).parent().parent();
 //                        GENERAL
@@ -264,18 +294,18 @@ $SORI.UI=(function()
 				_revert_Pagos($fila);
 			}
 //                        DISPUTAS RECIBIDAS
-			if($(this).attr('name')=='edit_Pagos')
+			if($(this).attr('name')=='edit_DispRec')
 			{
-				_editar_Pagos($fila);
+				_editar_DispRec($fila);
 			}
-			if($(this).attr('name')=='save_Pagos')
+			if($(this).attr('name')=='save_DispRec')
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
-				_revert_Pagos($fila);
+				_revert_DispRec($fila);
 			}
-			if($(this).attr('name')=='cancel_Pagos')
+			if($(this).attr('name')=='cancel_DispRec')
 			{
-				_revert_Pagos($fila);
+				_revert_DispRec($fila);
 			}
 		});
 		$fila=null;

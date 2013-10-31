@@ -210,4 +210,8 @@ class AccountingDocument extends CActiveRecord
             return CHtml::listData(AccountingDocument::model()->findAll("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp)), 'id','doc_number');
 //            return self::model()->find("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp));
         } 
+        
+        public static function getAcc_DocID($id_docID, $carrier){           
+            return self::model()->find("doc_number=:doc_number AND id_carrier=:carrier", array(':doc_number'=>$id_docID,':carrier'=>$carrier))->id;
+        }
 }
