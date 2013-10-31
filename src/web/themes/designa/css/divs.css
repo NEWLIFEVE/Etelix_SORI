@@ -432,10 +432,24 @@ width: 20%;
     display: none;
     width: 97%;
 }
-.hacerUnaNota
+.hacerUnaNota 
 {
     color:rgba(111,204,187,1);
     width: 5%;
+}
+.nuevoDestProv 
+{
+    color:rgba(111,204,187,1);
+    width: 5%;
+    font-weight:bold;
+    font-size: 27px;
+    position: absolute;
+    top: 36px;
+    right: 0;
+}
+
+.DestinoProv{
+    position: relative;
 }
 .CarrierDocument,.GrupoDocument
 {

@@ -145,12 +145,23 @@
                 <?php echo $form->error($model,'doc_number'); ?>
             </div>
             
-              <div class="contratoForm DestinoDisp">
+              <div class="contratoForm DestinoEtx">
 <!--                <label >Destino</label>-->
                 <?php echo $form->labelEx($model,'id_destination'); ?>
                 <?php echo $form->dropDownList($model,'id_destination',Destination::getDesList(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_destination'); ?>
               </div>
+            
+             <div class="contratoForm DestinoProv">
+                <?php echo $form->labelEx($model,'id_destination_supplier'); ?>
+                <?php echo $form->textField($model,'id_destination_supplier',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->dropDownList($model,'id_destination_supplier',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_destination_supplier'); ?>
+                <div class="nuevoDestProv">
+                    <label>+</label>
+                </div>
+             </div>
+             
             <div class="contratoForm minutosDoc">
                 <label class="MinutosE">Minutos</label>
                 <?php echo $form->textField($model,'minutes'); ?>
