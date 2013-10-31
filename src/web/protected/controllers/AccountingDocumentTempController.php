@@ -649,8 +649,17 @@ class AccountingDocumentTempController extends Controller
                 $model=$this->loadModel($id);
                 $tipoID= '';
                 $id_currency= '';
+                
                 $tipoID.= AccountingDocumentTemp::getTypeDoc($id);
-                $id_currency.=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
+                
+                if($tipoID==5){
+                  $id_docID=($_POST['AccountingDocumentTemp']['id_accounting_document']);
+                  $id_accounting_document= AccountingDocument::getAcc_DocID($id_docID, AccountingDocumentTemp::getIDcarrier($id));
+                  $id_currency.=1;  
+                }else{
+                  $id_currency.=Currency::getID($_POST['AccountingDocumentTemp']['id_currency']);
+                }
+                
                 if(isset($_POST['AccountingDocumentTemp']))
                 {
                         $model->attributes=$_POST['AccountingDocumentTemp'];
@@ -704,6 +713,28 @@ class AccountingDocumentTempController extends Controller
                     $model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']);
                     $model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']);
 -                   $model->id_currency=$id_currency;
+                      break;
+                case 5:   
+                    $minCarrier = Utility::snull($_POST['AccountingDocumentTemp']['min_carrier']);
+                    $rateCarrier = Utility::snull($_POST['AccountingDocumentTemp']['rate_carrier']);
+                    
+                    $model->id_accounting_document = $id_accounting_document;
+                    $model->min_etx = Utility::snull($_POST['AccountingDocumentTemp']['min_etx']);
+                    $model->min_carrier = $minCarrier;
+                    $model->rate_etx = Utility::snull($_POST['AccountingDocumentTemp']['rate_etx']);
+                    $model->rate_carrier = $rateCarrier;
+                    $model->amount =$minCarrier*$rateCarrier ;
+                    $model->confirm = 1;
+                    $model->id_destination_supplier = NULL;
+                    $model->email_received_hour = NULL;
+                    $model->email_received_date = NULL;
+                    $model->valid_received_date = NULL;
+                    $model->valid_received_hour = NULL;
+                    $model->minutes = NULL;
+                    $model->sent_date = NULL;
+                    $model->issue_date = NULL;
+                    $model->id_currency =NULL;
+                    $model->doc_number = NULL;
                       break;
 
            } 
