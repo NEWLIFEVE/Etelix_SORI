@@ -415,7 +415,7 @@ class AccountingDocumentTempController extends Controller
             $HastaFecha = $_GET['hastaFecha'];
 //            $idAccDocument = $_GET['numDocumento'];
             $idAccDocument =945;//esto es provisional
-            $DestinoDispRec = $_GET['DestinoDispRec'];
+            $DestinoEtx = $_GET['DestinoEtx'];
             $MinutosEtelix = $_GET['minutos'];
             $MinutosProveedor = $_GET['minutosDocProveedor'];
             $MontoEtelix = $_GET['cantidad'];
@@ -425,19 +425,19 @@ class AccountingDocumentTempController extends Controller
             $facturaNumber = "";
             $selecTipoDocName = "";
             $monto = "";
-            $destinoDispRecName = "";
+            $destinoEtxName = "";
             $monto.=$MinutosProveedor*$MontoProveedor;
             $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);//busca el name del tipo de documento, en este caso, disputas recibidas
             $idCarrierName.= Carrier::getName($idCarrier);//busca el name del carier
             $facturaNumber.=AccountingDocument::getDocNum($idAccDocument);//busca el numero de factura
-            $destinoDispRecName.=Destination::getName($DestinoDispRec);//busca el name del destino
+            $destinoEtxName.=Destination::getName($DestinoEtx);//busca el name del destino
             $model = new AccountingDocumentTemp;
             
                 $model->id_type_accounting_document = $SelecTipoDoc;
                 $model->id_carrier = $idCarrier;
                 $model->from_date = $DesdeFecha;
                 $model->to_date = $HastaFecha;
-                $model->id_destination = $DestinoDispRec;
+                $model->id_destination = $DestinoEtx;
                 $model->amount = $monto;
                 $model->min_etx = $MinutosEtelix;
                 $model->min_carrier = $MinutosProveedor;
@@ -471,7 +471,7 @@ class AccountingDocumentTempController extends Controller
                 $params['MinutosProv'] =$MinutosProveedor;
                 $params['TarifaEtx'] =$MontoEtelix;
                 $params['TarifaProv'] =$MontoProveedor;
-                $params['Destino'] =$destinoDispRecName;
+                $params['Destino'] =$destinoEtxName;
                 $params['cantidadTemp'] =$monto;
                 
                 echo json_encode($params);

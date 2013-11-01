@@ -661,12 +661,15 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       minutosDoc=$('.minutosDoc'),
                       MinutosE=$('.MinutosE'),
                       minutosDocProveedor=$('.minutosDocProveedor'),
-                      DestinoDispRec=$('.DestinoDisp'),
+                      DestinoEtx=$('.DestinoEtx'),
+                      DestinoProv=$('.DestinoProv'),
                       MontoE=$('.MontoE'),
                       Moneda=$('.Moneda'),
                       doc_number=$('.doc_number'),
                       Select_doc_number=$('select#AccountingDocumentTemp_doc_number'),
-                      Inputt_doc_number=$('input#AccountingDocumentTemp_doc_number'),
+                      Input_doc_number=$('input#AccountingDocumentTemp_doc_number'),
+                      Select_dest_prov=$('select#AccountingDocumentTemp_id_destination_supplier'),
+                      Input_dest_prov=$('input#AccountingDocumentTemp_id_destination_supplier'),
                       Monto_doc=$('#AccountingDocumentTemp_amount'),
                       divNumDoc=$('.numDocument '),
                       montoDocProveedor=$('.montoDocProveedor');
@@ -679,14 +682,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos');
                       doc_number.html('Num. Documento');
                       minutosDocProveedor.hide('slow');
-                      DestinoDispRec.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.show('slow');
                       MontoE.show('slow');
                       MontoE.html('Monto');
                       montoDocProveedor.hide('slow');   
                       Moneda.show('slow'); 
                       Select_doc_number.hide('slow'); 
-                      Inputt_doc_number.show('slow');
+                      Input_doc_number.show('slow');
+                      Select_dest_prov.hide('slow'); 
+                      Input_dest_prov.hide('slow');
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       GrupoDocument.hide('slow');
@@ -705,14 +711,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos');
                       doc_number.html('Num. Documento');
                       minutosDocProveedor.hide('slow');
-                      DestinoDispRec.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.show('slow');
                       MontoE.show('slow');
                       MontoE.html('Monto');
                       montoDocProveedor.hide('slow');   
                       Moneda.show('slow'); 
                       Select_doc_number.hide('slow'); 
-                      Inputt_doc_number.show('slow'); 
+                      Input_doc_number.show('slow'); 
+                      Select_dest_prov.hide('slow'); 
+                      Input_dest_prov.hide('slow');
                       emailReceivedDate.show('slow'); 
                       emailReceivedTime.show('slow');
                       emailRecDate.html('Fecha de recepción de Email');
@@ -730,14 +739,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos');
                       doc_number.html('Num. Documento');
                       minutosDocProveedor.hide('slow');
-                      DestinoDispRec.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.show('slow');
                       MontoE.show('slow');
                       MontoE.html('Monto ');
                       montoDocProveedor.hide('slow');   
                       Moneda.show('slow'); 
                       Select_doc_number.hide('slow'); 
-                      Inputt_doc_number.show('slow');
+                      Input_doc_number.show('slow');
+                      Select_dest_prov.hide('slow'); 
+                      Input_dest_prov.hide('slow');
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
                       emailRecDate.html('Fecha de recepción de Email');
@@ -756,14 +768,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos');
                       doc_number.html('Num. Documento');
                       minutosDocProveedor.hide('slow');
-                      DestinoDispRec.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.show('slow');
                       MontoE.show('slow');
                       MontoE.html('Monto');
                       montoDocProveedor.hide('slow');   
                       Moneda.show('slow'); 
                       Select_doc_number.hide('slow'); 
-                      Inputt_doc_number.show('slow'); 
+                      Input_doc_number.show('slow'); 
+                      Select_dest_prov.hide('slow'); 
+                      Input_dest_prov.hide('slow');
                       emailReceivedDate.show('slow'); 
                       GrupoDocument.show('slow');
                       CarrierDocument.hide('slow');
@@ -790,14 +805,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos Etelix');
                       doc_number.html('Num. Factura');
                       minutosDocProveedor.show('slow');
-                      DestinoDispRec.show('slow');
+                      DestinoEtx.show('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.show('slow');
                       MontoE.show('slow');
                       MontoE.html('Tarifa Etelix');
                       montoDocProveedor.show('slow');   
                       Moneda.hide('slow'); 
                       Select_doc_number.show('slow'); 
-                      Inputt_doc_number.hide('slow'); 
+                      Input_doc_number.hide('slow'); 
+                      Select_dest_prov.hide('slow'); 
+                      Input_dest_prov.hide('slow');
                       divNumDoc.css('width','24%');
                       
                       $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
@@ -827,6 +845,66 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                
                 }
+<<<<<<< HEAD
+             if (tipoDocument=='7')//Nota de credito enviada
+=======
+            if (tipoDocument=='6')//disputas enviadas
+                {
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      GrupoDocument.hide('slow');
+                      fechaDeEmision.hide('slow');
+                      fechaDeInicio.show('slow');
+                      fechaFinal.show('slow');
+                      CarrierDocument.show('slow');
+                      minutosDoc.show('slow');
+                      MinutosE.html('Minutos Etelix');
+                      doc_number.html('Num. Factura');
+                      minutosDocProveedor.show('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.show('slow');
+                      Monto_doc.show('slow');
+                      MontoE.show('slow');
+                      MontoE.html('Tarifa Etelix');
+                      montoDocProveedor.show('slow');   
+                      Moneda.hide('slow'); 
+                      Select_doc_number.show('slow'); 
+                      Input_doc_number.hide('slow'); 
+                      Select_dest_prov.show('slow'); 
+                      Input_dest_prov.hide('slow');
+                      divNumDoc.css('width','24%');
+
+                        $('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').change(function()
+                      {
+                          var CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                              desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
+                              hastaDisp=$('#AccountingDocumentTemp_to_date').val();
+
+                          if (CarrierDisp && desdeDisp && hastaDisp){
+                          alert('siiiii-- :)');
+                          $.ajax({
+                              type: "GET",
+                              url: "BuscaFactura",
+                              data:"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
+
+                          success: function(data) 
+                                  {
+                                        var valores = data.split(",");
+                                            $(valores).each(function(){
+                                            console.dir(valores);
+                                            $("select#AccountingDocumentTemp_doc_number").html("").append("<option value="+valores+">"+valores+"</option>");
+                                            });//continúo para no perder mas tiempo, pero esta funcion esta mal. solo me trae un array, no he logrado convertirlo a str
+                                  }
+                              });
+                          }
+                      });
+                        $('div.nuevoDestProv').click('on',function()
+                      {
+                            Select_dest_prov.hide('slow'); 
+                            Input_dest_prov.show('slow');
+                      });
+                      
+                }
              if (tipoDocument=='7')//Nota de credito enviada
                 {
                       emailReceivedDate.hide('slow');
@@ -840,13 +918,38 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       MinutosE.html('Minutos Etelix');
                       doc_number.html('Num. Factura');
                       minutosDocProveedor.hide('slow');
-                      DestinoDispRec.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
                       Monto_doc.hide('slow');
                       MontoE.hide('slow');
                       montoDocProveedor.hide('slow');   
                       Moneda.hide('slow'); 
                       Select_doc_number.show('slow'); 
-                      Inputt_doc_number.hide('slow'); 
+                      Input_doc_number.hide('slow'); 
+                      divNumDoc.css('width','51%'); 
+                }
+             if (tipoDocument=='8')//Nota de credito recibida
+>>>>>>> b6ec13278cf4f38a2e0e3897b11231bc5f657640
+                {
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      GrupoDocument.hide('slow');
+                      fechaDeEmision.hide('slow');
+                      fechaDeInicio.show('slow');
+                      fechaFinal.show('slow');
+                      CarrierDocument.show('slow');
+                      minutosDoc.hide('slow');
+                      MinutosE.html('Minutos Etelix');
+                      doc_number.html('Num. Factura');
+                      minutosDocProveedor.hide('slow');
+                      DestinoEtx.hide('slow');
+                      DestinoProv.hide('slow');
+                      Monto_doc.hide('slow');
+                      MontoE.hide('slow');
+                      montoDocProveedor.hide('slow');   
+                      Moneda.hide('slow'); 
+                      Select_doc_number.show('slow'); 
+                      Input_doc_number.hide('slow'); 
                       divNumDoc.css('width','51%'); 
                       
                       $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
@@ -884,7 +987,7 @@ $('#botAgregarDatosContable').click('on',function(e)
     nota=$('#AccountingDocumentTemp_note').val(),
     Select_doc_number=$('select#AccountingDocumentTemp_doc_number').val(),
     minutosDocProveedor=$('#AccountingDocumentTemp_MinutosProvee').val(),
-    DestinoDispRec=$('#AccountingDocumentTemp_id_destination').val(),
+    DestinoEtx=$('#AccountingDocumentTemp_id_destination').val(),
     montoDocProveedor=$('#AccountingDocumentTemp_MontoProvee').val();
     
     var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
@@ -947,7 +1050,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: action,
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoDispRec="+DestinoDispRec+"&montoDocProveedor="+montoDocProveedor,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoEtx="+DestinoEtx+"&montoDocProveedor="+montoDocProveedor,
 
               success: function(data) 
                       {
