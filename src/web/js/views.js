@@ -1073,7 +1073,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
                                                         <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
-                $('.lista_FacEnv').css("background", "silver").fadeIn('slow');
+                $('.lista_FacEnv').fadeIn('slow');
                 $('.Label_F_Env').fadeIn('slow');
                }
                if(selecTipoDoc=='2'){
@@ -1153,7 +1153,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
                 
                 $SORI.UI.init();
-                $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes").val('');
+//                $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes").val('');
                 if (selecTipoDoc=='3'||selecTipoDoc=='4'){
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
                 } 
