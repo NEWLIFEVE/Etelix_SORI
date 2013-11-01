@@ -52,11 +52,11 @@ $SORI.UI=(function()
 			var input=document.createElement('input');
 			input.name=obj[0].children[i].id;
 			input.value=obj[0].children[i].innerHTML;
-			if(i>=1 && i<=6)
+			if(i>=1 && i<=5)
 			{
 				$(input).datepicker();
 			}
-                        if(i>=7 && i<=8)
+                        if(i>=6 && i<=7)
 			{
 				$(input).clockpick({ starthour: "00", endhour: "23", military: "TRUE" });
 			} 
@@ -64,8 +64,8 @@ $SORI.UI=(function()
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img name='save_Fac_Rec' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Rec' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[12].innerHTML="";
+		obj[0].children[12].innerHTML="<img name='save_Fac_Rec' alt='save' src='/images/icon_check.png'><img name='cancel_Fac_Rec' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -160,8 +160,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[13].innerHTML="";
-		obj[0].children[13].innerHTML="<img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[12].innerHTML="";
+		obj[0].children[12].innerHTML="<img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
