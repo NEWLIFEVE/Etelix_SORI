@@ -875,7 +875,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                               hastaDisp=$('#AccountingDocumentTemp_to_date').val();
 
                           if (CarrierDisp && desdeDisp && hastaDisp){
-                          alert('siiiii-- :)');
+//                          alert('siiiii-- :)');
                           $.ajax({
                               type: "GET",
                               url: "BuscaFactura",
