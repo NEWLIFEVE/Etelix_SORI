@@ -220,7 +220,6 @@
                     <td> Fecha de Emisión </td>
                     <td> Inicio Periodo a Facturar </td>
                     <td> Fin Periodo a Facturar </td>
-                    <td> Fecha Envio </td>
                     <td> Fecha Recep(Email)</td>
                     <td> Fecha Recep Valida</td>
                     <td> Hora Recep (Email)</td>
@@ -241,7 +240,6 @@
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
                                     <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
                                     <td id='AccountingDocumentTemp[email_received_date]'>".$value->email_received_date."</td>
                                     <td id='AccountingDocumentTemp[valid_received_date]'>".$value->valid_received_date."</td>
                                     <td id='AccountingDocumentTemp[email_received_hour]'>".$value->email_received_hour."</td>

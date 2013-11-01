@@ -129,7 +129,7 @@ class AccountingDocumentTempController extends Controller
                     $model->issue_date = Utility::snull($fechaEmision);
                     $model->from_date = Utility::snull($desdeFecha);
                     $model->to_date = Utility::snull($hastaFecha);
-                    $model->sent_date = Utility::snull($fechaEmision);
+                    $model->sent_date = NULL;
                     $model->doc_number = $numDocumento;
                     $model->minutes = $minutosTemp;
                     $model->amount = Utility::snull($cantidad);
@@ -413,8 +413,9 @@ class AccountingDocumentTempController extends Controller
             $idCarrier = $_GET['idCarrier'];
             $DesdeFecha = $_GET['desdeFecha'];
             $HastaFecha = $_GET['hastaFecha'];
-//            $idAccDocument = $_GET['numDocumento'];
-            $idAccDocument =945;//esto es provisional
+            $doc_num = $_GET['numDocumento'];
+            
+            $idAccDocument =  AccountingDocument::getAcc_DocID($doc_num, $idCarrier);//esto es provisional
             $DestinoEtx = $_GET['DestinoEtx'];
             $MinutosEtelix = $_GET['minutos'];
             $MinutosProveedor = $_GET['minutosDocProveedor'];
@@ -681,7 +682,6 @@ class AccountingDocumentTempController extends Controller
                     $model->issue_date=Utility::snull($_POST['AccountingDocumentTemp']['issue_date']);
                     $model->from_date=Utility::snull($_POST['AccountingDocumentTemp']['from_date']);
                     $model->to_date=Utility::snull($_POST['AccountingDocumentTemp']['to_date']);
-                    $model->sent_date=Utility::snull($_POST['AccountingDocumentTemp']['sent_date']);
                     $model->email_received_date=Utility::snull($_POST['AccountingDocumentTemp']['email_received_date']);
                     $model->valid_received_date=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_date']);
                     $model->email_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['email_received_hour']);

@@ -49,7 +49,7 @@ return array(
             'emulatePrepare'=>true,
             'username'=>'postgres',
             'password'=>'Nsusfd8263',           
-//            'password'=>'1git23',
+//            'password'=>'123',
 
 
             'charset'=>'utf8',
