@@ -113,6 +113,11 @@
                      <?php echo $form->textField($model, 'id_disputa'); ?>
                      <?php echo $form->error($model, 'id_disputa'); ?>
                 </div>
+                <div class="contratoForm">
+                     <?php echo $form->labelEx($model, 'id_disputa_solved'); ?>
+                     <?php echo $form->textField($model, 'id_disputa_solved'); ?>
+                     <?php echo $form->error($model, 'id_disputa_solved'); ?>
+                </div>
                 
                 <div class="contratoForm">
                      <?php echo $form->labelEx($model, 'id_limite_credito'); ?>
@@ -131,6 +136,7 @@
                     <?php echo $form->error($model, 'up'); ?>
                 </div>
                      <input type="hidden" id="dias_disputa_Oculto"  value="">
+                     <input type="hidden" id="dias_disputa_solved_Oculto"  value="">
                      <input type="hidden" id="credito_Oculto"  value="">
                      <input type="hidden" id="compra_Oculto"  value="">
                      <input type="hidden" id="monetizable_Oculto"  value="">

@@ -2,6 +2,15 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Realese 1.3.0
+Novedades:
+-Nuevo Módulo Documentos Contables 
+-Nuevo Módulo Administrar Grupos de Carriers.
+-Nuevo Módulo para Confirmar Fact. Enviadas.
+-Modificaciones en Modelo de Contrato Agregado Unidad de Produccion (UP)
+-Se agrego UP en la vista de create de contrato
+
+
 Realese 1.2.0
 -Nuevo Modulo Condiciones Comerciales
 -Log del Sistema

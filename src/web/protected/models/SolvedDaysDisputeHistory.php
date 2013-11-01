@@ -1,25 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "type_accounting_document".
+ * This is the model class for table "solved_days_dispitue_history".
  *
- * The followings are the available columns in table 'type_accounting_document':
+ * The followings are the available columns in table 'solved_days_dispitue_history':
  * @property integer $id
- * @property string $name
- * @property string $description
+ * @property string $start_date
+ * @property string $end_date
+ * @property integer $id_contrato
+ * @property integer $days
  *
  * The followings are the available model relations:
- * @property AccountingDocumentTemp[] $accountingDocumentTemps
- * @property AccountingDocument[] $accountingDocuments
+ * @property Contrato $idContrato
  */
-class TypeAccountingDocument extends CActiveRecord
+class SolvedDaysDisputeHistory extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'type_accounting_document';
+		return 'solved_days_dispute_history';
 	}
 
 	/**
@@ -30,12 +31,12 @@ class TypeAccountingDocument extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('name', 'length', 'max'=>50),
-			array('description', 'length', 'max'=>250),
+			array('start_date, id_contrato', 'required'),
+			array('id_contrato, days', 'numerical', 'integerOnly'=>true),
+			array('end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, description', 'safe', 'on'=>'search'),
+			array('id, start_date, end_date, id_contrato, days', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,8 +48,7 @@ class TypeAccountingDocument extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_type_accounting_document'),
-			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_type_accounting_document'),
+			'idContrato' => array(self::BELONGS_TO, 'Contrato', 'id_contrato'),
 		);
 	}
 
@@ -59,8 +59,10 @@ class TypeAccountingDocument extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'description' => 'Description',
+			'start_date' => 'Start Date',
+			'end_date' => 'End Date',
+			'id_contrato' => 'Id Contrato',
+			'days' => 'Days',
 		);
 	}
 
@@ -83,8 +85,10 @@ class TypeAccountingDocument extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('start_date',$this->start_date,true);
+		$criteria->compare('end_date',$this->end_date,true);
+		$criteria->compare('id_contrato',$this->id_contrato);
+		$criteria->compare('days',$this->days);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -95,35 +99,19 @@ class TypeAccountingDocument extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return TypeAccountingDocument the static model class
+	 * @return SolvedDaysDispitueHistory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-
 	}
-
-	/**
-	 * @access public
-	 */
-	public static function getListTypeAccountingDocument()
-    {
-        return CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')), 'id', 'name');
-    }
-
-    /**
-     * @access public
-     */
-    public static function getName($id)
-    {
-        return self::model()->find("id=:id", array(':id'=>$id))->name;
-    }
-
-    /**
-     *
-     */
-    public static function getId($name)
-    {
-    	return self::model()->find("name LIKE :name", array(':name'=>$name))->id;
-    }
+                       
+        public static function getDays($contrato){           
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
+            if($model!=NULL){
+                return $model->days;
+            }else{
+                return '';
+            }
+        }
 }
