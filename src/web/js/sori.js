@@ -315,7 +315,33 @@ $SORI.UI=(function()
 	 * Metodo encargado de las animaciones de la tabla comercial
 	 * @access public
 	 * @param id string es el id del formulario que se realizan cambios
-	 */
+	 */  
+        function buscaFactura(id)
+        {
+            $(id).change(function()
+            {
+                var CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                    desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
+                    hastaDisp=$('#AccountingDocumentTemp_to_date').val();
+
+                if (CarrierDisp && desdeDisp && hastaDisp){
+                $.ajax({
+                    type: "GET",
+                    url: "BuscaFactura",
+                    data:"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
+
+                success: function(data) 
+                        {
+                              var valores = data.split(",");
+                                  $(valores).each(function(){
+                                  console.dir(valores);
+                                  $("select#AccountingDocumentTemp_doc_number").html("").append("<option value="+valores+">"+valores+"</option>");
+                                  });//continúo para no perder mas tiempo, pero esta funcion esta mal. solo me trae un array, no he logrado convertirlo a str
+                        }
+                    });
+                }
+            });
+        }
 	function formChange(id)
 	{
 		$('#'+id).change(function()
@@ -408,7 +434,8 @@ $SORI.UI=(function()
 	 */
 	return{
 		init:init,
-		formChange:formChange
+		formChange:formChange,
+                buscaFactura:buscaFactura
 	}
 })();
 
@@ -457,7 +484,6 @@ $SORI.AJAX=(function()
 		});
 		id=null;
 	}
-
 	/**
 	 * retorna los metodos publicos*/
 return{

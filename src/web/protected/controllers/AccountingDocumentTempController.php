@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -456,6 +456,84 @@ class AccountingDocumentTempController extends Controller
                 $model->issue_date = NULL;
                 $model->id_currency =NULL;
                 $model->doc_number = NULL;
+                
+               
+            if ($model->save()) {
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+               
+                $params['idDoc'] = $model->id;
+                $params['idCarrierNameTemp']=$idCarrierName;
+                $params['desdeFechaTemp']=$DesdeFecha;
+                $params['hastaFechaTemp']=$HastaFecha;
+                $params['numDocumentoTemp']=$facturaNumber;
+                $params['minutosTemp'] =$MinutosEtelix;
+                $params['MinutosProv'] =$MinutosProveedor;
+                $params['TarifaEtx'] =$MontoEtelix;
+                $params['TarifaProv'] =$MontoProveedor;
+                $params['Destino'] =$destinoDispRecName;
+                $params['cantidadTemp'] =$monto;
+                
+                echo json_encode($params);
+            }
+        }
+        /**
+        * recibe los datos desde ajax y almacena solo las notas de credito enviada...
+        * @access public
+        **/
+        public function actionGuardarNotaDeCreditoEnviada() 
+        {
+            $SelecTipoDoc = $_GET['selecTipoDoc'];
+            $idCarrier = $_GET['idCarrier'];
+            $DesdeFecha = $_GET['desdeFecha'];
+            $HastaFecha = $_GET['hastaFecha'];
+//            $idAccDocument = $_GET['numDocumento'];
+            $idAccDocument =1000;//esto es provisional
+            $Nota = $_GET['nota'];
+            $idCarrierName = "";
+            $facturaNumber = "";
+            $selecTipoDocName = "";
+            $monto = "";
+            $destinoDispRecName = "";
+
+            $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);//busca el name del tipo de documento, en este caso, disputas recibidas
+            $idCarrierName.= Carrier::getName($idCarrier);//busca el name del carier
+            $facturaNumber.=AccountingDocument::getDocNum($idAccDocument);//busca el numero de factura
+            
+            $idDisputa = AccountingDocumentTemp::getId_disputa($idCarrier, $DesdeFecha, $HastaFecha, $idAccDocument);
+            $DestinoDispRec = AccountingDocumentTemp::getId_dest($idDisputa);
+            $destinoDispRecName.=Destination::getName($DestinoDispRec);//busca el name del destino
+            $MinutosEtelix = AccountingDocumentTemp::getMinEtx($idDisputa);
+            $MinutosProveedor =AccountingDocumentTemp::getMinProv($idDisputa);
+            $MontoEtelix = AccountingDocumentTemp::getMontoEtx($idDisputa);
+            $MontoProveedor =AccountingDocumentTemp::getMontoProv($idDisputa);
+            $monto.=$MinutosProveedor*$MontoProveedor;
+
+            $model = new AccountingDocumentTemp;
+            
+                $model->id_type_accounting_document = $SelecTipoDoc;
+                $model->id_carrier = $idCarrier;
+                $model->from_date = $DesdeFecha;
+                $model->to_date = $HastaFecha;
+                $model->id_destination = $DestinoDispRec;
+                $model->amount = $monto;
+                $model->min_etx = $MinutosEtelix;
+                $model->min_carrier = $MinutosProveedor;
+                $model->rate_etx = $MontoEtelix;
+                $model->rate_carrier = $MontoProveedor;
+                $model->note = Utility::snull($Nota);
+                $model->id_accounting_document = $idAccDocument;
+                $model->confirm = 1;
+                $model->id_destination_supplier = NULL;
+                $model->email_received_hour = NULL;
+                $model->email_received_date = NULL;
+                $model->valid_received_date = NULL;
+                $model->valid_received_hour = NULL;
+                $model->minutes = NULL;
+                $model->sent_date = NULL;
+                $model->issue_date = NULL;
+                $model->id_currency =NULL;
+                $model->doc_number = $idDisputa;//consultar con eduardo esta parte
                 
                
             if ($model->save()) {

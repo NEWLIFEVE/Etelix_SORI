@@ -799,32 +799,10 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       Select_doc_number.show('slow'); 
                       Inputt_doc_number.hide('slow'); 
                       divNumDoc.css('width','24%');
-
-                        $('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').change(function()
-                      {
-                          var CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
-                              desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
-                              hastaDisp=$('#AccountingDocumentTemp_to_date').val();
-
-                          if (CarrierDisp && desdeDisp && hastaDisp){
-                          $.ajax({
-                              type: "GET",
-                              url: "BuscaFactura",
-                              data:"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
-
-                          success: function(data) 
-                                  {
-                                        var valores = data.split(",");
-                                            $(valores).each(function(){
-                                            console.dir(valores);
-                                            $("select#AccountingDocumentTemp_doc_number").html("").append("<option value="+valores+">"+valores+"</option>");
-                                            });//continúo para no perder mas tiempo, pero esta funcion esta mal. solo me trae un array, no he logrado convertirlo a str
-                                  }
-                              });
-                          }
-                      });
+                      
+                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                 }
-             if (tipoDocument=='6')//Nota de credito enviada
+             if (tipoDocument=='6')//Disputa enviada
                 {
                       emailReceivedDate.hide('slow');
                       emailReceivedTime.hide('slow');
@@ -845,6 +823,34 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       Select_doc_number.show('slow'); 
                       Inputt_doc_number.hide('slow'); 
                       divNumDoc.css('width','51%'); 
+                      
+                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+               
+                }
+             if (tipoDocument=='7')//Nota de credito enviada
+                {
+                      emailReceivedDate.hide('slow');
+                      emailReceivedTime.hide('slow');
+                      GrupoDocument.hide('slow');
+                      fechaDeEmision.hide('slow');
+                      fechaDeInicio.show('slow');
+                      fechaFinal.show('slow');
+                      CarrierDocument.show('slow');
+                      minutosDoc.hide('slow');
+                      MinutosE.html('Minutos Etelix');
+                      doc_number.html('Num. Factura');
+                      minutosDocProveedor.hide('slow');
+                      DestinoDispRec.hide('slow');
+                      Monto_doc.hide('slow');
+                      MontoE.hide('slow');
+                      montoDocProveedor.hide('slow');   
+                      Moneda.hide('slow'); 
+                      Select_doc_number.show('slow'); 
+                      Inputt_doc_number.hide('slow'); 
+                      divNumDoc.css('width','51%'); 
+                      
+                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+               
                 }
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
@@ -926,8 +932,16 @@ $('#botAgregarDatosContable').click('on',function(e)
         if (selecTipoDoc==4){//cobro
               action = "GuardarCobroTemp";
         }
-        if (selecTipoDoc==5){//cobro
+        if (selecTipoDoc==5){//Disputa Recibida
               action = "GuardarDispRecibida";
+              numDocumento=Select_doc_number;
+        }
+        if (selecTipoDoc==6){//Disputa Enviada
+              action = "GuardarDispRecibida";
+              numDocumento=Select_doc_number;
+        }
+        if (selecTipoDoc==7){//Nota de Credito Enviada
+              action = "GuardarNotaDeCreditoEnviada";
               numDocumento=Select_doc_number;
         }
         $.ajax({
@@ -958,7 +972,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                     Destino=obj.Destino,
                     ExisteTemp=obj.ExisteTemp,
                     ExisteFin=obj.ExisteFin;
-
+ 
+            console.dir(data);
             if(ExisteTemp==null&&ExisteFin==null||ExisteTemp==""&&ExisteFin=="")
             {
                if(selecTipoDoc=='1'){
@@ -1031,7 +1046,6 @@ $('#botAgregarDatosContable').click('on',function(e)
                }
                
                 if(selecTipoDoc=='5'){
-                    console.log(idCarrierNameTemp);
                     var cantidadEtx=minutosTemp*TarifaEtx,
                         dispute=cantidadEtx-cantidadTemp;
                     
@@ -1050,6 +1064,28 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                     </tr>");
                 $('.lista_DispRec').fadeIn('slow');
                 $('.Label_DispRec').fadeIn('slow');
+               }
+               
+                if(selecTipoDoc=='7'){
+                    console.log(data);
+                    var cantidadEtx=minutosTemp*TarifaEtx,
+                        dispute=cantidadEtx-cantidadTemp;
+                    
+                     $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>\n\
+                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                    </tr>");
+                $('.lista_NotCredEnv').fadeIn('slow');
+                $('.Label_NotCredEnv').fadeIn('slow');
                }
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
                 

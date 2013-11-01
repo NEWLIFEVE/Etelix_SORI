@@ -378,8 +378,47 @@
                     }
                     ?>
          </table>
+         
+         <br>
+         <label class="label_NotCredEnv" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv" <?php if($lista_DispRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Destino </td>
+                   <td> Num. Factura </td>
+                   <td> Min Etx </td>
+                   <td> Min Prov </td>
+                   <td> Tarifa Etx </td>
+                   <td> Tarifa Prov </td>
+                   <td> Monto Etx</td>
+                   <td> Monto Prov</td>
+                   <td> Disputa</td>
+                   <td> Monto Nota</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_DispRec!=null)
+                    {
+                        foreach ($lista_DispRec as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_destination]'>".$value->id_destination."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[min_etx]'>".$value->min_etx."</td>
+                                    <td id='AccountingDocumentTemp[min_carrier]'>".$value->min_carrier."</td>
+                                    <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
+                                    <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
+                                    <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
+                                    <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>
+                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
 
-        
+
         
         
      </div>

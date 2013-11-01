@@ -532,6 +532,19 @@ width: 20%;
     background: rgba(140, 170, 223, 1);
     color: white;
 }
+ /*****NOTAS DE CRÉDITO ENVIADAS*****/
+.lista_NotCredEnv{
+    background: rgba(134, 107, 145, 1);
+    border-bottom-color: rgba(134, 107, 145, 1);
+}
+.lista_NotCredEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_NotCredEnv tr:hover{
+    background: rgba(134, 107, 145, 1);
+    color: white;
+}
 
 .tablaVistDocTemporales tr td input
 {

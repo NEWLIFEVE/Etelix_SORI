@@ -208,6 +208,48 @@ class AccountingDocumentTemp extends CActiveRecord
         {
            return self::model()->find("id =:id",array(":id"=>$id))->id_carrier;
         }
+        /*
+        * con el id de documento me trae el id de disputa
+        */
+        public static function getId_disputa($idCarrier, $DesdeFecha, $HastaFecha, $idAccDocument)
+        {
+           return self::model()->find("id_carrier =:idCarrier and from_date =:DesdeFecha and to_date =:HastaFecha and id_accounting_document =:idAccDocument and id_type_accounting_document= 5",array(":idCarrier"=>$idCarrier,":DesdeFecha"=>$DesdeFecha,":HastaFecha"=>$HastaFecha,":idAccDocument"=>$idAccDocument))->id;
+        }
+        /*
+        * con el id de documento me trae el id destination
+        */
+        public static function getId_dest($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id,":id"=>$id,":id"=>$id))->id_destination;
+        }
+        /*
+        * con el id de documento me trae  min_etx
+        */
+        public static function getMinEtx($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->min_etx;
+        }
+        /*
+        * con el id de documento me trae  min_carrier
+        */
+        public static function getMinProv($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->min_carrier;
+        }
+        /*
+        * con el id de documento me trae rate_etx
+        */
+        public static function getMontoEtx($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->rate_etx;
+        }
+        /*
+        * con el id de documento me trae rate_etx
+        */
+        public static function getMontoProv($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->rate_carrier;
+        }
 
         /**
 	 * @access public
