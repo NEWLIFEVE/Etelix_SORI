@@ -1203,7 +1203,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                      }, 4000);
 
                                      exito=null;
-                                     $('#botAgregarDatosContableFinal,.tablaVistDocTemporales,.Label_F_Env,.Label_F_Rec,.LabelPagos,.LabelCobros').fadeOut('slow');
+                                     $('#botAgregarDatosContableFinal,.tablaVistDocTemporales,.Label_F_Env,.Label_F_Rec,.LabelPagos,.LabelCobros,.Label_DispRec').fadeOut('slow');
                                      $('.vistaTemp').empty();
                            }  
                          }  
