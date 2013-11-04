@@ -856,6 +856,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                       
                       $('div.nuevoDestProv').click('on',function()
+
                       {
                           $(this).hide('slow');
                           $('div.cancelarDestProv').show('slow');
@@ -1213,6 +1214,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                          type: "GET",
                          url: "guardarListaFinal",
                          success: function(data) 
+
                          {  
                            $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .lista_DispEnv').fadeOut('fast');
                            var obj = JSON.parse(data),
@@ -1222,6 +1224,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                 exito.fadeOut('fast');
                                 revisa.fadeOut('fast');
                             }, 4000);
+
                          }  
                     });
                 }else{
