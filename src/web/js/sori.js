@@ -133,12 +133,15 @@ $SORI.UI=(function()
 	{
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
-			var input=document.createElement('input');
-			input.name=obj[0].children[i].id;
-			input.value=obj[0].children[i].innerHTML;
-			obj[0].children[i].innerHTML="";
-			obj[0].children[i].appendChild(input);
-			input=null;
+			if(i>=3 && i<=6)
+			{
+                            var input=document.createElement('input');
+                            input.name=obj[0].children[i].id;
+                            input.value=obj[0].children[i].innerHTML;
+                            obj[0].children[i].innerHTML="";
+                            obj[0].children[i].appendChild(input);
+                            input=null;
+                        }
 		}
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img name='save_DispRec' alt='save' src='/images/icon_check.png'><img name='cancel_DispRec' alt='cancel' src='/images/icon_arrow.png'>";
@@ -212,9 +215,12 @@ $SORI.UI=(function()
 		var contenido=new Array();
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
+                    if(i>=3 && i<=6)
+			{
 			contenido[i]=obj[0].children[i].children[0].value;
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
+                        }
 		}
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
@@ -320,23 +326,39 @@ $SORI.UI=(function()
         {
             $(id).change(function()
             {
-                var CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
+                    CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
                     desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
                     hastaDisp=$('#AccountingDocumentTemp_to_date').val();
+                    
+               if(tipo_Ac_doc==5||tipo_Ac_doc==7){
+                   var tipoDoc=1;
+               }else if(tipo_Ac_doc==6||tipo_Ac_doc==8){
+                   tipoDoc=2;
+               }     
 
                 if (CarrierDisp && desdeDisp && hastaDisp){
                 $.ajax({
                     type: "GET",
                     url: "BuscaFactura",
-                    data:"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
+                    data:"&tipoDoc="+tipoDoc+"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
 
                 success: function(data) 
                         {
-                              var valores = data.split(",");
-                                  $(valores).each(function(){
-                                  console.dir(valores);
-                                  $("select#AccountingDocumentTemp_doc_number").html("").append("<option value="+valores+">"+valores+"</option>");
-                                  });//continúo para no perder mas tiempo, pero esta funcion esta mal. solo me trae un array, no he logrado convertirlo a str
+                             alert(data);
+                             console.log(data);
+                             
+//                             obj = JSON.parse(data);
+//                             var factura=data.split("/");
+//    
+//                             
+//                            $(factura).each(function(){
+//
+//                              var value=factura[0].split(","),
+//                              text=factura[1].split(",");
+//                            $("select#AccountingDocumentTemp_doc_number").html("").append("<option value="+value+">"+text+"</option>");
+//                            });
+                       
                         }
                     });
                 }

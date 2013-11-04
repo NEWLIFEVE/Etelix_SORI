@@ -324,6 +324,17 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
+        public static function lista_DispEnv($usuario)
+	{
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier, d.amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-d.amount) as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination_supplier, id_type_accounting_document, id_carrier
+			  	   FROM accounting_document_temp
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination_supplier e
+			  WHERE d.id_type_accounting_document=6 AND t.id = d.id_type_accounting_document AND f.id = d.id_accounting_document AND e.id = d.id_destination_supplier AND c.id=d.id_carrier ORDER BY id DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
         /**
          * comprueba que no existan facturas en a_d_temp....
          * @param type $idCarrier
@@ -338,6 +349,14 @@ class AccountingDocumentTemp extends CActiveRecord
         { 
             return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
+        /**
+         * busca los destinos supplier asignados al carrier
+         */
+                
+        public static function getListCarriersAsignados_DestSup($idCarrier)
+	{
+            return CHtml::listData(DestinationSupplier::model()->findAll("id_carrier=:idCarrier",array(":idCarrier"=>$idCarrier)), 'id','name');
+	}
 
         /**
          * calcula los dias y hora para registrar en facturas recibidas
