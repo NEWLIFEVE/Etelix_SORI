@@ -1,25 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "type_accounting_document".
+ * This is the model class for table "destination_supplier".
  *
- * The followings are the available columns in table 'type_accounting_document':
+ * The followings are the available columns in table 'destination_supplier':
  * @property integer $id
  * @property string $name
- * @property string $description
+ * @property integer $id_carrier
  *
  * The followings are the available model relations:
- * @property AccountingDocumentTemp[] $accountingDocumentTemps
- * @property AccountingDocument[] $accountingDocuments
+ * @property Carrier $idCarrier
+ * @property AccountingDocument[] accountingDocument
+ * @property AccountingDocumentTemp[] accountingDocumentTemp
  */
-class TypeAccountingDocument extends CActiveRecord
+class DestinationSupplier extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'type_accounting_document';
+		return 'destination_supplier';
 	}
 
 	/**
@@ -30,12 +31,12 @@ class TypeAccountingDocument extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
+			array('name, id_carrier', 'required'),
+			array('id_carrier', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>50),
-			array('description', 'length', 'max'=>250),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, description', 'safe', 'on'=>'search'),
+			array('id, name, id_carrier', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,8 +48,9 @@ class TypeAccountingDocument extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_type_accounting_document'),
-			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_type_accounting_document'),
+			'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
+                    	'accountingDocument' => array(self::HAS_MANY, 'AccountingDocument', 'id_destination_supplier'),
+			'accountingDocumentTemp' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_destination_supplier'),
 		);
 	}
 
@@ -60,7 +62,7 @@ class TypeAccountingDocument extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'description' => 'Description',
+			'id_carrier' => 'Id Carrier',
 		);
 	}
 
@@ -84,7 +86,7 @@ class TypeAccountingDocument extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('id_carrier',$this->id_carrier);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -95,35 +97,10 @@ class TypeAccountingDocument extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return TypeAccountingDocument the static model class
+	 * @return DestinationSupplier the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-
 	}
-
-	/**
-	 * @access public
-	 */
-	public static function getListTypeAccountingDocument()
-    {
-        return CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')), 'id', 'name');
-    }
-
-    /**
-     * @access public
-     */
-    public static function getName($id)
-    {
-        return self::model()->find("id=:id", array(':id'=>$id))->name;
-    }
-
-    /**
-     *
-     */
-    public static function getId($name)
-    {
-    	return self::model()->find("name LIKE :name", array(':name'=>$name))->id;
-    }
 }

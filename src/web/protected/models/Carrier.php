@@ -57,6 +57,7 @@ class Carrier extends CActiveRecord
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),
+                        'destinationSupplier' => array(self::HAS_MANY, 'DestinationSupplier', 'id_carrier'),
 		);
 	}
 
@@ -167,9 +168,17 @@ class Carrier extends CActiveRecord
             $id = self::getId('Unknown_Carrier');
             return CHtml::listData(Carrier::model()->findAll("id !=:id order by name ASC",array(":id"=>$id)), 'id', 'name');
         } 
+
+        public static function getID_G($id_grupo){           
+            return self::model()->find("id_carrier_groups=:id_carrier_groups", array(':id_carrier_groups'=>$id_grupo))->id;
+        }
+                
+        public static function getSerchOne($idGrupo)
+        {
+            return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo));
+        } 
         public static function getCarrierLeader($idGrupo)
         {
             return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo))->id;
         } 
-        
 }
