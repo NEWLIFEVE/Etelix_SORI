@@ -205,9 +205,9 @@ class AccountingDocument extends CActiveRecord
             return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
         
-        public static function getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp)
+        public static function getFacDispRec($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc)
         { 
-            return CHtml::listData(AccountingDocument::model()->findAll("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp)), 'id','doc_number');
+            return CHtml::listData(AccountingDocument::model()->findAll("id_carrier=:idCarrier AND id_type_accounting_document=:tipoDoc AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp,":tipoDoc"=>$tipoDoc)), 'id','doc_number');
 //            return self::model()->find("id_carrier=:idCarrier AND id_type_accounting_document=1 AND from_date=:from_date AND to_date=:to_date",array(":idCarrier"=>$CarrierDisp,":from_date"=>$desdeDisp,":to_date"=>$hastaDisp));
         } 
         

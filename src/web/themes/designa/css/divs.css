@@ -437,7 +437,7 @@ width: 20%;
     color:rgba(111,204,187,1);
     width: 5%;
 }
-.nuevoDestProv 
+.nuevoDestProv, .cancelarDestProv
 {
     color:rgba(111,204,187,1);
     width: 5%;
@@ -446,6 +446,10 @@ width: 20%;
     position: absolute;
     top: 36px;
     right: 0;
+}
+.cancelarDestProv
+{
+    display:none;
 }
 
 .DestinoProv{
@@ -544,6 +548,32 @@ width: 20%;
 }
 .lista_DispRec tr:hover{
     background: rgba(140, 170, 223, 1);
+    color: white;
+}
+/*****DISPUTAS ENVIADAS*****/
+.lista_DispEnv{
+    background: rgba(20, 121, 121, 1);
+    border-bottom-color: rgba(20, 121, 121, 1);
+}
+.lista_DispEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_DispEnv tr:hover{
+    background: rgba(20, 121, 121, 1);
+    color: white;
+}
+ /*****NOTAS DE CRÉDITO ENVIADAS*****/
+.lista_NotCredEnv{
+    background: rgba(134, 107, 145, 1);
+    border-bottom-color: rgba(134, 107, 145, 1);
+}
+.lista_NotCredEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_NotCredEnv tr:hover{
+    background: rgba(134, 107, 145, 1);
     color: white;
 }
 
