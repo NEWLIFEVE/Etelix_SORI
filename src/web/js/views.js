@@ -1045,6 +1045,10 @@ $('#botAgregarDatosContable').click('on',function(e)
                     Destino=obj.Destino,
                     ExisteTemp=obj.ExisteTemp,
                     ExisteFin=obj.ExisteFin;
+            
+                var cantidadEtx=minutosTemp*TarifaEtx,
+                    cantidadProv=MinutosProv*TarifaProv,
+                    dispute=cantidadEtx-cantidadProv;
  
             console.dir(data);
             if(ExisteTemp==null&&ExisteFin==null||ExisteTemp==""&&ExisteFin=="")
@@ -1117,12 +1121,8 @@ $('#botAgregarDatosContable').click('on',function(e)
                 $('.lista_Cobros').fadeIn('slow');
                 $('.LabelCobros').fadeIn('slow');
                }
-               
-                if(selecTipoDoc=='5'){
-                    var cantidadEtx=minutosTemp*TarifaEtx,
-                        dispute=cantidadEtx-cantidadTemp;
-                    
-                     $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+               if(selecTipoDoc=='5'){
+                 $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
@@ -1131,18 +1131,15 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
                                                         <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute.toFixed(2)+"</td>\n\
                                                         <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
                 $('.lista_DispRec').fadeIn('slow');
                 $('.Label_DispRec').fadeIn('slow');
                }
                 if(selecTipoDoc=='6'){
-                    var cantidadEtx=minutosTemp*TarifaEtx,
-                        dispute=cantidadEtx-cantidadTemp;
-                    
-                     $(".lista_DispEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                 $(".lista_DispEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
@@ -1151,20 +1148,16 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
                                                         <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute.toFixed(2)+"</td>\n\
                                                         <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");
                 $('.lista_DispEnv').fadeIn('slow');
                 $('.Label_DispEnv').fadeIn('slow');
                }
-               
                 if(selecTipoDoc=='7'){
                     console.log(data);
-                    var cantidadEtx=minutosTemp*TarifaEtx,
-                        dispute=cantidadEtx-cantidadTemp;
-                    
-                     $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
+                  $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
                                                         <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
                                                         <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
                                                         <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
@@ -1172,7 +1165,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                                                         <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
                                                         <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
                                                         <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv+"</td>\n\
                                                         <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
                                                         <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>\n\
                                                         <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
@@ -1194,7 +1187,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         }); 
      }
 }); 
-    
+
       $('#botAgregarDatosContableFinal').click('on',function(e)
     { e.preventDefault();
                 var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de guardar todos los documentos contables de \n\
