@@ -392,7 +392,7 @@
                                     <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
+                                    <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
                                     <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
@@ -431,8 +431,8 @@
                                     <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
-                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                    <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
+                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
                     }
