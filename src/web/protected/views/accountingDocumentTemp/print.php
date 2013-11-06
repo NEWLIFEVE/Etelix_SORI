@@ -1,3 +1,22 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Designa Studio, a HTML5 / CSS3 template.">
+    <meta name="author" content="Sylvain Lafitte, Web Designer, sylvainlafitte.com">
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
+    <link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
+    <link href="<?php echo Yii::app()->baseUrl; ?>/images/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114" />
+    <link href="<?php echo Yii::app()->baseUrl; ?>/images/apple-touch-icon-144x144-precomposed.png" rel="apple-touch-icon-precomposed" sizes="144x144" />
+    <!--<link rel="stylesheet" href="/resources/demos/style.css" />-->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
 <?php
 /* @var $this AccountingDocumentTempController */
 /* @var $model AccountingDocumentTemp */

@@ -2,5 +2,5 @@
 /**
 * @var $this Controller
 */
+echo $content; 
 ?>
-<?php echo $content; ?>
