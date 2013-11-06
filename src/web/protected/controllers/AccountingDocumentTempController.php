@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados','print'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -552,13 +552,13 @@ class AccountingDocumentTempController extends Controller
                 
                 echo json_encode($params);
             }
-        }
-     
+        }   
        /**
         * Guarda todos los documentos contables dependiendo del usuario
         * @access public
         */
         public function actionGuardarListaFinal() 
+
         {
             $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
             $idUsers = Yii::app()->user->id;
@@ -682,39 +682,62 @@ class AccountingDocumentTempController extends Controller
 			Yii::app()->end();
 		}
 	}
-        /**
-         * esta funcion busca la factura para disputas, 
-         * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
-         */
-        public function actionBuscaFactura() 
-        {   
-            $tipoDoc = $_GET['tipoDoc'];
-            $CarrierDisp = $_GET['CarrierDisp'];
-            $desdeDisp = $_GET['desdeDisp'];
-            $hastaDisp = $_GET['hastaDisp']; 
-        
-            $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
-            $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
-            $llave=0;
-            
-            $params = array();
+
+    /**
+     * esta funcion busca la factura para disputas, 
+     * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
+     */
+    public function actionBuscaFactura() 
+    {   
+        $tipoDoc = $_GET['tipoDoc'];
+        $CarrierDisp = $_GET['CarrierDisp'];
+        $desdeDisp = $_GET['desdeDisp'];
+        $hastaDisp = $_GET['hastaDisp']; 
+        $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
+        $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
+        $llave=0;
+        $params = array();
         foreach($factura as $id=>$factura)
-           {
-                $params[$llave]['id'] =$id; 
-                $params[$llave]['factura'] =$factura; 
-           $llave++;   
-           }    
-  echo json_encode($params);   
+        {
+            $params[$llave]['id'] =$id; 
+            $params[$llave]['factura'] =$factura;
+            $llave++;
         }
-        /**
-         * busca la lista de destinos supplier asignados al carier, desde documentos temporales, esto con el ajax de yii
-         */   
-        public function actionDestinosSuppAsignados()
-       { 
-           $data = AccountingDocumentTemp::getListCarriersAsignados_DestSup($_POST['AccountingDocumentTemp']['id_carrier']);
-           foreach($data as $value=>$name)
-           {
-               echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
-           }
-       }
+        echo json_encode($params);
+    }
+        
+    /**
+     * busca la lista de destinos supplier asignados al carier, desde documentos temporales, esto con el ajax de yii
+     */   
+    public function actionDestinosSuppAsignados()
+    { 
+        $data = AccountingDocumentTemp::getListCarriersAsignados_DestSup($_POST['AccountingDocumentTemp']['id_carrier']);
+        foreach($data as $value=>$name)
+        {
+            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+        }
+    }
+
+    /**
+     * Action para imprimir los documentos conrtables
+     */
+    public function actionPrint()
+    {
+        $lista_FacEnv=AccountingDocumentTemp::listaFacturasEnviadas(Yii::app()->user->id);
+        $lista_FacRec=AccountingDocumentTemp::listaFacRecibidas(Yii::app()->user->id);
+        $lista_Pagos=AccountingDocumentTemp::listaPagos(Yii::app()->user->id);
+        $lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
+        $lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
+        $lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
+
+
+        $this->render('print',array(
+            'lista_FacEnv'=>$lista_FacEnv,
+            'lista_FacRec'=>$lista_FacRec,
+            'lista_Pagos'=>$lista_Pagos,
+            'lista_Cobros'=>$lista_Cobros,
+            'lista_DispRec'=>$lista_DispRec,
+            'lista_DispEnv'=>$lista_DispEnv
+        ));
+    }
 }
