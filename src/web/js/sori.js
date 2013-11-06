@@ -133,12 +133,15 @@ $SORI.UI=(function()
 	{
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
-			var input=document.createElement('input');
-			input.name=obj[0].children[i].id;
-			input.value=obj[0].children[i].innerHTML;
-			obj[0].children[i].innerHTML="";
-			obj[0].children[i].appendChild(input);
-			input=null;
+			if(i>=3 && i<=6)
+			{
+                            var input=document.createElement('input');
+                            input.name=obj[0].children[i].id;
+                            input.value=obj[0].children[i].innerHTML;
+                            obj[0].children[i].innerHTML="";
+                            obj[0].children[i].appendChild(input);
+                            input=null;
+                        }
 		}
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img name='save_DispRec' alt='save' src='/images/icon_check.png'><img name='cancel_DispRec' alt='cancel' src='/images/icon_arrow.png'>";
@@ -212,14 +215,29 @@ $SORI.UI=(function()
 		var contenido=new Array();
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
+                    if(i>=3 && i<=6)
+			{
 			contenido[i]=obj[0].children[i].children[0].value;
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
+                        }
 		}
 		obj[0].children[10].innerHTML="";
 		obj[0].children[10].innerHTML="<img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
+	}
+	function _update_monto_Disp()
+	{
+            alert('siiiiii :)'); 
+           var minutosETX=$('td #AccountingDocumentTemp[min_etx]').attr(),
+               minutosCarr=$('td #AccountingDocumentTemp[min_carrier]').attr(),
+               tarifaETX=$('td #AccountingDocumentTemp[rate_etx]').attr(),
+               tarifaCarr=$('td #AccountingDocumentTemp[rate_carrier]').attr();
+        alert(minutosETX); 
+        alert(minutosCarr); 
+        alert(tarifaETX); 
+        alert(tarifaCarr); 
 	}
 	/**
 	 * Metodo encargado de ejecutar las repectivas llamadas
@@ -234,8 +252,22 @@ $SORI.UI=(function()
 //                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
-				$fila.remove();
-				$SORI.AJAX.borrar($fila[0].id);
+                            var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de ELIMINAR<p>Si esta seguro presione Aceptar, de lo contrario Cancelar <p><p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
+
+                              $("body").append(revisa);
+                              revisa.fadeIn('slow');
+                              $('#confirma,#cancelar').on('click',function()
+                              {
+                                  var tipo=$(this).attr('id');
+                                  if(tipo=="confirma")
+                                  {
+                                     $fila.remove();
+                                     $SORI.AJAX.borrar($fila[0].id);
+                                     revisa.fadeOut('slow'); 
+                                  }else{
+                                    revisa.fadeOut('slow');  
+                                  }
+                              });
 			}
 //                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
@@ -293,7 +325,7 @@ $SORI.UI=(function()
 			{
 				_revert_Pagos($fila);
 			}
-//                        DISPUTAS RECIBIDAS
+//                        DISPUTAS: El mismo código sirve para disp recibidas y enviadas
 			if($(this).attr('name')=='edit_DispRec')
 			{
 				_editar_DispRec($fila);
@@ -302,6 +334,7 @@ $SORI.UI=(function()
 			{
 				$SORI.AJAX.actualizar($fila[0].id);
 				_revert_DispRec($fila);
+				_update_monto_Disp($fila);
 			}
 			if($(this).attr('name')=='cancel_DispRec')
 			{
@@ -315,7 +348,52 @@ $SORI.UI=(function()
 	 * Metodo encargado de las animaciones de la tabla comercial
 	 * @access public
 	 * @param id string es el id del formulario que se realizan cambios
-	 */
+	 */  
+        function buscaFactura(id)
+        {
+            $(id).change(function()
+            {
+                var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
+                    CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                    desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
+                    hastaDisp=$('#AccountingDocumentTemp_to_date').val();
+                    
+               if(tipo_Ac_doc==5||tipo_Ac_doc==7){
+                   var tipoDoc=1;
+               }else if(tipo_Ac_doc==6||tipo_Ac_doc==8){
+                   tipoDoc=2;
+               }     
+
+                if (CarrierDisp && desdeDisp && hastaDisp){
+                $.ajax({
+                    type: "GET",
+                    url: "BuscaFactura",
+                    data:"&tipoDoc="+tipoDoc+"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
+
+                success: function(data) 
+                        {
+                            console.log(data);
+                            if(data=="[]"){
+                                var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion que esta indicando</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                $("body").append(noHayFacturas);
+                                noHayFacturas.fadeIn('slow');
+                                setTimeout(function()
+                                { noHayFacturas.fadeOut('slow');
+                                }, 4000);
+                            }else{
+                                obj = JSON.parse(data);
+                                $("select#AccountingDocumentTemp_doc_number").html("");
+                                for(var i=0, j=obj.length; i<j;i++)
+                                    {
+                                        console.log(obj[i].id,obj[i].factura);
+                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");
+                                    }
+                            }
+                        }
+                    });
+                }
+            });
+        }
 	function formChange(id)
 	{
 		$('#'+id).change(function()
@@ -342,7 +420,7 @@ $SORI.UI=(function()
 		        url: "DynamicDatosContrato",
 		        data: "idCarrier="+idCarrier,
 		        success: function(data)
-		        {
+		        {   
 		            obj=JSON.parse(data);
 		            $("#Contrato_id_company").val(obj.company);
 		            if(obj.company!='')
@@ -408,7 +486,8 @@ $SORI.UI=(function()
 	 */
 	return{
 		init:init,
-		formChange:formChange
+		formChange:formChange,
+                buscaFactura:buscaFactura
 	}
 })();
 
@@ -457,7 +536,6 @@ $SORI.AJAX=(function()
 		});
 		id=null;
 	}
-
 	/**
 	 * retorna los metodos publicos*/
 return{
@@ -483,6 +561,7 @@ $SORI.UTILS=(function()
 		{
 			datos+=inputs[i].name+"="+inputs[i].value+"&";
 		};
+                console.dir(datos);
 		id=null;
 		return datos;
 	}

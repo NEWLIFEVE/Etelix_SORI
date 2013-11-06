@@ -26,7 +26,15 @@
     
     <div class="CarrierDocument input_largos">
         <?php echo $form->labelEx($model,'id_carrier'); ?>
-        <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),array('prompt'=>'Seleccione')); ?>
+        <?php echo $form->dropDownList($model,'id_carrier',Carrier::getListCarrierNoUNKNOWN(),
+               array(
+                    'ajax'=>array(
+                        'type'=>'POST',
+                        'url'=>CController::createUrl('DestinosSuppAsignados'),
+                        'update'=>'select#AccountingDocumentTemp_id_destination_supplier',
+                    ),'prompt'=>'Seleccione'
+                     )
+                ); ?>
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
     <div class="GrupoDocument input_largos ">
@@ -159,6 +167,9 @@
                 <?php echo $form->error($model,'id_destination_supplier'); ?>
                 <div class="nuevoDestProv">
                     <label>+</label>
+                </div>
+                <div class="cancelarDestProv">
+                    <label><</label>
                 </div>
              </div>
              
@@ -381,23 +392,98 @@
                                     <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
+                                    <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
                                     <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
                     }
                     ?>
          </table>
-
-        
-        
-        
+         
+         <br>
+         <label class="Label_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Disputas Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Carrier </td>
+                   <td> Destino Supp </td>
+                   <td> Num. Factura </td>
+                   <td> Min Etx </td>
+                   <td> Min Prov </td>
+                   <td> Tarifa Etx </td>
+                   <td> Tarifa Prov </td>
+                   <td> Monto Etx</td>
+                   <td> Monto Prov</td>
+                   <td> Disputa</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_DispEnv!=null)
+                    {
+                        foreach ($lista_DispEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_destination]'>".$value->id_destination_supplier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[min_etx]'>".$value->min_etx."</td>
+                                    <td id='AccountingDocumentTemp[min_carrier]'>".$value->min_carrier."</td>
+                                    <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
+                                    <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
+                                    <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
+                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+<!--         
+         <br>
+         <label class="label_NotCredEnv" <?php // if($lista_DispRec==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv" <?php // if($lista_DispRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Destino </td>
+                   <td> Num. Factura </td>
+                   <td> Min Etx </td>
+                   <td> Min Prov </td>
+                   <td> Tarifa Etx </td>
+                   <td> Tarifa Prov </td>
+                   <td> Monto Etx</td>
+                   <td> Monto Prov</td>
+                   <td> Disputa</td>
+                   <td> Monto Nota</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+//                    if($lista_DispRec!=null)
+//                    {
+//                        foreach ($lista_DispRec as $key => $value)
+//                        { 
+//                            echo "<tr class='vistaTemp' id='".$value->id."'>
+//                                    <td id='AccountingDocumentTemp[id_destination]'>".$value->id_destination."</td>
+//                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+//                                    <td id='AccountingDocumentTemp[min_etx]'>".$value->min_etx."</td>
+//                                    <td id='AccountingDocumentTemp[min_carrier]'>".$value->min_carrier."</td>
+//                                    <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
+//                                    <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
+//                                    <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
+//                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+//                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
+//                                    <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>
+//                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+//                                  </tr>";     
+//                        }
+//                    }
+                    ?>
+         </table>
+-->
      </div>
 </div><!-- form -->
   
         
 
-        <div class='mensajeFinal'>
+<!--        <div class='mensajeFinal'>
          <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
          <table border="4" class='tablamensaje'>
             <tr>
@@ -409,4 +495,4 @@
         </table>
          <p><i>Recuerde confirmar las facturas enviadas</i></p>
         <p><img src='/images/si.png'width='95px' height='95px'/></p>
-   </div>
+   </div>-->

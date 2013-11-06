@@ -42,8 +42,6 @@ return array(
                 ),
             ),
         'db'=>array(
-
-
             'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
             'emulatePrepare'=>true,
             'username'=>'postgres',
