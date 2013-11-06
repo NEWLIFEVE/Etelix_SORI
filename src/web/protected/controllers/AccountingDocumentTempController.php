@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados','print'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -592,132 +592,6 @@ class AccountingDocumentTempController extends Controller
                 echo json_encode($params);
             }
         }
-        /*
-        * este action no se usa, pero lo dejo hasta que no exista ningun problema en la nueva guardada
-        **/
-//        public function actionGuardarListaTemp() 
-//        {
-//            $selecTipoDoc = $_GET['selecTipoDoc'];
-//            $idCarrier = $_GET['idCarrier'];
-//            $idGrupo = $_GET['idGrupo'];
-//            $fechaEmision = $_GET['fechaEmision'];
-//            $desdeFecha = $_GET['desdeFecha'];
-//            $hastaFecha = $_GET['hastaFecha'];
-//            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
-//            $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
-//            $numDocumento = $_GET['numDocumento'];
-//            $minutos = $_GET['minutos'];
-//            $cantidad = $_GET['cantidad'];
-//            $currency = $_GET['currency'];
-//            $nota = $_GET['nota'];
-//            $idCarrierName = "";
-//            $selecTipoDocName = "";
-//            $valid_received_hour = "";
-//            $valid_received_date = "";
-//            $minutosTemp = "";
-//            $moneda= "";
-//            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-//            $minutosTemp.= Utility::snull($minutos);
-//            $moneda.= Currency::getName($currency);
-////            $moneda.= Currency::getName($currency);
-////            $existe=  AccountingDocumentTemp::getIfExist($idCarrier, $numDocumento, $selecTipoDoc);    
-//            $model = new AccountingDocumentTemp;
-//            $model->id_type_accounting_document = $selecTipoDoc;
-//            $model->issue_date = Utility::snull($fechaEmision);
-//            $model->from_date = Utility::snull($desdeFecha);
-//            $model->to_date = Utility::snull($hastaFecha);
-//            $model->sent_date = Utility::snull($fechaEmision);
-//            $model->doc_number = $numDocumento;
-//            $model->minutes = $minutosTemp;
-//            $model->amount = Utility::snull($cantidad);
-//            $model->note = Utility::snull($nota);
-//            $model->id_currency =$currency;
-//                $moneda.= Currency::getName($currency);
-//                if ($selecTipoDoc == '3'||$selecTipoDoc == '4'){
-//                    $idCarrierName.= CarrierGroups::getName($idGrupo);
-//                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
-//                    $model->id_carrier = $grupoCarrier;
-//                }else{
-//                $model->id_carrier = $idCarrier;
-//                $idCarrierName.= Carrier::getName($idCarrier);
-//                }
-//            if ($selecTipoDoc == '4') {
-//                $model->email_received_hour = NULL;
-//                $model->valid_received_hour = NULL;
-//                $model->email_received_date = NULL;
-//                $valid_received_date = $EmailfechaRecepcion;
-//                $EmailfechaRecepcion = '';
-//                $model->valid_received_date = $valid_received_date;
-//            } 
-//
-//            if ($selecTipoDoc == '2') {
-//            $fecha = strtotime($EmailfechaRecepcion);
-//            $dia = date("N", $fecha);
-//                if ($dia == 1 || $dia == 2) {
-//
-//                    if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
-//
-//                        $valid_received_date = $EmailfechaRecepcion;
-//                        $valid_received_hour = $EmailHoraRecepcion;
-//                        $model->valid_received_date = $valid_received_date;
-//                        $model->valid_received_hour = $valid_received_hour;
-//                        $model->email_received_date = $EmailfechaRecepcion;
-//                        $model->email_received_hour = $EmailHoraRecepcion;
-//                      
-//                    } else {
-//                        if($EmailHoraRecepcion < '08:00'){
-//                            $valid_received_date = $EmailfechaRecepcion;
-//                            $model->valid_received_date = $EmailfechaRecepcion;
-//                        }else{
-//                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-//                            $model->valid_received_date = $valid_received_date;
-//                        }
-//                        $valid_received_hour = '08:00';
-//                        $model->valid_received_hour = $valid_received_hour;
-//                        $model->email_received_date = $EmailfechaRecepcion;
-//                        $model->email_received_hour = $EmailHoraRecepcion;
-//                    }
-//                } else {
-//
-//                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-//                    $valid_received_hour = '08:00';
-//                    $model->valid_received_date = $valid_received_date;
-//                    $model->valid_received_hour = $valid_received_hour;
-//                    $model->email_received_date = $EmailfechaRecepcion;
-//                    $model->email_received_hour = $EmailHoraRecepcion;
-//                }
-//            }         
-
-//            if ($selecTipoDoc == '1'){
-//                $model->confirm = 0;
-//            }else{
-//                $model->confirm = 1;
-//            }
-
-//            if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-//                Log::registrarLog($idAction, NULL, $model->id);
-            
-//                $params['idDoc'] = $model->id;
-//                $params['idCarrierNameTemp'] = $idCarrierName;
-//                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
-//                $params['fechaEmisionTemp'] = $fechaEmision;
-//                $params['desdeFechaTemp'] =  $desdeFecha;
-//                $params['hastaFechaTemp'] =  $hastaFecha;
-//                $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
-//                $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
-//                $params['valid_received_dateTemp'] = $valid_received_date;
-//                $params['valid_received_hourTemp'] = $valid_received_hour;
-//                $params['fechaEnvioTemp'] = $fechaEmision;
-//                $params['numDocumentoTemp'] = $model->doc_number;
-//                $params['minutosTemp'] = $minutosTemp;
-//                $params['cantidadTemp'] = $model->amount;
-//                $params['currencyTemp'] = $moneda;
-//                
-//                echo json_encode($params);
-//            }
-            
-//    }
         
         public function actionGuardarListaFinal()
         {
@@ -892,44 +766,62 @@ class AccountingDocumentTempController extends Controller
 			Yii::app()->end();
 		}
 	}
-        /**
-         * esta funcion busca la factura para disputas, 
-         * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
-         */
-        public function actionBuscaFactura() 
-        {   
-            $tipoDoc = $_GET['tipoDoc'];
-            $CarrierDisp = $_GET['CarrierDisp'];
-            $desdeDisp = $_GET['desdeDisp'];
-            $hastaDisp = $_GET['hastaDisp']; 
-        
-            $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
-            $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
-            $llave=0;
-            
-            $params = array();
+
+    /**
+     * esta funcion busca la factura para disputas, 
+     * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
+     */
+    public function actionBuscaFactura() 
+    {   
+        $tipoDoc = $_GET['tipoDoc'];
+        $CarrierDisp = $_GET['CarrierDisp'];
+        $desdeDisp = $_GET['desdeDisp'];
+        $hastaDisp = $_GET['hastaDisp']; 
+        $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
+        $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
+        $llave=0;
+        $params = array();
         foreach($factura as $id=>$factura)
-           {
-                $params[$llave]['id'] =$id; 
-                $params[$llave]['factura'] =$factura; 
-           $llave++;   
-           }    
-  echo json_encode($params);   
+        {
+            $params[$llave]['id'] =$id; 
+            $params[$llave]['factura'] =$factura;
+            $llave++;
         }
+        echo json_encode($params);
+    }
         
-        
-        
-        
-        
-        /**
-         * busca la lista de destinos supplier asignados al carier, desde documentos temporales, esto con el ajax de yii
-         */   
-        public function actionDestinosSuppAsignados()
-       { 
-           $data = AccountingDocumentTemp::getListCarriersAsignados_DestSup($_POST['AccountingDocumentTemp']['id_carrier']);
-           foreach($data as $value=>$name)
-           {
-               echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
-           }
-       }
+    /**
+     * busca la lista de destinos supplier asignados al carier, desde documentos temporales, esto con el ajax de yii
+     */   
+    public function actionDestinosSuppAsignados()
+    { 
+        $data = AccountingDocumentTemp::getListCarriersAsignados_DestSup($_POST['AccountingDocumentTemp']['id_carrier']);
+        foreach($data as $value=>$name)
+        {
+            echo CHtml::tag('option',array('value'=>$value),CHtml::encode($name),true);
+        }
+    }
+
+    /**
+     * Action para imprimir los documentos conrtables
+     */
+    public function actionPrint()
+    {
+        $lista_FacEnv=AccountingDocumentTemp::listaFacturasEnviadas(Yii::app()->user->id);
+        $lista_FacRec=AccountingDocumentTemp::listaFacRecibidas(Yii::app()->user->id);
+        $lista_Pagos=AccountingDocumentTemp::listaPagos(Yii::app()->user->id);
+        $lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
+        $lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
+        $lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
+
+
+        $this->render('print',array(
+            'lista_FacEnv'=>$lista_FacEnv,
+            'lista_FacRec'=>$lista_FacRec,
+            'lista_Pagos'=>$lista_Pagos,
+            'lista_Cobros'=>$lista_Cobros,
+            'lista_DispRec'=>$lista_DispRec,
+            'lista_DispEnv'=>$lista_DispEnv
+        ));
+    }
 }
