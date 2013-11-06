@@ -5,34 +5,29 @@
  *
  * The followings are the available columns in table 'accounting_document_temp':
  * @property integer $id
- * @property string $issue_date
- * @property string $from_date
- * @property string $to_date
- * @property string $valid_received_date
+ * @property string $issue_date-
+ * @property string $from_date-
+ * @property string $to_date-
+ * @property string $valid_received_date-
  * @property string $sent_date
- * @property string $doc_number
- * @property double $minutes
+ * @property string $doc_number-
+ * @property double $minutes-
  * @property double $amount
  * @property string $note
- * @property integer $id_type_accounting_document
- * @property integer $id_carrier
- * @property string $email_received_date
- * @property string $valid_received_hour
- * @property string $email_received_hour
+ * @property integer $id_type_accounting_document-
+ * @property integer $id_carrier-
+ * @property string $email_received_date-
+ * @property string $valid_received_hour/
+ * @property string $email_received_hour-
  * @property integer $id_currency
  * @property integer $confirm
- * @property double $min_etx
- * @property double $min_carrier
- * @property double $rate_etx
- * @property double $rate_carrier
+ * @property double $min_etx-
+ * @property double $min_carrier-
+ * @property double $rate_etx-
+ * @property double $rate_carrier-
  * @property integer $id_accounting_document
-<<<<<<< HEAD
- * @property double $amount_note
- * @property double $id_destino
-=======
- * @property integer $id_destination
- * @property integer $id_destination_supplier
->>>>>>> 8eb39ee43f256e94c4507f86adb48a05cf3d3cf8
+ * @property integer $id_destination-
+ * @property integer $id_destination_supplier-
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -102,12 +97,12 @@ class AccountingDocumentTemp extends CActiveRecord
 			'issue_date' => 'Fecha de Emisión',
 			'from_date' => 'Inicio Periodo a Facturar',
 			'to_date' => 'Fin Periodo a Facturar',
-			'valid_received_date' => 'Valid Received Date',
+			'valid_received_date' => 'Fecha de recepción',
 			'email_received_date' => 'Fecha de recepción de Email',
 			'valid_received_hour' => 'Valid Received Hour',
 			'email_received_hour' => 'Hora de recepción de Email',
 			'sent_date' => 'Fecha de envio',
-			'doc_number' => 'Número de documento',
+			'doc_number' => 'Número de Documento',
 			'minutes' => 'Minutos',
 			'amount' => 'Monto',
 			'note' => 'Nota',
@@ -115,12 +110,12 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_carrier' => 'Carrier',
 			'id_currency' => 'Moneda',
 			'confirm' => 'Confirmar',
-                        'min_etx' => 'Min Etx',
-			'min_carrier' => 'Min Carrier',
-			'rate_etx' => 'Tarifa Etx',
-			'rate_carrier' => 'Tarifa Carrier',
-			'id_accounting_document' => 'Documento Relacionado',
-
+                        'min_etx' => 'Minutos Etelix',
+			'min_carrier' => 'Minutos Proveedor',
+			'rate_etx' => 'Tarifa Etelix',
+			'rate_carrier' => 'Tarifa Proveedor',
+			'id_accounting_document' => 'Número de Factura',
+                        'carrier_groups'=>'Grupo',
 			'id_destination' => 'Destino Etelix',
 			'id_destination_supplier' => 'Destino Proveedor',
 		);
@@ -390,37 +385,22 @@ class AccountingDocumentTemp extends CActiveRecord
                       return date('Y-m-d', strtotime('+1 day', strtotime ( $EmailfechaRecepcion ))) ;
                       break;
              }                                                             
+        }   
+        
+        public static function getJSonParams($model)
+        {
+            $params['idDoc'] = $model->id;
+            $params['idCarrierNameTemp']=Carrier::getName($model->id_carrier);;
+            $params['desdeFechaTemp']=$model->from_date;
+            $params['hastaFechaTemp']=$model->to_date;
+            $params['numDocumentoTemp']=AccountingDocument::getDocNum($model->id_accounting_document);
+            $params['minutosTemp'] =$model->min_etx; /*cambiar a minutos correspondientes en el view*/
+            $params['MinutosProv'] =$model->min_carrier;
+            $params['TarifaEtx'] =$model->rate_etx;
+            $params['TarifaProv'] =$model->rate_carrier;
+            $params['Destino'] =DestinationSupplier::getName($model->id_destination_supplier);
+            
+            return $params;
         }
-        
-//        public function getDates($EmailfechaRecepcion,$EmailHoraRecepcion){
-//            $fecha = strtotime($EmailfechaRecepcion);
-//            $dia = date("N", $fecha);
-//            $Dates = array();
-//                if ($dia == 1 || $dia == 2) {
-//                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '05:00 PM') {
-//                        $Dates['validDate'] = $EmailfechaRecepcion;
-//                        $Dates['validHour'] = $EmailHoraRecepcion;
-//                        $Dates['emailDate'] = $EmailfechaRecepcion;
-//                        $Dates['emailHour'] = $EmailHoraRecepcion;
-//                      
-//                    } else {
-//                        if($EmailHoraRecepcion < '08:00 AM'){
-//                            $Dates['validDate'] = $EmailfechaRecepcion;
-//                        }else{
-//                            $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-//                        }
-//                        $Dates['validHour'] = '08:00 AM';
-//                        $Dates['emailDate'] = $EmailfechaRecepcion;
-//                        $Dates['emailHour'] = $EmailHoraRecepcion;
-//                    }
-//                } else {
-//                    $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-//                    $Dates['validHour'] = '08:00 AM';
-//                    $Dates['emailDate'] = $EmailfechaRecepcion;
-//                    $Dates['emailHour'] = $EmailHoraRecepcion;
-//                }
-//                return $Dates;
-//        }
-        
         
 }

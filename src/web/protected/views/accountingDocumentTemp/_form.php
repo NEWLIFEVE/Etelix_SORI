@@ -38,8 +38,7 @@
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
     <div class="GrupoDocument input_largos ">
-        <?php // echo $form->labelEx($model,'carrier_groups'); ?>
-        <label>Grupo</label>
+        <?php  echo $form->labelEx($model,'carrier_groups'); ?>
         <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'carrier_groups'); ?>
     </div>
@@ -63,7 +62,7 @@
                 ?>
                 <?php echo $form->error($model,'issue_date'); ?>
             </div>
-            <div class="contratoForm fechaDeInicio">
+            <div class="contratoForm fechaIniFact">
                 <?php echo $form->labelEx($model,'from_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -81,7 +80,7 @@
                 ?>
                 <?php echo $form->error($model,'from_date'); ?>
             </div>
-            <div class="contratoForm fechaFinal">
+            <div class="contratoForm fechaFinFact">
                 <?php echo $form->labelEx($model,'to_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -102,6 +101,7 @@
 
             <div class="contratoForm emailReceivedDate">
                 <label class='emailRecDate'>Fecha de recepción de Email</label>
+                <?php // echo $form->labelEx($model,'email_received_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                         'model'=>$model,
@@ -117,6 +117,25 @@
                     ); 
                 ?>
                 <?php echo $form->error($model,'email_received_date'); ?>
+            </div>
+            <div class="contratoForm validReceivedDate">
+                
+                <?php  echo $form->labelEx($model,'valid_received_date'); ?>
+                <?php 
+                    $this->widget('zii.widgets.jui.CJuiDatePicker',array(
+                        'model'=>$model,
+                        'attribute'=>'valid_received_date',
+                        'options'=>array(
+                            'dateFormat'=>'yy-mm-dd'
+                            ),
+                        'htmlOptions'=>array(
+                            'size'=>'10', // textField size
+                            'maxlength'=>'10', // textField maxlength
+                            )
+                        )
+                    ); 
+                ?>
+                <?php echo $form->error($model,'valid_received_date'); ?>
             </div>
             
             <div class="contratoForm emailReceivedTime">
@@ -147,14 +166,17 @@
             </div>
             
             <div class="contratoForm numDocument">
-                <label class="doc_number">Numero de Documento</label>
+                <?php echo $form->labelEx($model,'doc_number'); ?>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
-                <?php echo $form->dropDownList($model,'doc_number',array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'doc_number'); ?>
+            </div>
+            <div class="contratoForm numFactura">
+                <?php echo $form->labelEx($model,'id_accounting_document'); ?>
+                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_accounting_document'); ?>
             </div>
             
               <div class="contratoForm DestinoEtx">
-<!--                <label >Destino</label>-->
                 <?php echo $form->labelEx($model,'id_destination'); ?>
                 <?php echo $form->dropDownList($model,'id_destination',Destination::getDesList(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_destination'); ?>
@@ -174,22 +196,34 @@
              </div>
              
             <div class="contratoForm minutosDoc">
-                <label class="MinutosE">Minutos</label>
+                <?php echo $form->labelEx($model,'minutes'); ?>
                 <?php echo $form->textField($model,'minutes'); ?>
                 <?php echo $form->error($model,'minutes'); ?>
             </div>
-            <div class="contratoForm minutosDocProveedor">
-               <label class="MinutosP">Minutos Proveedor</label>
-               <input id="AccountingDocumentTemp_MinutosProvee"type="text" name="AccountingDocumentTemp[MinutosProvee]"><!-- esto hay que arreglarlo bien-->
+            <div class="contratoForm minutosEtx">
+                <?php echo $form->labelEx($model,'min_etx'); ?>
+                <?php echo $form->textField($model,'min_etx'); ?>
+                <?php echo $form->error($model,'min_etx'); ?>
+            </div>
+            <div class="contratoForm minutosProveedor">
+                <?php echo $form->labelEx($model,'min_carrier'); ?>
+                <?php echo $form->textField($model,'min_carrier'); ?>
+                <?php echo $form->error($model,'min_carrier'); ?>
             </div>
             <div class="contratoForm montoDoc">
-                <label class="MontoE">Monto</label>
+                <?php echo $form->labelEx($model,'amount'); ?>
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
             </div>
-            <div class="contratoForm montoDocProveedor">
-                <label class="MontoP">Tarifa Proveedor</label>
-                <input id="AccountingDocumentTemp_MontoProvee"type="text" name="AccountingDocumentTemp[MontoProvee]"><!-- esto hay que arreglarlo bien-->
+            <div class="contratoForm rateEtx">
+                <?php echo $form->labelEx($model,'rate_etx'); ?>
+                <?php echo $form->textField($model,'rate_etx'); ?>
+                <?php echo $form->error($model,'rate_etx'); ?>
+            </div>
+            <div class="contratoForm rateProveedor">
+                <?php echo $form->labelEx($model,'rate_carrier'); ?>
+                <?php echo $form->textField($model,'rate_carrier'); ?>
+                <?php echo $form->error($model,'rate_carrier'); ?>
             </div>
                 
             <div class="contratoForm Moneda">
@@ -202,11 +236,11 @@
                 <br>
                 <label>Nota (+)</label>
             </div>
-            <div class="contratoFormTextArea">
+            <div class="quitaNota">
                 <br>
-                <label class="quitaNota">
-                    <b>Nota (-)</b>
-                </label>
+                <label>Nota (-)</label>
+            </div>
+            <div class="contratoFormTextArea">
                 <?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
                 <?php echo $form->error($model,'note'); ?>
             </div>

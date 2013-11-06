@@ -343,9 +343,31 @@ $SORI.UI=(function()
 		});
 		$fila=null;
 	}
-
+        /**
+	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
+	 * @access public
+	 */ 
+        function toggleDestProv()
+        {
+            $('div.nuevoDestProv').click('on',function()
+            {
+                $(this).toggle('fast');
+                $('div.cancelarDestProv').toggle('fast');
+                $('select#AccountingDocumentTemp_id_destination_supplier').toggle('fast'); 
+                $('input#AccountingDocumentTemp_id_destination_supplier').toggle('fast');
+                $('select#AccountingDocumentTemp_id_destination_supplier').val('');
+            });
+            $('div.cancelarDestProv').click('on',function()
+            {
+                $(this).toggle('fast');
+                $('div.nuevoDestProv').toggle('fast');
+                $('select#AccountingDocumentTemp_id_destination_supplier').toggle('fast'); 
+                $('input#AccountingDocumentTemp_id_destination_supplier').toggle('fast');
+                $('input#AccountingDocumentTemp_id_destination_supplier').val('');
+            });
+        }
 	/**
-	 * Metodo encargado de las animaciones de la tabla comercial
+	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
 	 * @param id string es el id del formulario que se realizan cambios
 	 */  
@@ -374,7 +396,7 @@ $SORI.UI=(function()
                         {
                             console.log(data);
                             if(data=="[]"){
-                                var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion que esta indicando</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion indicado</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                                 $("body").append(noHayFacturas);
                                 noHayFacturas.fadeIn('slow');
                                 setTimeout(function()
@@ -382,11 +404,11 @@ $SORI.UI=(function()
                                 }, 4000);
                             }else{
                                 obj = JSON.parse(data);
-                                $("select#AccountingDocumentTemp_doc_number").html("");
+                                $("select#AccountingDocumentTemp_id_accounting_document").html("");
                                 for(var i=0, j=obj.length; i<j;i++)
                                     {
                                         console.log(obj[i].id,obj[i].factura);
-                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");
+                                        $("select#AccountingDocumentTemp_id_accounting_document").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");
                                     }
                             }
                         }
@@ -394,6 +416,27 @@ $SORI.UI=(function()
                 }
             });
         }
+        /**
+	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
+	 * @access public
+	 * @param ocultar array es el arreglo que contiene los elementos a ocultarse
+	 * @param mostrar array es el arreglo que contiene los elementos a mostrarse
+	 */  
+        function formChangeAccDoc(ocultar, mostrar){
+            
+            for (var i=0, j=ocultar.length - 1; i <= j; i++){
+                $(ocultar[i]).fadeOut('fast');              
+            }
+            for (var x=0, z=mostrar.length - 1; x <= z; x++){
+                $(mostrar[x]).fadeIn('fast');              
+            }
+            
+        }
+        /**
+	 * Metodo encargado de las animaciones de la tabla comercial
+	 * @access public
+	 * @param id string es el id del formulario que se realizan cambios
+	 */ 
 	function formChange(id)
 	{
 		$('#'+id).change(function()
@@ -487,7 +530,9 @@ $SORI.UI=(function()
 	return{
 		init:init,
 		formChange:formChange,
-                buscaFactura:buscaFactura
+                buscaFactura:buscaFactura,
+                formChangeAccDoc:formChangeAccDoc,
+                toggleDestProv:toggleDestProv
 	}
 })();
 
