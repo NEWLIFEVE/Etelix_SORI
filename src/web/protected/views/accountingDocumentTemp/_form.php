@@ -5,6 +5,7 @@
  * @var $form CActiveForm 
  */
 ?>
+
 <div class="form">
     <div class="instruccion">
         <h3>Para comenzar, Seleccione un tipo de documento</h3>
@@ -144,8 +145,23 @@
                     );
                 ?>
                 <?php echo $form->error($model,'email_received_hour'); ?>
+            <div class="tabla_N_C">
+            <div>
+            <label class="label_Disp_NotaCEnv">Nota de Credito Enviada:</label>
+            <table border="1" class="tablaVistDocTemporales lista_Disp_NotaCEnv">
+                   <tr>
+                      <td> Destino </td>
+                      <td> Min Etx </td>
+                      <td> Min Prov </td>
+                      <td> Tarifa Etx </td>
+                      <td> Tarifa Prov </td>
+                      <td> Monto Etx</td>
+                      <td> Monto Prov</td>
+                      <td> Disputa</td>
+                      <td> Monto de nota </td>
+                   </tr>
+            </table>
             </div>
-            
             <div class="contratoForm numDocument">
                 <label class="doc_number">Numero de Documento</label>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
@@ -210,6 +226,7 @@
                 <?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
                 <?php echo $form->error($model,'note'); ?>
             </div>
+
             <br>
             <div id="botAgregarDatosContable" class="row buttons">
                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar a Temporales' : 'Save'); ?>
@@ -401,8 +418,8 @@
          </table>
          
          <br>
-         <label class="Label_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Disputas Enviadas:</label>
-         <table border="1" class="tablaVistDocTemporales lista_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
+         <label class="Label_DispEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Disputas Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_DispEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
                 <tr>
                    <td> Carrier </td>
                    <td> Destino Supp </td>
@@ -438,61 +455,6 @@
                     }
                     ?>
          </table>
-<!--         
-         <br>
-         <label class="label_NotCredEnv" <?php // if($lista_DispRec==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
-         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv" <?php // if($lista_DispRec==null){echo "style='display:none;'";}?>>
-                <tr>
-                   <td> Destino </td>
-                   <td> Num. Factura </td>
-                   <td> Min Etx </td>
-                   <td> Min Prov </td>
-                   <td> Tarifa Etx </td>
-                   <td> Tarifa Prov </td>
-                   <td> Monto Etx</td>
-                   <td> Monto Prov</td>
-                   <td> Disputa</td>
-                   <td> Monto Nota</td>
-                   <td> Acciones </td>
-                </tr>
-                <?php
-//                    if($lista_DispRec!=null)
-//                    {
-//                        foreach ($lista_DispRec as $key => $value)
-//                        { 
-//                            echo "<tr class='vistaTemp' id='".$value->id."'>
-//                                    <td id='AccountingDocumentTemp[id_destination]'>".$value->id_destination."</td>
-//                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
-//                                    <td id='AccountingDocumentTemp[min_etx]'>".$value->min_etx."</td>
-//                                    <td id='AccountingDocumentTemp[min_carrier]'>".$value->min_carrier."</td>
-//                                    <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
-//                                    <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
-//                                    <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
-//                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-//                                    <td id='AccountingDocumentTemp[dispute]'>".$value->dispute."</td>
-//                                    <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>
-//                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-//                                  </tr>";     
-//                        }
-//                    }
-                    ?>
-         </table>
--->
+
      </div>
 </div><!-- form -->
-  
-        
-
-<!--        <div class='mensajeFinal'>
-         <h3>Todos los documentos contables fueron almacenados de forma Definitiva</h3>
-         <table border="4" class='tablamensaje'>
-            <tr>
-                <td> Tipo de Doc </td>
-                <td> Carrier </td>
-                <td> Fecha de Emisión </td>
-                <td> Monto </td>
-            </tr>
-        </table>
-         <p><i>Recuerde confirmar las facturas enviadas</i></p>
-        <p><img src='/images/si.png'width='95px' height='95px'/></p>
-   </div>-->

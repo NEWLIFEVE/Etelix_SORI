@@ -227,17 +227,59 @@ $SORI.UI=(function()
 		obj=contenido=null;
 		accion();
 	}
-	function _update_monto_Disp()
-	{
-            alert('siiiiii :)'); 
-           var minutosETX=$('td #AccountingDocumentTemp[min_etx]').attr(),
-               minutosCarr=$('td #AccountingDocumentTemp[min_carrier]').attr(),
-               tarifaETX=$('td #AccountingDocumentTemp[rate_etx]').attr(),
-               tarifaCarr=$('td #AccountingDocumentTemp[rate_carrier]').attr();
-        alert(minutosETX); 
-        alert(minutosCarr); 
-        alert(tarifaETX); 
-        alert(tarifaCarr); 
+
+            function _update_monto_Disp(obj)
+        {
+//            alert('siiiiii :)');// pausado por ahora
+//
+//
+//            for (var i = 2, j = obj[0].childElementCount - 2; i <= j; i++)
+//            {
+//                if (i >= 3 && i <= 6)
+//                {
+//                    var input = document.createElement('input');
+//                    input.name = obj[0].children[i].id;
+//                    input.value = obj[0].children[i].innerHTML;
+//                    obj[0].children[i].innerHTML = "";
+//                    obj[0].children[i].appendChild(input);
+//                    input = null;
+//                }
+//            }
+//
+//
+//
+//            obj[0].children[7].innerHTML = ('aqui taaaa');
+//            obj[0].children[8].innerHTML = (obj[4] * obj[6]);
+//            obj[0].children[9].innerHTML = ((obj[3] * obj[5]) - (obj[4] * obj[6]));
+//            console.dir((obj[3] * obj[5]));
+//            console.dir((obj[4] * obj[6]));
+//            console.dir((obj[3] * obj[5]) - (obj[4] * obj[6]));
+//
+//
+//            obj = null;
+//            accion();
+      
+         }
+        /**
+         * escucha el click sobre la imagen delete y valida para eliminar el documento temporal
+         * @param {type} $fila
+         * @returns {undefined}
+         */
+	function _elimina_doc($fila)
+	{  
+            $('.cargando,.mensaje').remove();var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de eliminar el documento contable seleccionado<p>Si esta seguro presione Aceptar, de lo contrario Cancelar <p><p><p><div id='cancelar' class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();$("body").append(revisa);revisa.fadeIn('slow');
+            $('#confirma,#cancelar').on('click',function()
+            {
+                var tipo=$(this).attr('id');
+                if(tipo=="confirma")
+                {  
+                   revisa.fadeOut('slow'); 
+                   $fila.remove();
+                   $SORI.AJAX.borrar($fila[0].id);
+                }else{
+                  revisa.fadeOut('slow'); 
+                }setTimeout(function(){revisa.remove();},2000); 
+            });
 	}
 	/**
 	 * Metodo encargado de ejecutar las repectivas llamadas
@@ -252,22 +294,7 @@ $SORI.UI=(function()
 //                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
-                            var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de ELIMINAR<p>Si esta seguro presione Aceptar, de lo contrario Cancelar <p><p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
-
-                              $("body").append(revisa);
-                              revisa.fadeIn('slow');
-                              $('#confirma,#cancelar').on('click',function()
-                              {
-                                  var tipo=$(this).attr('id');
-                                  if(tipo=="confirma")
-                                  {
-                                     $fila.remove();
-                                     $SORI.AJAX.borrar($fila[0].id);
-                                     revisa.fadeOut('slow'); 
-                                  }else{
-                                    revisa.fadeOut('slow');  
-                                  }
-                              });
+                            _elimina_doc($fila);
 			}
 //                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
@@ -353,18 +380,11 @@ $SORI.UI=(function()
         {
             $(id).change(function()
             {
-                var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
-                    CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
-                    desdeDisp=$('#AccountingDocumentTemp_from_date').val(),
-                    hastaDisp=$('#AccountingDocumentTemp_to_date').val();
-                    
-               if(tipo_Ac_doc==5||tipo_Ac_doc==7){
-                   var tipoDoc=1;
-               }else if(tipo_Ac_doc==6||tipo_Ac_doc==8){
-                   tipoDoc=2;
-               }     
-
-                if (CarrierDisp && desdeDisp && hastaDisp){
+               var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                   desdeDisp=$('#AccountingDocumentTemp_from_date').val(), hastaDisp=$('#AccountingDocumentTemp_to_date').val();
+               if(tipo_Ac_doc==5||tipo_Ac_doc==7){var tipoDoc=1;
+               }else if(tipo_Ac_doc==6||tipo_Ac_doc==8){ tipoDoc=2;}     
+               if (CarrierDisp && desdeDisp && hastaDisp){
                 $.ajax({
                     type: "GET",
                     url: "BuscaFactura",
@@ -372,21 +392,16 @@ $SORI.UI=(function()
 
                 success: function(data) 
                         {
-                            console.log(data);
+                            $('.cargando,.mensaje').remove();
                             if(data=="[]"){
                                 var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion que esta indicando</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                                $("body").append(noHayFacturas);
-                                noHayFacturas.fadeIn('slow');
-                                setTimeout(function()
-                                { noHayFacturas.fadeOut('slow');
-                                }, 4000);
+                                                    $("body").append(noHayFacturas);noHayFacturas.fadeIn('slow');setTimeout(function(){noHayFacturas.fadeOut('slow');},3000);$('select#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').val("");
                             }else{
                                 obj = JSON.parse(data);
                                 $("select#AccountingDocumentTemp_doc_number").html("");
                                 for(var i=0, j=obj.length; i<j;i++)
                                     {
-                                        console.log(obj[i].id,obj[i].factura);
-                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");
+                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");  console.log(obj[i].id,obj[i].factura);
                                     }
                             }
                         }
@@ -565,12 +580,30 @@ $SORI.UTILS=(function()
 		id=null;
 		return datos;
 	}
+	/**
+	 * Valida los input y select del formulario
+	 * @access public
+	 * @param  lleno
+	 */
+	function validaCampos(lleno)
+	{
+                for (var i=0, j=lleno.length - 2; i <= j; i++)
+		    {
+			if(lleno[i].value==""){
+                            var respuesta=0;
+                         }else{respuesta=1;}
+                    };
+                    if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                                        $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
+	return respuesta;
+        }
 
 	/**
 	 * retorna los metodos y variables publicos
 	 */
 	return{
-		getData:getData
+		getData:getData,
+                validaCampos:validaCampos
 	}
 })();
 
@@ -623,14 +656,3 @@ mensajes.prototype.elimina=function()
 	});
 	return true;
 }
-
-
-
-
-
-
-
-
-
-
-

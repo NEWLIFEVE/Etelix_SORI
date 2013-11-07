@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados','BuscaDisputa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -73,6 +73,7 @@ class AccountingDocumentTempController extends Controller
 		$lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
 		$lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
 		$lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
+		
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -902,11 +903,9 @@ class AccountingDocumentTempController extends Controller
             $CarrierDisp = $_GET['CarrierDisp'];
             $desdeDisp = $_GET['desdeDisp'];
             $hastaDisp = $_GET['hastaDisp']; 
-        
             $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
             $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
             $llave=0;
-            
             $params = array();
         foreach($factura as $id=>$factura)
            {
@@ -914,13 +913,35 @@ class AccountingDocumentTempController extends Controller
                 $params[$llave]['factura'] =$factura; 
            $llave++;   
            }    
-  echo json_encode($params);   
+        echo json_encode($params);   
         }
         
         
         
         
-        
+        /**
+         * esta funcion busca las disputas, 
+         * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
+         */
+        public function actionBuscaDisputa() 
+        {
+            $factura = $_GET['factura'];
+            $params = array();
+            $lista_Disp_NotaCEnv = AccountingDocumentTemp::lista_Disp_NotaCEnv($factura);
+            foreach ($lista_Disp_NotaCEnv as $key => $disputa) {
+                   $params[$key]['id']=$disputa->id;
+                   $params[$key]['id_destination']=$disputa->id_destination;
+                   $params[$key]['min_etx']=$disputa->min_etx;
+                   $params[$key]['min_carrier']=$disputa->min_carrier;
+                   $params[$key]['rate_etx']=$disputa->rate_etx;
+                   $params[$key]['rate_carrier']=$disputa->rate_carrier;
+                   $params[$key]['amount_etx']=$disputa->amount_etx;
+                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['dispute']=$disputa->dispute;
+                   
+               }echo json_encode($params);  
+           }
+
         /**
          * busca la lista de destinos supplier asignados al carier, desde documentos temporales, esto con el ajax de yii
          */   

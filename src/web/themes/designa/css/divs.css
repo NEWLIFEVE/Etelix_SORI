@@ -405,7 +405,7 @@ width: 20%;
     width: 24%;
     margin-top: 1%;
 }
-.valoresDocumento
+.valoresDocumento, .tabla_N_C
 {
     display:none;
 } 
@@ -565,15 +565,29 @@ width: 20%;
 }
  /*****NOTAS DE CRÉDITO ENVIADAS*****/
 .lista_NotCredEnv{
-    background: rgba(134, 107, 145, 1);
-    border-bottom-color: rgba(134, 107, 145, 1);
+    background: red;
+    border-bottom-color: red;
 }
 .lista_NotCredEnv td{
     width: 8em;
     height: 25px;
 }
 .lista_NotCredEnv tr:hover{
-    background: rgba(134, 107, 145, 1);
+    background: red;
+    color: white;
+}
+ /*****LISTA DE DISPUTAS RECIBIDAS EN FORM DE NOTA DE CREDITO ENVIADA*****/
+.lista_Disp_NotaCEnv{
+    background: silver;
+    border-bottom-color: silver;
+    width: 1015px!important;
+}
+.lista_Disp_NotaCEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_Disp_NotaCEnv tr:hover{
+    background: silver;
     color: white;
 }
 
@@ -588,7 +602,7 @@ width: 20%;
 {
     width: 75px;
 }
-.vistaTemp
+.vistaTemp,.listaDisputas
 {
     background:white;
     color: #555;
