@@ -31,7 +31,7 @@
                     'ajax'=>array(
                         'type'=>'POST',
                         'url'=>CController::createUrl('DestinosSuppAsignados'),
-                        'update'=>'select#AccountingDocumentTemp_id_destination_supplier',
+                        'update'=>'select#AccountingDocumentTemp_select_dest_supplier',
                     ),'prompt'=>'Seleccione'
                      )
                 ); ?>
@@ -184,9 +184,9 @@
             
              <div class="contratoForm DestinoProv">
                 <?php echo $form->labelEx($model,'id_destination_supplier'); ?>
-                <?php echo $form->textField($model,'id_destination_supplier',array('size'=>50,'maxlength'=>50)); ?>
-                <?php echo $form->dropDownList($model,'id_destination_supplier',array('prompt'=>'Seleccione')); ?>
-                <?php echo $form->error($model,'id_destination_supplier'); ?>
+                <?php echo $form->textField($model,'input_dest_supplier',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->dropDownList($model,'select_dest_supplier',array('prompt'=>'Seleccione')); ?>
+                <?php // echo $form->error($model,'id_destination_supplier'); ?>
                 <div class="nuevoDestProv">
                     <label>+</label>
                 </div>

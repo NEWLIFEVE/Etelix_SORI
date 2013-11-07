@@ -5,29 +5,29 @@
  *
  * The followings are the available columns in table 'accounting_document_temp':
  * @property integer $id
- * @property string $issue_date-
- * @property string $from_date-
- * @property string $to_date-
- * @property string $valid_received_date-
+ * @property string $issue_date
+ * @property string $from_date
+ * @property string $to_date
+ * @property string $valid_received_date
  * @property string $sent_date
- * @property string $doc_number-
- * @property double $minutes-
+ * @property string $doc_number
+ * @property double $minutes
  * @property double $amount
  * @property string $note
- * @property integer $id_type_accounting_document-
- * @property integer $id_carrier-
- * @property string $email_received_date-
- * @property string $valid_received_hour/
- * @property string $email_received_hour-
+ * @property integer $id_type_accounting_document
+ * @property integer $id_carrier
+ * @property string $email_received_date
+ * @property string $valid_received_hour
+ * @property string $email_received_hour
  * @property integer $id_currency
  * @property integer $confirm
- * @property double $min_etx-
- * @property double $min_carrier-
- * @property double $rate_etx-
- * @property double $rate_carrier-
+ * @property double $min_etx
+ * @property double $min_carrier
+ * @property double $rate_etx
+ * @property double $rate_carrier
  * @property integer $id_accounting_document
- * @property integer $id_destination-
- * @property integer $id_destination_supplier-
+ * @property integer $id_destination
+ * @property integer $id_destination_supplier
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -49,6 +49,8 @@ class AccountingDocumentTemp extends CActiveRecord
         public $carrier_groups;
         public $amount_etx;
         public $dispute;
+        public $select_dest_supplier;
+        public $input_dest_supplier;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -59,8 +61,8 @@ class AccountingDocumentTemp extends CActiveRecord
 		return array(
                         array('id_type_accounting_document', 'required'),
 			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
-			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
-			array('doc_number', 'length', 'max'=>50),
+			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier,select_dest_supplier,carrier_groups', 'numerical'),
+			array('doc_number,input_dest_supplier', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
@@ -288,28 +290,31 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public static function listaPagos($usuario)
 	{
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+            $idAction = LogAction::getLikeId('Crear Pago Temp');
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, issue_date, from_date, to_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
 	}
         public static function listaCobros($usuario)
 	{
-		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+            $idAction = LogAction::getLikeId('Crear Cobro Temp');
+		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
 	}
         public static function lista_DispRec($usuario)
 	{
+            $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
 		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
@@ -321,6 +326,8 @@ class AccountingDocumentTemp extends CActiveRecord
 	}
         public static function lista_DispEnv($usuario)
 	{
+            $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
+            
 		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination_supplier, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
@@ -401,6 +408,92 @@ class AccountingDocumentTemp extends CActiveRecord
             $params['Destino'] =DestinationSupplier::getName($model->id_destination_supplier);
             
             return $params;
+        }
+        
+        public static function setValues($model,$tipo){
+            
+            switch ($tipo){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    $model->issue_date=NULL;
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=NULL;
+                    $model->id_accounting_document=NULL;
+                    $model->minutes=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
+                    $model->confirm=1;
+                    break;
+                case 4:
+                    $model->issue_date=NULL;
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=NULL;
+                    $model->id_accounting_document=NULL;
+                    $model->minutes=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
+                    $model->confirm=1;
+                    break;
+                case 5:
+                    $model->issue_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->doc_number=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->minutes=NULL;
+                    $model->amount=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    break;
+                case 6:
+                    $model->issue_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->doc_number=NULL;
+                    $model->id_destination=NULL;
+                    $model->minutes=NULL;
+                    $model->amount=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+            }
+            return $model;
         }
         
 }

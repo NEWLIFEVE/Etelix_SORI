@@ -351,19 +351,19 @@ $SORI.UI=(function()
         {
             $('div.nuevoDestProv').click('on',function()
             {
-                $(this).toggle('fast');
-                $('div.cancelarDestProv').toggle('fast');
-                $('select#AccountingDocumentTemp_id_destination_supplier').toggle('fast'); 
-                $('input#AccountingDocumentTemp_id_destination_supplier').toggle('fast');
-                $('select#AccountingDocumentTemp_id_destination_supplier').val('');
+                $(this).hide('fast');
+                $('div.cancelarDestProv').show('fast');
+                $('#AccountingDocumentTemp_select_dest_supplier').hide('fast'); 
+                $('#AccountingDocumentTemp_input_dest_supplier').show('fast');
+                $('#AccountingDocumentTemp_select_dest_supplier').val('');
             });
             $('div.cancelarDestProv').click('on',function()
             {
-                $(this).toggle('fast');
-                $('div.nuevoDestProv').toggle('fast');
-                $('select#AccountingDocumentTemp_id_destination_supplier').toggle('fast'); 
-                $('input#AccountingDocumentTemp_id_destination_supplier').toggle('fast');
-                $('input#AccountingDocumentTemp_id_destination_supplier').val('');
+                $(this).hide('fast');
+                $('div.nuevoDestProv').show('fast');
+                $('#AccountingDocumentTemp_select_dest_supplier').show('fast'); 
+                $('#AccountingDocumentTemp_input_dest_supplier').hide('fast');
+                $('#AccountingDocumentTemp_input_dest_supplier').val('');
             });
         }
 	/**
@@ -610,12 +610,44 @@ $SORI.UTILS=(function()
 		id=null;
 		return datos;
 	}
+        
+        function getURL(tipo){
+            var action;
+            switch (tipo){
+                case '1':
+                    action = "GuardarFac_EnvTemp";
+                    break
+                case '2':
+                    action = "GuardarFac_RecTemp";
+                    break
+                case '3':
+                    action = "GuardarPagoTemp";
+                    break
+                case '4':
+                    action = "GuardarCobroTemp";
+                    break
+                case '5':
+                    action = "GuardarDisp_RecTemp";
+                    break
+                case '6':
+                    action = "GuardarDisp_EnvTemp";
+                    break
+                case '7':
+                    action = "GuardarNotaC_EnvTemp";
+                    break
+                case '8':
+                    action = "GuardarNotaC_RecTemp";
+                    break
+            }
+            return action;
+        }
 
 	/**
 	 * retorna los metodos y variables publicos
 	 */
 	return{
-		getData:getData
+		getData:getData,
+		getURL:getURL
 	}
 })();
 

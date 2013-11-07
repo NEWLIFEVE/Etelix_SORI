@@ -455,6 +455,9 @@ width: 20%;
 .DestinoProv{
     position: relative;
 }
+#AccountingDocumentTemp_input_dest_supplier{
+    display: none;
+}
 .CarrierDocument,.GrupoDocument
 {
     width: 76%;

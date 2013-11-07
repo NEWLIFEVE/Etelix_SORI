@@ -30,7 +30,7 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDispRecibida','GuardarNotaDeCreditoEnviada','GuardarDispEnviada','DestinosSuppAsignados','print'),
+				'actions'=>array('index','view','GuardarListaTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_EnvTemp','GuardarDisp_EnvTemp','DestinosSuppAsignados','print'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -354,135 +354,45 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarCobroTemp() 
         {
-            $selecTipoDoc = $_GET['selecTipoDoc'];
-            $idGrupo = $_GET['idGrupo'];
-            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
-            $numDocumento = $_GET['numDocumento'];
-            $cantidad = $_GET['cantidad'];
-            $currency = $_GET['currency'];
-            $nota = $_GET['nota'];
-            $selecTipoDocName = "";
-            $valid_received_date = "";
-            $idGrupoName = "";
-            $moneda= "";
-            $valid_received_date.=$EmailfechaRecepcion;
-            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-            $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
-            $idGrupoName.= CarrierGroups::getName($idGrupo);
-            $moneda.= Currency::getName($currency);
-            
             $model = new AccountingDocumentTemp;
-            
-                $model->id_type_accounting_document = $selecTipoDoc;
-                $model->valid_received_date = $valid_received_date;
-                $model->amount = Utility::snull($cantidad);
-                $model->note = Utility::snull($nota);
-                $model->id_carrier = $grupoCarrier;
-                $model->doc_number = $numDocumento;
-                $model->id_currency =$currency;
-                $model->confirm = 1;
-                $model->to_date = NULL;
-                $model->from_date = NULL;
-                $model->sent_date = NULL;
-                $model->issue_date = NULL;
-                $model->email_received_hour = NULL;
-                $model->valid_received_hour = NULL;
-                $model->email_received_date = NULL;
-               
+            $model->attributes=$_GET['AccountingDocumentTemp'];
+            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);           
             if ($model->save()) {
+//                $idAction = LogAction::getLikeId('Crear Cobro Temp');
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-            
-                $params['idDoc'] = $model->id;
-                $params['idCarrierNameTemp'] = $idGrupoName;
-                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
-                $params['valid_received_dateTemp'] = $valid_received_date;
-                $params['numDocumentoTemp'] = $model->doc_number;
-                $params['cantidadTemp'] = $model->amount;
-                $params['currencyTemp'] = $moneda;
-                
-                echo json_encode($params);
+                echo $model->id;
+//                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
             }
         }
         /**
         * recibe los datos desde ajax y almacena solo las disputas recibidas doc temp...
         * @access public
         **/
-        public function actionGuardarDispRecibida() 
+        public function actionGuardarDisp_RecTemp() 
         {
-            $SelecTipoDoc = $_GET['selecTipoDoc'];
-            $idCarrier = $_GET['idCarrier'];
-            $DesdeFecha = $_GET['desdeFecha'];
-            $HastaFecha = $_GET['hastaFecha'];
-            $idAccDocument =  $_GET['numDocumento'];
-            $DestinoEtx = $_GET['DestinoEtx'];
-            $MinutosEtelix = $_GET['minutos'];
-            $MinutosProveedor = $_GET['minutosDocProveedor'];
-            $MontoEtelix = $_GET['cantidad'];
-            $MontoProveedor = $_GET['montoDocProveedor'];
-            $Nota = $_GET['nota'];
-
-            $idCarrierName= Carrier::getName($idCarrier);//busca el name del carier
-            $facturaNumber=AccountingDocument::getDocNum($idAccDocument);//busca el numero de factura
-            $currency=AccountingDocument::getBuscaMoneda($idAccDocument);//busca la moneda de factura
-            $destinoEtxName=Destination::getName($DestinoEtx);//busca el name del destino
             $model = new AccountingDocumentTemp;
-            
-                $model->id_type_accounting_document = $SelecTipoDoc;
-                $model->id_carrier = $idCarrier;
-                $model->from_date = $DesdeFecha;
-                $model->to_date = $HastaFecha;
-                $model->id_destination = $DestinoEtx;
-                $model->min_etx = $MinutosEtelix;
-                $model->min_carrier = $MinutosProveedor;
-                $model->rate_etx = $MontoEtelix;
-                $model->rate_carrier = $MontoProveedor;
-                $model->note = Utility::snull($Nota);
-                $model->id_accounting_document = $idAccDocument;
-                $model->id_currency =$currency;
-                $model->confirm = 1;
-
+            $model->attributes=$_GET['AccountingDocumentTemp'];
+            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
             if ($model->save()) {
+//                $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-               
-                $params['idDoc'] = $model->id;
-                $params['idCarrierNameTemp']=$idCarrierName;
-                $params['desdeFechaTemp']=$DesdeFecha;
-                $params['hastaFechaTemp']=$HastaFecha;
-                $params['numDocumentoTemp']=$facturaNumber;
-                $params['minutosTemp'] =$MinutosEtelix;
-                $params['MinutosProv'] =$MinutosProveedor;
-                $params['TarifaEtx'] =$MontoEtelix;
-                $params['TarifaProv'] =$MontoProveedor;
-                $params['Destino'] =$destinoEtxName;
-                
-                echo json_encode($params);
+                echo $model->id;
+//                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
             }
         }
         /**
         * recibe los datos desde ajax y almacena solo las disputas recibidas doc temp...
         * @access public
         **/
-        public function actionGuardarDispEnviada() 
+        public function actionGuardarDisp_EnvTemp() 
         {
             $model = new AccountingDocumentTemp;
-           
-            $model->id_type_accounting_document = $_GET['selecTipoDoc'];
-            $model->id_carrier = $_GET['idCarrier'];
-            $model->from_date = $_GET['desdeFecha'];
-            $model->to_date = $_GET['hastaFecha'];
-            $model->id_destination_supplier = DestinationSupplier::resolvedId($_GET['Select_dest_prov'],$_GET['Input_dest_prov'],$_GET['idCarrier']);
-            $model->min_etx = $_GET['minutos'];
-            $model->min_carrier = $_GET['minutosProveedor'];
-            $model->rate_etx = $_GET['cantidad'];
-            $model->rate_carrier = $_GET['rateProveedor'];
-            $model->note = Utility::snull($_GET['nota']);
-            $model->id_accounting_document = $_GET['numDocumento'];
-            $model->id_currency =AccountingDocument::getBuscaMoneda($_GET['numDocumento']);//busca la moneda de factura;
-            $model->confirm = 1;
-
-            if ($model->save()) {
+            $model->attributes=$_GET['AccountingDocumentTemp'];
+            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
+           if ($model->save()) {
+//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
                 echo $model->id;
@@ -493,7 +403,7 @@ class AccountingDocumentTempController extends Controller
         * recibe los datos desde ajax y almacena solo las notas de credito enviada...
         * @access public
         **/
-        public function actionGuardarNotaDeCreditoEnviada() 
+        public function actionGuardarNotaC_Env() 
         {
             $SelecTipoDoc = $_GET['selecTipoDoc'];
             $idCarrier = $_GET['idCarrier'];
@@ -558,7 +468,6 @@ class AccountingDocumentTempController extends Controller
         * @access public
         */
         public function actionGuardarListaFinal() 
-
         {
             $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
             $idUsers = Yii::app()->user->id;
@@ -574,6 +483,7 @@ class AccountingDocumentTempController extends Controller
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
+                            Log::updateDocLog($Log, $modelAD->id);
                             $count++;
                         }
                     }
