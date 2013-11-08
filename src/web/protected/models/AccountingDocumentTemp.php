@@ -399,7 +399,7 @@ class AccountingDocumentTemp extends CActiveRecord
         {
             if (isset($model->id))$params['id'] = $model->id;
             if (isset($model->id_carrier))$params['carrier']=Carrier::getName($model->id_carrier);
-            if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName(301);
+            if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName($model->carrier_groups);
             if (isset($model->issue_date))$params['issue_date']=$model->issue_date;
             if (isset($model->sent_date))$params['sent_date']=$model->sent_date;
             if (isset($model->from_date))$params['from_date']=$model->from_date;
