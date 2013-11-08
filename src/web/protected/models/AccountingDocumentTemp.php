@@ -335,16 +335,6 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
-        public static function lista_Disp_NotaCEnv($factura)
-	{
-		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination, t.id_accounting_document
-                      FROM accounting_document_temp t, destination d
-                      WHERE t.id_type_accounting_document = 5 AND t.id_accounting_document = {$factura} AND t.id_destination = d.id";
-		$model=self::model()->findAllBySql($sql);
-
-		return $model;
-	}
-
         /**
          * comprueba que no existan facturas en a_d_temp....
          * @param type $idCarrier

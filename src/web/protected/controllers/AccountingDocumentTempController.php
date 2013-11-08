@@ -530,196 +530,32 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarNotaDeCreditoEnviada() 
         {
-            $SelecTipoDoc = $_GET['selecTipoDoc'];
-            $idCarrier = $_GET['idCarrier'];
-            $DesdeFecha = $_GET['desdeFecha'];
-            $HastaFecha = $_GET['hastaFecha'];
-//            $idAccDocument = $_GET['numDocumento'];
-            $idAccDocument =1000;//esto es provisional
-            $Nota = $_GET['nota'];
-            $idCarrierName = "";
-            $facturaNumber = "";
-            $selecTipoDocName = "";
-            $monto = "";
-            $destinoDispRecName = "";
+              $model = new AccountingDocumentTemp;
 
-            $selecTipoDocName.=TypeAccountingDocument::getName($SelecTipoDoc);//busca el name del tipo de documento, en este caso, disputas recibidas
-            $idCarrierName.= Carrier::getName($idCarrier);//busca el name del carier
-            $facturaNumber.=AccountingDocument::getDocNum($idAccDocument);//busca el numero de factura
-            
-            $idDisputa = AccountingDocumentTemp::getId_disputa($idCarrier, $DesdeFecha, $HastaFecha, $idAccDocument);
-            $DestinoDispRec = AccountingDocumentTemp::getId_dest($idDisputa);
-            $destinoDispRecName.=Destination::getName($DestinoDispRec);//busca el name del destino
-            $MinutosEtelix = AccountingDocumentTemp::getMinEtx($idDisputa);
-            $MinutosProveedor =AccountingDocumentTemp::getMinProv($idDisputa);
-            $MontoEtelix = AccountingDocumentTemp::getMontoEtx($idDisputa);
-            $MontoProveedor =AccountingDocumentTemp::getMontoProv($idDisputa);
-            $monto.=$MinutosProveedor*$MontoProveedor;
+           $model->id_type_accounting_document = 8;
+           $model->amount = $_GET['cantidad'];
+           $model->note = Utility::snull($_GET['nota']);
+           $model->id_accounting_document = $_GET['numDocumento'];
+           $model->confirm = 1;
+           $model->doc_number = $_GET['numberNota'];
 
-            $model = new AccountingDocumentTemp;
-            
-                $model->id_type_accounting_document = $SelecTipoDoc;
-                $model->id_carrier = $idCarrier;
-                $model->from_date = $DesdeFecha;
-                $model->to_date = $HastaFecha;
-                $model->id_destination = $DestinoDispRec;
-                $model->amount = $monto;
-                $model->min_etx = $MinutosEtelix;
-                $model->min_carrier = $MinutosProveedor;
-                $model->rate_etx = $MontoEtelix;
-                $model->rate_carrier = $MontoProveedor;
-                $model->note = Utility::snull($Nota);
-                $model->id_accounting_document = $idAccDocument;
-                $model->confirm = 1;
-                $model->doc_number = $idDisputa;//consultar con eduardo esta parte
-                
-               
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-               
-                $params['idDoc'] = $model->id;
-                $params['idCarrierNameTemp']=$idCarrierName;
-                $params['desdeFechaTemp']=$DesdeFecha;
-                $params['hastaFechaTemp']=$HastaFecha;
-                $params['numDocumentoTemp']=$facturaNumber;
-                $params['minutosTemp'] =$MinutosEtelix;
-                $params['MinutosProv'] =$MinutosProveedor;
-                $params['TarifaEtx'] =$MontoEtelix;
-                $params['TarifaProv'] =$MontoProveedor;
-                $params['Destino'] =$destinoDispRecName;
-                $params['cantidadTemp'] =$monto;
+           if ($model->save()) {
+               $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+               Log::registrarLog($idAction, NULL, $model->id);
+
+                $params['idDoc'] =$model->id;
+                $params['numberNota'] =$_GET['numberNota'];
+                $params['cantidad'] = $_GET['cantidad'];
                 
                 echo json_encode($params);
-            }
+           }
+
         }
-        /*
-        * este action no se usa, pero lo dejo hasta que no exista ningun problema en la nueva guardada
-        **/
-//        public function actionGuardarListaTemp() 
-//        {
-//            $selecTipoDoc = $_GET['selecTipoDoc'];
-//            $idCarrier = $_GET['idCarrier'];
-//            $idGrupo = $_GET['idGrupo'];
-//            $fechaEmision = $_GET['fechaEmision'];
-//            $desdeFecha = $_GET['desdeFecha'];
-//            $hastaFecha = $_GET['hastaFecha'];
-//            $EmailfechaRecepcion = $_GET['EmailfechaRecepcion'];
-//            $EmailHoraRecepcion = $_GET['EmailHoraRecepcion'];
-//            $numDocumento = $_GET['numDocumento'];
-//            $minutos = $_GET['minutos'];
-//            $cantidad = $_GET['cantidad'];
-//            $currency = $_GET['currency'];
-//            $nota = $_GET['nota'];
-//            $idCarrierName = "";
-//            $selecTipoDocName = "";
-//            $valid_received_hour = "";
-//            $valid_received_date = "";
-//            $minutosTemp = "";
-//            $moneda= "";
-//            $selecTipoDocName.=TypeAccountingDocument::getName($selecTipoDoc);
-//            $minutosTemp.= Utility::snull($minutos);
-//            $moneda.= Currency::getName($currency);
-////            $moneda.= Currency::getName($currency);
-////            $existe=  AccountingDocumentTemp::getIfExist($idCarrier, $numDocumento, $selecTipoDoc);    
-//            $model = new AccountingDocumentTemp;
-//            $model->id_type_accounting_document = $selecTipoDoc;
-//            $model->issue_date = Utility::snull($fechaEmision);
-//            $model->from_date = Utility::snull($desdeFecha);
-//            $model->to_date = Utility::snull($hastaFecha);
-//            $model->sent_date = Utility::snull($fechaEmision);
-//            $model->doc_number = $numDocumento;
-//            $model->minutes = $minutosTemp;
-//            $model->amount = Utility::snull($cantidad);
-//            $model->note = Utility::snull($nota);
-//            $model->id_currency =$currency;
-//                $moneda.= Currency::getName($currency);
-//                if ($selecTipoDoc == '3'||$selecTipoDoc == '4'){
-//                    $idCarrierName.= CarrierGroups::getName($idGrupo);
-//                    $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
-//                    $model->id_carrier = $grupoCarrier;
-//                }else{
-//                $model->id_carrier = $idCarrier;
-//                $idCarrierName.= Carrier::getName($idCarrier);
-//                }
-//            if ($selecTipoDoc == '4') {
-//                $model->email_received_hour = NULL;
-//                $model->valid_received_hour = NULL;
-//                $model->email_received_date = NULL;
-//                $valid_received_date = $EmailfechaRecepcion;
-//                $EmailfechaRecepcion = '';
-//                $model->valid_received_date = $valid_received_date;
-//            } 
-//
-//            if ($selecTipoDoc == '2') {
-//            $fecha = strtotime($EmailfechaRecepcion);
-//            $dia = date("N", $fecha);
-//                if ($dia == 1 || $dia == 2) {
-//
-//                    if ($EmailHoraRecepcion >= '08:00' && $EmailHoraRecepcion <= '17:00') {
-//
-//                        $valid_received_date = $EmailfechaRecepcion;
-//                        $valid_received_hour = $EmailHoraRecepcion;
-//                        $model->valid_received_date = $valid_received_date;
-//                        $model->valid_received_hour = $valid_received_hour;
-//                        $model->email_received_date = $EmailfechaRecepcion;
-//                        $model->email_received_hour = $EmailHoraRecepcion;
-//                      
-//                    } else {
-//                        if($EmailHoraRecepcion < '08:00'){
-//                            $valid_received_date = $EmailfechaRecepcion;
-//                            $model->valid_received_date = $EmailfechaRecepcion;
-//                        }else{
-//                            $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-//                            $model->valid_received_date = $valid_received_date;
-//                        }
-//                        $valid_received_hour = '08:00';
-//                        $model->valid_received_hour = $valid_received_hour;
-//                        $model->email_received_date = $EmailfechaRecepcion;
-//                        $model->email_received_hour = $EmailHoraRecepcion;
-//                    }
-//                } else {
-//
-//                    $valid_received_date = $model->getValidDate($EmailfechaRecepcion, $dia);
-//                    $valid_received_hour = '08:00';
-//                    $model->valid_received_date = $valid_received_date;
-//                    $model->valid_received_hour = $valid_received_hour;
-//                    $model->email_received_date = $EmailfechaRecepcion;
-//                    $model->email_received_hour = $EmailHoraRecepcion;
-//                }
-//            }         
-
-//            if ($selecTipoDoc == '1'){
-//                $model->confirm = 0;
-//            }else{
-//                $model->confirm = 1;
-//            }
-
-//            if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-//                Log::registrarLog($idAction, NULL, $model->id);
-            
-//                $params['idDoc'] = $model->id;
-//                $params['idCarrierNameTemp'] = $idCarrierName;
-//                $params['selecTipoDocNameTemp'] = $selecTipoDocName;
-//                $params['fechaEmisionTemp'] = $fechaEmision;
-//                $params['desdeFechaTemp'] =  $desdeFecha;
-//                $params['hastaFechaTemp'] =  $hastaFecha;
-//                $params['EmailfechaRecepcionTemp'] = $EmailfechaRecepcion;
-//                $params['EmailHoraRecepcionTemp'] = $EmailHoraRecepcion;
-//                $params['valid_received_dateTemp'] = $valid_received_date;
-//                $params['valid_received_hourTemp'] = $valid_received_hour;
-//                $params['fechaEnvioTemp'] = $fechaEmision;
-//                $params['numDocumentoTemp'] = $model->doc_number;
-//                $params['minutosTemp'] = $minutosTemp;
-//                $params['cantidadTemp'] = $model->amount;
-//                $params['currencyTemp'] = $moneda;
-//                
-//                echo json_encode($params);
-//            }
-            
-//    }
-        
+        /**
+         * se encarga de guardar los documentos temporales en la tabla de documentos contables definitiva
+         * ademas guarda en log, y elimina los documentos de la tabla temporal
+         * solo copia los mismos parametros... con setatributes $modelADT
+         */
         public function actionGuardarListaFinal()
         {
             $params = array();
@@ -741,11 +577,7 @@ class AccountingDocumentTempController extends Controller
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction=LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL,$modelAD->id);
-                                                        
-                            $params[$llave]['tipo']=TypeAccountingDocument::getName($modelAD->id_type_accounting_document);
-                            $params[$llave]['carrier']=Carrier::getName($modelAD->id_carrier);
-                            $params[$llave]['fecha']=$modelAD->issue_date;
-                            $params[$llave]['monto']=$modelAD->amount;
+
                             $llave++;
                         }
                     }
@@ -915,9 +747,7 @@ class AccountingDocumentTempController extends Controller
            }    
         echo json_encode($params);   
         }
-        
-        
-        
+
         
         /**
          * esta funcion busca las disputas, 
@@ -927,10 +757,33 @@ class AccountingDocumentTempController extends Controller
         {
             $factura = $_GET['factura'];
             $params = array();
-            $lista_Disp_NotaCEnv = AccountingDocumentTemp::lista_Disp_NotaCEnv($factura);
+            $lista_Disp_NotaCEnv = AccountingDocument::lista_Disp_NotaCEnv($factura);
             foreach ($lista_Disp_NotaCEnv as $key => $disputa) {
                    $params[$key]['id']=$disputa->id;
                    $params[$key]['id_destination']=$disputa->id_destination;
+                   $params[$key]['min_etx']=$disputa->min_etx;
+                   $params[$key]['min_carrier']=$disputa->min_carrier;
+                   $params[$key]['rate_etx']=$disputa->rate_etx;
+                   $params[$key]['rate_carrier']=$disputa->rate_carrier;
+                   $params[$key]['amount_etx']=$disputa->amount_etx;
+                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['dispute']=$disputa->dispute;
+                   
+               }echo json_encode($params);  
+           }
+        
+        /**
+         * esta funcion busca las disputas enviadas para notas de credito recibidas, 
+         * se le pasa el carrier, inicio de periodo a facturar y el fin de periodo a facturar
+         */
+        public function actionBuscaDisputaEnv() 
+        {
+            $factura = $_GET['factura'];
+            $params = array();
+            $lista_Disp_NotaCRec = AccountingDocument::lista_Disp_NotaCRec($factura);
+            foreach ($lista_Disp_NotaCRec as $key => $disputa) {
+                   $params[$key]['id']=$disputa->id;
+                   $params[$key]['id_destination_supplier']=$disputa->id_destination_supplier;
                    $params[$key]['min_etx']=$disputa->min_etx;
                    $params[$key]['min_carrier']=$disputa->min_carrier;
                    $params[$key]['rate_etx']=$disputa->rate_etx;

@@ -897,6 +897,16 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                       
                       $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                       
+                    $('input#montoNota').change(function()
+                    {
+                          var acum=0;
+                          $('input#montoNota').each(function(){
+                          acum=acum+parseFloat($(this).val());
+                          console.log(acum);
+                          $('input#AccountingDocumentTemp_amount').val(acum);
+                          }); 
+                    });
+                      
                     $('select#AccountingDocumentTemp_doc_number').change(function()
                     {  
                      
@@ -907,12 +917,13 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 
                         success: function(data) 
                                 { 
-                                    $('.listaDisputas').text("");$('.tabla_N_C').show("");
+                                    $('.listaDisputas').remove();$('.tabla_N_C').show("slow");
                                     console.log(data);
                                     var obj = JSON.parse(data);
                                    
                                     for(var i=0, j=obj.length; i<j;i++)
                                         {
+                                            var montoTotal=(obj[i].amount) + (obj[i].dispute);
                                              $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='"+obj[i].id+"'>\n\
                                                             <td id='AccountingDocumentTemp[id_destination]'>"+obj[i].id_destination+"</td>\n\
                                                             <td id='AccountingDocumentTemp[min_etx]'>"+obj[i].min_etx+"</td>\n\
@@ -922,14 +933,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                                                             <td id='AccountingDocumentTemp[amount_etx]'>"+obj[i].amount_etx+"</td>\n\
                                                             <td id='AccountingDocumentTemp[amount]'>"+obj[i].amount+"</td>\n\
                                                             <td id='AccountingDocumentTemp[dispute]'>"+obj[i].dispute+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>\n\
+                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value="+obj[i].dispute+"></td>\n\
                                                         </tr>");   
-                                            $('.lista_Disp_NotaCEnv').fadeIn('slow');
-                                            $('.Label_Disp_NotaCEnv').fadeIn('slow');
-                                        } 
+                                            $('.lista_Disp_NotaCEnv,.numDocumentoNota,.Label_Disp_NotaCEnv, .montoDoc, #AccountingDocumentTemp_amount, .MontoE').fadeIn('slow');$('input#AccountingDocumentTemp_amount').text(montoTotal);
+                                            var acum=0;
+                                            $('input#montoNota').each(function(){
+                                            acum=acum+parseFloat($(this).val());
+                                            $('input#AccountingDocumentTemp_amount').val(acum);
+                                            }); 
+                                        }
                                 }
                             });
-
                     });
                 }
              if (tipoDocument=='8')//Nota de credito recibida
@@ -961,6 +975,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
     $('div.instruccion').slideUp('slow');
     $('div.valoresDocumento').slideDown('slow');
 });
+
 $('div.hacerUnaNota').click('on',function()
 {
     $('div.hacerUnaNota').hide('slow');
@@ -993,6 +1008,7 @@ $('#botAgregarDatosContable').click('on',function(e)
     DestinoEtx=$('#AccountingDocumentTemp_id_destination').val(),
     Select_dest_prov=$('select#AccountingDocumentTemp_id_destination_supplier').val(),
     Input_dest_prov=$('input#AccountingDocumentTemp_id_destination_supplier').val(),
+    numberNota=$('input#numberNota').val(),//provisiomal
     montoDocProveedor=$('#AccountingDocumentTemp_MontoProvee').val();
     
     var todos=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency,#AccountingDocumentTemp_note,select#AccountingDocumentTemp_doc_number,AccountingDocumentTemp_MinutosProvee,#AccountingDocumentTemp_id_destination,select#AccountingDocumentTemp_id_destination_supplier,input#AccountingDocumentTemp_id_destination_supplier,#AccountingDocumentTemp_MontoProvee").serializeArray();
@@ -1046,7 +1062,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: action,
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoEtx="+DestinoEtx+"&Select_dest_prov="+Select_dest_prov+"&Input_dest_prov="+Input_dest_prov+"&montoDocProveedor="+montoDocProveedor,
+            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoEtx="+DestinoEtx+"&Select_dest_prov="+Select_dest_prov+"&Input_dest_prov="+Input_dest_prov+"&montoDocProveedor="+montoDocProveedor+"&numberNota="+numberNota,
 
               success: function(data) 
                       {
@@ -1182,21 +1198,18 @@ $('#botAgregarDatosContable').click('on',function(e)
                }
                 if(selecTipoDoc=='7'){
                     console.log(data);
+                    var number_Nota=document.getElementById('AccountingDocumentTemp[doc_number]').innerHTML,
+                        monto_Nota=document.getElementById('AccountingDocumentTemp[amount]').innerHTML,
+                        factura=$('select#AccountingDocumentTemp_doc_number :selected').text();
+
+
                   $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
+                                                        <td id='AccountingDocumentTemp[doc_number]'>"+number_Nota+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[amount]'>"+monto_Nota+"</td>\n\
+                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+factura+"</td>\n\
+                                                        <td><img class='edit' name='edit_not_C_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
                                                     </tr>");   
-                $('.lista_NotCredEnv').fadeIn('slow');
-                $('.Label_NotCredEnv').fadeIn('slow');
+                $('.lista_NotCredEnv,.Label_NotCredEnv').fadeIn('slow');
                }
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
                 
@@ -1237,7 +1250,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                          success: function(data) 
 
                          {  
-                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .lista_DispEnv').fadeOut('fast');
+                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .lista_DispEnv').fadeOut('fast');$('.vistaTemp').remove();
                            var obj = JSON.parse(data),
                            exito=$('.mensaje').html("<h4>Se almacenaron <b> "+obj.length+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                            setTimeout(function() { exito.fadeOut('fast'); revisa.fadeOut('fast'); }, 4000);

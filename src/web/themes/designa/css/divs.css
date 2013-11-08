@@ -405,7 +405,7 @@ width: 20%;
     width: 24%;
     margin-top: 1%;
 }
-.valoresDocumento, .tabla_N_C
+.valoresDocumento, .tabla_N_C, .numDocumentoNota
 {
     display:none;
 } 
@@ -580,7 +580,7 @@ width: 20%;
 .lista_Disp_NotaCEnv{
     background: silver;
     border-bottom-color: silver;
-    width: 1015px!important;
+    width: 1030px!important;
 }
 .lista_Disp_NotaCEnv td{
     width: 8em;

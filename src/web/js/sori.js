@@ -54,7 +54,7 @@ $SORI.UI=(function()
 			input.value=obj[0].children[i].innerHTML;
 			if(i>=1 && i<=5)
 			{
-				$(input).datepicker();
+				$(input).datepicker({ dateFormat: "yy-mm-dd"});
 			}
                         if(i>=6 && i<=7)
 			{
@@ -370,7 +370,6 @@ $SORI.UI=(function()
 		});
 		$fila=null;
 	}
-
 	/**
 	 * Metodo encargado de las animaciones de la tabla comercial
 	 * @access public
@@ -391,17 +390,17 @@ $SORI.UI=(function()
                     data:"&tipoDoc="+tipoDoc+"&CarrierDisp="+CarrierDisp+"&desdeDisp="+desdeDisp+"&hastaDisp="+hastaDisp,
 
                 success: function(data) 
-                        {
-                            $('.cargando,.mensaje').remove();
-                            if(data=="[]"){
+                        { 
+                            $('.cargando,.mensaje,.listaDisputas').remove();$('.tabla_N_C,#AccountingDocumentTemp_amount').css('display','none');
+                            if(data=="[]"){         
                                 var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion que esta indicando</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                                                     $("body").append(noHayFacturas);noHayFacturas.fadeIn('slow');setTimeout(function(){noHayFacturas.fadeOut('slow');},3000);$('select#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').val("");
                             }else{
                                 obj = JSON.parse(data);
-                                $("select#AccountingDocumentTemp_doc_number").html("");
+                                $("select#AccountingDocumentTemp_doc_number").html("<option>Ahora seleccione</option>");
                                 for(var i=0, j=obj.length; i<j;i++)
                                     {
-                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");  console.log(obj[i].id,obj[i].factura);
+                                        $("select#AccountingDocumentTemp_doc_number").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");  console.log(obj[i].id,obj[i].factura);$('.listaDisputas').remove();$('.tabla_N_C').hide('fast');
                                     }
                             }
                         }

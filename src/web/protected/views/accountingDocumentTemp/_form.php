@@ -145,23 +145,8 @@
                     );
                 ?>
                 <?php echo $form->error($model,'email_received_hour'); ?>
-            <div class="tabla_N_C">
-            <div>
-            <label class="label_Disp_NotaCEnv">Nota de Credito Enviada:</label>
-            <table border="1" class="tablaVistDocTemporales lista_Disp_NotaCEnv">
-                   <tr>
-                      <td> Destino </td>
-                      <td> Min Etx </td>
-                      <td> Min Prov </td>
-                      <td> Tarifa Etx </td>
-                      <td> Tarifa Prov </td>
-                      <td> Monto Etx</td>
-                      <td> Monto Prov</td>
-                      <td> Disputa</td>
-                      <td> Monto de nota </td>
-                   </tr>
-            </table>
             </div>
+
             <div class="contratoForm numDocument">
                 <label class="doc_number">Numero de Documento</label>
                 <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
@@ -198,6 +183,24 @@
                <label class="MinutosP">Minutos Proveedor</label>
                <input id="AccountingDocumentTemp_MinutosProvee"type="text" name="AccountingDocumentTemp[MinutosProvee]"><!-- esto hay que arreglarlo bien-->
             </div>
+            
+            <div class="contratoForm tabla_N_C">
+            <label class="label_Disp_NotaCEnv">Disputas recibidas:</label>
+            <table border="1" class="tablaVistDocTemporales lista_Disp_NotaCEnv">
+                   <tr>
+                      <td> Destino </td>
+                      <td> Min Etx </td>
+                      <td> Min Prov </td>
+                      <td> Tarifa Etx </td>
+                      <td> Tarifa Prov </td>
+                      <td> Monto Etx</td>
+                      <td> Monto Prov</td>
+                      <td> Disputa</td>
+                      <td> Monto de nota </td>
+                   </tr>
+            </table>
+            </div>
+            
             <div class="contratoForm montoDoc">
                 <label class="MontoE">Monto</label>
                 <?php echo $form->textField($model,'amount'); ?>
@@ -214,6 +217,10 @@
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
 
+            <div class="contratoForm numDocumentoNota"> <!-- provisional -->
+                 <?php echo $form->labelEx($model,'doc_number'); ?>
+                 <input name="numberNota" id="numberNota" value="">
+            </div>
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
@@ -450,6 +457,30 @@
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
                                     <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
                                     <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+         <br>
+         <label class="Label_NotCredEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Num. Documento </td>
+                   <td> Monto total</td>
+                   <td> Num. Factura</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_DispEnv!=null)
+                    {
+                        foreach ($lista_DispEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>        
+                                    <td><img class='edit' name='edit_not_C_Env' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
                     }
