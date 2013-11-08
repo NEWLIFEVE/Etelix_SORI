@@ -731,45 +731,7 @@ $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
     var str = $('#accounting-document-temp-form').serialize(),
-    Select_dest_prov=$('#AccountingDocumentTemp_select_dest_supplier').val(),
-    Input_dest_prov=$('#AccountingDocumentTemp_input_dest_supplier').val();
-    alert(str);
-    var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
-    idCarrier=$('#AccountingDocumentTemp_id_carrier').val(),
-    idCarrierName=$('#AccountingDocumentTemp_id_carrier option:selected').text(),
-    idGrupo=$('#AccountingDocumentTemp_carrier_groups').val(),
-    idGrupoName=$('#AccountingDocumentTemp_carrier_groups option:selected').text(),
-    fechaEmision=$('#AccountingDocumentTemp_issue_date').val(),
-    desdeFecha=$('#AccountingDocumentTemp_from_date').val(),
-    hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
-    EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
-    ValidfechaRecepcion=$('#AccountingDocumentTemp_valid_received_date').val(),
-    EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
-    numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
-    numFactura=$('#AccountingDocumentTemp_id_accounting_document option:selected').text(),
-    minutos=$('#AccountingDocumentTemp_minutes').val(),
-    minutosEtelix=$('#AccountingDocumentTemp_min_etx').val(),
-    cantidad=$('#AccountingDocumentTemp_amount').val(),
-    currency=$('#AccountingDocumentTemp_id_currency').val(),
-    currencyName=$('#AccountingDocumentTemp_id_currency option:selected').text(),
-    nota=$('#AccountingDocumentTemp_note').val(),
-    Select_doc_number=$('select#AccountingDocumentTemp_doc_number').val(),
-    minutosProveedor=$('#AccountingDocumentTemp_min_carrier').val(),
-    DestinoEtx=$('#AccountingDocumentTemp_id_destination').val(),
-    DestinoEtxName=$('#AccountingDocumentTemp_id_destination option:selected').text(),
-    Select_dest_prov=$('select#AccountingDocumentTemp_id_destination_supplier').val(),
-    Input_dest_prov=$('input#AccountingDocumentTemp_id_destination_supplier').val(),
-    rateProveedor=$('#AccountingDocumentTemp_rate_carrier').val(),
-    rateEtx=$('#AccountingDocumentTemp_rate_etx').val(),
-    montoEtx=minutosEtelix*rateEtx,
-    montoProv=minutosProveedor*rateProveedor,
-    disputa=montoEtx-montoProv;
-    
-    if(Input_dest_prov != ""){
-        DestinoProvName = Input_dest_prov;
-    }else{
-        DestinoProvName = $('#AccountingDocumentTemp_select_dest_supplier option:selected').text();
-    }  
+    selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
     if( selecTipoDoc=='')
     {
         msjIndicador.fadeIn('fast');
@@ -777,169 +739,18 @@ $('#botAgregarDatosContable').click('on',function(e)
         { msjIndicador.fadeOut('fast');
         }, 1000);
     }else{
-        console.dir($SORI.UTILS.getURL(selecTipoDoc));
-        console.dir(str);
         $.ajax({
             type: "GET",
-            url: $SORI.UTILS.getURL(selecTipoDoc),
+            url: "GuardarDoc_ContTemp",
+//            url: $SORI.UTILS.getURL(selecTipoDoc),
             data: str,
-//                data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosProveedor="+minutosProveedor+"&DestinoEtx="+DestinoEtx+"&Select_dest_prov="+Select_dest_prov+"&Input_dest_prov="+Input_dest_prov+"&rateProveedor="+rateProveedor,
-
-              success: function(data) 
-                      {
-//                obj = JSON.parse(data);
-//                var idCarrierNameTemp=obj.idCarrierNameTemp, 
-//                    selecTipoDocNameTemp=obj.selecTipoDocNameTemp,
-//                    fechaEmisionTemp=obj.fechaEmisionTemp,
-//                    desdeFechaTemp=obj.desdeFechaTemp,
-//                    hastaFechaTemp=obj.hastaFechaTemp,
-//                    fechaEnvioTemp=obj.fechaEnvioTemp,
-//                    EmailfechaRecepcionTemp=obj.EmailfechaRecepcionTemp,
-//                    valid_received_dateTemp=obj.valid_received_dateTemp,
-//                    EmailHoraRecepcionTemp=obj.EmailHoraRecepcionTemp,
-//                    valid_received_hourTemp=obj.valid_received_hourTemp,
-//                    numDocumentoTemp=obj.numDocumentoTemp,
-//                    minutosTemp=obj.minutosTemp,
-//                    cantidadTemp=obj.cantidadTemp,
-//                    currencyTemp=obj.currencyTemp,
-//                    MinutosProv=obj.MinutosProv,
-//                    TarifaEtx=obj.TarifaEtx,
-//                    TarifaProv=obj.TarifaProv,
-//                    Destino=obj.Destino,
-//                    ExisteTemp=obj.ExisteTemp,
-//                    ExisteFin=obj.ExisteFin;
-//            
-//                var cantidadEtx=minutosTemp*TarifaEtx,
-//                    cantidadProv=MinutosProv*TarifaProv,
-//                    dispute=cantidadEtx-cantidadProv;
- 
-            console.dir(data);
-
-            
-               if(selecTipoDoc=='1'){
-                $(".lista_FacEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>//"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>//"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[from_date]'>//"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>//"+hastaFechaTemp+"</td>\n\\n\
-                                                        <td id='AccountingDocumentTemp[sent_date]'>//"+fechaEnvioTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>//"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[minutes]'>//"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>//"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>//"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>//");
-                $('.lista_FacEnv').fadeIn('slow');
-                $('.Label_F_Env').fadeIn('slow');
-               }
-               if(selecTipoDoc=='2'){
-                $(".lista_FacRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>//"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>//"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[from_date]'>//"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>//"+hastaFechaTemp+"</td>\n\\n\
-                                                        <td id='AccountingDocumentTemp[sent_date]'>//"+fechaEnvioTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[email_received_date]'>//"+EmailfechaRecepcionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_date]'>//"+valid_received_dateTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[email_received_hour]'>//"+EmailHoraRecepcionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_hour]'>//"+valid_received_hourTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>//"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[minutes]'>//"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>//"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>//"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>//");
-                $('.lista_FacRec').fadeIn('slow');
-                $('.Label_F_Rec').fadeIn('slow');
-               
-            }
-               if(selecTipoDoc=='3'){
-                $(".lista_Pagos").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_Pagos').css("background", "rgba(226, 168, 140, 1)").fadeIn('slow');
-                $('.LabelPagos').fadeIn('slow');
-               }
-               if(selecTipoDoc=='4'){
-                $(".lista_Cobros").find("tr:first").after("<tr class='vistaTemp' id='"+data+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idGrupoName+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_date]'>"+ValidfechaRecepcion+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumento+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidad+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyName+"</td>\n\
-                                                        <td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_Cobros').fadeIn('slow');
-                $('.LabelCobros').fadeIn('slow');
-               }
-               if(selecTipoDoc=='5'){
-                 $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+data+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierName+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+DestinoEtxName+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numFactura+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosEtelix+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+minutosProveedor+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+rateEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+rateProveedor+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+montoEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+montoProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+disputa.toFixed(2)+"</td>\n\
-                                                        <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_DispRec').fadeIn('slow');
-                $('.Label_DispRec').fadeIn('slow');
-               }
-                if(selecTipoDoc=='6'){
-                 $(".lista_DispEnv").find("tr:first").after("<tr class='vistaTemp' id='"+data+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierName+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+DestinoProvName+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numFactura+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosEtelix+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+minutosProveedor+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+rateEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+rateProveedor+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+montoEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+montoProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+disputa.toFixed(2)+"</td>\n\
-                                                        <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_DispEnv').fadeIn('slow');
-                $('.Label_DispEnv').fadeIn('slow');
-               }
-                if(selecTipoDoc=='7'){
-                    console.log(data);
-                  $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=''></td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_NotCredEnv').fadeIn('slow');
-                $('.Label_NotCredEnv').fadeIn('slow');
-               }
-                $('#botAgregarDatosContableFinal').fadeIn('slow');
-                
+            success: function(data) 
+            {
+                $SORI.UI.llenarTabla(selecTipoDoc,data);
                 $SORI.UI.init();
-                $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
-                if (selecTipoDoc=='3'||selecTipoDoc=='4'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
-                } 
-                if (selecTipoDoc=='5'||selecTipoDoc=='6'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date").val('');
-                } 
-                      }          
+                $SORI.UI.emptyFields(selecTipoDoc);
+
+            }          
         }); 
      }
 }); 
@@ -965,7 +776,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                          success: function(data) 
 
                          {  
-                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .lista_DispEnv').fadeOut('fast');
+                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv').fadeOut('fast');
 //                           var obj = JSON.parse(data),
                             var exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                             setTimeout(function()

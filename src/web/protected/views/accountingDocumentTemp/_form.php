@@ -257,7 +257,43 @@
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
         
-       
+               <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
+        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
+                <tr>
+                    <td> Carrier </td>
+                    <td> Fecha de Emisión </td>
+                    <td> Inicio Periodo a Facturar </td>
+                    <td> Fin Periodo a Facturar </td>
+                    <td> Fecha Envio </td>
+                    <td> N°Documento </td>
+                    <td> Minutos </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_FacEnv!=null)
+                    {
+                        foreach ($lista_FacEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
+                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>
+          
+         <br>
         <label class="Label_F_Rec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>Facturas Recibidas:</label>
         <table border="1" class="tablaVistDocTemporales lista_FacRec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>
                 <tr>
@@ -301,43 +337,7 @@
         </table>
         
         <br>
-        <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
-        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
-                <tr>
-                    <td> Carrier </td>
-                    <td> Fecha de Emisión </td>
-                    <td> Inicio Periodo a Facturar </td>
-                    <td> Fin Periodo a Facturar </td>
-                    <td> Fecha Envio </td>
-                    <td> N°Documento </td>
-                    <td> Minutos </td>
-                    <td> Cantidad </td>
-                    <td> Moneda </td>
-                    <td> Acciones </td>
-                </tr>
-                <?php
-                    if($lista_FacEnv!=null)
-                    {
-                        foreach ($lista_FacEnv as $key => $value)
-                        { 
-                            echo "<tr class='vistaTemp' id='".$value->id."'>
-                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
-                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
-                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
-                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
-                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
-                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
-                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
-                                    <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-                                  </tr>";  
-                        }
-                    }
-                    ?>
-         </table>
-          
-         <br>
+
          <label class='LabelCobros' <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>Cobros:</label>
          <table border="1" class="tablaVistDocTemporales lista_Cobros" <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>
                 <tr>

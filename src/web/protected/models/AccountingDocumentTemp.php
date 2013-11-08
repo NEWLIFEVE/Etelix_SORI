@@ -48,6 +48,7 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public $carrier_groups;
         public $amount_etx;
+        public $amount_carrier;
         public $dispute;
         public $select_dest_supplier;
         public $input_dest_supplier;
@@ -396,35 +397,104 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public static function getJSonParams($model)
         {
-            $params['idDoc'] = $model->id;
-            $params['idCarrierNameTemp']=Carrier::getName($model->id_carrier);;
-            $params['desdeFechaTemp']=$model->from_date;
-            $params['hastaFechaTemp']=$model->to_date;
-            $params['numDocumentoTemp']=AccountingDocument::getDocNum($model->id_accounting_document);
-            $params['minutosTemp'] =$model->min_etx; /*cambiar a minutos correspondientes en el view*/
-            $params['MinutosProv'] =$model->min_carrier;
-            $params['TarifaEtx'] =$model->rate_etx;
-            $params['TarifaProv'] =$model->rate_carrier;
-            $params['Destino'] =DestinationSupplier::getName($model->id_destination_supplier);
+            if (isset($model->id))$params['id'] = $model->id;
+            if (isset($model->id_carrier))$params['carrier']=Carrier::getName($model->id_carrier);
+            if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName(301);
+            if (isset($model->issue_date))$params['issue_date']=$model->issue_date;
+            if (isset($model->sent_date))$params['sent_date']=$model->sent_date;
+            if (isset($model->from_date))$params['from_date']=$model->from_date;
+            if (isset($model->to_date))$params['to_date']=$model->to_date;
+            if (isset($model->email_received_date))$params['email_received_date']=$model->email_received_date;
+            if (isset($model->email_received_hour))$params['email_received_hour']=$model->email_received_hour;
+            if (isset($model->valid_received_date))$params['valid_received_date']=$model->valid_received_date;
+            if (isset($model->valid_received_hour))$params['valid_received_hour']=$model->valid_received_hour;
+            if (isset($model->doc_number))$params['doc_number']=$model->doc_number;
+            if (isset($model->id_accounting_document))$params['fact_number']=AccountingDocument::getDocNum($model->id_accounting_document);
+            if (isset($model->minutes))$params['minutes'] =$model->minutes; 
+            if (isset($model->amount))$params['amount'] =$model->amount; 
+            if (isset($model->note))$params['note'] =$model->note; 
+            if (isset($model->min_etx))$params['min_etx'] =$model->min_etx; 
+            if (isset($model->min_carrier))$params['min_carrier'] =$model->min_carrier;
+            if (isset($model->rate_etx))$params['rate_etx'] =$model->rate_etx;
+            if (isset($model->rate_carrier))$params['rate_carrier'] =$model->rate_carrier;
+            if (isset($model->id_destination_supplier))$params['destinationSupp'] =DestinationSupplier::getName($model->id_destination_supplier);
+            if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
+            if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
             
             return $params;
+        }
+        
+        public static function resolvedDateHour($model)
+        {
+            $dia = date("N", strtotime($model->email_received_date));
+            if ($dia == 1 || $dia == 2) {
+
+                if ($model->email_received_hour >= '08:00' && $model->email_received_hour <= '17:00') 
+                {   
+                    $model->valid_received_date = $model->email_received_date;
+                    $model->valid_received_hour = $model->email_received_hour;
+                    
+                } else {
+                    if($model->email_received_hour < '08:00'){
+                        $model->valid_received_date = $model->email_received_date;
+                    }else{
+                        $model->valid_received_date = self::model()->getValidDate($model->email_received_date, $dia);
+                    }
+                    $model->valid_received_hour = '08:00';
+                }
+            } else {
+                $model->valid_received_date = self::model()->getValidDate($model->email_received_date, $dia);
+                $model->valid_received_hour = '08:00';
+            }
+            return $model;
         }
         
         public static function setValues($model,$tipo){
             
             switch ($tipo){
                 case 1:
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=$model->issue_date;
+                    $model->id_accounting_document=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
                     break;
                 case 2:
+                    $model->sent_date=NULL;
+                    $model->id_accounting_document=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model = self::model()->resolvedDateHour($model);
                     break;
                 case 3:
-                    $model->issue_date=NULL;
                     $model->from_date=NULL;
                     $model->to_date=NULL;
                     $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
                     $model->email_received_hour=NULL;
                     $model->valid_received_hour=NULL;
-                    $model->sent_date=NULL;
+                    $model->sent_date=$model->issue_date;
                     $model->id_accounting_document=NULL;
                     $model->minutes=NULL;
                     $model->min_etx=NULL;
@@ -463,6 +533,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     break;
                 case 5:
                     $model->issue_date=NULL;
+                    $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_hour=NULL;
@@ -476,6 +547,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     break;
                 case 6:
                     $model->issue_date=NULL;
+                    $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_hour=NULL;
