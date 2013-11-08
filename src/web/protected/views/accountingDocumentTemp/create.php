@@ -17,4 +17,4 @@
 
 <?php // echo $this->renderPartial('_form', array('model'=>$model,'lista'=>$lista)); ?>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec,'lista_DispEnv'=>$lista_DispEnv)); ?>

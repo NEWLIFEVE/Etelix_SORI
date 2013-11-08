@@ -26,13 +26,8 @@
  * @property double $rate_etx
  * @property double $rate_carrier
  * @property integer $id_accounting_document
-<<<<<<< HEAD
- * @property double $amount_note
- * @property double $id_destino
-=======
  * @property integer $id_destination
  * @property integer $id_destination_supplier
->>>>>>> 8eb39ee43f256e94c4507f86adb48a05cf3d3cf8
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -53,7 +48,10 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public $carrier_groups;
         public $amount_etx;
+        public $amount_carrier;
         public $dispute;
+        public $select_dest_supplier;
+        public $input_dest_supplier;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -64,8 +62,8 @@ class AccountingDocumentTemp extends CActiveRecord
 		return array(
                         array('id_type_accounting_document', 'required'),
 			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
-			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
-			array('doc_number', 'length', 'max'=>50),
+			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier,select_dest_supplier,carrier_groups', 'numerical'),
+			array('doc_number,input_dest_supplier', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
@@ -102,12 +100,12 @@ class AccountingDocumentTemp extends CActiveRecord
 			'issue_date' => 'Fecha de Emisión',
 			'from_date' => 'Inicio Periodo a Facturar',
 			'to_date' => 'Fin Periodo a Facturar',
-			'valid_received_date' => 'Valid Received Date',
+			'valid_received_date' => 'Fecha de recepción',
 			'email_received_date' => 'Fecha de recepción de Email',
 			'valid_received_hour' => 'Valid Received Hour',
 			'email_received_hour' => 'Hora de recepción de Email',
 			'sent_date' => 'Fecha de envio',
-			'doc_number' => 'Número de documento',
+			'doc_number' => 'Número de Documento',
 			'minutes' => 'Minutos',
 			'amount' => 'Monto',
 			'note' => 'Nota',
@@ -115,12 +113,12 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_carrier' => 'Carrier',
 			'id_currency' => 'Moneda',
 			'confirm' => 'Confirmar',
-                        'min_etx' => 'Min Etx',
-			'min_carrier' => 'Min Carrier',
-			'rate_etx' => 'Tarifa Etx',
-			'rate_carrier' => 'Tarifa Carrier',
-			'id_accounting_document' => 'Documento Relacionado',
-
+                        'min_etx' => 'Minutos Etelix',
+			'min_carrier' => 'Minutos Proveedor',
+			'rate_etx' => 'Tarifa Etelix',
+			'rate_carrier' => 'Tarifa Proveedor',
+			'id_accounting_document' => 'Número de Factura',
+                        'carrier_groups'=>'Grupo',
 			'id_destination' => 'Destino Etelix',
 			'id_destination_supplier' => 'Destino Proveedor',
 		);
@@ -208,6 +206,48 @@ class AccountingDocumentTemp extends CActiveRecord
         {
            return self::model()->find("id =:id",array(":id"=>$id))->id_carrier;
         }
+        /*
+        * con el id de documento me trae el id de disputa
+        */
+        public static function getId_disputa($idCarrier, $DesdeFecha, $HastaFecha, $idAccDocument)
+        {
+           return self::model()->find("id_carrier =:idCarrier and from_date =:DesdeFecha and to_date =:HastaFecha and id_accounting_document =:idAccDocument and id_type_accounting_document= 5",array(":idCarrier"=>$idCarrier,":DesdeFecha"=>$DesdeFecha,":HastaFecha"=>$HastaFecha,":idAccDocument"=>$idAccDocument))->id;
+        }
+        /*
+        * con el id de documento me trae el id destination
+        */
+        public static function getId_dest($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id,":id"=>$id,":id"=>$id))->id_destination;
+        }
+        /*
+        * con el id de documento me trae  min_etx
+        */
+        public static function getMinEtx($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->min_etx;
+        }
+        /*
+        * con el id de documento me trae  min_carrier
+        */
+        public static function getMinProv($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->min_carrier;
+        }
+        /*
+        * con el id de documento me trae rate_etx
+        */
+        public static function getMontoEtx($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->rate_etx;
+        }
+        /*
+        * con el id de documento me trae rate_etx
+        */
+        public static function getMontoProv($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->rate_carrier;
+        }
 
         /**
 	 * @access public
@@ -251,33 +291,49 @@ class AccountingDocumentTemp extends CActiveRecord
         
         public static function listaPagos($usuario)
 	{
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+            $idAction = LogAction::getLikeId('Crear Pago Temp');
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, issue_date, from_date, to_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
 	}
         public static function listaCobros($usuario)
 	{
-		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
+            $idAction = LogAction::getLikeId('Crear Cobro Temp');
+		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
 	}
         public static function lista_DispRec($usuario)
 	{
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier, d.amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-d.amount) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+            $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination e
 			  WHERE d.id_type_accounting_document=5 AND t.id = d.id_type_accounting_document AND f.id = d.id_accounting_document AND e.id = d.id_destination AND c.id=d.id_carrier ORDER BY id DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
+        public static function lista_DispEnv($usuario)
+	{
+            $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
+            
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination_supplier, id_type_accounting_document, id_carrier
+			  	   FROM accounting_document_temp
+			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination_supplier e
+			  WHERE d.id_type_accounting_document=6 AND t.id = d.id_type_accounting_document AND f.id = d.id_accounting_document AND e.id = d.id_destination_supplier AND c.id=d.id_carrier ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -296,6 +352,14 @@ class AccountingDocumentTemp extends CActiveRecord
         { 
             return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
         } 
+        /**
+         * busca los destinos supplier asignados al carrier
+         */
+                
+        public static function getListCarriersAsignados_DestSup($idCarrier)
+	{
+            return CHtml::listData(DestinationSupplier::model()->findAll("id_carrier=:idCarrier",array(":idCarrier"=>$idCarrier)), 'id','name');
+	}
 
         /**
          * calcula los dias y hora para registrar en facturas recibidas
@@ -329,37 +393,179 @@ class AccountingDocumentTemp extends CActiveRecord
                       return date('Y-m-d', strtotime('+1 day', strtotime ( $EmailfechaRecepcion ))) ;
                       break;
              }                                                             
+        }   
+        
+        public static function getJSonParams($model)
+        {
+            if (isset($model->id))$params['id'] = $model->id;
+            if (isset($model->id_carrier))$params['carrier']=Carrier::getName($model->id_carrier);
+            if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName(301);
+            if (isset($model->issue_date))$params['issue_date']=$model->issue_date;
+            if (isset($model->sent_date))$params['sent_date']=$model->sent_date;
+            if (isset($model->from_date))$params['from_date']=$model->from_date;
+            if (isset($model->to_date))$params['to_date']=$model->to_date;
+            if (isset($model->email_received_date))$params['email_received_date']=$model->email_received_date;
+            if (isset($model->email_received_hour))$params['email_received_hour']=$model->email_received_hour;
+            if (isset($model->valid_received_date))$params['valid_received_date']=$model->valid_received_date;
+            if (isset($model->valid_received_hour))$params['valid_received_hour']=$model->valid_received_hour;
+            if (isset($model->doc_number))$params['doc_number']=$model->doc_number;
+            if (isset($model->id_accounting_document))$params['fact_number']=AccountingDocument::getDocNum($model->id_accounting_document);
+            if (isset($model->minutes))$params['minutes'] =$model->minutes; 
+            if (isset($model->amount))$params['amount'] =$model->amount; 
+            if (isset($model->note))$params['note'] =$model->note; 
+            if (isset($model->min_etx))$params['min_etx'] =$model->min_etx; 
+            if (isset($model->min_carrier))$params['min_carrier'] =$model->min_carrier;
+            if (isset($model->rate_etx))$params['rate_etx'] =$model->rate_etx;
+            if (isset($model->rate_carrier))$params['rate_carrier'] =$model->rate_carrier;
+            if (isset($model->id_destination_supplier))$params['destinationSupp'] =DestinationSupplier::getName($model->id_destination_supplier);
+            if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
+            if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
+            
+            return $params;
         }
         
-//        public function getDates($EmailfechaRecepcion,$EmailHoraRecepcion){
-//            $fecha = strtotime($EmailfechaRecepcion);
-//            $dia = date("N", $fecha);
-//            $Dates = array();
-//                if ($dia == 1 || $dia == 2) {
-//                    if ($EmailHoraRecepcion >= '08:00 AM' && $EmailHoraRecepcion <= '05:00 PM') {
-//                        $Dates['validDate'] = $EmailfechaRecepcion;
-//                        $Dates['validHour'] = $EmailHoraRecepcion;
-//                        $Dates['emailDate'] = $EmailfechaRecepcion;
-//                        $Dates['emailHour'] = $EmailHoraRecepcion;
-//                      
-//                    } else {
-//                        if($EmailHoraRecepcion < '08:00 AM'){
-//                            $Dates['validDate'] = $EmailfechaRecepcion;
-//                        }else{
-//                            $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-//                        }
-//                        $Dates['validHour'] = '08:00 AM';
-//                        $Dates['emailDate'] = $EmailfechaRecepcion;
-//                        $Dates['emailHour'] = $EmailHoraRecepcion;
-//                    }
-//                } else {
-//                    $Dates['validDate'] = self::getValidDate($EmailfechaRecepcion, $dia);
-//                    $Dates['validHour'] = '08:00 AM';
-//                    $Dates['emailDate'] = $EmailfechaRecepcion;
-//                    $Dates['emailHour'] = $EmailHoraRecepcion;
-//                }
-//                return $Dates;
-//        }
+        public static function resolvedDateHour($model)
+        {
+            $dia = date("N", strtotime($model->email_received_date));
+            if ($dia == 1 || $dia == 2) {
+
+                if ($model->email_received_hour >= '08:00' && $model->email_received_hour <= '17:00') 
+                {   
+                    $model->valid_received_date = $model->email_received_date;
+                    $model->valid_received_hour = $model->email_received_hour;
+                    
+                } else {
+                    if($model->email_received_hour < '08:00'){
+                        $model->valid_received_date = $model->email_received_date;
+                    }else{
+                        $model->valid_received_date = self::model()->getValidDate($model->email_received_date, $dia);
+                    }
+                    $model->valid_received_hour = '08:00';
+                }
+            } else {
+                $model->valid_received_date = self::model()->getValidDate($model->email_received_date, $dia);
+                $model->valid_received_hour = '08:00';
+            }
+            return $model;
+        }
         
+        public static function setValues($model,$tipo){
+            
+            switch ($tipo){
+                case 1:
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=$model->issue_date;
+                    $model->id_accounting_document=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    break;
+                case 2:
+                    $model->sent_date=NULL;
+                    $model->id_accounting_document=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model = self::model()->resolvedDateHour($model);
+                    break;
+                case 3:
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=$model->issue_date;
+                    $model->id_accounting_document=NULL;
+                    $model->minutes=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
+                    $model->confirm=1;
+                    break;
+                case 4:
+                    $model->issue_date=NULL;
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=NULL;
+                    $model->id_accounting_document=NULL;
+                    $model->minutes=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
+                    $model->confirm=1;
+                    break;
+                case 5:
+                    $model->issue_date=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->doc_number=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->minutes=NULL;
+                    $model->amount=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    break;
+                case 6:
+                    $model->issue_date=NULL;
+                    $model->carrier_groups=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->doc_number=NULL;
+                    $model->id_destination=NULL;
+                    $model->minutes=NULL;
+                    $model->amount=NULL;
+                    $model->note=Utility::snull($model->note);
+                    $model->confirm=1;
+                    $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+            }
+            return $model;
+        }
         
 }

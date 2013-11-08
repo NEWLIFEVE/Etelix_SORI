@@ -184,4 +184,9 @@ class SiteController extends Controller
         }
         
         
+        public function actionKeepAlive()
+        {
+            echo 'OK';
+            Yii::app()->end();
+        }
 }

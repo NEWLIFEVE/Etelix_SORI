@@ -103,4 +103,43 @@ class DestinationSupplier extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public static function getName($id){           
+            return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
+        
+        	
+        public static function getId($carrier,$nombre=null)
+	{
+		if($nombre != null)
+		{
+			$sql="SELECT id FROM destination_supplier WHERE name='{$nombre}'";
+			//$model=self::model()->find('name=:nombre',array(':nombre'=>$nombre));
+			$model=self::model()->findBySql($sql);
+			if($model == null)
+			{
+				$model=new DestinationSupplier;
+				$model->name=$nombre;
+				$model->id_carrier=$carrier;
+				
+				if($model->save())
+				{
+                                    return $model->id;
+				}
+			}
+			else
+			{
+				return $model->getAttribute('id');
+			}
+		}
+	}
+
+        public static function resolvedId($DestinoSupp_sel,$DestinoSupp_input,$idCarrier)
+        {
+            if (isset($DestinoSupp_input)&&$DestinoSupp_input!='') {                               
+                $id = self::model()->getId($idCarrier, $DestinoSupp_input); 
+           } else {             //guarda un nuevo destination_suplier y luego se extrae el id para almacenarlo en documentos contables temp (id_destination_supplier
+                $id = $DestinoSupp_sel;
+          }
+            return $id;
+        }
 }
