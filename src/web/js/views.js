@@ -649,583 +649,110 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {
-                  var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
-                      CarrierDocument=$('.CarrierDocument'),
-                      GrupoDocument=$('.GrupoDocument'),
-                      emailReceivedDate=$('.emailReceivedDate'),
-                      emailRecDate=$('.emailRecDate'),
-                      fechaDeEmision=$('.fechaDeEmision'),
-                      fechaDeInicio=$('.fechaDeInicio'),
-                      fechaFinal=$('.fechaFinal'),
-                      emailReceivedTime=$('.emailReceivedTime'),
-                      minutosDoc=$('.minutosDoc'),
-                      MinutosE=$('.MinutosE'),
-                      minutosDocProveedor=$('.minutosDocProveedor'),
-                      DestinoEtx=$('.DestinoEtx'),
-                      DestinoProv=$('.DestinoProv'),
-                      MontoE=$('.MontoE'),
-                      Moneda=$('.Moneda'),
-                      doc_number=$('.doc_number'),
-                      Select_doc_number=$('select#AccountingDocumentTemp_doc_number'),
-                      Input_doc_number=$('input#AccountingDocumentTemp_doc_number'),
-                      Select_dest_prov=$('select#AccountingDocumentTemp_id_destination_supplier'),
-                      Input_dest_prov=$('input#AccountingDocumentTemp_id_destination_supplier'),
-                      Monto_doc=$('#AccountingDocumentTemp_amount'),
-                      divNumDoc=$('.numDocument '),
-                      montoDocProveedor=$('.montoDocProveedor');
-                      
-
-
-            if (tipoDocument=='1')//facturas enviadas
-                {
-                    
-                      MinutosE.html('Minutos');
-                      doc_number.html('Num. Documento');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Monto');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.show('slow'); 
-                      Select_doc_number.hide('slow'); 
-                      Input_doc_number.show('slow');
-                      Select_dest_prov.hide('slow'); 
-                      Input_dest_prov.hide('slow');
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      GrupoDocument.hide('slow');
-                      emailRecDate.html('Fecha de recepción de Email');
-                      fechaDeEmision.show('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.show('slow');
-                      divNumDoc.css('width','24%'); 
-                      $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
-                      $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
-                      $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee, #AccountingDocumentTemp_id_destination").val('');
-                }
-            if (tipoDocument=='2')//facturas recibidas
-                {
-                      MinutosE.html('Minutos');
-                      doc_number.html('Num. Documento');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Monto');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.show('slow'); 
-                      Select_doc_number.hide('slow'); 
-                      Input_doc_number.show('slow'); 
-                      Select_dest_prov.hide('slow'); 
-                      Input_dest_prov.hide('slow');
-                      emailReceivedDate.show('slow'); 
-                      emailReceivedTime.show('slow');
-                      emailRecDate.html('Fecha de recepción de Email');
-                      fechaDeEmision.show('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.show('slow');
-                      GrupoDocument.hide('slow');
-                      divNumDoc.css('width','24%'); 
-                      $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
-                      $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee, #AccountingDocumentTemp_id_destination").val('');
-                }
-            if (tipoDocument=='3')//pago
-                {
-                      MinutosE.html('Minutos');
-                      doc_number.html('Num. Documento');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Monto ');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.show('slow'); 
-                      Select_doc_number.hide('slow'); 
-                      Input_doc_number.show('slow');
-                      Select_dest_prov.hide('slow'); 
-                      Input_dest_prov.hide('slow');
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      emailRecDate.html('Fecha de recepción de Email');
-                      fechaDeEmision.show('slow');
-                      fechaDeInicio.hide('slow');
-                      fechaFinal.hide('slow');
-                      minutosDoc.hide('slow');
-                      GrupoDocument.show('slow');
-                      CarrierDocument.hide('slow');
-                      divNumDoc.css('width','24%'); 
-                      $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
-                      $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
-                      $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee, #AccountingDocumentTemp_id_destination").val('');
-                }
-            if (tipoDocument=='4')//cobro
-                {
-                      MinutosE.html('Minutos');
-                      doc_number.html('Num. Documento');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Monto');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.show('slow'); 
-                      Select_doc_number.hide('slow'); 
-                      Input_doc_number.show('slow'); 
-                      Select_dest_prov.hide('slow'); 
-                      Input_dest_prov.hide('slow');
-                      emailReceivedDate.show('slow'); 
-                      GrupoDocument.show('slow');
-                      CarrierDocument.hide('slow');
-                      emailRecDate.html('Fecha de recepción');
-                      emailReceivedTime.hide('slow');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.hide('slow');
-                      fechaFinal.hide('slow');
-                      minutosDoc.hide('slow');
-                      divNumDoc.css('width','24%'); 
-                      $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
-                      $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
-                      $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee, #AccountingDocumentTemp_id_destination").val('');
-                }
-            if (tipoDocument=='5')//disputas recibidas
-                {
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      GrupoDocument.hide('slow');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.show('slow');
-                      MinutosE.html('Minutos Etelix');
-                      doc_number.html('Num. Factura');
-                      minutosDocProveedor.show('slow');
-                      DestinoEtx.show('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Tarifa Etelix');
-                      montoDocProveedor.show('slow');   
-                      Moneda.hide('slow'); 
-                      Select_doc_number.show('slow'); 
-                      Input_doc_number.hide('slow'); 
-                      Select_dest_prov.hide('slow'); 
-                      Input_dest_prov.hide('slow');
-                      divNumDoc.css('width','24%');
-                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
-                       $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee").val('');
-                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
-                }
-             if (tipoDocument=='6')//Disputa enviada
-                {
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      GrupoDocument.hide('slow');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.show('slow');
-                      MinutosE.html('Minutos Etelix');
-                      doc_number.html('Num. Factura');
-                      minutosDocProveedor.show('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.show('slow');
-                      Monto_doc.show('slow');
-                      MontoE.show('slow');
-                      MontoE.html('Tarifa Etelix');
-                      montoDocProveedor.show('slow');   
-                      Moneda.hide('slow'); 
-                      Select_doc_number.show('slow'); 
-                      Input_doc_number.hide('slow'); 
-                      Select_dest_prov.show('slow'); 
-                      Input_dest_prov.hide('slow');
-                      divNumDoc.css('width','24%');
-                       $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
-                       $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee").val('');
-                      
-                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
-                      
-                      $('div.nuevoDestProv').click('on',function()
-
-                      {
-                          $(this).hide('slow');
-                          $('div.cancelarDestProv').show('slow');
-                            Select_dest_prov.hide('slow'); 
-                            Input_dest_prov.show('slow');
-                            Select_dest_prov.val('');
-                      });
-                      $('div.cancelarDestProv').click('on',function()
-                      {
-                           $(this).hide('slow');
-                           $('div.nuevoDestProv').show('slow');
-                            Select_dest_prov.show('slow'); 
-                            Input_dest_prov.hide('slow');
-                      });
-                }
-             if (tipoDocument=='7')//Nota de credito enviada
-                {
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      GrupoDocument.hide('slow');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.hide('slow');
-                      MinutosE.html('Minutos Etelix');
-                      doc_number.html('Num. Factura');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.hide('slow');
-                      MontoE.hide('slow');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.hide('slow'); 
-                      Select_doc_number.show('slow'); 
-                      Input_doc_number.hide('slow'); 
-                      divNumDoc.css('width','51%'); 
-                      
-                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
-                      
-                    $('input#montoNota').change(function()
-                    {
-                          var acum=0;
-                          $('input#montoNota').each(function(){
-                          acum=acum+parseFloat($(this).val());
-                          console.log(acum);
-                          $('input#AccountingDocumentTemp_amount').val(acum);
-                          }); 
-                    });
-                      
-                    $('select#AccountingDocumentTemp_doc_number').change(function()
-                    {  
-                     
-                         $.ajax({
-                            type: "GET",
-                            url: "BuscaDisputa",
-                            data:"factura="+$("select#AccountingDocumentTemp_doc_number").val(),
-
-                        success: function(data) 
-                                { 
-                                    $('.listaDisputas').remove();$('.tabla_N_C').show("slow");
-                                    console.log(data);
-                                    var obj = JSON.parse(data);
-                                   
-                                    for(var i=0, j=obj.length; i<j;i++)
-                                        {
-                                            var montoTotal=(obj[i].amount) + (obj[i].dispute);
-                                             $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='"+obj[i].id+"'>\n\
-                                                            <td id='AccountingDocumentTemp[id_destination]'>"+obj[i].id_destination+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[min_etx]'>"+obj[i].min_etx+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[min_carrier]'>"+obj[i].min_carrier+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[rate_etx]'>"+obj[i].rate_etx+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[rate_carrier]'>"+obj[i].rate_carrier+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[amount_etx]'>"+obj[i].amount_etx+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[amount]'>"+obj[i].amount+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[dispute]'>"+obj[i].dispute+"</td>\n\
-                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value="+obj[i].dispute+"></td>\n\
-                                                        </tr>");   
-                                            $('.lista_Disp_NotaCEnv,.numDocumentoNota,.Label_Disp_NotaCEnv, .montoDoc, #AccountingDocumentTemp_amount, .MontoE').fadeIn('slow');$('input#AccountingDocumentTemp_amount').text(montoTotal);
-                                            var acum=0;
-                                            $('input#montoNota').each(function(){
-                                            acum=acum+parseFloat($(this).val());
-                                            $('input#AccountingDocumentTemp_amount').val(acum);
-                                            }); 
-                                        }
-                                }
-                            });
-                    });
-                }
-             if (tipoDocument=='8')//Nota de credito recibida
-                {
-                      emailReceivedDate.hide('slow');
-                      emailReceivedTime.hide('slow');
-                      GrupoDocument.hide('slow');
-                      fechaDeEmision.hide('slow');
-                      fechaDeInicio.show('slow');
-                      fechaFinal.show('slow');
-                      CarrierDocument.show('slow');
-                      minutosDoc.hide('slow');
-                      MinutosE.html('Minutos Etelix');
-                      doc_number.html('Num. Factura');
-                      minutosDocProveedor.hide('slow');
-                      DestinoEtx.hide('slow');
-                      DestinoProv.hide('slow');
-                      Monto_doc.hide('slow');
-                      MontoE.hide('slow');
-                      montoDocProveedor.hide('slow');   
-                      Moneda.hide('slow'); 
-                      Select_doc_number.show('slow'); 
-                      Input_doc_number.hide('slow'); 
-                      divNumDoc.css('width','51%'); 
-                      
-                      $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
-                }
-           
-    $('div.instruccion').slideUp('slow');
-    $('div.valoresDocumento').slideDown('slow');
+    var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
+    ocultar =['.tabla_N_C,.CarrierDocument','.GrupoDocument','.emailReceivedDate','.validReceivedDate','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedTime','.minutosDoc','.minutosEtx','.minutosProveedor','.DestinoEtx','.DestinoProv','.Moneda','select#AccountingDocumentTemp_id_destination_supplier','input#AccountingDocumentTemp_id_destination_supplier','.montoDoc','.numDocument','.numFactura','.rateEtx','.rateProveedor'];
+    switch (tipoDocument){
+        case '1'://facturas enviadas
+                var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosDoc'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                break
+        case '2'://facturas recibidas
+                var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedDate','.emailReceivedTime','.CarrierDocument','.minutosDoc'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                break
+        case '3'://pago
+                var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.GrupoDocument'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
+                $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                break
+        case '4'://cobro
+                var mostrar =['.numDocument','.montoDoc','.Moneda','.validReceivedDate','.GrupoDocument'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                break
+        case '5'://disputas recibidas
+                var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoEtx','.rateEtx','.rateProveedor'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $SORI.UI.changeCss('.numFactura','width','24%');
+                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val('');
+                $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                break
+        case '6'://Disputa enviada
+                var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoProv','.rateEtx','.rateProveedor','select#AccountingDocumentTemp_id_destination_supplier'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $SORI.UI.changeCss('.numFactura','width','24%');
+                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
+                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val(''); 
+                $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                $SORI.UI.toggleDestProv();
+                break
+        case '7'://Nota de credito enviada
+                var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $SORI.UI.changeCss('.numFactura','width','51%');
+                $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                $SORI.UI.sumMontoNota();
+                $SORI.UI.buscaDisputa(tipoDocument);
+                break
+        case '8'://Nota de credito recibida
+                var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument'];
+                $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                $SORI.UI.changeCss('.numFactura','width','51%');
+                $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                break
+    }
+        
+    $('div.instruccion').slideUp('fast');
+    $('div.valoresDocumento').fadeIn('slow');
 });
 
 $('div.hacerUnaNota').click('on',function()
 {
-    $('div.hacerUnaNota').hide('slow');
-    $('div.contratoFormTextArea,textarea#AccountingDocumentTemp_note').fadeIn('slow');
+    $('div.hacerUnaNota').toggle('fast');
+    $('div.quitaNota').toggle('fast');
+    $('div.contratoFormTextArea').toggle('slow');
 });
-$('.quitaNota').click('on',function()
+$('div.quitaNota').click('on',function()
 {
-    $('div.hacerUnaNota').slideDown('slow');
-    $('div.contratoFormTextArea,textarea#AccountingDocumentTemp_note').hide('slow');
+    $('div.hacerUnaNota').toggle('slow');
+    $('div.quitaNota').toggle('slow');
+    $('div.contratoFormTextArea').toggle('slow');
 });
 
 $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
-    var selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
-    idCarrier=$('#AccountingDocumentTemp_id_carrier').val(),
-    idGrupo=$('#AccountingDocumentTemp_carrier_groups').val(),
-    fechaEmision=$('#AccountingDocumentTemp_issue_date').val(),
-    desdeFecha=$('#AccountingDocumentTemp_from_date').val(),
-    hastaFecha=$('#AccountingDocumentTemp_to_date').val(),
-    EmailfechaRecepcion=$('#AccountingDocumentTemp_email_received_date').val(),
-    EmailHoraRecepcion=$('#AccountingDocumentTemp_email_received_hour').val(),
-    numDocumento=$('#AccountingDocumentTemp_doc_number').val(),
-    minutos=$('#AccountingDocumentTemp_minutes').val(),
-    cantidad=$('#AccountingDocumentTemp_amount').val(),
-    currency=$('#AccountingDocumentTemp_id_currency').val(),
-    nota=$('#AccountingDocumentTemp_note').val(),
-    Select_doc_number=$('select#AccountingDocumentTemp_doc_number').val(),
-    minutosDocProveedor=$('#AccountingDocumentTemp_MinutosProvee').val(),
-    DestinoEtx=$('#AccountingDocumentTemp_id_destination').val(),
-    Select_dest_prov=$('select#AccountingDocumentTemp_id_destination_supplier').val(),
-    Input_dest_prov=$('input#AccountingDocumentTemp_id_destination_supplier').val(),
-    numberNota=$('input#numberNota').val(),//provisiomal
-    montoDocProveedor=$('#AccountingDocumentTemp_MontoProvee').val();
-    
-    var todos=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency,#AccountingDocumentTemp_note,select#AccountingDocumentTemp_doc_number,AccountingDocumentTemp_MinutosProvee,#AccountingDocumentTemp_id_destination,select#AccountingDocumentTemp_id_destination_supplier,input#AccountingDocumentTemp_id_destination_supplier,#AccountingDocumentTemp_MontoProvee").serializeArray();
-
-    if(selecTipoDoc==""){
-         $SORI.UTILS.validaCampos(selecTipoDoc);   
-    }
-    else
-     { 
-           switch (selecTipoDoc) {
-                
-                case '1'://facturas enviadas
-                  var lleno=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno), 
-                      action = "GuardarFac_EnvTemp";
-                      break
-                case '2'://facturas recibidas
-                      lleno=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno), 
-                      action = "GuardarFac_RecTemp";
-                      break
-                case '3'://pago
-                      lleno=$("#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno),    
-                      action = "GuardarPagoTemp";
-                      break
-                case '4'://cobro
-                      lleno=$("#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_id_currency").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno), 
-                      action = "GuardarCobroTemp";
-                      break
-                case '5'://Disputa Recibida
-                      lleno=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_note,select#AccountingDocumentTemp_doc_number,AccountingDocumentTemp_MinutosProvee,#AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_MontoProvee").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno),
-                      action = "GuardarDispRecibida";
-                      numDocumento=Select_doc_number;
-                      break
-                case '6'://Disputa Enviada
-                      lleno=$("#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_amount,#AccountingDocumentTemp_note,select#AccountingDocumentTemp_doc_number,AccountingDocumentTemp_MinutosProvee,select#AccountingDocumentTemp_id_destination_supplier,input#AccountingDocumentTemp_id_destination_supplier,#AccountingDocumentTemp_MontoProvee").serializeArray(),
-                      respuesta=$SORI.UTILS.validaCampos(lleno),
-                      action = "GuardarDispEnviada";
-                      numDocumento=Select_doc_number;
-                      break
-                case '7'://Nota de Credito Enviada
-                      action = "GuardarNotaDeCreditoEnviada";
-                      numDocumento=Select_doc_number;
-                      break
-           return respuesta;
-           }
-         if(respuesta!=0){
+    var str = $('#accounting-document-temp-form').serialize(),
+    selecTipoDoc=$('#AccountingDocumentTemp_id_type_accounting_document').val();
+    if( selecTipoDoc=='')
+    {
+        msjIndicador.fadeIn('fast');
+        setTimeout(function()
+        { msjIndicador.fadeOut('fast');
+        }, 1000);
+    }else{
         $.ajax({
             type: "GET",
-            url: action,
-            data: "&fechaEmision="+fechaEmision+"&idCarrier="+idCarrier+"&idGrupo="+idGrupo+"&desdeFecha="+desdeFecha+"&hastaFecha="+hastaFecha+"&EmailfechaRecepcion="+EmailfechaRecepcion+"&EmailHoraRecepcion="+EmailHoraRecepcion+"&numDocumento="+numDocumento+"&minutos="+minutos+"&cantidad="+cantidad+"&nota="+nota+"&selecTipoDoc="+selecTipoDoc+"&currency="+currency+"&minutosDocProveedor="+minutosDocProveedor+"&DestinoEtx="+DestinoEtx+"&Select_dest_prov="+Select_dest_prov+"&Input_dest_prov="+Input_dest_prov+"&montoDocProveedor="+montoDocProveedor+"&numberNota="+numberNota,
-
-              success: function(data) 
-                      {
-                obj = JSON.parse(data);
-                var idCarrierNameTemp=obj.idCarrierNameTemp, 
-                    selecTipoDocNameTemp=obj.selecTipoDocNameTemp,
-                    fechaEmisionTemp=obj.fechaEmisionTemp,
-                    desdeFechaTemp=obj.desdeFechaTemp,
-                    hastaFechaTemp=obj.hastaFechaTemp,
-                    fechaEnvioTemp=obj.fechaEnvioTemp,
-                    EmailfechaRecepcionTemp=obj.EmailfechaRecepcionTemp,
-                    valid_received_dateTemp=obj.valid_received_dateTemp,
-                    EmailHoraRecepcionTemp=obj.EmailHoraRecepcionTemp,
-                    valid_received_hourTemp=obj.valid_received_hourTemp,
-                    numDocumentoTemp=obj.numDocumentoTemp,
-                    minutosTemp=obj.minutosTemp,
-                    cantidadTemp=obj.cantidadTemp,
-                    currencyTemp=obj.currencyTemp,
-                    MinutosProv=obj.MinutosProv,
-                    TarifaEtx=obj.TarifaEtx,
-                    TarifaProv=obj.TarifaProv,
-                    Destino=obj.Destino,
-                    ExisteTemp=obj.ExisteTemp,
-                    ExisteFin=obj.ExisteFin;
-            
-                var cantidadEtx=minutosTemp*TarifaEtx,
-                    cantidadProv=MinutosProv*TarifaProv,
-                    dispute=cantidadEtx-cantidadProv;
- 
-            console.dir(data);
-            if(ExisteTemp==null&&ExisteFin==null||ExisteTemp==""&&ExisteFin=="")
+            url: "GuardarDoc_ContTemp",
+//            url: $SORI.UTILS.getURL(selecTipoDoc),
+            data: str,
+            success: function(data) 
             {
-               if(selecTipoDoc=='1'){
-                $(".lista_FacEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
-                                                        <td id='AccountingDocumentTemp[sent_date]'>"+fechaEnvioTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_FacEnv').fadeIn('slow');
-                $('.Label_F_Env').fadeIn('slow');
-               }
-               if(selecTipoDoc=='2'){
-                $(".lista_FacRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[from_date]'>"+desdeFechaTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[to_date]'>"+hastaFechaTemp+"</td>\n\\n\
-                                                        <td id='AccountingDocumentTemp[email_received_date]'>"+EmailfechaRecepcionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_date]'>"+valid_received_dateTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[email_received_hour]'>"+EmailHoraRecepcionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_hour]'>"+valid_received_hourTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[minutes]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_FacRec').fadeIn('slow');
-                $('.Label_F_Rec').fadeIn('slow');
-               }
-            }else{
-                var YaExiste = $("<div class='cargando'></div><div class='mensaje'><h4>La <b>"+selecTipoDocNameTemp+"</b><br> que intenta registrar, <br>la cual es del carrier: <b>"+idCarrierNameTemp+"</b>, <br>en el periodo: <b>"+desdeFechaTemp+"</b> / <b>"+hastaFechaTemp+"</b><br> ya se encuantra registrada bajo <br>el N°: <b>"+numDocumentoTemp+"</b></h4>Por favor revise los datos a almacenar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                $("body").append(YaExiste);
-                YaExiste.fadeIn('slow');
-                setTimeout(function()
-                { YaExiste.fadeOut('slow');
-                }, 8000);
-            }
-               if(selecTipoDoc=='3'){
-                $(".lista_Pagos").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[issue_date]'>"+fechaEmisionTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_Pagos').css("background", "rgba(226, 168, 140, 1)").fadeIn('slow');
-                $('.LabelPagos').fadeIn('slow');
-               }
-               if(selecTipoDoc=='4'){
-                $(".lista_Cobros").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[valid_received_date]'>"+valid_received_dateTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_currency]'>"+currencyTemp+"</td>\n\
-                                                        <td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_Cobros').fadeIn('slow');
-                $('.LabelCobros').fadeIn('slow');
-               }
-               if(selecTipoDoc=='5'){
-                 $(".lista_DispRec").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx.toFixed(2)+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv.toFixed(2)+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute.toFixed(2)+"</td>\n\
-                                                        <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_DispRec').fadeIn('slow');
-                $('.Label_DispRec').fadeIn('slow');
-               }
-                if(selecTipoDoc=='6'){
-                 $(".lista_DispEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[id_carrier]'>"+idCarrierNameTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_destination]'>"+Destino+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+numDocumentoTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_etx]'>"+minutosTemp+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[min_carrier]'>"+MinutosProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_etx]'>"+TarifaEtx+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[rate_carrier]'>"+TarifaProv+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount_etx]'>"+cantidadEtx.toFixed(2)+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+cantidadProv.toFixed(2)+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[dispute]'>"+dispute.toFixed(2)+"</td>\n\
-                                                        <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");
-                $('.lista_DispEnv').fadeIn('slow');
-                $('.Label_DispEnv').fadeIn('slow');
-               }
-                if(selecTipoDoc=='7'){
-                    console.log(data);
-                    var number_Nota=document.getElementById('AccountingDocumentTemp[doc_number]').innerHTML,
-                        monto_Nota=document.getElementById('AccountingDocumentTemp[amount]').innerHTML,
-                        factura=$('select#AccountingDocumentTemp_doc_number :selected').text();
-
-
-                  $(".lista_NotCredEnv").find("tr:first").after("<tr class='vistaTemp' id='"+obj.idDoc+"'>\n\
-                                                        <td id='AccountingDocumentTemp[doc_number]'>"+number_Nota+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[amount]'>"+monto_Nota+"</td>\n\
-                                                        <td id='AccountingDocumentTemp[id_accounting_document]'>"+factura+"</td>\n\
-                                                        <td><img class='edit' name='edit_not_C_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>\n\
-                                                    </tr>");   
-                $('.lista_NotCredEnv,.Label_NotCredEnv').fadeIn('slow');
-               }
-                $('#botAgregarDatosContableFinal').fadeIn('slow');
-                
+                $SORI.UI.llenarTabla(selecTipoDoc,data);
                 $SORI.UI.init();
-                $(".cargando, .mensaje").css("display","none");
-                $(".cargando, .mensaje").remove();
-                $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_MinutosProvee, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_MontoProvee, #AccountingDocumentTemp_id_destination").val('');
-                if (selecTipoDoc=='3'||selecTipoDoc=='4'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
-                } 
-                if (selecTipoDoc=='5'||selecTipoDoc=='6'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date").val('');
-                } 
-                     }          
-        });
-       }
+                $SORI.UI.emptyFields(selecTipoDoc);
+            }          
+        }); 
      }
 }); 
 
@@ -1248,12 +775,11 @@ $('#botAgregarDatosContable').click('on',function(e)
                          type: "GET",
                          url: "guardarListaFinal",
                          success: function(data) 
-
-                         {  
-                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .lista_DispEnv').fadeOut('fast');$('.vistaTemp').remove();
-                           var obj = JSON.parse(data),
-                           exito=$('.mensaje').html("<h4>Se almacenaron <b> "+obj.length+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                        {  
+                           $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv').fadeOut('fast');$('.vistaTemp').remove();
+                           exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                            setTimeout(function() { exito.fadeOut('fast'); revisa.fadeOut('fast'); }, 4000);
+
                          }  
                     });
                 }else{
@@ -1261,8 +787,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                 }
            });
      });
-     
-  
+      
      $('#botConfirmarDatosContableFinal').click('on',function()
     {    
         var dato=$('input[type="checkbox"]').filter(function()
@@ -1662,29 +1187,3 @@ function marcar(source)
         }
     }
 };
-//**
-//fin check marcar
-//**
-  
-  
-//                            <label class="doc_number">Numero de Documento</label>
-//
-//    <div class="contratoForm DestinoDisp">
-//    <label class="DestDisp">Destino</label>
-//        
-//    <div class="contratoForm minutosDoc">
-//    <label class="MinutosE">Minutos</label>
-//    
-//    <div class="contratoForm minutosDocProveedor">
-//    
-//    <label class="MinutosP">Minutos Proveedor</label>
-//    <input id="AccountingDocumentTemp_MinutosProvee"type="text" name="AccountingDocumentTemp[MinutosProvee]">
-//    
-//    <div class="contratoForm montoDoc">
-//    <label class="MontoE">Monto</label>
-//    
-//    <div class="contratoForm montoDocProveedor">
-//    <label class="MontoP">Tarifa Proveedor</label>
-//    <input id="AccountingDocumentTemp_MontoProvee"type="text" name="AccountingDocumentTemp[MontoProvee]">
-//    
-//    

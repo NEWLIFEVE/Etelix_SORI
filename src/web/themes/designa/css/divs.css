@@ -427,7 +427,7 @@ width: 20%;
 }
 
 
-.contratoFormTextArea,#AccountingDocumentTemp_note
+.contratoFormTextArea, .quitaNota
 {
     display: none;
     width: 97%;
@@ -454,6 +454,9 @@ width: 20%;
 
 .DestinoProv{
     position: relative;
+}
+#AccountingDocumentTemp_input_dest_supplier{
+    display: none;
 }
 .CarrierDocument,.GrupoDocument
 {

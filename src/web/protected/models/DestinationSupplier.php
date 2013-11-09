@@ -132,4 +132,14 @@ class DestinationSupplier extends CActiveRecord
 			}
 		}
 	}
+
+        public static function resolvedId($DestinoSupp_sel,$DestinoSupp_input,$idCarrier)
+        {
+            if (isset($DestinoSupp_input)&&$DestinoSupp_input!='') {                               
+                $id = self::model()->getId($idCarrier, $DestinoSupp_input); 
+           } else {             //guarda un nuevo destination_suplier y luego se extrae el id para almacenarlo en documentos contables temp (id_destination_supplier
+                $id = $DestinoSupp_sel;
+          }
+            return $id;
+        }
 }

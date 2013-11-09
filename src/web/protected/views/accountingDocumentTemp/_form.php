@@ -32,15 +32,14 @@
                     'ajax'=>array(
                         'type'=>'POST',
                         'url'=>CController::createUrl('DestinosSuppAsignados'),
-                        'update'=>'select#AccountingDocumentTemp_id_destination_supplier',
+                        'update'=>'select#AccountingDocumentTemp_select_dest_supplier',
                     ),'prompt'=>'Seleccione'
                      )
                 ); ?>
         <?php echo $form->error($model,'id_carrier'); ?>
     </div>
     <div class="GrupoDocument input_largos ">
-        <?php // echo $form->labelEx($model,'carrier_groups'); ?>
-        <label>Grupo</label>
+        <?php  echo $form->labelEx($model,'carrier_groups'); ?>
         <?php echo $form->dropDownList($model,'carrier_groups',  CarrierGroups::getListGroups(),array('prompt'=>'Seleccione')); ?>
         <?php echo $form->error($model,'carrier_groups'); ?>
     </div>
@@ -64,7 +63,7 @@
                 ?>
                 <?php echo $form->error($model,'issue_date'); ?>
             </div>
-            <div class="contratoForm fechaDeInicio">
+            <div class="contratoForm fechaIniFact">
                 <?php echo $form->labelEx($model,'from_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -82,7 +81,7 @@
                 ?>
                 <?php echo $form->error($model,'from_date'); ?>
             </div>
-            <div class="contratoForm fechaFinal">
+            <div class="contratoForm fechaFinFact">
                 <?php echo $form->labelEx($model,'to_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
@@ -103,6 +102,7 @@
 
             <div class="contratoForm emailReceivedDate">
                 <label class='emailRecDate'>Fecha de recepción de Email</label>
+                <?php // echo $form->labelEx($model,'email_received_date'); ?>
                 <?php 
                     $this->widget('zii.widgets.jui.CJuiDatePicker',array(
                         'model'=>$model,
@@ -118,6 +118,25 @@
                     ); 
                 ?>
                 <?php echo $form->error($model,'email_received_date'); ?>
+            </div>
+            <div class="contratoForm validReceivedDate">
+                
+                <?php  echo $form->labelEx($model,'valid_received_date'); ?>
+                <?php 
+                    $this->widget('zii.widgets.jui.CJuiDatePicker',array(
+                        'model'=>$model,
+                        'attribute'=>'valid_received_date',
+                        'options'=>array(
+                            'dateFormat'=>'yy-mm-dd'
+                            ),
+                        'htmlOptions'=>array(
+                            'size'=>'10', // textField size
+                            'maxlength'=>'10', // textField maxlength
+                            )
+                        )
+                    ); 
+                ?>
+                <?php echo $form->error($model,'valid_received_date'); ?>
             </div>
             
             <div class="contratoForm emailReceivedTime">
@@ -147,15 +166,14 @@
                 <?php echo $form->error($model,'email_received_hour'); ?>
             </div>
 
-            <div class="contratoForm numDocument">
-                <label class="doc_number">Numero de Documento</label>
-                <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
-                <?php echo $form->dropDownList($model,'doc_number',array('prompt'=>'Seleccione')); ?>
-                <?php echo $form->error($model,'doc_number'); ?>
+   
+            <div class="contratoForm numFactura">
+                <?php echo $form->labelEx($model,'id_accounting_document'); ?>
+                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->error($model,'id_accounting_document'); ?>
             </div>
             
               <div class="contratoForm DestinoEtx">
-<!--                <label >Destino</label>-->
                 <?php echo $form->labelEx($model,'id_destination'); ?>
                 <?php echo $form->dropDownList($model,'id_destination',Destination::getDesList(),array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_destination'); ?>
@@ -163,8 +181,8 @@
             
              <div class="contratoForm DestinoProv">
                 <?php echo $form->labelEx($model,'id_destination_supplier'); ?>
-                <?php echo $form->textField($model,'id_destination_supplier',array('size'=>50,'maxlength'=>50)); ?>
-                <?php echo $form->dropDownList($model,'id_destination_supplier',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->textField($model,'input_dest_supplier',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->dropDownList($model,'select_dest_supplier',array('prompt'=>'Seleccione')); ?>
                 <?php echo $form->error($model,'id_destination_supplier'); ?>
                 <div class="nuevoDestProv">
                     <label>+</label>
@@ -175,13 +193,19 @@
              </div>
              
             <div class="contratoForm minutosDoc">
-                <label class="MinutosE">Minutos</label>
+                <?php echo $form->labelEx($model,'minutes'); ?>
                 <?php echo $form->textField($model,'minutes'); ?>
                 <?php echo $form->error($model,'minutes'); ?>
             </div>
-            <div class="contratoForm minutosDocProveedor">
-               <label class="MinutosP">Minutos Proveedor</label>
-               <input id="AccountingDocumentTemp_MinutosProvee"type="text" name="AccountingDocumentTemp[MinutosProvee]"><!-- esto hay que arreglarlo bien-->
+            <div class="contratoForm minutosEtx">
+                <?php echo $form->labelEx($model,'min_etx'); ?>
+                <?php echo $form->textField($model,'min_etx'); ?>
+                <?php echo $form->error($model,'min_etx'); ?>
+            </div>
+            <div class="contratoForm minutosProveedor">
+                <?php echo $form->labelEx($model,'min_carrier'); ?>
+                <?php echo $form->textField($model,'min_carrier'); ?>
+                <?php echo $form->error($model,'min_carrier'); ?>
             </div>
             
             <div class="contratoForm tabla_N_C">
@@ -200,15 +224,25 @@
                    </tr>
             </table>
             </div>
-            
+                     <div class="contratoForm numDocument">
+                <?php echo $form->labelEx($model,'doc_number'); ?>
+                <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->error($model,'doc_number'); ?>
+            </div>
             <div class="contratoForm montoDoc">
-                <label class="MontoE">Monto</label>
+                <?php echo $form->labelEx($model,'amount'); ?>
                 <?php echo $form->textField($model,'amount'); ?>
                 <?php echo $form->error($model,'amount'); ?>
             </div>
-            <div class="contratoForm montoDocProveedor">
-                <label class="MontoP">Tarifa Proveedor</label>
-                <input id="AccountingDocumentTemp_MontoProvee"type="text" name="AccountingDocumentTemp[MontoProvee]"><!-- esto hay que arreglarlo bien-->
+            <div class="contratoForm rateEtx">
+                <?php echo $form->labelEx($model,'rate_etx'); ?>
+                <?php echo $form->textField($model,'rate_etx'); ?>
+                <?php echo $form->error($model,'rate_etx'); ?>
+            </div>
+            <div class="contratoForm rateProveedor">
+                <?php echo $form->labelEx($model,'rate_carrier'); ?>
+                <?php echo $form->textField($model,'rate_carrier'); ?>
+                <?php echo $form->error($model,'rate_carrier'); ?>
             </div>
                 
             <div class="contratoForm Moneda">
@@ -216,20 +250,16 @@
                 <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency()); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
-
-            <div class="contratoForm numDocumentoNota"> <!-- provisional -->
-                 <?php echo $form->labelEx($model,'doc_number'); ?>
-                 <input name="numberNota" id="numberNota" value="">
-            </div>
+            
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
             </div>
-            <div class="contratoFormTextArea">
+            <div class="quitaNota">
                 <br>
-                <label class="quitaNota">
-                    <b>Nota (-)</b>
-                </label>
+                <label>Nota (-)</label>
+            </div>
+            <div class="contratoFormTextArea">
                 <?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
                 <?php echo $form->error($model,'note'); ?>
             </div>
@@ -247,7 +277,43 @@
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
         
-       
+               <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
+        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
+                <tr>
+                    <td> Carrier </td>
+                    <td> Fecha de Emisión </td>
+                    <td> Inicio Periodo a Facturar </td>
+                    <td> Fin Periodo a Facturar </td>
+                    <td> Fecha Envio </td>
+                    <td> N°Documento </td>
+                    <td> Minutos </td>
+                    <td> Cantidad </td>
+                    <td> Moneda </td>
+                    <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_FacEnv!=null)
+                    {
+                        foreach ($lista_FacEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
+                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
+                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                    <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";  
+                        }
+                    }
+                    ?>
+         </table>
+          
+         <br>
         <label class="Label_F_Rec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>Facturas Recibidas:</label>
         <table border="1" class="tablaVistDocTemporales lista_FacRec" <?php if($lista_FacRec==null){echo "style='display:none;'";}?>>
                 <tr>
@@ -291,43 +357,7 @@
         </table>
         
         <br>
-        <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
-        <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
-                <tr>
-                    <td> Carrier </td>
-                    <td> Fecha de Emisión </td>
-                    <td> Inicio Periodo a Facturar </td>
-                    <td> Fin Periodo a Facturar </td>
-                    <td> Fecha Envio </td>
-                    <td> N°Documento </td>
-                    <td> Minutos </td>
-                    <td> Cantidad </td>
-                    <td> Moneda </td>
-                    <td> Acciones </td>
-                </tr>
-                <?php
-                    if($lista_FacEnv!=null)
-                    {
-                        foreach ($lista_FacEnv as $key => $value)
-                        { 
-                            echo "<tr class='vistaTemp' id='".$value->id."'>
-                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
-                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
-                                    <td id='AccountingDocumentTemp[from_date]'>".$value->from_date."</td>
-                                    <td id='AccountingDocumentTemp[to_date]'>".$value->to_date."</td>
-                                    <td id='AccountingDocumentTemp[sent_date]'>".$value->sent_date."</td>
-                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
-                                    <td id='AccountingDocumentTemp[minutes]'>".$value->minutes."</td>
-                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
-                                    <td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
-                                  </tr>";  
-                        }
-                    }
-                    ?>
-         </table>
-          
-         <br>
+
          <label class='LabelCobros' <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>Cobros:</label>
          <table border="1" class="tablaVistDocTemporales lista_Cobros" <?php if($lista_Cobros==null){echo "style='display:none;'";}?>>
                 <tr>
@@ -456,7 +486,7 @@
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
                                     <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
-                                    <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                    <td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
                     }
@@ -489,3 +519,4 @@
 
      </div>
 </div><!-- form -->
+
