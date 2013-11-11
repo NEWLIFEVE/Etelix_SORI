@@ -547,25 +547,27 @@ $SORI.UI=(function()
         
         function buscaDisputa(tipo)
     {
-        if (tipo === '7') {
-            var url = "BuscaDisputaRec";
-        } else {
-            url = "BuscaDisputaEnv";
-        }
         $('#AccountingDocumentTemp_id_accounting_document').change(function()
         {
-            
+            if (tipo === '7'||tipo === '8') {
+            if (tipo === '7') {
+               var url = "BuscaDisputaRec";
+           } else {
+               url = "BuscaDisputaEnv";
+           }
             $.ajax({
                 type: "GET",
                 url: url,
                 data: $('#accounting-document-temp-form').serialize(),
                 success: function(data)
                 {
-                    $('.listaDisputas').remove();
-                    $('.tabla_N_C').fadeIn("fast");
+                   $('.listaDisputas').remove();
+                   if(data=="[]"){
+                      //no hay datos y asi no muestra nada
+                   }else{
                     console.log(data);
                     var obj = JSON.parse(data);
-
+                    $('.tabla_N_C').fadeIn("fast");
                     for (var i = 0, j = obj.length; i < j; i++)
                     {
                         var montoTotal = (obj[i].amount) + (obj[i].dispute);
@@ -589,8 +591,10 @@ $SORI.UI=(function()
                         });
                         sumMontoNota();
                     }
+                  } 
                 }
             });
+          }
         });
     }
         /**
