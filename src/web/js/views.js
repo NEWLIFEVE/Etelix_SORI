@@ -258,6 +258,7 @@ $('#botAsignarContrato').click('on',function(e)
     termino_pago = $("#Contrato_id_termino_pago").val(),
     monetizable = $("#Contrato_id_monetizable").val(),
     Contrato_up = $("#Contrato_up").val(),
+    Contrato_status = $("#Contrato_status").val(),
     diasDisputaOculto = $("#dias_disputa_Oculto").val(),
     diasDisputaSolvedOculto = $("#dias_disputa_solved_Oculto").val(),
     F_Firma_Contrato_Oculto = $("#F_Firma_Contrato_Oculto").val(),
@@ -265,6 +266,7 @@ $('#botAsignarContrato').click('on',function(e)
     monetizableOculto = $("#monetizable_Oculto").val(),      
     TPOculto = $("#TerminoP_Oculto").val(),
     Contrato_upOculto = $("#Contrato_upOculto").val();
+    Contrato_statusOculto = $("#Contrato_statusOculto").val();
     
     var dias_disputa=$("#Contrato_id_disputa").val(),
     dias_disputa_solved=$("#Contrato_id_disputa_solved").val(),
@@ -282,7 +284,7 @@ $('#botAsignarContrato').click('on',function(e)
     $.ajax({
         type: "GET",
         url: "ContratoConfirma",
-        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
+        data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto,
         success: function(data)
         {
             var obj=JSON.parse(data),
@@ -291,6 +293,7 @@ $('#botAsignarContrato').click('on',function(e)
             termino_pName=obj.termino_pName,
             monetizableName=obj.monetizableName,
             Contrato_upC=obj.Contrato_upConfirma,
+            Contrato_StatusC=obj.Contrato_statusConfirma,
             sign_date = $("#Contrato_sign_date").val(),
             production_date = $("#Contrato_production_date").val(),
             end_date=$("#Contrato_end_date").val(),
@@ -304,7 +307,8 @@ $('#botAsignarContrato').click('on',function(e)
                 var guardoEdito=" Se guardo con exito el Contrato";
                 var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
                                 <br><b>( "+carrierName+" / "+companyName+" )</b></h4><p>Con las siguientes condiciones comerciales:\n\
-                                <p><h6>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
+                                <h6><p>Status del Carrier: "+termino_pName+"</p>\n\
+                                <p>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
                                 <p>Dias max para disputar: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
                                 <p>Dias para solventar disputas: "+dias_disputa_solved+"</p>\n\
                                 <p>Limite de Compra: "+compra+"</p>\n\
@@ -402,6 +406,23 @@ $('#botAsignarContrato').click('on',function(e)
                         backUP="Unidad de producción: ";  
                     }
                 }
+                if(Contrato_statusOculto==''){
+                     backStatus="Status del Carrier: ";  
+                }else{
+                    if(Contrato_statusOculto != Contrato_status)
+                    {
+                        if (Contrato_statusOculto==0){
+                            Contrato_statusOculto='Inactivo';
+                        }else if(Contrato_upOculto==1){
+                            Contrato_statusOculto='Activo';
+                        }
+                        var backStatus="Status del Carrier: "+Contrato_statusOculto+" a "; 
+                    }
+                    else
+                    {
+                        backStatus="Status del Carrier: ";  
+                    }
+                }
                 if(end_date!="")
                 {
                     var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
@@ -409,8 +430,9 @@ $('#botAsignarContrato').click('on',function(e)
                 else
                 {
                     advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato\n\
-                                              : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p>\n\
-                                               <h6>"+backTPago+ ""+termino_pName+"<p>\n\
+                                              : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6>\n\
+                                               <p>"+backStatus+ ""+Contrato_StatusC+"<p>\n\
+                                               <p>"+backTPago+ ""+termino_pName+"<p>\n\
                                                <p>"+backMonetizable+" "+monetizableName+"<p>\n\
                                                    "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
                                                    "+backDiasDiasputaSolved+" "+dias_disputa_solved+"<p>\n\
@@ -435,7 +457,7 @@ $('#botAsignarContrato').click('on',function(e)
                     $.ajax({
                         type: "GET",
                         url: "Contrato",
-                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up,
+                        data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status,
                         success: function(data) 
                         {  
                             
@@ -447,7 +469,7 @@ $('#botAsignarContrato').click('on',function(e)
                             else
                             {
                                 efectivo="<h4>"+guardoEdito+"\n\
-                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
+                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6><p>Status del Carrier: "+Contrato_StatusC+"<p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
                                                </h6><p><img src='/images/si.png'width='90px' height='50px'/>";
                             }
                             var exito=$('.mensaje').html(efectivo).hide().fadeIn('fast');
