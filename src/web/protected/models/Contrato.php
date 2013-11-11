@@ -32,7 +32,7 @@ class Contrato extends CActiveRecord
     public $id_managers;
     public $id_disputa;
     public $id_disputa_solved;
-    public $id_carrier1;
+    public $status;
 	public function tableName()
 	{
 		return 'contrato';
