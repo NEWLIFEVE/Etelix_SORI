@@ -5,6 +5,7 @@
  * @var $form CActiveForm 
  */
 ?>
+
 <div class="form">
     <div class="instruccion">
         <h3>Para comenzar, Seleccione un tipo de documento</h3>
@@ -164,15 +165,11 @@
                 ?>
                 <?php echo $form->error($model,'email_received_hour'); ?>
             </div>
-            
-            <div class="contratoForm numDocument">
-                <?php echo $form->labelEx($model,'doc_number'); ?>
-                <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
-                <?php echo $form->error($model,'doc_number'); ?>
-            </div>
+
+   
             <div class="contratoForm numFactura">
                 <?php echo $form->labelEx($model,'id_accounting_document'); ?>
-                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'')); ?>
                 <?php echo $form->error($model,'id_accounting_document'); ?>
             </div>
             
@@ -186,7 +183,7 @@
                 <?php echo $form->labelEx($model,'id_destination_supplier'); ?>
                 <?php echo $form->textField($model,'input_dest_supplier',array('size'=>50,'maxlength'=>50)); ?>
                 <?php echo $form->dropDownList($model,'select_dest_supplier',array('prompt'=>'Seleccione')); ?>
-                <?php // echo $form->error($model,'id_destination_supplier'); ?>
+                <?php echo $form->error($model,'id_destination_supplier'); ?>
                 <div class="nuevoDestProv">
                     <label>+</label>
                 </div>
@@ -210,6 +207,28 @@
                 <?php echo $form->textField($model,'min_carrier'); ?>
                 <?php echo $form->error($model,'min_carrier'); ?>
             </div>
+            
+            <div class="contratoForm tabla_N_C">
+            <label class="label_Disp_NotaCEnv">Disputas recibidas:</label>
+            <table border="1" class="tablaVistDocTemporales lista_Disp_NotaCEnv">
+                   <tr>
+                      <td> Destino </td>
+                      <td> Min Etx </td>
+                      <td> Min Prov </td>
+                      <td> Tarifa Etx </td>
+                      <td> Tarifa Prov </td>
+                      <td> Monto Etx</td>
+                      <td> Monto Prov</td>
+                      <td> Disputa</td>
+                      <td> Monto de nota </td>
+                   </tr>
+            </table>
+            </div>
+                     <div class="contratoForm numDocument">
+                <?php echo $form->labelEx($model,'doc_number'); ?>
+                <?php echo $form->textField($model,'doc_number',array('size'=>50,'maxlength'=>50)); ?>
+                <?php echo $form->error($model,'doc_number'); ?>
+            </div>
             <div class="contratoForm montoDoc">
                 <?php echo $form->labelEx($model,'amount'); ?>
                 <?php echo $form->textField($model,'amount'); ?>
@@ -231,7 +250,7 @@
                 <?php echo $form->dropDownList($model,'id_currency',  Currency::getListCurrency()); ?>
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
-
+            
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
@@ -244,6 +263,7 @@
                 <?php echo $form->textArea($model,'note',array('size'=>60,'maxlength'=>250)); ?>
                 <?php echo $form->error($model,'note'); ?>
             </div>
+
             <br>
             <div id="botAgregarDatosContable" class="row buttons">
                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar a Temporales' : 'Save'); ?>
@@ -435,8 +455,8 @@
          </table>
          
          <br>
-         <label class="Label_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Disputas Enviadas:</label>
-         <table border="1" class="tablaVistDocTemporales lista_DispEnv" <?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
+         <label class="Label_DispEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Disputas Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_DispEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
                 <tr>
                    <td> Carrier </td>
                    <td> Destino Supp </td>
@@ -472,5 +492,59 @@
                     }
                     ?>
          </table>
+         <br>
+         <label class="Label_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>
+                <tr>
+                    <td> Carrier </td>
+                   <td> Num. Factura</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_NotCredEnv!=null)
+                    {
+                        foreach ($lista_NotCredEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td> 
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    <td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+         <br>
+         <label class="Label_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>Notas de Crédito Recibidas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Carrier </td>
+                   <td> Num. Factura</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_NotCredRec!=null)
+                    {
+                        foreach ($lista_NotCredRec as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td> 
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    <td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+
      </div>
-</div>
+</div><!-- form -->
+
