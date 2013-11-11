@@ -167,6 +167,25 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
+	function _editar_Nota_cred(obj)
+	{
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+			if(i>=2 && i<=3)
+			{
+                            var input=document.createElement('input');
+                            input.name=obj[0].children[i].id;
+                            input.value=obj[0].children[i].innerHTML;
+                            obj[0].children[i].innerHTML="";
+                            obj[0].children[i].appendChild(input);
+                            input=null;
+                        }
+		}
+		obj[0].children[4].innerHTML="";
+		obj[0].children[4].innerHTML="<img name='save_Nota_cred' alt='save' src='/images/icon_check.png'><img name='cancel_Nota_cred' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
 
 	/**
 	 * Metodo encargado de regresar la fila a su estado normal si estuvo en estado de edicion
@@ -264,6 +283,23 @@ $SORI.UI=(function()
 		obj=contenido=null;
 		accion();
 	}
+        function _revert_Nota_cred(obj)
+	{
+		var contenido=new Array();
+		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+                    if(i>=2 && i<=3)
+			{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+                        }
+		}
+		obj[0].children[4].innerHTML="";
+		obj[0].children[4].innerHTML="<img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
         function _update_monto_Disp(obj)
         {
 //            alert('siiiiii :)');// pausado por ahora
@@ -327,7 +363,7 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='edit'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_DispEnv'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv']").on('click',function()
+		$("img[name='edit'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Nota_cred'],img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_DispEnv'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Nota_cred'],img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv'], img[name='cancel_Nota_cred']") .on('click',function()
 		{
 			$fila=$(this).parent().parent();
 //                        GENERAL
@@ -391,7 +427,7 @@ $SORI.UI=(function()
 			{
 				_revert_Pagos($fila);
 			}
-//                        DISPUTAS: El mismo código sirve para disp recibidas y enviadas
+//                        DISPUTAS RECIBIDAS
 			if($(this).attr('name')=='edit_DispRec')
 			{
 				_editar_DispRec($fila);
@@ -406,7 +442,7 @@ $SORI.UI=(function()
 			{
 				_revert_DispRec($fila);
 			}
-//                        DISPUTAS: El mismo código sirve para disp recibidas y enviadas
+//                        DISPUTAS ENVIADAS
 			if($(this).attr('name')=='edit_DispEnv')
 			{
 				_editar_DispEnv($fila);
@@ -420,6 +456,20 @@ $SORI.UI=(function()
 			if($(this).attr('name')=='cancel_DispEnv')
 			{
 				_revert_DispEnv($fila);
+			}
+//                        NOTAS DE CREDITO
+			if($(this).attr('name')=='edit_Nota_cred')
+			{
+				_editar_Nota_cred($fila);
+			}
+			if($(this).attr('name')=='save_Nota_cred')
+			{
+				$SORI.AJAX.actualizar($fila[0].id);
+				_revert_Nota_cred($fila);
+			}
+			if($(this).attr('name')=='cancel_Nota_cred')
+			{
+				_revert_Nota_cred($fila);
 			}
 		});
 		$fila=null;
@@ -477,12 +527,12 @@ $SORI.UI=(function()
                         $('.cargando,.mensaje,.listaDisputas').remove();
                         $('.tabla_N_C,.montoDoc').fadeOut('fast');
                         if(data=="[]")
-                        {         
-                            var noHayFacturas = $("<div class='cargando'></div><div class='mensaje'><h4>No hay facturas registradas con el carrier y el periodo de facturacion que esta indicando</h4>Por favor revise los datos, y vuelva a intentar<p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                                                $("body").append(noHayFacturas);noHayFacturas.fadeIn('slow');setTimeout(function(){noHayFacturas.fadeOut('slow');},3000);$('select#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').val("");
+                        {     
+                              $("#AccountingDocumentTemp_id_accounting_document").html("<option>No hay facturas registradas</option>").css('color','rgb(245, 105, 109)');  
+                              $('select#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').val("");
                         }else{
                             obj = JSON.parse(data);
-                            $("#AccountingDocumentTemp_id_accounting_document").html("<option>Ahora seleccione</option>");
+                            $("#AccountingDocumentTemp_id_accounting_document").html("<option>Seleccione</option>").css('color','#777');
                             for(var i=0, j=obj.length; i<j;i++)
                             {
                                 $("#AccountingDocumentTemp_id_accounting_document").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");  console.log(obj[i].id,obj[i].factura);$('.listaDisputas').remove();$('.tabla_N_C').hide('fast');
@@ -500,7 +550,7 @@ $SORI.UI=(function()
         if (tipo === '7') {
             var url = "BuscaDisputaRec";
         } else {
-            var url = "BuscaDisputaEnv";
+            url = "BuscaDisputaEnv";
         }
         $('#AccountingDocumentTemp_id_accounting_document').change(function()
         {
@@ -711,12 +761,12 @@ $SORI.UI=(function()
                     label='.Label_DispEnv';
                     break
                 case '7':
-                    var tabla = "id+carrier+fact_number+sum_dispute+amount",
+                    var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                     clase=".lista_NotCredEnv",
                     label='.Label_NotCredEnv';
                     break
                 case '8':
-                    var tabla = "cd",
+                    var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                     clase=".lista_NotCredRec",
                     label='.Label_NotCredRec';
                     break
@@ -886,10 +936,10 @@ $SORI.UTILS=(function()
                     action = "GuardarDisp_EnvTemp";
                     break
                 case '7':
-                    action = "GuardarNotaC_EnvTemp";
+                    action = "GuardarNotaC_Env";
                     break
                 case '8':
-                    action = "GuardarNotaC_RecTemp";
+                    action = "GuardarNotaC_Rec";
                     break
             }
             return action;

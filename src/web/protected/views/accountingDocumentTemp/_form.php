@@ -169,7 +169,7 @@
    
             <div class="contratoForm numFactura">
                 <?php echo $form->labelEx($model,'id_accounting_document'); ?>
-                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'Seleccione')); ?>
+                <?php echo $form->dropDownList($model,'id_accounting_document',array('prompt'=>'')); ?>
                 <?php echo $form->error($model,'id_accounting_document'); ?>
             </div>
             
@@ -493,24 +493,52 @@
                     ?>
          </table>
          <br>
-         <label class="Label_NotCredEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
-         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_DispEnv==null){echo "style='display:none;'";}?>>
+         <label class="Label_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>
                 <tr>
-                   <td> Num. Documento </td>
-                   <td> Monto total</td>
+                    <td> Carrier </td>
                    <td> Num. Factura</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
                    <td> Acciones </td>
                 </tr>
                 <?php
-                    if($lista_DispEnv!=null)
+                    if($lista_NotCredEnv!=null)
                     {
-                        foreach ($lista_DispEnv as $key => $value)
+                        foreach ($lista_NotCredEnv as $key => $value)
                         { 
                             echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td> 
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
-                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
-                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>        
-                                    <td><img class='edit' name='edit_not_C_Env' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    <td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                  </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+         <br>
+         <label class="Label_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>Notas de Crédito Recibidas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Carrier </td>
+                   <td> Num. Factura</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
+                   <td> Acciones </td>
+                </tr>
+                <?php
+                    if($lista_NotCredRec!=null)
+                    {
+                        foreach ($lista_NotCredRec as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td> 
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    <td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
                         }
                     }

@@ -648,7 +648,8 @@ $('#GeographicZone_id').change(function()
  * admin de documentos contables
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
-{
+{   
+    $SORI.UI.changeCss('#AccountingDocumentTemp_id_accounting_document','color','#777');
     var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val(),
     ocultar =['.tabla_N_C,.CarrierDocument','.GrupoDocument','.emailReceivedDate','.validReceivedDate','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedTime','.minutosDoc','.minutosEtx','.minutosProveedor','.DestinoEtx','.DestinoProv','.Moneda','select#AccountingDocumentTemp_id_destination_supplier','input#AccountingDocumentTemp_id_destination_supplier','.montoDoc','.numDocument','.numFactura','.rateEtx','.rateProveedor'];
     switch (tipoDocument){
@@ -683,16 +684,14 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoEtx','.rateEtx','.rateProveedor'];
                 $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                 $SORI.UI.changeCss('.numFactura','width','24%');
-                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
-                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val('');
+                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val(''); $("#AccountingDocumentTemp_id_accounting_document").html("");
                 $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                 break
         case '6'://Disputa enviada
                 var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoProv','.rateEtx','.rateProveedor','select#AccountingDocumentTemp_id_destination_supplier'];
                 $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                 $SORI.UI.changeCss('.numFactura','width','24%');
-                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination").val('');
-                $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val(''); 
+                $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val(''); $("#AccountingDocumentTemp_id_accounting_document").html("");
                 $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                 $SORI.UI.toggleDestProv();
                 break
@@ -701,6 +700,7 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                 $SORI.UI.changeCss('.numFactura','width','51%');
                 $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                $("#AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_accounting_document, #AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_id_accounting_document").val(''); $("#AccountingDocumentTemp_id_accounting_document").html(""); 
                 $SORI.UI.sumMontoNota();
                 $SORI.UI.buscaDisputa(tipoDocument);
                 break
@@ -709,6 +709,9 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
                 $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                 $SORI.UI.changeCss('.numFactura','width','51%');
                 $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                $("#AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_accounting_document, #AccountingDocumentTemp_id_carrier").val('');$("#AccountingDocumentTemp_id_accounting_document").html("");
+                $SORI.UI.sumMontoNota();
+                $SORI.UI.buscaDisputa(tipoDocument);
                 break
     }
         
@@ -777,7 +780,7 @@ $('#botAgregarDatosContable').click('on',function(e)
                          success: function(data) 
                         {  
                            $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv').fadeOut('fast');$('.vistaTemp').remove();
-                           exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
+                           var exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                            setTimeout(function() { exito.fadeOut('fast'); revisa.fadeOut('fast'); }, 4000);
 
                          }  

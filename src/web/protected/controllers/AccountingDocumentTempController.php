@@ -31,7 +31,7 @@ class AccountingDocumentTempController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('index','view','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_EnvTemp','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec'),
+				'actions'=>array('index','view','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -74,6 +74,8 @@ class AccountingDocumentTempController extends Controller
 		$lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
 		$lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
 		$lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
+		$lista_NotCredEnv=AccountingDocumentTemp::lista_NotCredEnv(Yii::app()->user->id);
+		$lista_NotCredRec=AccountingDocumentTemp::lista_NotCredRec(Yii::app()->user->id);
 		
 
 		// Uncomment the following line if AJAX validation is needed
@@ -87,7 +89,7 @@ class AccountingDocumentTempController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec,'lista_DispEnv'=>$lista_DispEnv
+			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec,'lista_DispEnv'=>$lista_DispEnv,'lista_NotCredEnv'=>$lista_NotCredEnv,'lista_NotCredRec'=>$lista_NotCredRec
 		));
 	}
         
@@ -217,27 +219,31 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarNotaC_Env() 
         {
-
-              $model = new AccountingDocumentTemp;
-
-           $model->id_type_accounting_document = 8;
-           $model->amount = $_GET['cantidad'];
-           $model->note = Utility::snull($_GET['nota']);
-           $model->id_accounting_document = $_GET['numDocumento'];
-           $model->confirm = 1;
-           $model->doc_number = $_GET['numberNota'];
-
+            $model = new AccountingDocumentTemp;
+            $model->attributes=$_GET['AccountingDocumentTemp'];
+            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
            if ($model->save()) {
-               $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-               Log::registrarLog($idAction, NULL, $model->id);
-
-                $params['idDoc'] =$model->id;
-                $params['numberNota'] =$_GET['numberNota'];
-                $params['cantidad'] = $_GET['cantidad'];
-                
-                echo json_encode($params);
-           }
-
+//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
+            }
+        }
+        /**
+        * recibe los datos desde ajax y almacena solo las notas de credito recibidas...
+        * @access public
+        **/
+        public function actionGuardarNotaC_Rec() 
+        {
+            $model = new AccountingDocumentTemp;
+            $model->attributes=$_GET['AccountingDocumentTemp'];
+            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
+           if ($model->save()) {
+//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
+                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                Log::registrarLog($idAction, NULL, $model->id);
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
+            }
         }
         /**
          * se encarga de guardar los documentos temporales en la tabla de documentos contables definitiva
@@ -404,7 +410,7 @@ class AccountingDocumentTempController extends Controller
             $model = new AccountingDocumentTemp;
             $model->attributes=$_GET['AccountingDocumentTemp'];
             $params = array();
-            $lista_Disp_NotaCEnv = AccountingDocument::lista_Disp_NotaCEnv($model->id_accounting_document);
+            $lista_Disp_NotaCEnv = AccountingDocument::lista_Disp_NotaCRec($model->id_accounting_document);
             foreach ($lista_Disp_NotaCEnv as $key => $disputa) {
                    $params[$key]['id']=$disputa->id;
                    $params[$key]['id_destination']=$disputa->id_destination;
@@ -425,13 +431,13 @@ class AccountingDocumentTempController extends Controller
          */
         public function actionBuscaDisputaEnv() 
         {
-            $model = new AccountingDocumentTemp;
+            $model = new AccountingDocument;
             $model->attributes=$_GET['AccountingDocumentTemp'];
             $params = array();
-            $lista_Disp_NotaCRec = AccountingDocument::lista_Disp_NotaCRec($model->id_accounting_document);
+            $lista_Disp_NotaCRec = AccountingDocument::lista_Disp_NotaCEnv($model->id_accounting_document);
             foreach ($lista_Disp_NotaCRec as $key => $disputa) {
                    $params[$key]['id']=$disputa->id;
-                   $params[$key]['id_destination_supplier']=$disputa->id_destination_supplier;
+                   $params[$key]['id_destination']=$disputa->id_destination_supplier;
                    $params[$key]['min_etx']=$disputa->min_etx;
                    $params[$key]['min_carrier']=$disputa->min_carrier;
                    $params[$key]['rate_etx']=$disputa->rate_etx;

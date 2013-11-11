@@ -568,15 +568,28 @@ width: 20%;
 }
  /*****NOTAS DE CRÉDITO ENVIADAS*****/
 .lista_NotCredEnv{
-    background: red;
-    border-bottom-color: red;
+    background: rgb(172, 208, 212);
+    border-bottom-color: rgb(172, 208, 212);
 }
 .lista_NotCredEnv td{
     width: 8em;
     height: 25px;
 }
 .lista_NotCredEnv tr:hover{
-    background: red;
+    background: rgb(172, 208, 212);
+    color: white;
+}
+ /*****NOTAS DE CRÉDITO RECIBIDAS*****/
+.lista_NotCredRec{
+    background: rgb(189, 170, 194);
+    border-bottom-color: rgb(189, 170, 194);
+}
+.lista_NotCredRec td{
+    width: 8em;
+    height: 25px;
+}
+.lista_NotCredRec tr:hover{
+    background: rgb(189, 170, 194);
     color: white;
 }
  /*****LISTA DE DISPUTAS RECIBIDAS EN FORM DE NOTA DE CREDITO ENVIADA*****/

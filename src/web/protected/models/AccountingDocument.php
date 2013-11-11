@@ -224,7 +224,7 @@ class AccountingDocument extends CActiveRecord
             return self::model()->find("doc_number=:doc_number AND id_carrier=:carrier", array(':doc_number'=>$doc_num,':carrier'=>$carrier))->id;
         }
         
-        public static function lista_Disp_NotaCEnv($factura)
+        public static function lista_Disp_NotaCRec($factura)
 	{
 		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination, t.id_accounting_document
                       FROM accounting_document t, destination d
@@ -233,7 +233,7 @@ class AccountingDocument extends CActiveRecord
 
 		return $model;
 	}
-        public static function lista_Disp_NotaCRec($factura)
+        public static function lista_Disp_NotaCEnv($factura)
 	{
 		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination_supplier, t.id_accounting_document
                       FROM accounting_document t, destination_supplier d
@@ -242,4 +242,5 @@ class AccountingDocument extends CActiveRecord
 
 		return $model;
 	}
+
 }
