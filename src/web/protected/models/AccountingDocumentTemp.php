@@ -491,7 +491,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->note=Utility::snull($model->note);
-                    $model->confirm=1;
+                    $model->confirm=0;
                     break;
                 case 2:
                     $model->sent_date=NULL;

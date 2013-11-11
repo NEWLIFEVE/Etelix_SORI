@@ -547,14 +547,16 @@ $SORI.UI=(function()
         
         function buscaDisputa(tipo)
     {
-        if (tipo === '7') {
-            var url = "BuscaDisputaRec";
-        } else {
-            url = "BuscaDisputaEnv";
-        }
+        
+
         $('#AccountingDocumentTemp_id_accounting_document').change(function()
         {
-            
+            if (tipo === '7' || tipo === '8'){
+            if (tipo === '7') {
+                var url = "BuscaDisputaRec";
+            } else {
+                url = "BuscaDisputaEnv";
+            }
             $.ajax({
                 type: "GET",
                 url: url,
@@ -577,8 +579,8 @@ $SORI.UI=(function()
                                                             <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
                                                             <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                             <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[dispute]'>" + obj[i].dispute + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=" + obj[i].dispute + "></td>\n\
+                                                            <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].dispute) + "</td>\n\
+                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
                                                         </tr>");
                         $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
                         $('#AccountingDocumentTemp_amount').text(montoTotal);
@@ -591,7 +593,9 @@ $SORI.UI=(function()
                     }
                 }
             });
-        });
+        }
+   });
+    
     }
         /**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
