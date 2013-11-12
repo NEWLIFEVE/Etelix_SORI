@@ -785,8 +785,34 @@ $SORI.UI=(function()
                 $('#botAgregarDatosContableFinal').fadeIn('slow');
             }else{
                 alert('existe aqui');
+                $SORI.UI.MensajeYaExiste(obj);
             }
         }
+         function MensajeYaExiste(obj){
+             switch (obj.id_type_accounting_document){
+                    case '1':
+                        var tipo="La Factura Enviada";
+                        $SORI.UI.MuestraMensaje(tipo);
+                        break
+                    case '2':
+                        tipo="La Factura Recibida";
+                        $SORI.UI.MuestraMensaje(tipo);
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intento guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+"-"+obj.to_date+"</b>, bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 10000);
+                        break
+             }
+         }
+         function MuestraMensaje(obj){
+             alert(obj);
+             switch (obj.id_type_accounting_document){
+                    case '1':
+                        alert(obj.id_type_accounting_document);
+                        break
+                    case '2':
+                        var tipo="La Factura Recibida"
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intento guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+"-"+obj.to_date+"</b>, bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 10000);
+                        break
+             }
+         }
         
         function emptyFields(obj){
             
@@ -829,7 +855,9 @@ $SORI.UI=(function()
                 llenarTabla:llenarTabla,
                 emptyFields:emptyFields,
                 changeCss:changeCss,
-                sumMontoNota:sumMontoNota
+                sumMontoNota:sumMontoNota,
+                MensajeYaExiste:MensajeYaExiste,
+                MuestraMensaje:MuestraMensaje
 	};
 })();
 
