@@ -101,9 +101,9 @@ class AccountingDocumentTempController extends Controller
         {
             $model = new AccountingDocumentTemp;
             $model->attributes = $_GET['AccountingDocumentTemp'];
+            $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
             $ValidADT = AccountingDocumentTemp::getExist($model);
             $ValidAD = AccountingDocument::getExist($model);
-            $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
             if($ValidAD==NULL && $ValidADT==NULL){
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
