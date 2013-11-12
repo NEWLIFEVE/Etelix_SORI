@@ -304,7 +304,7 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function lista_DispRec($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount_carrier,(d.min_etx*d.rate_etx) as amount_etx,d.amount as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination e
@@ -317,7 +317,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
             
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount_carrier,(d.min_etx*d.rate_etx) as amount_etx, d.amount as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination_supplier, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination_supplier e
@@ -580,7 +580,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->amount=NULL;
+                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -594,7 +594,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination=NULL;
                     $model->minutes=NULL;
-                    $model->amount=NULL;
+                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);

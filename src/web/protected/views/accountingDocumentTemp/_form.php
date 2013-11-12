@@ -11,6 +11,12 @@
         <h3>Para comenzar, Seleccione un tipo de documento</h3>
     </div>
     <?php 
+ echo CHtml::beginForm(Yii::app()->createUrl('AccountingDocumentTemp/enviarEmail/'),'post',array('name'=>'FormularioCorreo','id'=>'FormularioCorreo','style'=>'display:none'));
+  echo CHtml::textField('html','Hay Efectivo',array('id'=>'html','style'=>'display:none'));
+  echo CHtml::textField('vista','create',array('id'=>'vista','style'=>'display:none'));
+  echo CHtml::textField('asunto','Documentos Contables Temporales',array('id'=>'asunto','style'=>'display:none'));
+  echo CHtml::endForm(); 
+
         $form=$this->beginWidget('CActiveForm',array(
             'id'=>'accounting-document-temp-form',
             'enableAjaxValidation'=>false,
@@ -273,6 +279,11 @@
     <?php $this->endWidget(); ?>
     <div class="VistDocTemporales">
         <br>
+        <div class="botonesParaExportar" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
+           <div class="botonImprimir contratoForm"><img src='/images/print.png'width='95px' height='95px'/></div>
+           <div class="botonCorreo contratoForm"><img src='/images/mail.png'width='95px' height='95px'/></div> 
+        </div>
+        
         <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
@@ -445,7 +456,7 @@
                                     <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
                                     <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
-                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount_carrier."</td>
                                     <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
                                     <td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
@@ -484,7 +495,7 @@
                                     <td id='AccountingDocumentTemp[rate_etx]'>".$value->rate_etx."</td>
                                     <td id='AccountingDocumentTemp[rate_carrier]'>".$value->rate_carrier."</td>
                                     <td id='AccountingDocumentTemp[amount_etx]'>".$value->amount_etx."</td>
-                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount_carrier."</td>
                                     <td id='AccountingDocumentTemp[dispute]'>".Utility::format_decimal($value->dispute)."</td>
                                     <td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";     
@@ -495,7 +506,7 @@
          <br>
          <label class="Label_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
          <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>
-                <tr>
+                <tr> 
                     <td> Carrier </td>
                    <td> Num. Factura</td>
                    <td> Numero de Nota</td>
