@@ -99,18 +99,21 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarDoc_ContTemp() 
         {
-              /*VALIDACION DE EXISTE*/
-//            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-//            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
             $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);               
+            $model->attributes = $_GET['AccountingDocumentTemp'];
+            $ValidADT = AccountingDocumentTemp::getExist($model);
+            $ValidAD = AccountingDocument::getExist($model);
+            $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
+            if($ValidAD==NULL && $ValidADT==NULL){
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
 
                 }
+            }else{
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model,0));
+            }
         }
         /**
         * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...

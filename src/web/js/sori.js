@@ -708,89 +708,93 @@ $SORI.UI=(function()
 		    carrierA=managerA=fechaManagerCarrier=carrierenlabel=manageractual=end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
 		});
 	}
-        function llenarTabla(tipo,data){
-            obj = JSON.parse(data);
-            console.dir(obj.issue_date);
-            if(obj.id !== undefined) var id="<tr class='vistaTemp' id='"+obj.id+"'>";
-            if(obj.carrier !== undefined) var carrier="<td id='AccountingDocumentTemp[id_carrier]'>"+obj.carrier+"</td>";
-            if(obj.group !== undefined) var group="<td id='AccountingDocumentTemp[carrier_groups]'>"+obj.group+"</td>";
-            if(obj.issue_date !== undefined) var issue_date="<td id='AccountingDocumentTemp[issue_date]'>"+obj.issue_date+"</td>";
-            if(obj.from_date !== undefined) var from_date="<td id='AccountingDocumentTemp[from_date]'>"+obj.from_date+"</td>";
-            if(obj.to_date !== undefined) var to_date="<td id='AccountingDocumentTemp[to_date]'>"+obj.to_date+"</td>";
-            if(obj.sent_date !== undefined) var sent_date="<td id='AccountingDocumentTemp[sent_date]'>"+obj.sent_date+"</td>";
-            if(obj.doc_number !== undefined) var doc_number="<td id='AccountingDocumentTemp[doc_number]'>"+obj.doc_number+"</td>";
-            if(obj.fact_number !== undefined) var fact_number="<td id='AccountingDocumentTemp[id_accounting_document]'>"+obj.fact_number+"</td>";
-            if(obj.minutes !== undefined) var minutes="<td id='AccountingDocumentTemp[minutes]'>"+obj.minutes+"</td>";
-            if(obj.amount !== undefined) var amount="<td id='AccountingDocumentTemp[amount]'>"+obj.amount+"</td>";
-            if(obj.currency !== undefined) var currency="<td id='AccountingDocumentTemp[id_currency]'>"+obj.currency+"</td>";
-            if(obj.email_received_date !== undefined) var email_received_date="<td id='AccountingDocumentTemp[email_received_date]'>"+obj.email_received_date+"</td>";
-            if(obj.email_received_hour !== undefined) var email_received_hour="<td id='AccountingDocumentTemp[email_received_hour]'>"+obj.email_received_hour+"</td>";
-            if(obj.valid_received_date !== undefined) var valid_received_date="<td id='AccountingDocumentTemp[valid_received_date]'>"+obj.valid_received_date+"</td>";
-            if(obj.valid_received_hour !== undefined) var valid_received_hour="<td id='AccountingDocumentTemp[valid_received_hour]'>"+obj.valid_received_hour+"</td>";
-            if(obj.destination !== undefined) var destination="<td id='AccountingDocumentTemp[id_destination]'>"+obj.destination+"</td>";
-            if(obj.destinationSupp !== undefined) var destinationSupp="<td id='AccountingDocumentTemp[id_destination_supplier]'>"+obj.destinationSupp+"</td>";
-            if(obj.min_etx !== undefined) var min_etx="<td id='AccountingDocumentTemp[min_etx]'>"+obj.min_etx+"</td>";
-            if(obj.min_carrier !== undefined) var min_carrier="<td id='AccountingDocumentTemp[min_carrier]'>"+obj.min_carrier+"</td>";
-            if(obj.rate_etx !== undefined) var rate_etx="<td id='AccountingDocumentTemp[rate_etx]'>"+obj.rate_etx+"</td>";
-            if(obj.rate_carrier !== undefined) var rate_carrier="<td id='AccountingDocumentTemp[rate_carrier]'>"+obj.rate_carrier+"</td>";
-            if(min_etx !== undefined && rate_etx !== undefined) var amount_etx="<td id='AccountingDocumentTemp[amount_etx]'>"+(obj.min_etx*obj.rate_etx).toFixed(2)+"</td>";
-            if(min_carrier !== undefined && rate_carrier !== undefined) var amount_carrier="<td id='AccountingDocumentTemp[amount_carrier]'>"+(obj.min_carrier*obj.rate_carrier).toFixed(2)+"</td>";
-            if(amount_etx !== undefined && amount_carrier !== undefined) var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_etx*obj.rate_etx)-(obj.min_carrier*obj.rate_carrier)).toFixed(2)+"</td>";
-            console.dir(id+group+issue_date+doc_number+amount+currency);
-            switch (tipo){
-                case '1':
-                    var tabla = id+carrier+issue_date+from_date+to_date+sent_date+doc_number+minutes+amount+currency+"<td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_FacEnv",
-                    label='.Label_F_Env';
-                    break
-                case '2':
-                    var tabla = id+carrier+issue_date+from_date+to_date+email_received_date+valid_received_date+email_received_hour+valid_received_hour+doc_number+minutes+amount+currency+"<td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_FacRec",
-                    label='.Label_F_Rec';
-                    break
-                case '3':
-                    var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_Pagos",
-                    label='.LabelPagos';
-                    break
-                case '4':
-                    var tabla = id+group+valid_received_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_Cobros",
-                    label='.LabelCobros';
-                    break
-                case '5':
-                    var tabla = id+carrier+destination+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_DispRec",
-                    label='.Label_DispRec';
-                    break
-                case '6':
-                    var tabla = id+carrier+destinationSupp+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_DispEnv",
-                    label='.Label_DispEnv';
-                    break
-                case '7':
-                    var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_NotCredEnv",
-                    label='.Label_NotCredEnv';
-                    break
-                case '8':
-                    var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
-                    clase=".lista_NotCredRec",
-                    label='.Label_NotCredRec';
-                    break
+        function llenarTabla(obj){
+            console.dir(obj);
+            if (obj.valid==1){
+                if(obj.id !== undefined) var id="<tr class='vistaTemp' id='"+obj.id+"'>";
+                if(obj.carrier !== undefined) var carrier="<td id='AccountingDocumentTemp[id_carrier]'>"+obj.carrier+"</td>";
+                if(obj.group !== undefined) var group="<td id='AccountingDocumentTemp[carrier_groups]'>"+obj.group+"</td>";
+                if(obj.issue_date !== undefined) var issue_date="<td id='AccountingDocumentTemp[issue_date]'>"+obj.issue_date+"</td>";
+                if(obj.from_date !== undefined) var from_date="<td id='AccountingDocumentTemp[from_date]'>"+obj.from_date+"</td>";
+                if(obj.to_date !== undefined) var to_date="<td id='AccountingDocumentTemp[to_date]'>"+obj.to_date+"</td>";
+                if(obj.sent_date !== undefined) var sent_date="<td id='AccountingDocumentTemp[sent_date]'>"+obj.sent_date+"</td>";
+                if(obj.doc_number !== undefined) var doc_number="<td id='AccountingDocumentTemp[doc_number]'>"+obj.doc_number+"</td>";
+                if(obj.fact_number !== undefined) var fact_number="<td id='AccountingDocumentTemp[id_accounting_document]'>"+obj.fact_number+"</td>";
+                if(obj.minutes !== undefined) var minutes="<td id='AccountingDocumentTemp[minutes]'>"+obj.minutes+"</td>";
+                if(obj.amount !== undefined) var amount="<td id='AccountingDocumentTemp[amount]'>"+obj.amount+"</td>";
+                if(obj.currency !== undefined) var currency="<td id='AccountingDocumentTemp[id_currency]'>"+obj.currency+"</td>";
+                if(obj.email_received_date !== undefined) var email_received_date="<td id='AccountingDocumentTemp[email_received_date]'>"+obj.email_received_date+"</td>";
+                if(obj.email_received_hour !== undefined) var email_received_hour="<td id='AccountingDocumentTemp[email_received_hour]'>"+obj.email_received_hour+"</td>";
+                if(obj.valid_received_date !== undefined) var valid_received_date="<td id='AccountingDocumentTemp[valid_received_date]'>"+obj.valid_received_date+"</td>";
+                if(obj.valid_received_hour !== undefined) var valid_received_hour="<td id='AccountingDocumentTemp[valid_received_hour]'>"+obj.valid_received_hour+"</td>";
+                if(obj.destination !== undefined) var destination="<td id='AccountingDocumentTemp[id_destination]'>"+obj.destination+"</td>";
+                if(obj.destinationSupp !== undefined) var destinationSupp="<td id='AccountingDocumentTemp[id_destination_supplier]'>"+obj.destinationSupp+"</td>";
+                if(obj.min_etx !== undefined) var min_etx="<td id='AccountingDocumentTemp[min_etx]'>"+obj.min_etx+"</td>";
+                if(obj.min_carrier !== undefined) var min_carrier="<td id='AccountingDocumentTemp[min_carrier]'>"+obj.min_carrier+"</td>";
+                if(obj.rate_etx !== undefined) var rate_etx="<td id='AccountingDocumentTemp[rate_etx]'>"+obj.rate_etx+"</td>";
+                if(obj.rate_carrier !== undefined) var rate_carrier="<td id='AccountingDocumentTemp[rate_carrier]'>"+obj.rate_carrier+"</td>";
+                if(min_etx !== undefined && rate_etx !== undefined) var amount_etx="<td id='AccountingDocumentTemp[amount_etx]'>"+(obj.min_etx*obj.rate_etx).toFixed(2)+"</td>";
+                if(min_carrier !== undefined && rate_carrier !== undefined) var amount_carrier="<td id='AccountingDocumentTemp[amount_carrier]'>"+(obj.min_carrier*obj.rate_carrier).toFixed(2)+"</td>";
+                if(amount_etx !== undefined && amount_carrier !== undefined) var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_etx*obj.rate_etx)-(obj.min_carrier*obj.rate_carrier)).toFixed(2)+"</td>";
+                console.dir(id+group+issue_date+doc_number+amount+currency);
+                switch (obj.id_type_accounting_document){
+                    case '1':
+                        var tabla = id+carrier+issue_date+from_date+to_date+sent_date+doc_number+minutes+amount+currency+"<td><img class='edit' name='edit_Fac_Env' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_FacEnv",
+                        label='.Label_F_Env';
+                        break
+                    case '2':
+                        var tabla = id+carrier+issue_date+from_date+to_date+email_received_date+valid_received_date+email_received_hour+valid_received_hour+doc_number+minutes+amount+currency+"<td><img class='edit' name='edit_Fac_Rec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_FacRec",
+                        label='.Label_F_Rec';
+                        break
+                    case '3':
+                        var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_Pagos",
+                        label='.LabelPagos';
+                        break
+                    case '4':
+                        var tabla = id+group+valid_received_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_Cobros",
+                        label='.LabelCobros';
+                        break
+                    case '5':
+                        var tabla = id+carrier+destination+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_DispRec",
+                        label='.Label_DispRec';
+                        break
+                    case '6':
+                        var tabla = id+carrier+destinationSupp+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_DispEnv",
+                        label='.Label_DispEnv';
+                        break
+                    case '7':
+                        var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_NotCredEnv",
+                        label='.Label_NotCredEnv';
+                        break
+                    case '8':
+                        var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_NotCredRec",
+                        label='.Label_NotCredRec';
+                        break
+                }
+                $(clase).find("tr:first").after(tabla);
+                $(clase).fadeIn('slow');
+                $(label).fadeIn('slow');
+                $('#botAgregarDatosContableFinal').fadeIn('slow');
+            }else{
+                alert('existe aqui');
             }
-            $(clase).find("tr:first").after(tabla);
-            $(clase).fadeIn('slow');
-            $(label).fadeIn('slow');
-            $('#botAgregarDatosContableFinal').fadeIn('slow');
         }
         
-        function emptyFields(selecTipoDoc){
+        function emptyFields(obj){
+            
             $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
-                if (selecTipoDoc=='3'||selecTipoDoc=='4'){
+                if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
                 } 
-                if (selecTipoDoc=='5'||selecTipoDoc=='6'){
+                if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date").val('');
                 } 
         }

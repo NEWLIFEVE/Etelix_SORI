@@ -206,9 +206,28 @@ class AccountingDocument extends CActiveRecord
             return self::model()->find("id=:id", array(':id'=>$id))->id_currency;
         }
         
-        public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
+        public static function getExist($model)
         { 
-            return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
+            switch ($model->id_type_accounting_document){
+                case '1':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
+                    break;
+                case '2':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
+                    break;
+                case '5':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
+                    break;
+                case '6':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
+                    break;
+                case '7':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+                case '8':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+            }
         } 
         
         public static function getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc)

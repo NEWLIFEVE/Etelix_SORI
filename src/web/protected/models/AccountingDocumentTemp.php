@@ -358,9 +358,28 @@ class AccountingDocumentTemp extends CActiveRecord
          * @return type
          */
         
-        public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
+        public static function getExist($model)
         { 
-            return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
+            switch ($model->id_type_accounting_document){
+                case '1':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
+                    break;
+                case '2':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
+                    break;
+                case '5':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
+                    break;
+                case '6':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
+                    break;
+                case '7':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+                case '8':
+                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+            }
         } 
         /**
          * busca los destinos supplier asignados al carrier
@@ -405,8 +424,9 @@ class AccountingDocumentTemp extends CActiveRecord
              }                                                             
         }   
         
-        public static function getJSonParams($model)
+        public static function getJSonParams($model,$valid)
         {
+            if (isset($model->id_type_accounting_document))$params['id_type_accounting_document'] = $model->id_type_accounting_document;
             if (isset($model->id))$params['id'] = $model->id;
             if (isset($model->id_carrier))$params['carrier']=Carrier::getName($model->id_carrier);
             if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName($model->carrier_groups);
@@ -430,7 +450,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->id_destination_supplier))$params['destinationSupp'] =DestinationSupplier::getName($model->id_destination_supplier);
             if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
             if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
-            
+            $params['valid'] = $valid;
             return $params;
         }
         
