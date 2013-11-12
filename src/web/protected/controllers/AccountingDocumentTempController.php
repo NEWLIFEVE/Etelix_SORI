@@ -31,7 +31,7 @@ class AccountingDocumentTempController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('index','view','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
+				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -485,5 +485,15 @@ class AccountingDocumentTempController extends Controller
             'lista_DispRec'=>$lista_DispRec,
             'lista_DispEnv'=>$lista_DispEnv
         ));
+    }
+    /**
+     * Action para enviar por correo los documentos contables
+     */
+    public function actionEnviarEmail() 
+    {
+        $userMail=Users::traeCorreo(Yii::app()->user->id);
+        $value = Yii::app()->enviarEmail->enviar($_POST['html'],$userMail,$_POST['asunto']);
+//        $this->redirect($_POST['vista']);
+        echo $value;
     }
 }

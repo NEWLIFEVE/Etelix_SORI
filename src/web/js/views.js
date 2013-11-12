@@ -778,6 +778,7 @@ $('#botAgregarDatosContable').click('on',function(e)
         data: str,
         success: function(data) 
         {
+            $SORI.UTILS.updateMontoAprobadoDisp();
             obj = JSON.parse(data);           
             $SORI.UI.llenarTabla(obj);
             $SORI.UI.init();

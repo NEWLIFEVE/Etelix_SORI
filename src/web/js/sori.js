@@ -378,7 +378,7 @@ $SORI.UI=(function()
 			}
                         if($(this).attr('name')=='save_Fac_Rec')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_Fac_Rec($fila);
 			}
                         if($(this).attr('name')=='cancel_Fac_Rec')
@@ -392,7 +392,7 @@ $SORI.UI=(function()
 			}
                         if($(this).attr('name')=='save_Fac_Env')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_Fac_Env($fila);
 			}
                         if($(this).attr('name')=='cancel_Fac_Env')
@@ -406,7 +406,7 @@ $SORI.UI=(function()
 			}
                         if($(this).attr('name')=='save_Cobros')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_Cobros($fila);
 			}
                         if($(this).attr('name')=='cancel_Cobros')
@@ -420,7 +420,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_Pagos')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_Pagos($fila);
 			}
 			if($(this).attr('name')=='cancel_Pagos')
@@ -434,7 +434,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_DispRec')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_DispRec($fila);
 				_update_monto_Disp($fila);
 			}
@@ -449,7 +449,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_DispEnv')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_DispEnv($fila);
 				_update_monto_Disp($fila);
 			}
@@ -464,7 +464,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_Nota_cred')
 			{
-				$SORI.AJAX.actualizar($fila[0].id);
+				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_Nota_cred($fila);
 			}
 			if($(this).attr('name')=='cancel_Nota_cred')
@@ -581,7 +581,7 @@ $SORI.UI=(function()
                                                             <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                             <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount + "</td>\n\
                                                             <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].dispute) + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[monto_nota]'><input id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
+                                                            <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
                                                         </tr>");
                         $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
                         $('#AccountingDocumentTemp_amount').text(montoTotal);
@@ -598,6 +598,39 @@ $SORI.UI=(function()
           }
       });
     }
+    
+        /**
+         *
+	 */  
+        $('.botonImprimir').click('on',function()
+        {
+            var imprimir = window.open("/AccountingDocumentTemp/print","Vista de impresion");
+            imprimir.print();
+            setTimeout(function(){ imprimir.close();}, 100);
+        });
+        /**
+         *
+	 */  
+        $('.botonCorreo').click('on',function()
+        {
+             console.dir('al menos entra');
+    
+            var html = "<table class='lista_FacEnv'>" + $(".lista_FacEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_FacRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Cobros").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Pagos").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_NotCredEnv").clone().html() + "</table>" + "<br/>" + $(".lista_NotCredRec").clone().html() + "</table>";
+            console.log(html);
+            $("#html").val(html);
+            $("#FormularioCorreo").submit();
+            alert('Correo Enviado');
+                console.dir('es un milagro!! !), llego aqui .}');
+
+        });
+        
+//        $("img#mail").click(function(event)
+//        {
+//            var html = $("div.enviar").clone().html();
+//            $("#html").val(html);
+//            $("#FormularioCorreo").submit();
+//            alert('Correo Enviado');
+//        });
         /**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
@@ -611,9 +644,9 @@ $SORI.UI=(function()
             }
             for (var x=0, z=mostrar.length - 1; x <= z; x++){
                 $(mostrar[x]).fadeIn('fast');              
-            }
-            
+            }  
         }
+
         /**
 	 * Metodo encargado de las animaciones de la tabla comercial
 	 * @access public
@@ -759,12 +792,12 @@ $SORI.UI=(function()
                         label='.LabelCobros';
                         break
                     case '5':
-                        var tabla = id+carrier+destination+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+carrier+destination+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+amount+"<td><img class='edit' name='edit_DispRec' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_DispRec",
                         label='.Label_DispRec';
                         break
                     case '6':
-                        var tabla = id+carrier+destinationSupp+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+dispute+"<td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+carrier+destinationSupp+fact_number+min_etx+min_carrier+rate_etx+rate_carrier+amount_etx+amount_carrier+amount+"<td><img class='edit' name='edit_DispEnv' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_DispEnv",
                         label='.Label_DispEnv';
                         break
@@ -782,11 +815,45 @@ $SORI.UI=(function()
                 $(clase).find("tr:first").after(tabla);
                 $(clase).fadeIn('slow');
                 $(label).fadeIn('slow');
-                $('#botAgregarDatosContableFinal').fadeIn('slow');
+                $('#botAgregarDatosContableFinal, .botonesParaExportar').fadeIn('slow');
             }else{
-                alert('existe aqui');
+                $SORI.UI.MensajeYaExiste(obj);
             }
         }
+         function MensajeYaExiste(obj){
+             var F_facturas="en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>",carrier="con el carrier <b>"+obj.carrier+"</b>", grupo=" el grupo <b>"+obj.group+"</b>",doc_number="<b>"+obj.doc_number+"</b>";
+             switch (obj.id_type_accounting_document){
+                    case '1':
+                        $SORI.UI.MuestraMensaje("La Factura Enviada",carrier,F_facturas,doc_number);
+                        break
+                    case '2':
+                        $SORI.UI.MuestraMensaje("La Factura Recibida",carrier,F_facturas,doc_number);
+                        break
+                    case '3':
+                        $SORI.UI.MuestraMensaje("El Pago","con fecha de emisión <b>"+obj.issue_date+"</b>",grupo,doc_number);
+                        break
+                    case '4':
+                        $SORI.UI.MuestraMensaje("El Cobro","con fecha de recepción <b>"+obj.valid_received_date+"</b>",grupo,doc_number);
+                        break
+                    case '5':
+                        $SORI.UI.MuestraMensaje("La Disputa Recibida",carrier+", el destino <b>"+obj.destination+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                        break
+                    case '6':
+                        $SORI.UI.MuestraMensaje("La Disputa Enviada",carrier+" el destino supplier <b>"+obj.destinationSupp+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                        break
+                    case '7':
+                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        break
+                    case '8':
+                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        break
+             }
+         }
+         function MuestraMensaje(tipo,operador,fecha,doc_number)
+         {
+              $('.cargando, .mensaje').remove();
+              var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intento guardar, ya se encuentra registrado(a) "+operador+", "+fecha+" , bajo el N°. "+doc_number+"</h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
+         }
         
         function emptyFields(obj){
             
@@ -810,6 +877,7 @@ $SORI.UI=(function()
             var acum = 0;
             $('input#montoNota').each(function() {
                 acum = acum + parseFloat($(this).val());
+                $(this).parent().attr('id');
                 console.log(acum);
                 $('input#AccountingDocumentTemp_amount').val(acum);
             });
@@ -829,7 +897,9 @@ $SORI.UI=(function()
                 llenarTabla:llenarTabla,
                 emptyFields:emptyFields,
                 changeCss:changeCss,
-                sumMontoNota:sumMontoNota
+                sumMontoNota:sumMontoNota,
+                MensajeYaExiste:MensajeYaExiste,
+                MuestraMensaje:MuestraMensaje
 	};
 })();
 
@@ -861,15 +931,21 @@ $SORI.AJAX=(function()
 	/**
 	 * Metodo encargado de enviar la solicutid de actualizar por ajax de la fila indicada
 	 * @param id int id de la fila que se va actualizar
+	 * @param tope int es el tope de columna a la cual voy a leer, se pasa a getData
 	 * @access public
 	 */
-	function actualizar(id)
-	{
+	function actualizar(id,tope)
+	{       
+            if(tope=='2'){
+                    var url = "update/"+id;
+                }else{
+                    var url = "../AccountingDocument/UpdateDisputa/"+id;
+                }
 		$.ajax(
 		{
 			type:'POST',
-			url:'update/'+id,
-			data:$SORI.UTILS.getData(id),
+			url:url,
+			data:$SORI.UTILS.getData(id,tope),
 			success:function(data)
 			{
 				console.log(data);
@@ -895,11 +971,12 @@ $SORI.UTILS=(function()
 	 * Obtiene los datos de los inputs dentro de una fila
 	 * @access public
 	 * @param id int es el id de la fila donde se encuentran los inputs
+	 * @param tope int es el tope de columna a la cual voy a leer
 	 */
-	function getData(id)
+	function getData(id,tope)
 	{
 		var inputs=$('tr#'+id).children().children(), datos="";
-		for (var i=0, j=inputs.length - 2; i <= j; i++)
+		for (var i=0, j=inputs.length - tope; i <= j; i++)
 		{
 			datos+=inputs[i].name+"="+inputs[i].value+"&";
 		};
@@ -907,7 +984,21 @@ $SORI.UTILS=(function()
 		id=null;
 		return datos;
 	}
-
+        /**
+	 * Recorre la tabla de disputas en notas de credito y actualiza el monto
+	 * @access public
+	 * @param id int es el id de la fila donde se encuentran los inputs
+	 */
+	function updateMontoAprobadoDisp()
+	{
+           $('.lista_Disp_NotaCEnv').children().children().each(function()
+            {
+                if($(this).attr('id')!== undefined){
+                    $SORI.AJAX.actualizar($(this).attr('id'),'1');
+                }
+                
+            });
+        }
 	/**
 	 * Valida los input y select del formulario
 	 * @access public
@@ -963,7 +1054,8 @@ $SORI.UTILS=(function()
 	return{
 		getData:getData,
                 validaCampos:validaCampos,
-		getURL:getURL
+		getURL:getURL,
+		updateMontoAprobadoDisp:updateMontoAprobadoDisp
 	}
 })();
 
