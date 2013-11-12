@@ -367,17 +367,27 @@ class AccountingDocumentTemp extends CActiveRecord
                 case '2':
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
                     break;
+                case '3':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
+                case '4':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
                 case '5':
-                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination={$model->id_destination}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
                     break;
                 case '6':
-                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination_supplier={$model->id_destination_supplier}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
                     break;
                 case '7':
-                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
                     break;
                 case '8':
-                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
                     break;
             }
         } 

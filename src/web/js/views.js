@@ -770,6 +770,7 @@ $('#botAgregarDatosContable').click('on',function(e)
 {
     e.preventDefault();
     var str = $('#accounting-document-temp-form').serialize();
+    console.dir(str);
     $.ajax({
         type: "GET",
         url: "GuardarDoc_ContTemp",
