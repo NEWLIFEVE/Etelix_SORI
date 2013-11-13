@@ -714,11 +714,15 @@ $('#botAgregarDatosContable').click('on',function(e)
             data: str,
             success: function(data) 
             {
-                $SORI.UTILS.updateMontoAprobadoDisp();
-                obj = JSON.parse(data);           
-                $SORI.UI.llenarTabla(obj);
-                $SORI.UI.init();
-                $SORI.UI.emptyFields(obj);
+                obj = JSON.parse(data);        
+                if((obj.valid==1)){
+                    $SORI.UTILS.updateMontoAprobadoDisp();
+                    $SORI.UI.llenarTabla(obj);
+                    $SORI.UI.init();
+                    $SORI.UI.emptyFields();
+                }else{
+                    $SORI.UI.MensajeYaExiste(obj);
+                }
             }          
         }); 
     }

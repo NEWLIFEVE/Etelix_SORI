@@ -58,11 +58,13 @@
                     'model'=>$model,
                     'attribute'=>'issue_date',
                     'options'=>array(
-                        'dateFormat'=>'yy-mm-dd'
+                        'dateFormat'=>'yy-mm-dd',
+                        'maxDate'=> "-0D", //fecha maxima
                         ),
                     'htmlOptions'=>array(
                         'size'=>'10', // textField size
                         'maxlength'=>'10', // textField maxlength
+                        'readonly'=>'readonly'
                         ),
                     )
                     ); 
@@ -76,11 +78,13 @@
                         'model'=>$model,
                         'attribute'=>'from_date',
                         'options'=>array(
-                            'dateFormat'=>'yy-mm-dd'
+                            'dateFormat'=>'yy-mm-dd',
+                            'maxDate'=> "-0D", //fecha maxima
                             ),
                         'htmlOptions'=>array(
                             'size'=>'10', // textField size
                             'maxlength'=>'10', // textField maxlength
+                            'readonly'=>'readonly'
                             )
                         )
                     ); 
@@ -94,11 +98,13 @@
                         'model'=>$model,
                         'attribute'=>'to_date',
                         'options'=>array(
-                            'dateFormat'=>'yy-mm-dd'
+                            'dateFormat'=>'yy-mm-dd',
+                            'maxDate'=> "-0D", //fecha maxima
                             ),
                         'htmlOptions'=>array(
                             'size'=>'10', // textField size
                             'maxlength'=>'10', // textField maxlength
+                            'readonly'=>'readonly'
                             )
                         )
                     ); 
@@ -114,12 +120,15 @@
                         'model'=>$model,
                         'attribute'=>'email_received_date',
                         'options'=>array(
-                            'dateFormat'=>'yy-mm-dd'
+                            'dateFormat'=>'yy-mm-dd',
+                            'maxDate'=> "-0D", //fecha maxima
                             ),
                         'htmlOptions'=>array(
                             'size'=>'10', // textField size
                             'maxlength'=>'10', // textField maxlength
-                            )
+                            'maxDate'=> "-1D", //fecha maxima
+                            'readonly'=>'readonly'
+                            ),
                         )
                     ); 
                 ?>
@@ -133,7 +142,8 @@
                         'model'=>$model,
                         'attribute'=>'valid_received_date',
                         'options'=>array(
-                            'dateFormat'=>'yy-mm-dd'
+                            'dateFormat'=>'yy-mm-dd',
+                            'maxDate'=> "-0D", //fecha maxima
                             ),
                         'htmlOptions'=>array(
                             'size'=>'10', // textField size
@@ -280,14 +290,19 @@
     <div class="VistDocTemporales">
         <br>
         <div class="botonesParaExportar" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
-           <div class="botonImprimir contratoForm"><img src='/images/print.png'width='95px' height='95px'/></div>
-           <div class="botonCorreo contratoForm"><img src='/images/mail.png'width='95px' height='95px'/></div> 
+           <div class="botonImprimir contratoForm"><img src='/images/print-icon.png'width='95px' height='95px'/></div>
+<!--           <div class="botonCorreo contratoForm"><img src='/images/mail.png'width='95px' height='95px'/></div> -->
         </div>
         
         <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
+
         <div class="tablasTemporales">
+
+        
+        
+
                <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
         <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
                 <tr>
