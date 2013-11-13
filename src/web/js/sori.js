@@ -54,7 +54,7 @@ $SORI.UI=(function()
 			input.value=obj[0].children[i].innerHTML;
 			if(i>=1 && i<=5)
 			{
-				$(input).datepicker({ dateFormat: "yy-mm-dd"});
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
 			}
                         if(i>=6 && i<=7)
 			{
@@ -78,7 +78,7 @@ $SORI.UI=(function()
 			input.value=obj[0].children[i].innerHTML;
 			if(i>=1 && i<=4)
 			{
-				$(input).datepicker();
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
 			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
@@ -98,7 +98,7 @@ $SORI.UI=(function()
 			input.value=obj[0].children[i].innerHTML;
 			if(i>=1 && i<=1)
 			{
-				$(input).datepicker();
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
 			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
@@ -118,7 +118,7 @@ $SORI.UI=(function()
 			input.value=obj[0].children[i].innerHTML;
 			if(i>=1 && i<=1)
 			{
-				$(input).datepicker();
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
 			}
 			obj[0].children[i].innerHTML="";
 			obj[0].children[i].appendChild(input);
@@ -525,7 +525,7 @@ $SORI.UI=(function()
                     success: function(data) 
                     { 
                         $('.cargando,.mensaje,.listaDisputas').remove();
-                        $('.tabla_N_C,.montoDoc').fadeOut('fast');
+                        $('.tabla_N_C,.montoDoc,.numDocument').fadeOut('fast');
                         if(data=="[]")
                         {     
                               $("#AccountingDocumentTemp_id_accounting_document").html("<option>No hay facturas registradas</option>").css('color','rgb(245, 105, 109)');  
@@ -565,6 +565,8 @@ $SORI.UI=(function()
                    $('.listaDisputas').remove();
                    if(data=="[]"){
                       //no hay datos y asi no muestra nada
+//                        $('.cargando,.mensaje').remove();
+//                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
                    }else{
                     console.log(data);
                     var obj = JSON.parse(data);
@@ -743,7 +745,6 @@ $SORI.UI=(function()
 	}
         function llenarTabla(obj){
             console.dir(obj);
-            if (obj.valid==1){
                 if(obj.id !== undefined) var id="<tr class='vistaTemp' id='"+obj.id+"'>";
                 if(obj.carrier !== undefined) var carrier="<td id='AccountingDocumentTemp[id_carrier]'>"+obj.carrier+"</td>";
                 if(obj.group !== undefined) var group="<td id='AccountingDocumentTemp[carrier_groups]'>"+obj.group+"</td>";
@@ -816,9 +817,6 @@ $SORI.UI=(function()
                 $(clase).fadeIn('slow');
                 $(label).fadeIn('slow');
                 $('#botAgregarDatosContableFinal, .botonesParaExportar').fadeIn('slow');
-            }else{
-                $SORI.UI.MensajeYaExiste(obj);
-            }
         }
          function MensajeYaExiste(obj){
              var F_facturas="en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>",carrier="con el carrier <b>"+obj.carrier+"</b>", grupo=" el grupo <b>"+obj.group+"</b>",doc_number="<b>"+obj.doc_number+"</b>";
@@ -858,14 +856,17 @@ $SORI.UI=(function()
               setTimeout(function() { msj.fadeOut('slow'); }, 3000);
          }
         
-        function emptyFields(obj){
-            
+        function emptyFields(){
             $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                 if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
+                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date").val('');
                 } 
                 if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date").val('');
+                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');
+                } 
+                if (obj.id_type_accounting_document=='7'||obj.id_type_accounting_document=='8'){
+                     $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number").val('');
+                     $('.tabla_N_C,.numDocument,.montoDoc').fadeOut("fast");$('.listaDisputas').remove();
                 } 
         }
         
@@ -894,25 +895,26 @@ $SORI.UI=(function()
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '2'://facturas recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '3'://pagos
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '4'://cobros
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '5'://disputas recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
                 break 
             case '6'://disputas enviadas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
                 break 
             case '7'://notas de credito enviadas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '8'://notas de credito recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break               
            }
            return respuesta;
@@ -924,19 +926,18 @@ $SORI.UI=(function()
 	 */
 	function validaCampos(campos)
 	{  
-            for (var i=0, j=campos.length-1; i <= j; i++)
+            for (var i=0, j=campos.length - 1; i <= j; i++)
                 {
                     if(campos[i].value==""){
                         console.dir(campos[i]);
                         var respuesta=0;
                         break;
-                     }else{
-                         respuesta=1;
-                     }
+                     }else{respuesta=1;}
                 };
                 if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                                                     $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
-            return respuesta;
+           
+                return respuesta;
         }
         /**
          * 
@@ -1122,7 +1123,7 @@ $SORI.UTILS=(function()
 	 * @access public
 	 * @param id int es el id de la fila donde se encuentran los inputs
 	 */
-	function updateMontoAprobadoDisp()
+	function updateMontoAprobadoDisp(obj)
 	{
            $('.lista_Disp_NotaCEnv').children().children().each(function()
             {

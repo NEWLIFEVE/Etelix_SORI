@@ -714,11 +714,15 @@ $('#botAgregarDatosContable').click('on',function(e)
             data: str,
             success: function(data) 
             {
-                $SORI.UTILS.updateMontoAprobadoDisp();
-                obj = JSON.parse(data);           
-                $SORI.UI.llenarTabla(obj);
-                $SORI.UI.init();
-                $SORI.UI.emptyFields(obj);
+                obj = JSON.parse(data);        
+                if((obj.valid==1)){
+                    $SORI.UTILS.updateMontoAprobadoDisp();
+                    $SORI.UI.llenarTabla(obj);
+                    $SORI.UI.init();
+                    $SORI.UI.emptyFields();
+                }else{
+                    $SORI.UI.MensajeYaExiste(obj);
+                }
             }          
         }); 
     }
@@ -744,7 +748,7 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                 url: "guardarListaFinal",
                 success: function(data) 
                 {  
-                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec').fadeOut('fast');
+                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.botonesParaExportar').fadeOut('fast');
                     $('.vistaTemp').remove();
                     var exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                     setTimeout(function() {
