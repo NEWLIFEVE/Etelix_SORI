@@ -123,7 +123,7 @@ class AccountingDocumentTempController extends Controller
             $model->amount = Utility::snull($cantidad);
             $model->note = Utility::snull($nota);
             
-                if ($idCarrier==''||$idCarrier==NULL){
+                if ($selecTipoDoc=='3'||$selecTipoDoc=='4'){
                     $idCarrierName.= CarrierGroups::getName($idGrupo);
                     $grupoCarrier = Carrier::getCarrierLeader($idGrupo);
                     $model->id_carrier = $grupoCarrier;
