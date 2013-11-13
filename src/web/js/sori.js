@@ -913,22 +913,26 @@ $SORI.UI=(function()
                 break 
             case '8'://notas de credito recibidas
                 var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
-                break 
-                return respuesta;
+                break               
            }
+           return respuesta;
         }
          /**
-	 * Valida los input y select del formulario
+	 * Valida los input y select del formulario- 1
 	 * @access public
 	 * @param  campos
 	 */
 	function validaCampos(campos)
 	{  
-            for (var i=0, j=campos.length - 2; i <= j; i++)
+            for (var i=0, j=campos.length-1; i <= j; i++)
                 {
                     if(campos[i].value==""){
+                        console.dir(campos[i]);
                         var respuesta=0;
-                     }else{respuesta=1;}
+                        break;
+                     }else{
+                         respuesta=1;
+                     }
                 };
                 if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                                                     $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
