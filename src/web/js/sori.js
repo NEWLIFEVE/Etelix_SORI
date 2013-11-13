@@ -862,7 +862,7 @@ $SORI.UI=(function()
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date").val('');
                 } 
                 if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');
+                     $("#AccountingDocumentTemp_min_etx,AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');
                 } 
                 if (obj.id_type_accounting_document=='7'||obj.id_type_accounting_document=='8'){
                      $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number").val('');
