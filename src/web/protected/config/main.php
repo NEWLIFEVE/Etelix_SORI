@@ -67,6 +67,9 @@ return array(
                         ),*/
                 ),
             ),
+        'enviarEmail'=>array(
+                    'class'=>'application.components.EnviarEmail',
+                ),
         ),
         // application-level parameters that can be accessed
         // using Yii::app()->params['paramName']

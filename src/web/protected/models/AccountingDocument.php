@@ -50,6 +50,7 @@ class AccountingDocument extends CActiveRecord
 	}
         public $carrier_groups;
         public $amount_etx;
+        public $amount_carrier;
         public $dispute;
 	/**
 	 * @return array validation rules for model attributes.
@@ -60,14 +61,14 @@ class AccountingDocument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, dispute', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
-			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
+			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour,dispute', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, dispute', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -206,9 +207,38 @@ class AccountingDocument extends CActiveRecord
             return self::model()->find("id=:id", array(':id'=>$id))->id_currency;
         }
         
-        public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
+        public static function getExist($model)
         { 
-            return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
+            switch ($model->id_type_accounting_document){
+                case '1':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
+                    break;
+                case '2':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
+                    break;
+                case '3':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
+                case '4':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
+                case '5':
+                      return self::model()->findBySql("Select * from accounting_document where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination={$model->id_destination}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
+                    break;
+                case '6':
+                     return self::model()->findBySql("Select * from accounting_document where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination_supplier={$model->id_destination_supplier}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
+                    break;
+                case '7':
+                    return self::model()->findBySql("Select * from accounting_document where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+                case '8':
+                    return self::model()->findBySql("Select * from accounting_document where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+            }
         } 
         
         public static function getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc)
@@ -226,7 +256,7 @@ class AccountingDocument extends CActiveRecord
         
         public static function lista_Disp_NotaCRec($factura)
 	{
-		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination, t.id_accounting_document
+		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount_carrier,(t.min_etx*t.rate_etx) as amount_etx,t.amount as dispute, d.name AS id_destination, t.id_accounting_document
                       FROM accounting_document t, destination d
                       WHERE t.id_type_accounting_document = 5 AND t.id_accounting_document = {$factura} AND t.id_destination = d.id";
 		$model=self::model()->findAllBySql($sql);
@@ -235,7 +265,7 @@ class AccountingDocument extends CActiveRecord
 	}
         public static function lista_Disp_NotaCEnv($factura)
 	{
-		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination_supplier, t.id_accounting_document
+		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount_carrier,(t.min_etx*t.rate_etx) as amount_etx,t.amount as dispute, d.name AS id_destination_supplier, t.id_accounting_document
                       FROM accounting_document t, destination_supplier d
                       WHERE t.id_type_accounting_document = 6 AND t.id_accounting_document = {$factura} AND t.id_destination_supplier = d.id";
 		$model=self::model()->findAllBySql($sql);

@@ -31,7 +31,7 @@ class AccountingDocumentTempController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('index','view','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
+				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -99,18 +99,21 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarDoc_ContTemp() 
         {
-              /*VALIDACION DE EXISTE*/
-//            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-//            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
             $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);               
+            $model->attributes = $_GET['AccountingDocumentTemp'];
+            $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
+            $ValidADT = AccountingDocumentTemp::getExist($model);
+            $ValidAD = AccountingDocument::getExist($model);
+            if($ValidAD==NULL && $ValidADT==NULL){
             if ($model->save()) {
                 $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                 Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
 
                 }
+            }else{
+                echo json_encode(AccountingDocumentTemp::getJSonParams($model,0));
+            }
         }
         /**
         * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...
@@ -419,7 +422,7 @@ class AccountingDocumentTempController extends Controller
                    $params[$key]['rate_etx']=$disputa->rate_etx;
                    $params[$key]['rate_carrier']=$disputa->rate_carrier;
                    $params[$key]['amount_etx']=$disputa->amount_etx;
-                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['amount_carrier']=$disputa->amount_carrier;
                    $params[$key]['dispute']=$disputa->dispute;
                    
                }echo json_encode($params);  
@@ -443,7 +446,7 @@ class AccountingDocumentTempController extends Controller
                    $params[$key]['rate_etx']=$disputa->rate_etx;
                    $params[$key]['rate_carrier']=$disputa->rate_carrier;
                    $params[$key]['amount_etx']=$disputa->amount_etx;
-                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['amount_carrier']=$disputa->amount_carrier;
                    $params[$key]['dispute']=$disputa->dispute;
                    
                }echo json_encode($params);  
@@ -482,5 +485,15 @@ class AccountingDocumentTempController extends Controller
             'lista_DispRec'=>$lista_DispRec,
             'lista_DispEnv'=>$lista_DispEnv
         ));
+    }
+    /**
+     * Action para enviar por correo los documentos contables
+     */
+    public function actionEnviarEmail() 
+    {
+        $userMail=Users::traeCorreo(Yii::app()->user->id);
+        $value = Yii::app()->enviarEmail->enviar($_POST['html'],$userMail,$_POST['asunto']);
+        $this->redirect($_POST['vista']);
+        echo $value;
     }
 }

@@ -745,6 +745,23 @@ width: 20%;
 {
     width: 94.5%;
 }
+.botonImprimir 
+{
+    /*background: url(../img/print.png);*/
+    width: 40%;
+}
+.botonCorreo 
+{
+    /*background: url(../img/mail.png);*/
+    width: 25%;
+}
+.botonesParaExportar 
+{
+    width: 7%;
+    position: absolute;
+    margin-left: 61%;
+    display:none;
+}
 
 .paletaColores
 {

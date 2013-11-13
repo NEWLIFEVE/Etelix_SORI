@@ -252,19 +252,7 @@ class AccountingDocumentTemp extends CActiveRecord
         /**
 	 * @access public
 	 * @param $usuario id del usuario en session
-	 */
-//	public static function listaGuardados($usuario)//regerencia
-//	{
-//		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
-//			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
-//			  	   FROM accounting_document_temp
-//			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e
-//			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
-//		$model=self::model()->findAllBySql($sql);
-//
-//		return $model;
-//	}
-        
+	 */     
 	public static function listaFacRecibidas($usuario)
 	{
 		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.email_received_date, d.valid_received_date, to_char(d.email_received_hour, 'HH24:MI') as email_received_hour, to_char(d.valid_received_hour, 'HH24:MI') as valid_received_hour, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, c.name AS id_carrier, e.name AS id_currency
@@ -316,7 +304,7 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function lista_DispRec($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount_carrier,(d.min_etx*d.rate_etx) as amount_etx,d.amount as dispute, e.name AS id_destination, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination e
@@ -329,7 +317,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
             
-		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount,(d.min_etx*d.rate_etx) as amount_etx,((d.min_etx*d.rate_etx)-(d.min_carrier*d.rate_carrier)) as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
+		$sql="SELECT d.id,  d.from_date, d.to_date, d.min_etx, d.min_carrier, d.rate_etx, d.rate_carrier,(d.min_carrier*d.rate_carrier) as amount_carrier,(d.min_etx*d.rate_etx) as amount_etx, d.amount as dispute, e.name AS id_destination_supplier, t.name AS id_type_accounting_document,  f.doc_number AS id_accounting_document, c.name AS id_carrier
 			  FROM(SELECT id, from_date, to_date, id_accounting_document, min_etx, min_carrier, rate_etx, rate_carrier, amount, id_destination_supplier, id_type_accounting_document, id_carrier
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, accounting_document f, carrier c, destination_supplier e
@@ -370,9 +358,38 @@ class AccountingDocumentTemp extends CActiveRecord
          * @return type
          */
         
-        public static function getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha)
+        public static function getExist($model)
         { 
-            return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:id_type_accounting_document and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$idCarrier,":doc_number"=>$numDocumento,":id_type_accounting_document"=>$selecTipoDoc,":from_date"=>$desdeFecha,":to_date"=>$hastaFecha));
+            switch ($model->id_type_accounting_document){
+                case '1':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
+                    break;
+                case '2':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
+                    break;
+                case '3':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
+                case '4':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    break;
+                case '5':
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination={$model->id_destination}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
+                    break;
+                case '6':
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination_supplier={$model->id_destination_supplier}");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
+                    break;
+                case '7':
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+                case '8':
+                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
+//                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+            }
         } 
         /**
          * busca los destinos supplier asignados al carrier
@@ -417,8 +434,9 @@ class AccountingDocumentTemp extends CActiveRecord
              }                                                             
         }   
         
-        public static function getJSonParams($model)
+        public static function getJSonParams($model,$valid)
         {
+            if (isset($model->id_type_accounting_document))$params['id_type_accounting_document'] = $model->id_type_accounting_document;
             if (isset($model->id))$params['id'] = $model->id;
             if (isset($model->id_carrier))$params['carrier']=Carrier::getName($model->id_carrier);
             if (isset($model->carrier_groups))$params['group']=  CarrierGroups::getName($model->carrier_groups);
@@ -442,7 +460,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->id_destination_supplier))$params['destinationSupp'] =DestinationSupplier::getName($model->id_destination_supplier);
             if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
             if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
-            
+            $params['valid'] = $valid;
             return $params;
         }
         
@@ -562,7 +580,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->amount=NULL;
+                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -576,7 +594,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination=NULL;
                     $model->minutes=NULL;
-                    $model->amount=NULL;
+                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
