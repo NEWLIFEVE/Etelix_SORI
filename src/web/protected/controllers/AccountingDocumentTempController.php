@@ -422,7 +422,7 @@ class AccountingDocumentTempController extends Controller
                    $params[$key]['rate_etx']=$disputa->rate_etx;
                    $params[$key]['rate_carrier']=$disputa->rate_carrier;
                    $params[$key]['amount_etx']=$disputa->amount_etx;
-                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['amount_carrier']=$disputa->amount_carrier;
                    $params[$key]['dispute']=$disputa->dispute;
                    
                }echo json_encode($params);  
@@ -446,7 +446,7 @@ class AccountingDocumentTempController extends Controller
                    $params[$key]['rate_etx']=$disputa->rate_etx;
                    $params[$key]['rate_carrier']=$disputa->rate_carrier;
                    $params[$key]['amount_etx']=$disputa->amount_etx;
-                   $params[$key]['amount']=$disputa->amount;
+                   $params[$key]['amount_carrier']=$disputa->amount_carrier;
                    $params[$key]['dispute']=$disputa->dispute;
                    
                }echo json_encode($params);  

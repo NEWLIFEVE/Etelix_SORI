@@ -529,7 +529,7 @@ $SORI.UI=(function()
                         if(data=="[]")
                         {     
                               $("#AccountingDocumentTemp_id_accounting_document").html("<option>No hay facturas registradas</option>").css('color','rgb(245, 105, 109)');  
-                              $('select#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date').val("");
+                              $('select#AccountingDocumentTemp_doc_number').val("");
                         }else{
                             obj = JSON.parse(data);
                             $("#AccountingDocumentTemp_id_accounting_document").html("<option>Seleccione</option>").css('color','#777');
@@ -579,8 +579,8 @@ $SORI.UI=(function()
                                                             <td id='AccountingDocumentTemp[rate_etx]'>" + obj[i].rate_etx + "</td>\n\
                                                             <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
                                                             <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].dispute) + "</td>\n\
+                                                            <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
+                                                            <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
                                                             <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
                                                         </tr>");
                         $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
@@ -852,7 +852,10 @@ $SORI.UI=(function()
          function MuestraMensaje(tipo,operador,fecha,doc_number)
          {
               $('.cargando, .mensaje').remove();
-              var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intento guardar, ya se encuentra registrado(a) "+operador+", "+fecha+" , bajo el N°. "+doc_number+"</h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
+              var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intenta guardar, ya se encuentra registrado(a) "+operador+", "+fecha+" , bajo el N°. "+doc_number+"</h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+              $("body").append(msj); 
+              msj.fadeIn('slow');
+              setTimeout(function() { msj.fadeOut('slow'); }, 3000);
          }
         
         function emptyFields(obj){

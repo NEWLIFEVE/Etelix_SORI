@@ -50,6 +50,7 @@ class AccountingDocument extends CActiveRecord
 	}
         public $carrier_groups;
         public $amount_etx;
+        public $amount_carrier;
         public $dispute;
 	/**
 	 * @return array validation rules for model attributes.
@@ -60,14 +61,14 @@ class AccountingDocument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, dispute', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
-			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
+			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour,dispute', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, dispute', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -255,7 +256,7 @@ class AccountingDocument extends CActiveRecord
         
         public static function lista_Disp_NotaCRec($factura)
 	{
-		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination, t.id_accounting_document
+		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount_carrier,(t.min_etx*t.rate_etx) as amount_etx,t.amount as dispute, d.name AS id_destination, t.id_accounting_document
                       FROM accounting_document t, destination d
                       WHERE t.id_type_accounting_document = 5 AND t.id_accounting_document = {$factura} AND t.id_destination = d.id";
 		$model=self::model()->findAllBySql($sql);
@@ -264,7 +265,7 @@ class AccountingDocument extends CActiveRecord
 	}
         public static function lista_Disp_NotaCEnv($factura)
 	{
-		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount,(t.min_etx*t.rate_etx) as amount_etx,((t.min_etx*t.rate_etx)-(t.min_carrier*t.rate_carrier)) as dispute, d.name AS id_destination_supplier, t.id_accounting_document
+		$sql="SELECT t.id, t.min_etx, t.min_carrier, t. rate_etx, t. rate_carrier, (t.min_carrier*t.rate_carrier) as amount_carrier,(t.min_etx*t.rate_etx) as amount_etx,t.amount as dispute, d.name AS id_destination_supplier, t.id_accounting_document
                       FROM accounting_document t, destination_supplier d
                       WHERE t.id_type_accounting_document = 6 AND t.id_accounting_document = {$factura} AND t.id_destination_supplier = d.id";
 		$model=self::model()->findAllBySql($sql);
