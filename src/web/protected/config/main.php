@@ -47,9 +47,8 @@ return array(
 //            'connectionString'=>'pgsql:host=192.168.1.29;port=5432;dbname=sori',
             'emulatePrepare'=>true,
             'username'=>'postgres',
-            'password'=>'Nsusfd8263',           
+            'password'=>'Nsusfd8263',
 //            'password'=>'123',
-
             'charset'=>'utf8',
             ),
         'errorHandler'=>array(
@@ -69,6 +68,9 @@ return array(
                         ),*/
                 ),
             ),
+        'enviarEmail'=>array(
+                    'class'=>'application.components.EnviarEmail',
+                ),
         ),
         // application-level parameters that can be accessed
         // using Yii::app()->params['paramName']

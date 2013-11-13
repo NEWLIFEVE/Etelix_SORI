@@ -1,15 +1,15 @@
 <?php
-/* @var $this DaysDisputeHistoryController */
-/* @var $model DaysDisputeHistory */
+/* @var $this DestinationSupplierController */
+/* @var $model DestinationSupplier */
 
 $this->breadcrumbs=array(
-	'Days Dispute Histories'=>array('index'),
+	'Destination Suppliers'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List DaysDisputeHistory', 'url'=>array('index')),
-	array('label'=>'Create DaysDisputeHistory', 'url'=>array('create')),
+	array('label'=>'List DestinationSupplier', 'url'=>array('index')),
+	array('label'=>'Create DestinationSupplier', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -18,7 +18,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$('#days-dispute-history-grid').yiiGridView('update', {
+	$('#destination-supplier-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Days Dispute Histories</h1>
+<h1>Manage Destination Suppliers</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -41,15 +41,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'days-dispute-history-grid',
+	'id'=>'destination-supplier-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'start_date',
-		'end_date',
-		'id_contrato',
-		'days',
+		'name',
+		'id_carrier',
 		array(
 			'class'=>'CButtonColumn',
 		),

@@ -28,7 +28,7 @@ class AccountingDocumentController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','Confirmar','Borrar','buscadatos'),
+				'actions'=>array('index','view','Confirmar','Borrar','buscadatos','UpdateDisputa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -160,6 +160,17 @@ class AccountingDocumentController extends Controller
                             echo 'guardo';
                         }
 	}
+	public function actionUpdateDisputa($id)
+	{
+//	          $id=  AccountingDocument::getConfirmID(0); 
+                  $model=$this->loadModel($id);
+        	  $model->amount=$_POST['AccountingDocumentTemp']['amount'];
+                  $model->save();
+			if($model->save()){
+                            echo 'guardo';
+                        }
+	}
+        
         
         /**
          * Updates a particular model.
