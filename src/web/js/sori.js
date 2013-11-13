@@ -891,28 +891,28 @@ $SORI.UI=(function()
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '2'://facturas recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '3'://pagos
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '4'://cobros
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '5'://disputas recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
                 break 
             case '6'://disputas enviadas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
                 break 
             case '7'://notas de credito enviadas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '8'://notas de credito recibidas
-                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
-                return respuesta;
-           }
+                
+           }return respuesta;
         }
          /**
 	 * Valida los input y select del formulario
@@ -921,15 +921,17 @@ $SORI.UI=(function()
 	 */
 	function validaCampos(campos)
 	{  
-            for (var i=0, j=campos.length - 2; i <= j; i++)
+            for (var i=0, j=campos.length - 1; i <= j; i++)
                 {
                     if(campos[i].value==""){
                         var respuesta=0;
+                        break;
                      }else{respuesta=1;}
                 };
                 if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                                                     $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
-            return respuesta;
+           
+                return respuesta;
         }
         /**
          * 
