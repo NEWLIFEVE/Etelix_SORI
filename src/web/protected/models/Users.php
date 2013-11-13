@@ -155,4 +155,11 @@ class Users extends CActiveRecord
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->username;
         }
+        /*
+        * con el id de users me trae  email
+        */
+        public static function traeCorreo($id)
+        {
+           return self::model()->find("id =:id",array(":id"=>$id))->email;
+        }
 }

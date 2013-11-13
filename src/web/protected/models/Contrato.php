@@ -31,7 +31,8 @@ class Contrato extends CActiveRecord
     public $id_limite_compra;
     public $id_managers;
     public $id_disputa;
-    public $id_carrier1;
+    public $id_disputa_solved;
+    public $status;
 	public function tableName()
 	{
 		return 'contrato';
@@ -88,7 +89,8 @@ class Contrato extends CActiveRecord
 			'id_limite_credito' => 'Limite de Credito',
 			'id_limite_compra' => 'Limite de Compra',
                         'id_managers' => 'Account Manager',
-                        'id_disputa' => 'Dias para disputas',
+                        'id_disputa' => 'Dias max para disputar',
+                        'id_disputa_solved' => 'Dias para solventar disputas',
                         'up' => 'Unidad de Produccion',
 		);
 	}

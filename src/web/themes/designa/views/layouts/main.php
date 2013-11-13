@@ -26,13 +26,14 @@
 	<![endif]-->
 </head>
 <body>
+
 	<!-- Prompt IE 7 users to install Chrome Frame -->
 	<!--[if lt IE 8]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 	<div class="container">
 		<header id="navtop">
 			<a href="/" class="logo fleft">
-				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.2.0">
-			</a>V 1.2.0
+				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.4.0">
+			</a>V 1.4.0
 			<nav class="fright">
 				<?php
 					Yii::import('webroot.protected.controllers.SiteController');
@@ -151,4 +152,14 @@ Yii::app()->clientScript->registerScript(
         CClientScript::POS_READY
         );
 
+//
+//    $this->widget('ext.timeout-dialog.ETimeoutDialog', array(
+//        // Get timeout settings from session settings.
+//        //'timeout' => Yii::app()->getSession()->getTimeout(),
+//        // Uncomment to test.
+//        // Dialog should appear 20 sec after page load.
+//        'timeout' => 40,
+//        'keep_alive_url' => $this->createUrl('/site/keepalive'),
+//        'logout_redirect_url' => $this->createUrl('/site/logout'),
+//    ));
 ?>

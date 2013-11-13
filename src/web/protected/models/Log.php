@@ -136,6 +136,18 @@ class Log extends CActiveRecord
 			return false;
 		}
 	}
+	public static function updateDocLog($model,$id_espNew)
+	{
+		$model->id_esp=$id_espNew;
+		if($model->save())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	/*
 	* Funcion encargada de verificar si se realizo la subida de los cuatro archivos de diario

@@ -405,7 +405,7 @@ width: 20%;
     width: 24%;
     margin-top: 1%;
 }
-.valoresDocumento
+.valoresDocumento, .tabla_N_C, .numDocumentoNota
 {
     display:none;
 } 
@@ -427,15 +427,36 @@ width: 20%;
 }
 
 
-.contratoFormTextArea,#AccountingDocumentTemp_note
+.contratoFormTextArea, .quitaNota
 {
     display: none;
     width: 97%;
 }
-.hacerUnaNota
+.hacerUnaNota 
 {
     color:rgba(111,204,187,1);
     width: 5%;
+}
+.nuevoDestProv, .cancelarDestProv
+{
+    color:rgba(111,204,187,1);
+    width: 5%;
+    font-weight:bold;
+    font-size: 27px;
+    position: absolute;
+    top: 36px;
+    right: 0;
+}
+.cancelarDestProv
+{
+    display:none;
+}
+
+.DestinoProv{
+    position: relative;
+}
+#AccountingDocumentTemp_input_dest_supplier{
+    display: none;
 }
 .CarrierDocument,.GrupoDocument
 {
@@ -459,18 +480,133 @@ width: 20%;
 }*/
 .tablaVistDocTemporales 
 {
-    background:rgba(111,204,187,1);
-    /*background:#DDD;*/
     margin-top: 2%;
     margin-left:1%;
     right:auto;
-    font-weight:bold;
     color: white;
     border: none;
     text-align:center;
-    border-bottom-color: rgba(111,204,187,1);
-    width: 1081px;
+    width: 1086px;
 }
+/*****FACTURAS RECIBIDAS********/
+.lista_FacRec{
+    background: rgb(161, 177, 171);
+    border-bottom-color: rgb(161, 177, 171);
+}
+.lista_FacRec td {
+    width: 67px;
+    height: 25px;
+}
+.lista_FacRec tr:hover {
+    background: rgb(161, 177, 171);
+    color: white;
+}
+/*****FACTURAS ENVIADAS********/
+.lista_FacEnv{
+    background: rgba(111,204,187,1);
+    border-bottom-color: rgba(111,204,187,1);
+}
+.lista_FacEnv td {
+    width: 6em;
+    height: 25px;
+}
+.lista_FacEnv tr:hover {
+    background: rgba(111,204,187,1);
+    color: white;
+}
+/*****COBROS*****/
+.lista_Cobros{
+    background: rgba(152, 198, 213, 1);
+    border-bottom-color: rgba(152, 198, 213, 1);
+}
+.lista_Cobros td{
+    width: 8em;
+    height: 25px;
+}
+.lista_Cobros tr:hover{
+    background: rgba(152, 198, 213, 1);
+    color: white;
+}
+/****PAGOS****/
+.lista_Pagos{
+    background: rgba(226, 168, 140, 1);
+    border-bottom-color: rgba(226, 168, 140, 1);  
+}
+.lista_Pagos td{
+    width: 8em;
+    height: 25px;
+}
+.lista_Pagos tr:hover{
+    background: rgba(226, 168, 140, 1);
+    color: white;   
+}
+/*****DISPUTAS RECIBIDAS*****/
+.lista_DispRec{
+    background: rgba(140, 170, 223, 1);
+    border-bottom-color: rgba(140, 170, 223, 1);
+}
+.lista_DispRec td{
+    width: 8em;
+    height: 25px;
+}
+.lista_DispRec tr:hover{
+    background: rgba(140, 170, 223, 1);
+    color: white;
+}
+/*****DISPUTAS ENVIADAS*****/
+.lista_DispEnv{
+    background: rgba(20, 121, 121, 1);
+    border-bottom-color: rgba(20, 121, 121, 1);
+}
+.lista_DispEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_DispEnv tr:hover{
+    background: rgba(20, 121, 121, 1);
+    color: white;
+}
+ /*****NOTAS DE CRÉDITO ENVIADAS*****/
+.lista_NotCredEnv{
+    background: rgb(172, 208, 212);
+    border-bottom-color: rgb(172, 208, 212);
+}
+.lista_NotCredEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_NotCredEnv tr:hover{
+    background: rgb(172, 208, 212);
+    color: white;
+}
+ /*****NOTAS DE CRÉDITO RECIBIDAS*****/
+.lista_NotCredRec{
+    background: rgb(189, 170, 194);
+    border-bottom-color: rgb(189, 170, 194);
+}
+.lista_NotCredRec td{
+    width: 8em;
+    height: 25px;
+}
+.lista_NotCredRec tr:hover{
+    background: rgb(189, 170, 194);
+    color: white;
+}
+ /*****LISTA DE DISPUTAS RECIBIDAS EN FORM DE NOTA DE CREDITO ENVIADA*****/
+.lista_Disp_NotaCEnv{
+    background: silver;
+    border-bottom-color: silver;
+    width: 1030px!important;
+}
+.lista_Disp_NotaCEnv td{
+    width: 8em;
+    height: 25px;
+}
+.lista_Disp_NotaCEnv tr:hover{
+    background: silver;
+    color: white;
+}
+
 .tablaVistDocTemporales tr td input
 {
     font-size: 1em;
@@ -482,35 +618,16 @@ width: 20%;
 {
     width: 75px;
 }
-
-
-.tablaVistDocTemporales:hover
-{
-    /*background:rgba(44, 139, 110, 1);*/
-    margin-top: 2%;
-    margin-left: 1%;
-    right:auto;
-    font-weight:bold;
-    text-align:center;
-    border: none;
-    border-bottom-color: rgba(111,204,187,1);
-}
-.vistaTemp
+.vistaTemp,.listaDisputas
 {
     background:white;
     color: #555;
 }
-.vistaTemp:hover
-{
-    background:rgba(143, 206, 194, 1);
-    color: white;
-    border-bottom-color: rgba(111,204,187,1);
-}
 
-/*#botAgregarDatosContableFinal
+#botAgregarDatosContableFinal
 { 
     display:none;
-}*/
+}
 
 .mensajeFinal
 {
@@ -627,6 +744,23 @@ width: 20%;
 #Managers_address
 {
     width: 94.5%;
+}
+.botonImprimir 
+{
+    /*background: url(../img/print.png);*/
+    width: 40%;
+}
+.botonCorreo 
+{
+    /*background: url(../img/mail.png);*/
+    width: 25%;
+}
+.botonesParaExportar 
+{
+    width: 7%;
+    position: absolute;
+    margin-left: 61%;
+    display:none;
 }
 
 .paletaColores

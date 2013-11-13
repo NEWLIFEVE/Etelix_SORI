@@ -108,7 +108,7 @@ class TypeAccountingDocument extends CActiveRecord
 	 */
 	public static function getListTypeAccountingDocument()
     {
-        return CHtml::listData(TypeAccountingDocument::model()->findAll(), 'id', 'name');
+        return CHtml::listData(TypeAccountingDocument::model()->findAll(array('order'=>'id')), 'id', 'name');
     }
 
     /**
