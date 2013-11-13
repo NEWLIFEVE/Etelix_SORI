@@ -565,6 +565,8 @@ $SORI.UI=(function()
                    $('.listaDisputas').remove();
                    if(data=="[]"){
                       //no hay datos y asi no muestra nada
+                        $('.cargando,.mensaje').remove();
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
                    }else{
                     console.log(data);
                     var obj = JSON.parse(data);
@@ -859,10 +861,14 @@ $SORI.UI=(function()
             
             $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                 if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date").val('');
+                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date").val('');
                 } 
                 if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date").val('');
+                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');
+                } 
+                if (obj.id_type_accounting_document=='7'||obj.id_type_accounting_document=='8'){
+                     $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number").val('');
+                     $('.tabla_N_C,.numDocument,.montoDoc').fadeOut("fast");$('.listaDisputas').remove();
                 } 
         }
         

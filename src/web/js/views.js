@@ -744,7 +744,7 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                 url: "guardarListaFinal",
                 success: function(data) 
                 {  
-                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec').fadeOut('fast');
+                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.botonesParaExportar').fadeOut('fast');
                     $('.vistaTemp').remove();
                     var exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
                     setTimeout(function() {
