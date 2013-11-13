@@ -491,9 +491,11 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionEnviarEmail() 
     {
-        $userMail=Users::traeCorreo(Yii::app()->user->id);
+//        $userMail=Users::traeCorreo(Yii::app()->user->id);
+        $userMail="nellygallardo21@gmail.com";
         $value = Yii::app()->enviarEmail->enviar($_POST['html'],$userMail,$_POST['asunto']);
 //        $this->redirect($_POST['vista']);
         echo $value;
+        echo "<div class='respuestacorreo'>respuesta al correo".$_POST['html']."</div>";
     }
 }

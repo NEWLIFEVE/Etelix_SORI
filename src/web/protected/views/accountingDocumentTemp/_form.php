@@ -287,7 +287,7 @@
         <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
-        
+        <div class="tablasTemporales">
                <label class="Label_F_Env" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>Facturas Enviadas:</label>
         <table border="1" class="tablaVistDocTemporales lista_FacEnv" <?php if($lista_FacEnv==null){echo "style='display:none;'";}?>>
                 <tr>
@@ -555,7 +555,7 @@
                     }
                     ?>
          </table>
-
+        </div>
      </div>
 </div><!-- form -->
 

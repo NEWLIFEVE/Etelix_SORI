@@ -615,14 +615,22 @@ $SORI.UI=(function()
 	 */  
         $('.botonCorreo').click('on',function()
         {
-             console.dir('al menos entra');
-    
-            var html = "<table class='lista_FacEnv'>" + $(".lista_FacEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_FacRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Cobros").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Pagos").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_NotCredEnv").clone().html() + "</table>" + "<br/>" + $(".lista_NotCredRec").clone().html() + "</table>";
-            console.log(html);
-            $("#html").val(html);
+//            var html = "<table style='background: rgba(111,204,187,1);border-bottom-color: rgba(111,204,187,1);'>" + $(".lista_FacEnv").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgb(161, 177, 171);border-bottom-color: rgb(161, 177, 171);'>" + $(".lista_FacRec").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgba(152, 198, 213, 1);border-bottom-color: rgba(152, 198, 213, 1);'>" + $(".lista_Cobros").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgba(226, 168, 140, 1);border-bottom-color: rgba(226, 168, 140, 1);'>" + $(".lista_Pagos").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgba(140, 170, 223, 1);border-bottom-color: rgba(140, 170, 223, 1);'>" + $(".lista_DispRec").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgba(20, 121, 121, 1);border-bottom-color: rgba(20, 121, 121, 1);'>" + $(".lista_DispEnv").clone().html() + "</table>" + "<br/>"+
+//                       "<table style='background: rgb(172, 208, 212);border-bottom-color: rgb(172, 208, 212);'>" + $(".lista_NotCredEnv").clone().html() + "</table>" + "<br/>"+ 
+//                       "<table style='background: rgb(189, 170, 194);border-bottom-color: rgb(189, 170, 194);'>" + $(".lista_NotCredRec").clone().html() + "</table>";
+//            var html= $(".tablasTemporales").clone().html();
+            var html="<body>" + $(".tablasTemporales").clone().html() +"</body>";
+            var css="<head><style type='text/css'>.vistaTemp{background:white;color: #555;}.tablaVistDocTemporales{margin-top: 2%;margin-left:1%;right:auto;color: white;border: none;text-align:center;width: 1086px;}.lista_Pagos{background: red ;border-bottom-color: rgb(161, 177, 171);}  .lista_FacRec td {width: 67px;height: 25px;}</style></head>";
+
+            $("#html").val(css+html);
             $("#FormularioCorreo").submit();
+            $('.respuestacorreo').append(css+html);
             alert('Correo Enviado');
-                console.dir('es un milagro!! !), llego aqui .}');
 
         });
         
