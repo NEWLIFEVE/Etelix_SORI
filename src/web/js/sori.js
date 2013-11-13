@@ -883,7 +883,130 @@ $SORI.UI=(function()
             });
         });
     }
-
+    
+	function seleccionaCampos(tipo)
+	{  
+           switch (tipo){
+            case '1'://facturas enviadas
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                break 
+            case '2'://facturas recibidas
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                break 
+            case '3'://pagos
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                break 
+            case '4'://cobros
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_carrier_groups').serializeArray());
+                break 
+            case '5'://disputas recibidas
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                break 
+            case '6'://disputas enviadas
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                break 
+            case '7'://notas de credito enviadas
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                break 
+            case '8'://notas de credito recibidas
+                var respuesta=$SORI.UI.validaCampos($('.AccountingDocumentTemp_id_carrier').serializeArray());
+                break 
+                return respuesta;
+           }
+        }
+         /**
+	 * Valida los input y select del formulario
+	 * @access public
+	 * @param  campos
+	 */
+	function validaCampos(campos)
+	{  
+            for (var i=0, j=campos.length - 2; i <= j; i++)
+                {
+                    if(campos[i].value==""){
+                        var respuesta=0;
+                     }else{respuesta=1;}
+                };
+                if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                                                    $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
+            return respuesta;
+        }
+        /**
+         * 
+         * @param {type} tipoDocument
+         * @returns {undefined}
+         */
+        
+        function elijeOpciones(tipoDocument)
+	{
+            var ocultar =['.tabla_N_C,.CarrierDocument','.GrupoDocument','.emailReceivedDate','.validReceivedDate','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedTime','.minutosDoc','.minutosEtx','.minutosProveedor','.DestinoEtx','.DestinoProv','.Moneda','select#AccountingDocumentTemp_id_destination_supplier','input#AccountingDocumentTemp_id_destination_supplier','.montoDoc','.numDocument','.numFactura','.rateEtx','.rateProveedor'];
+            switch (tipoDocument){
+                case '1'://facturas enviadas
+                    var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosDoc'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                    break
+                case '2'://facturas recibidas
+                    var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedDate','.emailReceivedTime','.CarrierDocument','.minutosDoc'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                    break
+                case '3'://pago
+                    var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.GrupoDocument'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                    break
+                case '4'://cobro
+                    var mostrar =['.numDocument','.montoDoc','.Moneda','.validReceivedDate','.GrupoDocument'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                    break
+                case '5'://disputas recibidas
+                    var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoEtx','.rateEtx','.rateProveedor'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $SORI.UI.changeCss('.numFactura','width','24%');
+                    $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val('');
+                    $("#AccountingDocumentTemp_id_accounting_document").html("");
+                    $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                    break
+                case '6'://Disputa enviada
+                    var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoProv','.rateEtx','.rateProveedor','select#AccountingDocumentTemp_id_destination_supplier'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $SORI.UI.changeCss('.numFactura','width','24%');
+                    $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val('');
+                    $("#AccountingDocumentTemp_id_accounting_document").html("");
+                    $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                    $SORI.UI.toggleDestProv();
+                    break
+                case '7'://Nota de credito enviada
+                    var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $SORI.UI.changeCss('.numFactura','width','51%');
+                    $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                    $("#AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_accounting_document, #AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_id_accounting_document").val('');
+                    $("#AccountingDocumentTemp_id_accounting_document").html(""); 
+                    $SORI.UI.sumMontoNota();
+                    $SORI.UI.buscaDisputa(tipoDocument);
+                    break
+                case '8'://Nota de credito recibida
+                    var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $SORI.UI.changeCss('.numFactura','width','51%');
+                    $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
+                    $("#AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_accounting_document, #AccountingDocumentTemp_id_carrier").val('');
+                    $("#AccountingDocumentTemp_id_accounting_document").html("");
+                    $SORI.UI.sumMontoNota();
+                    $SORI.UI.buscaDisputa(tipoDocument);
+                    break
+            }
+        }
 	/**
 	 * Retorna los mestodos publicos
 	 */
@@ -899,7 +1022,10 @@ $SORI.UI=(function()
                 changeCss:changeCss,
                 sumMontoNota:sumMontoNota,
                 MensajeYaExiste:MensajeYaExiste,
-                MuestraMensaje:MuestraMensaje
+                MuestraMensaje:MuestraMensaje,
+                validaCampos:validaCampos,
+                seleccionaCampos:seleccionaCampos,
+                elijeOpciones:elijeOpciones
 	};
 })();
 
@@ -999,23 +1125,6 @@ $SORI.UTILS=(function()
                 
             });
         }
-	/**
-	 * Valida los input y select del formulario
-	 * @access public
-	 * @param  lleno
-	 */
-	function validaCampos(lleno)
-	{
-            for (var i=0, j=lleno.length - 2; i <= j; i++)
-                {
-                    if(lleno[i].value==""){
-                        var respuesta=0;
-                     }else{respuesta=1;}
-                };
-                if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                                                    $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
-            return respuesta;
-        }
 
         function getURL(tipo){
             var action;
@@ -1053,7 +1162,6 @@ $SORI.UTILS=(function()
 	 */
 	return{
 		getData:getData,
-                validaCampos:validaCampos,
 		getURL:getURL,
 		updateMontoAprobadoDisp:updateMontoAprobadoDisp
 	}
