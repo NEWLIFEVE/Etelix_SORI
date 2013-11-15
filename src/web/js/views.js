@@ -327,6 +327,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                    class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
                                                    <p><label><b>Aceptar</b></label></div></div>").hide();
                     $("body").append(revisa);
+                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
                     revisa.fadeIn('fast');
                 }
                 else
@@ -456,7 +457,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                    <p><label><b>Aceptar</b></label></div></div>").hide();
                     $("body").append(revisa);
                     $SORI.UI.casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas
-                    
+                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
                     revisa.fadeIn('fast');         
                 }
                 $('#confirma,#cancelar').on('click',function()
