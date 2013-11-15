@@ -99,20 +99,26 @@ class AccountingDocumentTempController extends Controller
         **/
         public function actionGuardarDoc_ContTemp() 
         {
-            $model = new AccountingDocumentTemp;
-            $model->attributes = $_GET['AccountingDocumentTemp'];
-            $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
-            $ValidADT = AccountingDocumentTemp::getExist($model);
-            $ValidAD = AccountingDocument::getExist($model);
-            if($ValidAD==NULL && $ValidADT==NULL){
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
+            if(!Yii::app()->user->isGuest)
+            {
+                $model = new AccountingDocumentTemp;
+                $model->attributes = $_GET['AccountingDocumentTemp'];
+                $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
+                $ValidADT = AccountingDocumentTemp::getExist($model);
+                $ValidAD = AccountingDocument::getExist($model);
+                if($ValidAD==NULL && $ValidADT==NULL){
+                if ($model->save()) {
+                    $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+                    Log::registrarLog($idAction, NULL, $model->id);
+                    echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
 
+                    }
+                }else{
+                    echo json_encode(AccountingDocumentTemp::getJSonParams($model,0));
                 }
             }else{
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model,0));
+                $params['valid']=2;
+                echo json_encode($params);
             }
         }
         /**
@@ -492,6 +498,8 @@ class AccountingDocumentTempController extends Controller
     public function actionEnviarEmail() 
     {
         $userMail=Users::traeCorreo(Yii::app()->user->id);
+//        $userMail="eduardo@newlifeve.com";
+//        $userMail="mark182182@gmail.com";
         $value = Yii::app()->enviarEmail->enviar($_POST['html'],$userMail,$_POST['asunto']);
         $this->redirect($_POST['vista']);
         echo $value;
