@@ -834,51 +834,41 @@ $SORI.UI=(function()
          * @returns {undefined}
          */
          function MensajeYaExiste(obj){
-             var F_facturas="en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>",carrier="con el carrier <b>"+obj.carrier+"</b>", grupo=" el grupo <b>"+obj.group+"</b>",doc_number="<b>"+obj.doc_number+"</b>";
+             $('.cargando, .mensaje').remove();
              switch (obj.id_type_accounting_document){
                     case '1':
-                        $SORI.UI.MuestraMensaje("La Factura Enviada",carrier,F_facturas,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '2':
-                        $SORI.UI.MuestraMensaje("La Factura Recibida",carrier,F_facturas,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Factura Recibida</b> que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '3':
-                        $SORI.UI.MuestraMensaje("El Pago","con fecha de emisión <b>"+obj.issue_date+"</b>",grupo,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de emisión <b>"+obj.issue_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '4':
-                        $SORI.UI.MuestraMensaje("El Cobro","con fecha de recepción <b>"+obj.valid_received_date+"</b>",grupo,doc_number);
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de recepción <b>"+obj.valid_received_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '5':
-                        $SORI.UI.MuestraMensaje("La Disputa Recibida",carrier+", el destino <b>"+obj.destination+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '6':
-                        $SORI.UI.MuestraMensaje("La Disputa Enviada",carrier+" el destino supplier <b>"+obj.destinationSupp+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '7':
-                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '8':
-                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
              }
-         }
-         /**
-          * 
-          * @param {type} tipo
-          * @param {type} operador
-          * @param {type} fecha
-          * @param {type} doc_number
-          * @returns {undefined}
-          */
-         function MuestraMensaje(tipo,operador,fecha,doc_number)
-         {
-              $('.cargando, .mensaje').remove();
-              var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intenta guardar, ya se encuentra registrado(a) "+operador+", "+fecha+" , bajo el N°. "+doc_number+"</h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
               $("body").append(msj); 
               msj.fadeIn('slow');
               setTimeout(function() { msj.fadeOut('slow'); }, 3000);
          }
-
+        /**
+         * 
+         * @returns {undefined}
+         */
          function sesionCerrada()
          {
              var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Debido al tiempo que la aplicación estuvo sin uso, su sesión ha sido cerrada</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div></div>").hide();
@@ -1149,7 +1139,6 @@ $SORI.UI=(function()
                 changeCss:changeCss,
                 sumMontoNota:sumMontoNota,
                 MensajeYaExiste:MensajeYaExiste,
-                MuestraMensaje:MuestraMensaje,
                 validaCampos:validaCampos,
                 seleccionaCampos:seleccionaCampos,
                 elijeOpciones:elijeOpciones,

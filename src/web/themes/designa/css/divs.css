@@ -745,16 +745,12 @@ width: 20%;
 {
     width: 94.5%;
 }
-.botonImprimir 
+.botonImprimir, .botonCorreo  
 {
     /*background: url(../img/print.png);*/
     width: 40%;
 }
-.botonCorreo 
-{
-    /*background: url(../img/mail.png);*/
-    width: 25%;
-}
+
 .botonesParaExportar 
 {
     width: 7%;
