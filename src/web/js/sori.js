@@ -871,7 +871,7 @@ $SORI.UI=(function()
          */
          function sesionCerrada()
          {
-             var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Debido al tiempo que la aplicación estuvo sin uso, su sesión ha sido cerrada</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div></div>").hide();
+             var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div></div>").hide();
                 $("body").append(msj); 
                 msj.fadeIn('slow');
                 $('.relogin').click('on',function()
