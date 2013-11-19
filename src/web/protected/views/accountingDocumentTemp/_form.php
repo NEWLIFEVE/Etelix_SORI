@@ -290,8 +290,8 @@
     <div class="VistDocTemporales">
         <br>
         <div class="botonesParaExportar" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
-           <div class="botonImprimir contratoForm"><img src='/images/print-icon.png'width='95px' height='95px'/></div>
-           <div class="botonCorreo contratoForm"><img src='/images/mail.png'width='95px' height='95px'/></div> 
+           <div class="botonImprimir contratoForm"><img src='/images/print-icon.png'/></div>
+           <div class="botonCorreo contratoForm"><img src='/images/mail.png'/></div> 
         </div>
         
         <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
