@@ -625,15 +625,16 @@ $SORI.UI=(function()
                   
             var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Enviando documentos por correo</h2><p>Espere un momento por favor<p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/></div>").hide(),
             tr_fondoblanco=$(".vistaTemp").css('background','white').css('color','gray').css('font','small-caption'),
+
+            html="Facturas Enviadas:        <table  style='font-weight:bold;color: white;width: 900px;background: rgb(111, 204, 187);border-bottom-color: white;'>" + $(".lista_FacEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Facturas Recibidas:       <table  style='font-weight:bold;color: white;width: 900px;background: rgb(161, 177, 171);border-bottom-color: white;'>" + $(".lista_FacRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Cobros:                   <table  style='font-weight:bold;color: white;width: 900px;background: rgb(152, 198, 213);border-bottom-color: white;'>" + $(".lista_Cobros").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Pagos:                    <table  style='font-weight:bold;color: white;width: 900px;background: rgb(226, 168, 140);border-bottom-color: white;'>" + $(".lista_Pagos").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Disputas Recibidas:       <table  style='font-weight:bold;color: white;width: 900px;background: rgb(140, 170, 223);border-bottom-color: white;'>" + $(".lista_DispRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Disputas Enviadas:        <table  style='font-weight:bold;color: white;width: 900px;background: rgb(20, 121, 121); border-bottom-color: white;'>" + $(".lista_DispEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Notas de Crédito Enviadas:<table  style='font-weight:bold;color: white;width: 900px;background: rgb(172, 208, 212);border-bottom-color: white;'>" + $(".lista_NotCredEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                 "Notas de Crédito Recibidas:<table style='font-weight:bold;color: white;width: 900px;background: rgb(189, 170, 194);border-bottom-color: white;'>" + $(".lista_NotCredRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>";
             
-            html="Facturas Enviadas:            <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(111,204,187,1);border-bottom-color: white;'>" + $(".lista_FacEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Facturas Recibidas:       <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgb(161, 177, 171);border-bottom-color: white;'>" + $(".lista_FacRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Cobros:                   <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(152, 198, 213, 1);border-bottom-color: white;'>" + $(".lista_Cobros").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Pagos:                    <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(226, 168, 140, 1);border-bottom-color: white;'>" + $(".lista_Pagos").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Disputas Recibidas:       <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(140, 170, 223, 1);border-bottom-color: white;'>" + $(".lista_DispRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Disputas Enviadas:        <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(20, 121, 121, 1);border-bottom-color: white;'>" + $(".lista_DispEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Notas de Crédito Enviadas:<table border='1' style='font-weight:bold;color: white;width: 900px;background: rgb(172, 208, 212);border-bottom-color: white;'>" + $(".lista_NotCredEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
-                     "Notas de Crédito Recibidas:<table border='1' style='font-weight:bold;color: white;width: 900px;background:rgb(189, 170, 194);border-bottom-color: white;'>" + $(".lista_NotCredRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>";
             $("#html").val(html);
             $("#FormularioCorreo").submit();
             $("body").append(msj);msj.fadeIn('slow');
@@ -840,30 +841,30 @@ $SORI.UI=(function()
                          var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '2':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Factura Recibida</b> que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Factura Recibida </b>que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>, con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '3':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de emisión <b>"+obj.issue_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de emisión <b>"+obj.issue_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '4':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de recepción <b>"+obj.valid_received_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de recepción <b>"+obj.valid_received_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '5':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '6':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '7':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '8':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
              }
               $("body").append(msj); 
               msj.fadeIn('slow');
-              setTimeout(function() { msj.fadeOut('slow'); }, 3000);
+              setTimeout(function() { msj.fadeOut('slow'); }, 4000);
          }
         /**
          * 
@@ -884,7 +885,7 @@ $SORI.UI=(function()
          * @returns {undefined}
          */
         function emptyFields(){
-            $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+            $("#AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                 if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date").val('');
                 } 

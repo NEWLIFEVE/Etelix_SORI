@@ -174,6 +174,19 @@ Class Utility
         $numsub = substr($numtext,0,$position+$decimales); 
         return $numsub;
     }
-
+	/*
+	* Encargada de cambiar las comas recibidas por un punto.
+	*/
+	public static function ComaPorPunto($monto) 
+        {
+//            for ($i = 0; $i < strlen($monto); $i++) {
+//                if ($monto{$i} == ',' || $monto{$i} == '%2C') {
+//                    $monto{$i} = '.';
+//                }
+//                return $monto;
+//            }
+            $monto = str_replace(",",".",$monto);
+        return $monto;
+        }
 }
 ?>
