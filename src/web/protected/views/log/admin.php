@@ -45,6 +45,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'log-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+    'ajaxUpdate'=>true,
     'htmlOptions'=>array(
 		'class'=>'grid-view gridviewmod'
 		),

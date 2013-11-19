@@ -10,6 +10,7 @@
  * @property string $record_date
  * @property integer $id_carrier_groups
  * @property integer $group_leader
+ * @property integer $status
  *
  * The followings are the available model relations:
  * @property Balance[] $balances
@@ -40,7 +41,7 @@ class Carrier extends CActiveRecord
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, address, record_date, id_carrier_groups, group_leader', 'safe', 'on'=>'search'),
+			array('id, name, address, record_date, id_carrier_groups, group_leader, status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +74,7 @@ class Carrier extends CActiveRecord
 			'record_date' => 'Fecha Registro',
 			'id_carrier_groups' => 'Grupo',
 			'group_leader' => 'Principal',
+			'status' => 'Status',
 		);
 	}
 
@@ -100,6 +102,7 @@ class Carrier extends CActiveRecord
 		$criteria->compare('record_date',$this->record_date,true);
 		$criteria->compare('id_carrier_groups',$this->id_carrier_groups,true);
 		$criteria->compare('group_leader',$this->group_leader,true);
+		$criteria->compare('status',$this->status,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -180,5 +183,9 @@ class Carrier extends CActiveRecord
         public static function getCarrierLeader($idGrupo)
         {
             return self::model()->find("id_carrier_groups =:idGrupo and group_leader = 1",array(":idGrupo"=>$idGrupo))->id;
+        } 
+        public static function getStatus($id)
+        {
+            return self::model()->find("id =:id",array(":id"=>$id))->status;
         } 
 }

@@ -135,6 +135,11 @@
                     <?php echo $form->dropDownList($model, 'up',array( 0=>"Ventas", 1=>"Presidencia"),array('prompt'=>'Seleccione')); ?> 
                     <?php echo $form->error($model, 'up'); ?>
                 </div>
+                <div class="contratoForm">
+                    <?php echo $form->labelEx($model, 'status'); ?>
+                    <?php echo $form->dropDownList($model, 'status',array( 0=>"Inactivo", 1=>"Activo"),array('prompt'=>'Seleccione')); ?> 
+                    <?php echo $form->error($model, 'status'); ?>
+                </div>
                      <input type="hidden" id="dias_disputa_Oculto"  value="">
                      <input type="hidden" id="dias_disputa_solved_Oculto"  value="">
                      <input type="hidden" id="credito_Oculto"  value="">
@@ -144,6 +149,7 @@
                      <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
                      <input type="hidden" id="F_P_produccion_Oculto"  value="">
                      <input type="hidden" id="Contrato_upOculto"  value="">
+                     <input type="hidden" id="Contrato_statusOculto"  value="">
             </div>
 
             <br>
