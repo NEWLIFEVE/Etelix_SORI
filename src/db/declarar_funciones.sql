@@ -1,7 +1,10 @@
-﻿DROP function ejecutar_rerate()
-/*ejecuta el rerate de todo lo que este en la tabla balance_temp*/
-CREATE OR REPLACE function ejecutar_rerate() RETURNS RECORD
-AS $$
+DROP function ejecutar_rerate()
+/*
+ * ejecuta el rerate de todo lo que este en la tabla balance_temp
+ */
+CREATE OR REPLACE FUNCTION ejecutar_rerate()
+  RETURNS record AS
+$BODY$
 DECLARE
 	b RECORD;
 	t RECORD;
@@ -24,11 +27,18 @@ BEGIN
 	INSERT INTO log(date, hour, id_log_action, id_users, description_date) VALUES (current_date, current_time, idAction.id, 1, current_date);
 	RETURN idAction;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION ejecutar_rerate()
+  OWNER TO postgres;
 
-/*Funcion que compara dos balances*/
-CREATE OR REPLACE function statuscero(ide integer) RETURNS boolean
-AS $$
+/*
+ * Funcion que compara dos balances
+ */
+CREATE OR REPLACE FUNCTION statuscero(ide integer)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	b RECORD;
 	t RECORD;
@@ -49,11 +59,18 @@ BEGIN
 		RETURN true;
 	END IF;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION statuscero(integer)
+  OWNER TO postgres;
 
-/*Funcion que compara dos balances*/
-CREATE OR REPLACE function compara_balances(ide integer) RETURNS boolean
-AS $$
+/*
+ * Funcion que compara dos balances
+ */
+CREATE OR REPLACE FUNCTION compara_balances(ide integer)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	b RECORD;
 	t RECORD;
@@ -101,11 +118,18 @@ BEGIN
 		RETURN true;
 	END IF;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION compara_balances(integer)
+  OWNER TO postgres;
 
-/*Permite actualizar registros de la tabla balances con datos de la tabla balance_temp a traves del id*/
-CREATE OR REPLACE function actualizar_balance(tid integer, bid integer) RETURNS boolean
-AS $$
+/*
+ * Permite actualizar registros de la tabla balances con datos de la tabla balance_temp a traves del id
+ */
+CREATE OR REPLACE FUNCTION actualizar_balance(tid integer, bid integer)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	t RECORD;
 BEGIN
@@ -118,11 +142,19 @@ BEGIN
 	END IF;
 	
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION actualizar_balance(integer, integer)
+  OWNER TO postgres;
 
-/*Permite copiar registros de la tabla balance_temp a la tabla balance a traves del id*/
-CREATE OR REPLACE function pasar_a_balance(ide integer) RETURNS boolean
-AS $$
+
+/*
+ * Permite copiar registros de la tabla balance_temp a la tabla balance a traves del id
+ */
+CREATE OR REPLACE FUNCTION pasar_a_balance(ide integer)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	ids RECORD;
 BEGIN
@@ -134,11 +166,18 @@ BEGIN
 		RETURN false;
 	END IF;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION pasar_a_balance(integer)
+  OWNER TO postgres;
 
-/*Permite copiar registros de la tabla balances a la tabla balance_temp a traves del id*/
-CREATE OR REPLACE function pasar_a_rrhistory(ide integer) RETURNS boolean
-AS $$
+/*
+ * Permite copiar registros de la tabla balances a la tabla balance_temp a traves del id
+ */
+CREATE OR REPLACE FUNCTION pasar_a_rrhistory(ide integer)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	ids RECORD;
 BEGIN
@@ -150,11 +189,18 @@ BEGIN
 		RETURN false;
 	END IF;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION pasar_a_rrhistory(integer)
+  OWNER TO postgres;
 
-/*Permite copiar registros de la tabla balances a la tabla balance_temp a traves de la fecha*/
-CREATE OR REPLACE function pasar_a_balance_temp(fecha date) RETURNS boolean
-AS $$
+/*
+ * Permite copiar registros de la tabla balances a la tabla balance_temp a traves de la fecha
+ */
+CREATE OR REPLACE FUNCTION pasar_a_balance_temp(fecha date)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	ids RECORD;
 BEGIN
@@ -163,11 +209,18 @@ BEGIN
 	END LOOP;
 	RETURN true;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION pasar_a_balance_temp(date)
+  OWNER TO postgres;
 
-/*Permite copiar registros de la tabla balances a la tabla balance_temp a traves de la fecha*/
-CREATE OR REPLACE function rrhistory_a_balance_temp(fecha date) RETURNS boolean
-AS $$
+/*
+ * Permite copiar registros de la tabla balances a la tabla balance_temp a traves de la fecha
+ */
+CREATE OR REPLACE FUNCTION rrhistory_a_balance_temp(fecha date)
+  RETURNS boolean AS
+$BODY$
 DECLARE
 	ids RECORD;
 BEGIN
@@ -176,11 +229,18 @@ BEGIN
 	END LOOP;
 	RETURN true;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION rrhistory_a_balance_temp(date)
+  OWNER TO postgres;
 
-/*Funcion que llama el trigger*/
-CREATE OR REPLACE FUNCTION condicion() RETURNS TRIGGER 
-AS $$
+/*
+ * Funcion que llama el trigger
+ */
+CREATE OR REPLACE FUNCTION condicion()
+  RETURNS trigger AS
+$BODY$
 DECLARE 
 	valor integer;
 	result RECORD;
@@ -196,9 +256,13 @@ BEGIN
 		RETURN NULL;
 	END IF;
 END;
-$$ language 'plpgsql';
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION condicion()
+  OWNER TO postgres;
 
-
+DROP TRIGGER rerate ON log;
 
 CREATE TRIGGER rerate 
 AFTER INSERT ON log
