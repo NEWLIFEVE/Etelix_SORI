@@ -491,7 +491,7 @@ width: 20%;
 /*****FACTURAS RECIBIDAS********/
 .lista_FacRec{
     background: rgb(161, 177, 171);
-    border-bottom-color: rgb(161, 177, 171);
+    border-bottom-color: rgb(161, 177, 171); 
 }
 .lista_FacRec td {
     width: 67px;
@@ -530,7 +530,7 @@ width: 20%;
 /****PAGOS****/
 .lista_Pagos{
     background: rgba(226, 168, 140, 1);
-    border-bottom-color: rgba(226, 168, 140, 1);  
+    border-bottom-color: rgba(226, 168, 140, 1); 
 }
 .lista_Pagos td{
     width: 8em;
@@ -543,7 +543,7 @@ width: 20%;
 /*****DISPUTAS RECIBIDAS*****/
 .lista_DispRec{
     background: rgba(140, 170, 223, 1);
-    border-bottom-color: rgba(140, 170, 223, 1);
+    border-bottom-color: rgba(140, 170, 223, 1);  
 }
 .lista_DispRec td{
     width: 8em;
@@ -556,7 +556,7 @@ width: 20%;
 /*****DISPUTAS ENVIADAS*****/
 .lista_DispEnv{
     background: rgba(20, 121, 121, 1);
-    border-bottom-color: rgba(20, 121, 121, 1);
+    border-bottom-color: rgba(20, 121, 121, 1); 
 }
 .lista_DispEnv td{
     width: 8em;
@@ -569,7 +569,7 @@ width: 20%;
  /*****NOTAS DE CRÉDITO ENVIADAS*****/
 .lista_NotCredEnv{
     background: rgb(172, 208, 212);
-    border-bottom-color: rgb(172, 208, 212);
+    border-bottom-color: rgb(172, 208, 212); 
 }
 .lista_NotCredEnv td{
     width: 8em;
@@ -582,7 +582,7 @@ width: 20%;
  /*****NOTAS DE CRÉDITO RECIBIDAS*****/
 .lista_NotCredRec{
     background: rgb(189, 170, 194);
-    border-bottom-color: rgb(189, 170, 194);
+    border-bottom-color: rgb(189, 170, 194); 
 }
 .lista_NotCredRec td{
     width: 8em;
@@ -745,16 +745,12 @@ width: 20%;
 {
     width: 94.5%;
 }
-.botonImprimir 
+.botonImprimir, .botonCorreo  
 {
     /*background: url(../img/print.png);*/
     width: 40%;
 }
-.botonCorreo 
-{
-    /*background: url(../img/mail.png);*/
-    width: 25%;
-}
+
 .botonesParaExportar 
 {
     width: 7%;
@@ -918,4 +914,34 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
 .clockhide
 {
     display:none;
+}
+.cerradalasesion
+{
+    display: block;
+    background-color: rgba(111,204,187,1);
+    width: 24%;
+    padding: 1%;
+    text-align: center;
+    font-size: x-large;
+    text-decoration: none;
+    margin-left: 37%;
+}
+.cerradalasesion:hover
+{
+    background-color:rgba(44, 139, 110, 1);
+}
+.relogin
+{
+    color: white!important;
+    text-decoration-color: inherit;
+    text-decoration: blink;
+    text-decoration-line: inherit;
+    font-weight:bold;
+}
+.relogin:hover
+{
+    color: white!important;
+    text-decoration-color: inherit;
+    text-decoration: blink;
+    text-decoration-line: inherit;
 }

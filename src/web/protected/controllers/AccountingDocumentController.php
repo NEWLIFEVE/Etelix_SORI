@@ -63,7 +63,8 @@ class AccountingDocumentController extends Controller
 	public function actionCreate()
 	{
 		$model=new AccountingDocument;
-                $lista=AccountingDocument::listaFacturasEnviadas(Yii::app()->user->id);
+                $lista=AccountingDocument::listaFacturasEnviadas();
+//                $lista=AccountingDocument::listaFacturasEnviadas(Yii::app()->user->id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

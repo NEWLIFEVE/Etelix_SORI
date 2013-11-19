@@ -300,6 +300,11 @@ $SORI.UI=(function()
 		obj=contenido=null;
 		accion();
 	}
+        /**
+         * 
+         * @param {type} obj
+         * @returns {undefined}
+         */
         function _update_monto_Disp(obj)
         {
 //            alert('siiiiii :)');// pausado por ahora
@@ -353,9 +358,6 @@ $SORI.UI=(function()
                 }setTimeout(function(){revisa.remove();},2000); 
             });
         }
-
-
-
 	/**
 	 * Metodo encargado de ejecutar las repectivas llamadas
 	 * @access public
@@ -544,62 +546,66 @@ $SORI.UI=(function()
                 }
             });
         }
-        
+        /**
+         * 
+         * @param {type} tipo
+         * @returns {undefined}
+         */
         function buscaDisputa(tipo)
-    {
-        $('#AccountingDocumentTemp_id_accounting_document').change(function()
         {
-            if (tipo === '7'||tipo === '8') {
-            if (tipo === '7') {
-               var url = "BuscaDisputaRec";
-           } else {
-               url = "BuscaDisputaEnv";
-           }
+            $('#AccountingDocumentTemp_id_accounting_document').change(function()
+            {
+                if (tipo === '7'||tipo === '8') {
+                if (tipo === '7') {
+                   var url = "BuscaDisputaRec";
+               } else {
+                   url = "BuscaDisputaEnv";
+               }
 
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: $('#accounting-document-temp-form').serialize(),
-                success: function(data)
-                {
-                   $('.listaDisputas').remove();
-                   if(data=="[]"){
-                      //no hay datos y asi no muestra nada
-//                        $('.cargando,.mensaje').remove();
-//                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
-                   }else{
-                    console.log(data);
-                    var obj = JSON.parse(data);
-                    $('.tabla_N_C').fadeIn("fast");
-                    for (var i = 0, j = obj.length; i < j; i++)
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: $('#accounting-document-temp-form').serialize(),
+                    success: function(data)
                     {
-                        var montoTotal = (obj[i].amount) + (obj[i].dispute);
-                        $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='" + obj[i].id + "'>\n\
-                                                            <td id='AccountingDocumentTemp[id_destination]'>" + obj[i].id_destination + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[min_etx]'>" + obj[i].min_etx + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[min_carrier]'>" + obj[i].min_carrier + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[rate_etx]'>" + obj[i].rate_etx + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
-                                                            <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
-                                                        </tr>");
-                        $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
-                        $('#AccountingDocumentTemp_amount').text(montoTotal);
-                        var acum = 0;
-                        $('input#montoNota').each(function() {
-                            acum = acum + parseFloat($(this).val());
-                            $('#AccountingDocumentTemp_amount').val(acum);
-                        });
-                        sumMontoNota();
+                       $('.listaDisputas').remove();
+                       if(data=="[]"){
+                          //no hay datos y asi no muestra nada
+    //                        $('.cargando,.mensaje').remove();
+    //                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
+                       }else{
+                        console.log(data);
+                        var obj = JSON.parse(data);
+                        $('.tabla_N_C').fadeIn("fast");
+                        for (var i = 0, j = obj.length; i < j; i++)
+                        {
+                            var montoTotal = (obj[i].amount) + (obj[i].dispute);
+                            $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='" + obj[i].id + "'>\n\
+                                                                <td id='AccountingDocumentTemp[id_destination]'>" + obj[i].id_destination + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[min_etx]'>" + obj[i].min_etx + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[min_carrier]'>" + obj[i].min_carrier + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[rate_etx]'>" + obj[i].rate_etx + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
+                                                            </tr>");
+                            $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
+                            $('#AccountingDocumentTemp_amount').text(montoTotal);
+                            var acum = 0;
+                            $('input#montoNota').each(function() {
+                                acum = acum + parseFloat($(this).val());
+                                $('#AccountingDocumentTemp_amount').val(acum);
+                            });
+                            sumMontoNota();
+                        }
+                      } 
                     }
-                  } 
-                }
-            });
-          }
-      });
-    }
+                });
+              }
+          });
+        }
     
         /**
          *
@@ -615,24 +621,23 @@ $SORI.UI=(function()
 	 */  
         $('.botonCorreo').click('on',function()
         {
-             console.dir('al menos entra');
-    
-            var html = "<table class='lista_FacEnv'>" + $(".lista_FacEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_FacRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Cobros").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_Pagos").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispRec").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_DispEnv").clone().html() + "</table>" + "<br/>"+"<table>" + $(".lista_NotCredEnv").clone().html() + "</table>" + "<br/>" + $(".lista_NotCredRec").clone().html() + "</table>";
-            console.log(html);
+            $('.lista_FacEnv,.lista_FacRec,.lista_Cobros,.lista_Pagos,.lista_DispRec,.lista_DispEnv,.lista_NotCredEnv,.lista_NotCredRec').children().children().children(":last-child").remove();
+                  
+            var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Enviando documentos por correo</h2><p>Espere un momento por favor<p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/></div>").hide(),
+            tr_fondoblanco=$(".vistaTemp").css('background','white').css('color','gray').css('font','small-caption'),
+            
+            html="Facturas Enviadas:            <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(111,204,187,1);border-bottom-color: white;'>" + $(".lista_FacEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Facturas Recibidas:       <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgb(161, 177, 171);border-bottom-color: white;'>" + $(".lista_FacRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Cobros:                   <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(152, 198, 213, 1);border-bottom-color: white;'>" + $(".lista_Cobros").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Pagos:                    <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(226, 168, 140, 1);border-bottom-color: white;'>" + $(".lista_Pagos").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Disputas Recibidas:       <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(140, 170, 223, 1);border-bottom-color: white;'>" + $(".lista_DispRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Disputas Enviadas:        <table border='1' style='font-weight:bold;color: white;width: 900px;background: rgba(20, 121, 121, 1);border-bottom-color: white;'>" + $(".lista_DispEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Notas de Crédito Enviadas:<table border='1' style='font-weight:bold;color: white;width: 900px;background: rgb(172, 208, 212);border-bottom-color: white;'>" + $(".lista_NotCredEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
+                     "Notas de Crédito Recibidas:<table border='1' style='font-weight:bold;color: white;width: 900px;background:rgb(189, 170, 194);border-bottom-color: white;'>" + $(".lista_NotCredRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>";
             $("#html").val(html);
             $("#FormularioCorreo").submit();
-            alert('Correo Enviado');
-                console.dir('es un milagro!! !), llego aqui .}');
-
+            $("body").append(msj);msj.fadeIn('slow');
         });
-        
-//        $("img#mail").click(function(event)
-//        {
-//            var html = $("div.enviar").clone().html();
-//            $("#html").val(html);
-//            $("#FormularioCorreo").submit();
-//            alert('Correo Enviado');
-//        });
         /**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
@@ -743,6 +748,11 @@ $SORI.UI=(function()
 		    carrierA=managerA=fechaManagerCarrier=carrierenlabel=manageractual=end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
 		});
 	}
+        /**
+         * 
+         * @param {type} obj
+         * @returns {undefined}
+         */
         function llenarTabla(obj){
             console.dir(obj);
                 if(obj.id !== undefined) var id="<tr class='vistaTemp' id='"+obj.id+"'>";
@@ -818,44 +828,61 @@ $SORI.UI=(function()
                 $(label).fadeIn('slow');
                 $('#botAgregarDatosContableFinal, .botonesParaExportar').fadeIn('slow');
         }
+        /**
+         * 
+         * @param {type} obj
+         * @returns {undefined}
+         */
          function MensajeYaExiste(obj){
-             var F_facturas="en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>",carrier="con el carrier <b>"+obj.carrier+"</b>", grupo=" el grupo <b>"+obj.group+"</b>",doc_number="<b>"+obj.doc_number+"</b>";
+             $('.cargando, .mensaje').remove();
              switch (obj.id_type_accounting_document){
                     case '1':
-                        $SORI.UI.MuestraMensaje("La Factura Enviada",carrier,F_facturas,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '2':
-                        $SORI.UI.MuestraMensaje("La Factura Recibida",carrier,F_facturas,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Factura Recibida</b> que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '3':
-                        $SORI.UI.MuestraMensaje("El Pago","con fecha de emisión <b>"+obj.issue_date+"</b>",grupo,doc_number);
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de emisión <b>"+obj.issue_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '4':
-                        $SORI.UI.MuestraMensaje("El Cobro","con fecha de recepción <b>"+obj.valid_received_date+"</b>",grupo,doc_number);
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, von fecha de recepción <b>"+obj.valid_received_date+" , bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '5':
-                        $SORI.UI.MuestraMensaje("La Disputa Recibida",carrier+", el destino <b>"+obj.destination+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '6':
-                        $SORI.UI.MuestraMensaje("La Disputa Enviada",carrier+" el destino supplier <b>"+obj.destinationSupp+"</b> ",F_facturas,"de factura <b>"+obj.fact_number+"</b>");
+                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '7':
-                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
                     case '8':
-                        $SORI.UI.MuestraMensaje("La Nota de Crédito Enviada",carrier,F_facturas,"de factura <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b>");
+                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, von fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
                         break
              }
-         }
-         function MuestraMensaje(tipo,operador,fecha,doc_number)
-         {
-              $('.cargando, .mensaje').remove();
-              var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'><b>"+tipo+"</b> que intenta guardar, ya se encuentra registrado(a) "+operador+", "+fecha+" , bajo el N°. "+doc_number+"</h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
               $("body").append(msj); 
               msj.fadeIn('slow');
               setTimeout(function() { msj.fadeOut('slow'); }, 3000);
          }
-        
+        /**
+         * 
+         * @returns {undefined}
+         */
+         function sesionCerrada()
+         {
+             var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div></div>").hide();
+                $("body").append(msj); 
+                msj.fadeIn('slow');
+                $('.relogin').click('on',function()
+                {
+                    msj.fadeOut('slow');
+                }); 
+         }
+        /**
+         * 
+         * @returns {undefined}
+         */
         function emptyFields(){
             $("#AccountingDocumentTemp_email_received_hour, #AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                 if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
@@ -869,25 +896,107 @@ $SORI.UI=(function()
                      $('.tabla_N_C,.numDocument,.montoDoc').fadeOut("fast");$('.listaDisputas').remove();
                 } 
         }
-        
+        /**
+         * 
+         * @param {type} clase
+         * @param {type} attr
+         * @param {type} value
+         * @returns {undefined}
+         */
         function changeCss(clase,attr,value){
             $(clase).css(attr,value);
         }
-        
-        function sumMontoNota() {
-            console.log('entro');
-        $('input#montoNota').change(function()
+        /**
+         * esta funcion obligatoriamente se debe modular, pero por los momentos... :[
+         * @param {type} diasDisputaOculto
+         * @param {type} dias_disputa
+         * @param {type} diasDisputaSolvedOculto
+         * @param {type} dias_disputa_solved
+         * @param {type} F_Firma_Contrato_Oculto
+         * @param {type} sign_date
+         * @param {type} F_P_produccion_Oculto
+         * @param {type} production_date
+         * @param {type} TPOculto
+         * @param {type} termino_pago
+         * @param {type} monetizableOculto
+         * @param {type} monetizable
+         * @param {type} creditoO
+         * @param {type} credito
+         * @param {type} compraO
+         * @param {type} compra
+         * @param {type} Contrato_upOculto
+         * @param {type} Contrato_up
+         * @param {type} Contrato_statusOculto
+         * @param {type} Contrato_status
+         * @returns {undefined}
+         */
+        function casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
-            var acum = 0;
-            $('input#montoNota').each(function() {
-                acum = acum + parseFloat($(this).val());
-                $(this).parent().attr('id');
-                console.log(acum);
-                $('input#AccountingDocumentTemp_amount').val(acum);
+           if(diasDisputaOculto!=dias_disputa )
+           {
+                   $SORI.UI.changeCss($('.dias_disputa'),'color','red');
+           }
+
+           if(diasDisputaSolvedOculto!=dias_disputa_solved )
+           {
+                   $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
+           }
+           if(F_Firma_Contrato_Oculto!=sign_date)
+           {
+                   $SORI.UI.changeCss($('.sign_date'),'color','red');
+           }
+           if(F_P_produccion_Oculto!=production_date)
+           {
+                   $SORI.UI.changeCss($('.production_date'),'color','red'); 
+           }
+           if(TPOculto!=termino_pago)
+           {
+                   $SORI.UI.changeCss($('.termino_pName'),'color','red');
+           }
+           if(monetizableOculto!=monetizable)
+           {
+                   $SORI.UI.changeCss($('.monetizableName'),'color','red');
+           }
+           if(creditoO != credito)
+           {
+                   $SORI.UI.changeCss($('.credito'),'color','red');
+           }
+           if(compraO != compra)
+           {
+                   $SORI.UI.changeCss($('.compra'),'color','red');
+           }
+           if(Contrato_upOculto != Contrato_up)
+           { 
+                   $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
+           }
+           if(Contrato_statusOculto != Contrato_status)
+           {
+                   $SORI.UI.changeCss($('.status'),'color','red');
+           }
+           
+        }
+        /**
+         * 
+         * @returns {undefined}
+         */
+        function sumMontoNota() 
+        {
+            $('input#montoNota').change(function()
+            {
+                var acum = 0;
+                $('input#montoNota').each(function() {
+                    acum = acum + parseFloat($(this).val());
+                    $(this).parent().attr('id');
+                    console.log(acum);
+                    $('input#AccountingDocumentTemp_amount').val(acum);
+                });
             });
-        });
-    }
-    
+        }
+        /**
+         * 
+         * @param {type} tipo
+         * @returns {unresolved}
+         */
 	function seleccionaCampos(tipo)
 	{  
            switch (tipo){
@@ -1030,10 +1139,11 @@ $SORI.UI=(function()
                 changeCss:changeCss,
                 sumMontoNota:sumMontoNota,
                 MensajeYaExiste:MensajeYaExiste,
-                MuestraMensaje:MuestraMensaje,
                 validaCampos:validaCampos,
                 seleccionaCampos:seleccionaCampos,
-                elijeOpciones:elijeOpciones
+                elijeOpciones:elijeOpciones,
+                sesionCerrada:sesionCerrada,
+                casosParaMsjConfirm:casosParaMsjConfirm
 	};
 })();
 

@@ -32,8 +32,8 @@
 	<div class="container">
 		<header id="navtop">
 			<a href="/" class="logo fleft">
-				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.3.0">
-			</a>V 1.3.0
+				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.4.0">
+			</a>V 1.4.0
 			<nav class="fright">
 				<?php
 					Yii::import('webroot.protected.controllers.SiteController');

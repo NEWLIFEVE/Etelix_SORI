@@ -271,7 +271,7 @@ $('#botAsignarContrato').click('on',function(e)
     F_P_produccion_Oculto = $("#F_P_produccion_Oculto").val(),
     monetizableOculto = $("#monetizable_Oculto").val(),      
     TPOculto = $("#TerminoP_Oculto").val(),
-    Contrato_upOculto = $("#Contrato_upOculto").val();
+    Contrato_upOculto = $("#Contrato_upOculto").val(),
     Contrato_statusOculto = $("#Contrato_statusOculto").val();
     
     var dias_disputa=$("#Contrato_id_disputa").val(),
@@ -327,6 +327,7 @@ $('#botAsignarContrato').click('on',function(e)
                                                    class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
                                                    <p><label><b>Aceptar</b></label></div></div>").hide();
                     $("body").append(revisa);
+                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
                     revisa.fadeIn('fast');
                 }
                 else
@@ -337,7 +338,7 @@ $('#botAsignarContrato').click('on',function(e)
                         var backDiasDiasputa="Dias max para disputar de: "+diasDisputaOculto+" a ";
                     }
                     else
-                    {
+                    {   
                         backDiasDiasputa="Dias max para disputar: ";
                     }
                     if(diasDisputaSolvedOculto!=dias_disputa_solved )
@@ -358,7 +359,7 @@ $('#botAsignarContrato').click('on',function(e)
                     }  
                     if(F_P_produccion_Oculto!=production_date)
                     {
-                        var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ";
+                        var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a "; 
                     }
                     else
                     {
@@ -390,7 +391,7 @@ $('#botAsignarContrato').click('on',function(e)
                     }
                     if(compraO != compra)
                     {
-                        var backCompra="Limite de Compra de: "+compraO+" a "; 
+                        var backCompra="Limite de Compra de: "+compraO+" a ";
                     }
                     else
                     {
@@ -406,7 +407,7 @@ $('#botAsignarContrato').click('on',function(e)
                             }else if(Contrato_upOculto==1){
                                 Contrato_upOculto='Presidencia';
                             }
-                            var backUP="Unidad de producción de: "+Contrato_upOculto+" a "; 
+                            var backUP="Unidad de producción de: "+Contrato_upOculto+" a ";  
                         }
                         else
                         {
@@ -420,7 +421,7 @@ $('#botAsignarContrato').click('on',function(e)
                         {
                             if (Contrato_statusOculto==0){
                                 Contrato_statusOculto='Inactivo';
-                            }else if(Contrato_upOculto==1){
+                            }else if(Contrato_statusOculto==1){
                                 Contrato_statusOculto='Activo';
                             }
                             var backStatus="Status del Carrier: "+Contrato_statusOculto+" a "; 
@@ -435,25 +436,28 @@ $('#botAsignarContrato').click('on',function(e)
                         var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
                     }
                     else
-                    {
+                    { 
                         advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato\n\
                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6>\n\
-                                               <p>"+backStatus+ ""+Contrato_StatusC+"<p>\n\
-                                               <p>"+backTPago+ ""+termino_pName+"<p>\n\
-                                               <p>"+backMonetizable+" "+monetizableName+"<p>\n\
-                                                   "+backDiasDiasputa+" "+dias_disputa+"<p>\n\
-                                                   "+backDiasDiasputaSolved+" "+dias_disputa_solved+"<p>\n\
-                                                   "+backCredito+" "+credito+"<p>\n\
-                                                   "+backCompra+" "+compra+"<p>\n\
-                                                   "+backUP+" "+Contrato_upC+"<p>\n\
-                                               <p>"+backF_Firma+" "+sign_date+"<p> \n\
-                                                   "+backProduccion+" "+production_date+"<p>";
+                                               <p>"+backStatus+ "<span class='status'>"+Contrato_StatusC+"</span><p>\n\
+                                               <p>"+backTPago+ "<span class='termino_pName'>"+termino_pName+"</span><p>\n\
+                                               <p>"+backMonetizable+" <span class='monetizableName'>"+monetizableName+"</span><p>\n\
+                                                   "+backDiasDiasputa+" <span class='dias_disputa'>"+dias_disputa+"</span><p>\n\
+                                                   "+backDiasDiasputaSolved+" <span class='dias_disputa_solved'>"+dias_disputa_solved+"</span><p>\n\
+                                                   "+backCredito+" <span class='credito'>"+credito+"</span><p>\n\
+                                                   "+backCompra+" <span class='compra'>"+compra+"</span><p>\n\
+                                                   "+backUP+" <span class='Contrato_upC'>"+Contrato_upC+"</span><p>\n\
+                                               <p>"+backF_Firma+" <span class='sign_date'>"+sign_date+"</span><p> \n\
+                                                   "+backProduccion+" <span class='production_date'>"+production_date+"</span><p>";
                     }
+                    
                     var revisa=$("<div class='cargando'></div><div class='mensaje'>"+advertencia+"<p></h6><p><p>Si esta seguro \n\
                                                    de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
                                                    class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
                                                    <p><label><b>Aceptar</b></label></div></div>").hide();
                     $("body").append(revisa);
+                    $SORI.UI.casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas
+                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
                     revisa.fadeIn('fast');         
                 }
                 $('#confirma,#cancelar').on('click',function()
@@ -714,14 +718,16 @@ $('#botAgregarDatosContable').click('on',function(e)
             data: str,
             success: function(data) 
             {
-                obj = JSON.parse(data);        
+                obj = JSON.parse(data);
                 if((obj.valid==1)){
                     $SORI.UTILS.updateMontoAprobadoDisp();
                     $SORI.UI.llenarTabla(obj);
                     $SORI.UI.init();
                     $SORI.UI.emptyFields();
-                }else{
+                }else if((obj.valid==0)){
                     $SORI.UI.MensajeYaExiste(obj);
+                }else{
+                    $SORI.UI.sesionCerrada();
                 }
             }          
         }); 
