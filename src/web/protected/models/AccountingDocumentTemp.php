@@ -490,9 +490,9 @@ class AccountingDocumentTemp extends CActiveRecord
             return $model;
         }
         
-        public static function setValues($model,$tipo){
+        public static function setValues($model){
             
-            switch ($tipo){
+            switch ($model->id_type_accounting_document){
                 case 1:
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
@@ -509,6 +509,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->amount = Utility::ComaPorPunto($model->amount);
+                    $model->minutes = Utility::ComaPorPunto($model->minutes);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=0;
                     break;
@@ -524,6 +526,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->amount = Utility::ComaPorPunto($model->amount);
+                    $model->minutes = Utility::ComaPorPunto($model->minutes);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model = self::model()->resolvedDateHour($model);
@@ -546,6 +550,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->amount=Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
                     $model->confirm=1;
@@ -568,6 +573,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
                     $model->confirm=1;
@@ -581,7 +587,9 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
+                    $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
+                    $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
+                    $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -595,7 +603,9 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination=NULL;
                     $model->minutes=NULL;
-                    $model->amount=($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier);
+                    $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
+                    $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
+                    $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -617,6 +627,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->minutes=NULL;
+                    $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -637,6 +648,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->minutes=NULL;
+                    $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);

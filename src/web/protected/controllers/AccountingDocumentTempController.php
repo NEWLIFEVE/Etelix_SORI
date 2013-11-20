@@ -89,7 +89,14 @@ class AccountingDocumentTempController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,'lista_FacRec'=>$lista_FacRec,'lista_Pagos'=>$lista_Pagos,'lista_Cobros'=>$lista_Cobros,'lista_DispRec'=>$lista_DispRec,'lista_DispEnv'=>$lista_DispEnv,'lista_NotCredEnv'=>$lista_NotCredEnv,'lista_NotCredRec'=>$lista_NotCredRec
+			'model'=>$model,'lista_FacEnv'=>$lista_FacEnv,
+                                        'lista_FacRec'=>$lista_FacRec,
+                                        'lista_Pagos'=>$lista_Pagos,
+                                        'lista_Cobros'=>$lista_Cobros,
+                                        'lista_DispRec'=>$lista_DispRec,
+                                        'lista_DispEnv'=>$lista_DispEnv,
+                                        'lista_NotCredEnv'=>$lista_NotCredEnv,
+                                        'lista_NotCredRec'=>$lista_NotCredRec
 		));
 	}
         
@@ -103,7 +110,7 @@ class AccountingDocumentTempController extends Controller
             {
                 $model = new AccountingDocumentTemp;
                 $model->attributes = $_GET['AccountingDocumentTemp'];
-                $model = $model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);    
+                $model = $model->setValues($model);    
                 $ValidADT = AccountingDocumentTemp::getExist($model);
                 $ValidAD = AccountingDocument::getExist($model);
                 if($ValidAD==NULL && $ValidADT==NULL){
@@ -306,7 +313,7 @@ class AccountingDocumentTempController extends Controller
                 if(isset($_POST['AccountingDocumentTemp']['valid_received_hour']))$model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']); 
                 if(isset($_POST['AccountingDocumentTemp']['doc_number']))$model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']); 
                 if(isset($_POST['AccountingDocumentTemp']['minutes']))$model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']); 
-                if(isset($_POST['AccountingDocumentTemp']['amount']))$model->amount=Utility::snull($_POST['AccountingDocumentTemp']['amount']); 
+                if(isset($_POST['AccountingDocumentTemp']['amount']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount'])); 
                 if(isset($_POST['AccountingDocumentTemp']['min_carrier']))$model->min_carrier=Utility::snull($_POST['AccountingDocumentTemp']['min_carrier']); 
                 if(isset($_POST['AccountingDocumentTemp']['rate_carrier']))$model->rate_carrier=Utility::snull($_POST['AccountingDocumentTemp']['rate_carrier']);
                 if(isset($_POST['AccountingDocumentTemp']['min_etx']))$model->min_etx=Utility::snull($_POST['AccountingDocumentTemp']['min_etx']);
@@ -392,12 +399,8 @@ class AccountingDocumentTempController extends Controller
          */
         public function actionBuscaFactura() 
         {   
-            $tipoDoc = $_GET['tipoDoc'];
-            $CarrierDisp = $_GET['CarrierDisp'];
-            $desdeDisp = $_GET['desdeDisp'];
-            $hastaDisp = $_GET['hastaDisp']; 
-            $id=AccountingDocument::getId_deDoc($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
-            $factura=AccountingDocument::getDocNumCont($CarrierDisp,$desdeDisp,$hastaDisp,$tipoDoc);
+            $id=AccountingDocument::getId_deDoc($_GET['CarrierDisp'],$_GET['desdeDisp'],$_GET['hastaDisp'],$_GET['tipoDoc']);
+            $factura=AccountingDocument::getDocNumCont($_GET['CarrierDisp'],$_GET['desdeDisp'],$_GET['hastaDisp'],$_GET['tipoDoc']);
             $llave=0;
             $params = array();
         foreach($factura as $id=>$factura)
@@ -481,7 +484,6 @@ class AccountingDocumentTempController extends Controller
         $lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
         $lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
         $lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
-
 
         $this->render('print',array(
             'lista_FacEnv'=>$lista_FacEnv,
