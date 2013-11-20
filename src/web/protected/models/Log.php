@@ -127,13 +127,11 @@ class Log extends CActiveRecord
 		$model->id_users=Yii::app()->user->id;
 		$model->description_date=$description_date;
 		$model->id_esp=$id_esp;
-		if($model->save())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
+		try {
+			$model->save();
+		} catch (ErrorException $e) {
+		// este bloque no se ejecuta, no coincide el tipo de excepción
+			error_log('Ocurrió una excepcion al guardar en el log '.$e->getMessage());
 		}
 	}
 	public static function updateDocLog($model,$id_espNew)
