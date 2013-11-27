@@ -751,6 +751,12 @@ width: 20%;
     width: 40%;
 }
 
+.botonCorreo 
+{
+    /*background: url(../img/mail.png);*/
+    width: 36%;
+}
+
 .botonesParaExportar 
 {
     width: 7%;

@@ -588,7 +588,7 @@ class BalanceController extends Controller
 				{
 					//Instancio el componente
 					$this->lector=new Reader;
-                                        Log::registrarLog(LogAction::getLikeId('Rerate Iniciado'));
+                    Log::registrarLog(LogAction::getLikeId('Rerate Iniciado'));
 					foreach($archivos as $key => $archivo)
 					{
 						$this->lector->define($archivo);
@@ -668,7 +668,7 @@ class BalanceController extends Controller
 					$NumErrores=array_filter($erroresArchivos,'falsa');
 					if($NumErrores>=$dias*2)
 					{
-						Log::registrarLog(31);
+						Log::registrarLog(LogAction::getId('Rerate'));
 					}
 				}
 				else
