@@ -189,7 +189,7 @@ class AccountingDocument extends CActiveRecord
 			  FROM(SELECT id, issue_date, from_date, to_date, email_received_date, valid_received_date, email_received_hour, valid_received_hour, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_log_action=44)and confirm = 0 and id_type_accounting_document = 1)d, type_accounting_document t, carrier c, currency e
-			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY id DESC";
+			  WHERE t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency ORDER BY d.doc_number ASC";
   
 		$model=self::model()->findAllBySql($sql);
 
