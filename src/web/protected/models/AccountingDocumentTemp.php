@@ -573,6 +573,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->issue_date=$model->valid_received_date;
                     $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
@@ -587,6 +588,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->minutes=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
                     $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
@@ -603,6 +605,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination=NULL;
                     $model->minutes=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
                     $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
