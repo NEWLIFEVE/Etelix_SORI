@@ -211,16 +211,17 @@ class Reader
                         $valores['margin']=Utility::notNull($this->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                        $this->model=Balance::model()->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                        $this->model=new Balance;
+                        $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
                                     ':date'=>$this->fecha,
                                     ':destino'=>$valores[$this->destino],
                                     ':customer'=>$valores['id_carrier_customer'],
                                     ':supplier'=>$valores['id_carrier_supplier']
                                     )
                             );
-                        if($this->model==null)
+                        /*if($this->model==null)
                         {
-                            $this->model=new Balance;
+                            $this->model=new Balance;*/
                             $this->model->date_balance=$this->fecha;
                             $this->model->minutes=$valores['minutes'];
                             $this->model->acd=$valores['acd'];
@@ -258,7 +259,7 @@ class Reader
                             {
                                 $this->fallas=$this->fallas+1;
                             }
-                        }
+                        /*}
                         else
                         {
                             $this->model->minutes=$valores['minutes'];
@@ -292,7 +293,7 @@ class Reader
                             {
                                 $this->fallas=$this->fallas+1;
                             }
-                        }
+                        }*/
                         break;
                 }
             }//fin de for de $j
@@ -889,7 +890,7 @@ class Reader
     /**
     * Encargado de traer los nombres de los archivos que coinciden con la lista dada
     * @param $directorio string ruta al directorio que se va a revisar
-    * @param $listaArchivos array lista de archivos que se vana buscar en el directorio
+    * @param $listaArchivos array lista de archivos que se van a buscar en el directorio
     * @param $listaExtensiones array lista de extensiones que pueden tener los archivos
     * @return $confirmados array lista de archivos que hay dentro del directorio consultado que coinciden con la lista dada
     */
