@@ -556,7 +556,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     break;
                 case 4:
-                    $model->issue_date=NULL;
+                    $model->issue_date=$model->valid_received_date;
                     $model->from_date=NULL;
                     $model->to_date=NULL;
                     $model->email_received_date=NULL;
@@ -579,7 +579,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     break;
                 case 5:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
@@ -595,7 +595,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     break;
                 case 6:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
@@ -612,7 +612,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
                     break;
                 case 7:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_date=NULL;
@@ -633,7 +633,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     break;
                 case 8:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_date=NULL;
