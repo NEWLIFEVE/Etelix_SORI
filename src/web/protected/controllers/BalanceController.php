@@ -34,7 +34,7 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
@@ -42,7 +42,7 @@ class BalanceController extends Controller
 				'users'=>array_merge(Users::usersByType(2)),
 				),
 			array('allow', // Vistas para Operaciones
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
 				'users'=>array_merge(Users::usersByType(3)),
 				),
 			array('allow', // Vistas para Finanzas
@@ -76,7 +76,6 @@ class BalanceController extends Controller
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
-
 	/**
 	 *
 	 */
@@ -262,11 +261,18 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardar()
 	{
+
 		//Delclarando variables utiles para el codigo
 		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		$fecha=date('Y-m-d');
 		$nuevafecha=strtotime('-1 day',strtotime($fecha));
 		$nuevafecha=date('Y-m-d',$nuevafecha);
+
+		/*if (Log::existe(1)&&Log::existe(2)){
+			$sql="DELETE FROM balance WHERE date_balance={$nuevafecha}";
+			$command=Yii::app->createComand($sql);
+			$comand->execute();
+		}*/
 
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
@@ -736,5 +742,4 @@ class BalanceController extends Controller
         	);
         return $lista[$nombre];
 	}
-        
 }
