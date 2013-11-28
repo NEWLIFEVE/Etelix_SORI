@@ -74,7 +74,7 @@ class Reader
     {
         //aumento el tiempo maximo de ejecucion
         ini_set('max_execution_time', 1200);
-        
+        $this->model=new Balance;
         for($i=5;$i<$this->excel->sheets[0]['numRows'];$i++)
         {
             $valores=array();
@@ -211,89 +211,54 @@ class Reader
                         $valores['margin']=Utility::notNull($this->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                        $this->model=new Balance;
-                        $this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
-                                    ':date'=>$this->fecha,
-                                    ':destino'=>$valores[$this->destino],
-                                    ':customer'=>$valores['id_carrier_customer'],
-                                    ':supplier'=>$valores['id_carrier_supplier']
-                                    )
-                            );
-                        /*if($this->model==null)
+                        $viejo=$this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
+                            ':date'=>$this->fecha,
+                            ':destino'=>$valores[$this->destino],
+                            ':customer'=>$valores['id_carrier_customer'],
+                            ':supplier'=>$valores['id_carrier_supplier']
+                            )
+                        );
+                            
+                        $this->model->date_balance=$this->fecha;
+                        $this->model->minutes=$valores['minutes'];
+                        $this->model->acd=$valores['acd'];
+                        $this->model->asr=$valores['asr'];
+                        $this->model->margin_percentage=$valores['margin_percentage'];
+                        $this->model->margin_per_minute=$valores['margin_per_minute'];
+                        $this->model->cost_per_minute=$valores['cost_per_minute'];
+                        $this->model->revenue_per_minute=$valores['revenue_per_minute'];
+                        $this->model->pdd=$valores['pdd'];
+                        $this->model->incomplete_calls=$valores['incomplete_calls'];
+                        $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
+                        $this->model->complete_calls=$valores['complete_calls'];
+                        $this->model->complete_calls_ner=$valores['complete_calls_ner'];
+                        $this->model->calls_attempts=$valores['calls_attempts'];
+                        $this->model->duration_real=$valores['duration_real'];
+                        $this->model->duration_cost=$valores['duration_cost'];
+                        $this->model->ner02_efficient=$valores['ner02_efficient'];
+                        $this->model->ner02_seizure=$valores['ner02_seizure'];
+                        $this->model->pdd_calls=$valores['pdd_calls'];
+                        $this->model->revenue=$valores['revenue'];
+                        $this->model->cost=$valores['cost'];
+                        $this->model->margin=$valores['margin'];
+                        $this->model->date_change=date('Y-m-d');
+                        $this->model->id_carrier_supplier=$valores['id_carrier_supplier'];
+                        $this->model->id_carrier_customer=$valores['id_carrier_customer'];
+                        $this->model->id_destination=$valores['id_destination'];
+                        $this->model->id_destination_int=$valores['id_destination_int'];
+                        $this->model->status=1;
+                        if($viejo==null)
                         {
-                            $this->model=new Balance;*/
-                            $this->model->date_balance=$this->fecha;
-                            $this->model->minutes=$valores['minutes'];
-                            $this->model->acd=$valores['acd'];
-                            $this->model->asr=$valores['asr'];
-                            $this->model->margin_percentage=$valores['margin_percentage'];
-                            $this->model->margin_per_minute=$valores['margin_per_minute'];
-                            $this->model->cost_per_minute=$valores['cost_per_minute'];
-                            $this->model->revenue_per_minute=$valores['revenue_per_minute'];
-                            $this->model->pdd=$valores['pdd'];
-                            $this->model->incomplete_calls=$valores['incomplete_calls'];
-                            $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
-                            $this->model->complete_calls=$valores['complete_calls'];
-                            $this->model->complete_calls_ner=$valores['complete_calls_ner'];
-                            $this->model->calls_attempts=$valores['calls_attempts'];
-                            $this->model->duration_real=$valores['duration_real'];
-                            $this->model->duration_cost=$valores['duration_cost'];
-                            $this->model->ner02_efficient=$valores['ner02_efficient'];
-                            $this->model->ner02_seizure=$valores['ner02_seizure'];
-                            $this->model->pdd_calls=$valores['pdd_calls'];
-                            $this->model->revenue=$valores['revenue'];
-                            $this->model->cost=$valores['cost'];
-                            $this->model->margin=$valores['margin'];
-                            $this->model->date_change=date('Y-m-d');
-                            $this->model->id_carrier_supplier=$valores['id_carrier_supplier'];
-                            $this->model->id_carrier_customer=$valores['id_carrier_customer'];
-                            $this->model->id_destination=$valores['id_destination'];
-                            $this->model->id_destination_int=$valores['id_destination_int'];
-                            $this->model->status=1;
-                            if($this->model->save())
-                            {
-                                $this->nuevos=$this->nuevos+1;
-                                $this->model->unsetAttributes();
-                            }
-                            else
-                            {
-                                $this->fallas=$this->fallas+1;
-                            }
-                        /*}
+                            $this->model->setIsNewRecord(true);
+                        }
                         else
                         {
-                            $this->model->minutes=$valores['minutes'];
-                            $this->model->acd=$valores['acd'];
-                            $this->model->asr=$valores['asr'];
-                            $this->model->margin_percentage=$valores['margin_percentage'];
-                            $this->model->margin_per_minute=$valores['margin_per_minute'];
-                            $this->model->cost_per_minute=$valores['cost_per_minute'];
-                            $this->model->revenue_per_minute=$valores['revenue_per_minute'];
-                            $this->model->pdd=$valores['pdd'];
-                            $this->model->incomplete_calls=$valores['incomplete_calls'];
-                            $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
-                            $this->model->complete_calls=$valores['complete_calls'];
-                            $this->model->complete_calls_ner=$valores['complete_calls_ner'];
-                            $this->model->calls_attempts=$valores['calls_attempts'];
-                            $this->model->duration_real=$valores['duration_real'];
-                            $this->model->duration_cost=$valores['duration_cost'];
-                            $this->model->ner02_efficient=$valores['ner02_efficient'];
-                            $this->model->ner02_seizure=$valores['ner02_seizure'];
-                            $this->model->pdd_calls=$valores['pdd_calls'];
-                            $this->model->revenue=$valores['revenue'];
-                            $this->model->cost=$valores['cost'];
-                            $this->model->margin=$valores['margin'];
-                            $this->model->date_change=date('Y-m-d');
-                            if($this->model->save())
-                            {
-                                $this->nuevos=$this->nuevos+1;
-                                $this->model->unsetAttributes();
-                            }
-                            else
-                            {
-                                $this->fallas=$this->fallas+1;
-                            }
-                        }*/
+                            $this->model->setIsNewRecord(false);
+                        }
+                        if($this->model->save())
+                        {
+                            $this->model->unsetAttributes();
+                        }
                         break;
                 }
             }//fin de for de $j
