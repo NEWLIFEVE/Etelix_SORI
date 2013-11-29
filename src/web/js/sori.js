@@ -171,18 +171,23 @@ $SORI.UI=(function()
 	{
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
-			if(i>=2 && i<=3)
+
+			if(i>=1 && i<=4)
 			{
                             var input=document.createElement('input');
                             input.name=obj[0].children[i].id;
                             input.value=obj[0].children[i].innerHTML;
+                        if(i>=2 && i<=2)
+			{
+			    $(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
+			}
                             obj[0].children[i].innerHTML="";
                             obj[0].children[i].appendChild(input);
                             input=null;
                         }
 		}
-		obj[0].children[4].innerHTML="";
-		obj[0].children[4].innerHTML="<img name='save_Nota_cred' alt='save' src='/images/icon_check.png'><img name='cancel_Nota_cred' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_Nota_cred' alt='save' src='/images/icon_check.png'><img name='cancel_Nota_cred' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -288,15 +293,15 @@ $SORI.UI=(function()
 		var contenido=new Array();
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
-                    if(i>=2 && i<=3)
+                    if(i>=1 && i<=4)
 			{
 			contenido[i]=obj[0].children[i].children[0].value;
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
                         }
 		}
-		obj[0].children[4].innerHTML="";
-		obj[0].children[4].innerHTML="<img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -591,7 +596,10 @@ $SORI.UI=(function()
                                                                 <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
                                                                 <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
                                                             </tr>");
-                            $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc').fadeIn('slow');
+                            $('.fechaIniFact,.fechaFinFact').fadeOut(10);
+                            $SORI.UI.changeCss('.numFactura','width','24%');
+                            $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc,.fechaDeEmision').fadeIn('fast');
+                            $('#AccountingDocumentTemp_amount').attr('readonly', true);
                             $('#AccountingDocumentTemp_amount').text(montoTotal);
                             var acum = 0;
                             $('input#montoNota').each(function() {
@@ -814,12 +822,12 @@ $SORI.UI=(function()
                         label='.Label_DispEnv';
                         break
                     case '7':
-                        var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+carrier+fact_number+issue_date+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_NotCredEnv",
                         label='.Label_NotCredEnv';
                         break
                     case '8':
-                        var tabla = id+carrier+fact_number+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+carrier+fact_number+issue_date+doc_number+amount+"<td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_NotCredRec",
                         label='.Label_NotCredRec';
                         break
@@ -893,8 +901,11 @@ $SORI.UI=(function()
                      $("#AccountingDocumentTemp_min_etx,AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');
                 } 
                 if (obj.id_type_accounting_document=='7'||obj.id_type_accounting_document=='8'){
-                     $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number").val('');
-                     $('.tabla_N_C,.numDocument,.montoDoc').fadeOut("fast");$('.listaDisputas').remove();
+                     $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_issue_date").val('');
+                     $('.tabla_N_C,.numDocument,.montoDoc,.fechaDeEmision').fadeOut("fast");$('.listaDisputas').remove();
+                     $('.fechaIniFact,.fechaFinFact').fadeIn('fast');
+                     $('#AccountingDocumentTemp_amount').attr('readonly', false);
+                     $SORI.UI.changeCss('.numFactura','width','51%');
                 } 
         }
         /**

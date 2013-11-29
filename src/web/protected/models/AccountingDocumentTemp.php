@@ -330,7 +330,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
             
-		$sql="select a.id, a.doc_number, a.id_accounting_document, a.amount, c.name AS id_carrier, f.doc_number AS id_accounting_document
+		$sql="select a.id, a.issue_date, a.doc_number, a.id_accounting_document, a.amount, c.name AS id_carrier, f.doc_number AS id_accounting_document
                 from accounting_document_temp a, carrier c, accounting_document f 
                 where a.id_type_accounting_document = 7 and c.id=a.id_carrier AND f.id=a.id_accounting_document ORDER BY id DESC";//esto es provisional, faltan datos en la consulta
 		$model=self::model()->findAllBySql($sql);
@@ -341,7 +341,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
             
-		$sql="select a.id, a.doc_number, a.id_accounting_document, a.amount, c.name AS id_carrier, f.doc_number AS id_accounting_document
+		$sql="select a.id, a.issue_date, a.doc_number, a.id_accounting_document, a.amount, c.name AS id_carrier, f.doc_number AS id_accounting_document
                 from accounting_document_temp a, carrier c, accounting_document f 
                 where a.id_type_accounting_document = 8 and c.id=a.id_carrier AND f.id=a.id_accounting_document ORDER BY id DESC";//esto es provisional, faltan datos en la consulta
 		$model=self::model()->findAllBySql($sql);
@@ -375,13 +375,15 @@ class AccountingDocumentTemp extends CActiveRecord
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
                     break;
                 case '5':
-                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination={$model->id_destination}");
+                case '6':
+                    return null;
+//                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination={$model->id_destination}");
 //                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination=:destination",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination"=>$model->id_destination));
                     break;
-                case '6':
-                    return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination_supplier={$model->id_destination_supplier}");
+                
+                    //return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and id_destination_supplier={$model->id_destination_supplier}");
 //                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and id_destination_supplier=:destination_supplier",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=destination_supplier"=>$model->id_destination_supplier)); 
-                    break;
+                    //break;
                 case '7':
                     return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
 //                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
@@ -556,7 +558,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     break;
                 case 4:
-                    $model->issue_date=NULL;
+                    $model->issue_date=$model->valid_received_date;
                     $model->from_date=NULL;
                     $model->to_date=NULL;
                     $model->email_received_date=NULL;
@@ -573,14 +575,13 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
-                    $model->issue_date=$model->valid_received_date;
                     $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
                     $model->confirm=1;
                     break;
                 case 5:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
@@ -588,7 +589,6 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->issue_date=date("Y-m-d");
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
                     $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
@@ -597,7 +597,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     break;
                 case 6:
-                    $model->issue_date=NULL;
+                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->email_received_date=NULL;
                     $model->valid_received_date=NULL;
@@ -605,7 +605,6 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->doc_number=NULL;
                     $model->id_destination=NULL;
                     $model->minutes=NULL;
-                    $model->issue_date=date("Y-m-d");
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
                     $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
@@ -615,7 +614,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
                     break;
                 case 7:
-                    $model->issue_date=NULL;
+//                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_date=NULL;
@@ -636,7 +635,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     break;
                 case 8:
-                    $model->issue_date=NULL;
+//                    $model->issue_date=date("Y-m-d");
                     $model->carrier_groups=NULL;
                     $model->valid_received_date=NULL;
                     $model->email_received_date=NULL;

@@ -118,7 +118,6 @@ class AccountingDocumentTempController extends Controller
                     $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                     Log::registrarLog($idAction, NULL, $model->id);
                     echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
-
                     }
                 }else{
                     echo json_encode(AccountingDocumentTemp::getJSonParams($model,0));
