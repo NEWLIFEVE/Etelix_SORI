@@ -200,11 +200,11 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                 setTimeout(function()
                                 {
                                     espere.fadeOut('fast');
-                                }, 4000);
+                                }, 2000);
                                 setTimeout(function()
                                 {
                                     $('.cargando').fadeOut('fast');
-                                }, 4000);
+                                }, 2000);
                             }
                         });
                     }
@@ -687,6 +687,17 @@ $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
     $SORI.UI.elijeOpciones(tipoDocument);   
     $('div.instruccion').slideUp('fast');
     $('div.valoresDocumento').fadeIn('slow');
+});
+$('#AccountingDocumentTemp_id_carrier').change(function()
+{  
+    var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
+    if(tipoDocument=="7" || tipoDocument=="8")
+    {
+       $('.fechaDeEmision').fadeOut("fast");$('.listaDisputas').remove();
+       $('.fechaIniFact,.fechaFinFact').fadeIn('fast');
+       $SORI.UI.changeCss('.numFactura','width','51%');
+       $('#AccountingDocumentTemp_amount').attr('readonly', false);
+    }
 });
 
 $('div.hacerUnaNota').click('on',function()

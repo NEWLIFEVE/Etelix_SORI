@@ -43,6 +43,7 @@
 		<?php echo $form->labelEx($model,'color_zona'); ?>
 		<?php echo $form->textField($model,'color_zona',array('size'=>50,'maxlength'=>50)); ?>
                 <?php echo $form->error($model,'color_zona'); ?>
+                <!--<input type="color"name="color_zona" id="color_zona" value="color_zona"/>-->
 	</div>
 
 	<div class="row buttons botGuardarZonaColor">

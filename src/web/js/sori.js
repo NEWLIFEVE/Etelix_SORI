@@ -15,7 +15,6 @@ $SORI.UI=(function()
 	{
 		accion();
 	}
-
 	/**
 	 * Metodo encargado de agregar campos para editar en la tabla
 	 * @access private
