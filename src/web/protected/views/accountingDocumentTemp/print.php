@@ -219,3 +219,56 @@ $this->layout=$this->getLayoutFile('print');
     }
 ?>
 </table>
+  </table>
+         <br>
+         <label class="Label_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>Notas de Crédito Enviadas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredEnv"<?php if($lista_NotCredEnv==null){echo "style='display:none;'";}?>>
+                <tr> 
+                   <td> Carrier </td>
+                   <td> Num. Factura</td>
+                   <td> Fecha de Emisión</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
+                </tr>
+                <?php
+                    if($lista_NotCredEnv!=null)
+                    {
+                        foreach ($lista_NotCredEnv as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td> 
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
+         <br>
+         <label class="Label_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>Notas de Crédito Recibidas:</label>
+         <table border="1" class="tablaVistDocTemporales lista_NotCredRec"<?php if($lista_NotCredRec==null){echo "style='display:none;'";}?>>
+                <tr>
+                   <td> Carrier </td>
+                   <td> Num. Factura</td>
+                   <td> Fecha de Emisión</td>
+                   <td> Numero de Nota</td>
+                   <td> Monto de Nota</td>
+                </tr>
+                <?php
+                    if($lista_NotCredRec!=null)
+                    {
+                        foreach ($lista_NotCredRec as $key => $value)
+                        { 
+                            echo "<tr class='vistaTemp' id='".$value->id."'>
+                                    <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                    <td id='AccountingDocumentTemp[id_accounting_document]'>".$value->id_accounting_document."</td>
+                                    <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td> 
+                                    <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                    <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
+                                    </tr>";     
+                        }
+                    }
+                    ?>
+         </table>
