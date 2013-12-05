@@ -903,7 +903,6 @@ $SORI.UI=(function()
                      $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_issue_date").val('');
                      $('.tabla_N_C,.numDocument,.montoDoc,.fechaDeEmision').fadeOut("fast");$('.listaDisputas').remove();
                      $('.fechaIniFact,.fechaFinFact').fadeIn('fast');
-                     $('#AccountingDocumentTemp_amount').attr('readonly', false);
                      $SORI.UI.changeCss('.numFactura','width','51%');
                 } 
         }

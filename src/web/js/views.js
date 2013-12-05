@@ -682,6 +682,7 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {   
+    $('#AccountingDocumentTemp_amount').removeAttr('readonly');
     var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
     $SORI.UI.changeCss('#AccountingDocumentTemp_id_accounting_document','color','#777');
     $SORI.UI.elijeOpciones(tipoDocument);   
@@ -696,7 +697,7 @@ $('#AccountingDocumentTemp_id_carrier').change(function()
        $('.fechaDeEmision').fadeOut("fast");$('.listaDisputas').remove();
        $('.fechaIniFact,.fechaFinFact').fadeIn('fast');
        $SORI.UI.changeCss('.numFactura','width','51%');
-       $('#AccountingDocumentTemp_amount').attr('readonly', false);
+       $('#AccountingDocumentTemp_amount').removeAttr('readonly');
     }
 });
 
