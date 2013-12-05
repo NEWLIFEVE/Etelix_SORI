@@ -140,7 +140,7 @@ class SiteController extends Controller
                             array('label'=>'Dist. Comercial', 'url'=>array('/carrierManagers/distComercial')),
                             array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
 //                            array('label'=>'Destinos y Zonas Geográficas', 'url'=>array('/GeographicZone/create')),
-                            array('label'=>'Zonas Geográficas', 'url'=>array('/GeographicZone/CreateZoneColor')),
+//                            array('label'=>'Zonas Geográficas', 'url'=>array('/GeographicZone/CreateZoneColor')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
                             array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
                             array('label'=>'Admin. Grupos', 'url'=>array('/carrier/NewGroupCarrier')),

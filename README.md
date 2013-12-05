@@ -2,6 +2,16 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Realese 1.4.3
+-Funcion de redondeo para disputas
+Realese 1.4.2
+-Eliminadas las validaciones para disputas.
+-Agregada issue date en formulario de Notas de C.
+-Vista de print arreglada, se agregaron las tablas de Notas de C que no estaban incluidas.
+
+Realese 1.4.1
+/***FALTA***/
+
 Realese 1.4.0
 -Status en modelo Carrier.
 -Status en formulario de Contrato.

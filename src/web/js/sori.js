@@ -555,6 +555,46 @@ $SORI.UI=(function()
          * @param {type} tipo
          * @returns {undefined}
          */
+        
+
+
+function roundNumber(number,decimals) {
+	var newString;// The new rounded number
+	decimals = Number(decimals);
+	if (decimals < 1) {
+		newString = (Math.round(number)).toString();
+	} else {
+		var numString = number.toString();
+		if (numString.lastIndexOf(".") == -1) {// If there is no decimal point
+			numString += ".";// give it one at the end
+		}
+		var cutoff = numString.lastIndexOf(".") + decimals;// The point at which to truncate the number
+		var d1 = Number(numString.substring(cutoff,cutoff+1));// The value of the last decimal place that we'll end up with
+		var d2 = Number(numString.substring(cutoff+1,cutoff+2));// The next decimal, after the last one we want
+		if (d2 >= 5) {// Do we need to round up at all? If not, the string will just be truncated
+			if (d1 == 9 && cutoff > 0) {// If the last digit is 9, find a new cutoff point
+				while (cutoff > 0 && (d1 == 9 || isNaN(d1))) {
+					if (d1 != ".") {
+						cutoff -= 1;
+						d1 = Number(numString.substring(cutoff,cutoff+1));
+					} else {
+						cutoff -= 1;
+					}
+				}
+			}
+			d1 += 1;
+			//newString = numString.substring(0,cutoff) + d1.toString();
+		} //else {
+			newString = numString.substring(0,cutoff) + d1.toString();// Just the string up to cutoff point
+		//}
+	}
+	if (newString.lastIndexOf(".") == -1) {// Do this again, to the new string
+		newString += ".";
+	}
+
+        return newString; // Output the result to the form field (change for your purposes)
+}
+
         function buscaDisputa(tipo)
         {
             $('#AccountingDocumentTemp_id_accounting_document').change(function()
@@ -583,6 +623,7 @@ $SORI.UI=(function()
                         $('.tabla_N_C').fadeIn("fast");
                         for (var i = 0, j = obj.length; i < j; i++)
                         {
+              
                             var montoTotal = (obj[i].amount) + (obj[i].dispute);
                             $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='" + obj[i].id + "'>\n\
                                                                 <td id='AccountingDocumentTemp[id_destination]'>" + obj[i].id_destination + "</td>\n\
@@ -592,21 +633,26 @@ $SORI.UI=(function()
                                                                 <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
                                                                 <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                                 <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
+                                                                <td id='AccountingDocumentTemp[dispute]'>" + roundNumber((obj[i].amount_etx-obj[i].amount_carrier), 2) + "</td>\n\
+                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota"+i+"' class='montoNota'  value=" + roundNumber(obj[i].dispute,2) + "></td>\n\
                                                             </tr>");
                             $('.fechaIniFact,.fechaFinFact').fadeOut(10);
                             $SORI.UI.changeCss('.numFactura','width','24%');
                             $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc,.fechaDeEmision').fadeIn('fast');
                             $('#AccountingDocumentTemp_amount').attr('readonly', true);
-                            $('#AccountingDocumentTemp_amount').text(montoTotal);
+                            $('#AccountingDocumentTemp_amount').val(montoTotal);
+//                            var idMonto = "#montoNota"+i;
+//                             $(idMonto).val(parseFloat($(idMonto).val()).toFixed(2));
+                            
                             var acum = 0;
-                            $('input#montoNota').each(function() {
+                            $('input.montoNota').each(function() {
                                 acum = acum + parseFloat($(this).val());
                                 $('#AccountingDocumentTemp_amount').val(acum);
                             });
                             sumMontoNota();
+                            
                         }
+                        $("#AccountingDocumentTemp_amount").val(roundNumber($("#AccountingDocumentTemp_amount").val(),2));
                       } 
                     }
                 });
@@ -991,14 +1037,15 @@ $SORI.UI=(function()
          */
         function sumMontoNota() 
         {
-            $('input#montoNota').change(function()
+            $('input.montoNota').change(function()
             {
                 var acum = 0;
-                $('input#montoNota').each(function() {
-                    acum = acum + parseFloat($(this).val());
+                $('input.montoNota').each(function() {
+                    acum = acum + parseFloat(roundNumber($(this).val(),2));
+                    $(this).val(roundNumber($(this).val(),2));
                     $(this).parent().attr('id');
                     console.log(acum);
-                    $('input#AccountingDocumentTemp_amount').val(acum);
+                    $('input#AccountingDocumentTemp_amount').val(roundNumber(acum,2));
                 });
             });
         }
@@ -1153,7 +1200,8 @@ $SORI.UI=(function()
                 seleccionaCampos:seleccionaCampos,
                 elijeOpciones:elijeOpciones,
                 sesionCerrada:sesionCerrada,
-                casosParaMsjConfirm:casosParaMsjConfirm
+                casosParaMsjConfirm:casosParaMsjConfirm,
+                roundNumber:roundNumber
 	};
 })();
 

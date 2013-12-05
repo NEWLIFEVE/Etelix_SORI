@@ -483,6 +483,8 @@ class AccountingDocumentTempController extends Controller
         $lista_Cobros=AccountingDocumentTemp::listaCobros(Yii::app()->user->id);
         $lista_DispRec=AccountingDocumentTemp::lista_DispRec(Yii::app()->user->id);
         $lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
+        $lista_NotCredEnv=AccountingDocumentTemp::lista_NotCredEnv(Yii::app()->user->id);
+        $lista_NotCredRec=AccountingDocumentTemp::lista_NotCredRec(Yii::app()->user->id);
 
         $this->render('print',array(
             'lista_FacEnv'=>$lista_FacEnv,
@@ -490,7 +492,9 @@ class AccountingDocumentTempController extends Controller
             'lista_Pagos'=>$lista_Pagos,
             'lista_Cobros'=>$lista_Cobros,
             'lista_DispRec'=>$lista_DispRec,
-            'lista_DispEnv'=>$lista_DispEnv
+            'lista_DispEnv'=>$lista_DispEnv,
+            'lista_NotCredEnv'=>$lista_NotCredEnv,
+            'lista_NotCredRec'=>$lista_NotCredRec
         ));
     }
     /**
