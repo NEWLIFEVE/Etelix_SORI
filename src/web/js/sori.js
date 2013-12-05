@@ -593,7 +593,7 @@ $SORI.UI=(function()
                                                                 <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                                 <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
                                                                 <td id='AccountingDocumentTemp[dispute]'>" + Math.round(obj[i].amount_etx-obj[i].amount_carrier) + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
+                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota'value=" + Math.round(obj[i].dispute) + "></td>\n\
                                                             </tr>");
                             $('.fechaIniFact,.fechaFinFact').fadeOut(10);
                             $SORI.UI.changeCss('.numFactura','width','24%');
