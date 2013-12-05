@@ -2,6 +2,8 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Realese 1.4.3
+-Funcion de redondeo para disputas
 Realese 1.4.2
 -Eliminadas las validaciones para disputas.
 -Agregada issue date en formulario de Notas de C.
