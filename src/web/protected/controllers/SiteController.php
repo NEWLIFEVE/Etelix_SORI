@@ -168,8 +168,10 @@ class SiteController extends Controller
         if ($tipoUsuario == 4) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
-                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
+//                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+//                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
+                            array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
+                            array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }

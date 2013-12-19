@@ -3,7 +3,8 @@ Etelix_SORI
 
 Sistema de Origen
 Realese 1.4.3
--Funcion de redondeo para disputas
+-Funcion de redondeo para disputas.
+-Se elimino el Readonly en Monto cuando cambia de documento y viene de Notas de Credito.
 Realese 1.4.2
 -Eliminadas las validaciones para disputas.
 -Agregada issue date en formulario de Notas de C.
