@@ -53,9 +53,20 @@ class BalanceController extends Controller
 				'actions'=>array(''),
 				'users'=>array_merge(Users::usersByType(5)),
 				),
+			array('allow',
+				'actions'=>array(
+					'uploadtemp',
+					'cargatemp',
+					'guardartemp'
+					),
+				'users'=>array(
+					'fabianar'
+					)
+				),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 				),
+
 			);
 	}
 
@@ -93,7 +104,7 @@ class BalanceController extends Controller
 			{
 				if($key>1)
 				{ 
-					if($value!='index.html')
+					if($value!='index.html' && $value!='temp')
 					{
 						unlink($ruta.$value);
 					}
@@ -101,6 +112,127 @@ class BalanceController extends Controller
 			}
 		}
 		$this->render('upload');               
+	}
+
+	public function actionUploadtemp()
+	{
+		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
+		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
+		if(is_dir($ruta))
+		{
+			$archivos=@scandir($ruta);
+		}
+		if(count($archivos)>1)
+		{
+			foreach($archivos as $key => $value)
+			{
+				if($key>1)
+				{ 
+					if($value!='index.html')
+					{
+						unlink($ruta.$value);
+					}
+				}
+			}
+		}
+		$this->render('uploadtemp');               
+	}
+
+	public function actionCargatemp()
+	{
+		Yii::import("ext.EAjaxUpload.qqFileUploader");
+
+		$folder='uploads/temp/';// folder for uploaded files
+        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
+        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
+        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+        $result = $uploader->handleUpload($folder);
+        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+ 
+        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+        $fileName=$result['filename'];//GETTING FILE NAME
+ 
+        echo $return;// it's array
+	}
+
+	public function actionGuardartemp()
+	{
+
+		//Delclarando variables utiles para el codigo
+		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
+
+
+		//html preparado para mostrar resultados
+		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
+		$exitos="<h3> Exitos</h3>";
+        $fallas="<h3> Fallas</h3>";
+		//instancio el componente
+		$this->lector=new Reader;
+		//Nombres opcionales para los archivos diarios
+		$diarios=array(
+			'Carga Ruta Internal'=>'Ruta Internal Diario',
+			'Carga Ruta External'=>'Ruta External Diario'
+			);
+
+		//Primero: verifico que archivos están
+		$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
+		if(count($existentes)<=0)
+		{
+			$this->lector->error=4;
+			$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
+		}
+		//Si la primera condicion se cumple, no deberian haber errores
+		if($this->lector->error==0)
+		{
+			foreach($existentes as $key => $diario)
+			{
+				$this->lector->setName($diario);
+				//Defino variables internas
+				$this->lector->define($diario);
+				//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
+				//$this->lector->logDiario($diario);
+				/*if($this->lector->error==0)
+				{*/
+					//cargo el archivo en memoria
+				$this->lector->carga($ruta.$diario);
+				//Tercero: verifico la fecha que sea correcta
+				$this->lector->fecha=Utility::formatDate($this->lector->excel->sheets[0]['cells'][1][4]);
+				//$this->lector->validarFecha($nuevafecha);
+				/*}*/
+				/*if($this->lector->error==0)
+				{*/
+					//Cuarto: valido el orden de las columnas
+					/*$this->lector->validarColumnas($this->lista($diario));
+				}
+				if($this->lector->error==0)
+				{*/
+					//Guardo en base de datos
+					/*if(*/
+					$this->lector->diario();
+					/*)
+					{
+						//Si lo guarda grabo en log
+						//Log::registrarLog(LogAction::getId($this->lector->log));
+					}
+				}*/
+				if($this->lector->error>0)
+				{
+					$fallas.=$this->lector->errorComment;
+				}
+				if($this->lector->error==0)
+				{
+					$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
+				}
+				$this->lector->error=0;
+				$this->lector->errorComment=NULL;
+			}
+		}
+		if($this->lector->error>0)
+		{
+			$fallas.=$this->lector->errorComment;
+		}
+		$resultado.=$exitos."</br>".$fallas."</div>";
+       	$this->render('guardar',array('data'=>$resultado));
 	}
 
 	/**
