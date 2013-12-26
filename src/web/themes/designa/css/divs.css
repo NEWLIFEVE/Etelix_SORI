@@ -951,3 +951,7 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     text-decoration: blink;
     text-decoration-line: inherit;
 }
+#color_zona {
+    padding: 19px!important;
+    height: 47px!important;
+}

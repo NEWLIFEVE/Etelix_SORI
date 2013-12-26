@@ -917,7 +917,7 @@ function roundNumber(number,decimals) {
              }
               $("body").append(msj); 
               msj.fadeIn('slow');
-              setTimeout(function() { msj.fadeOut('slow'); }, 4000);
+              setTimeout(function() { msj.fadeOut('slow'); }, 2000);
          }
         /**
          * 
@@ -1064,10 +1064,12 @@ function roundNumber(number,decimals) {
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_minutes,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '3'://pagos
-                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+//                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '4'://cobros
-                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+//                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '5'://disputas recibidas
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_id_destination,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
@@ -1101,7 +1103,7 @@ function roundNumber(number,decimals) {
                      }else{respuesta=1;}
                 };
                 if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                                                    $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(4000); }, 1000);}
+                                                    $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(3000); }, 1000);}
            
                 return respuesta;
         }
