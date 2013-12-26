@@ -20,7 +20,9 @@ $(document).on('ready',function()
             console.log(msj.acumulador);
             if(msj.acumulador>=2)
             {
-                $('input[type="file"], input[type="submit"]').attr('disabled','disabled');
+                
+                //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
+                $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
             }
             else
             {
@@ -48,7 +50,6 @@ $(document).on('ready',function()
             $('input[type="file"], input[type="submit"]').removeAttr('disabled');
         });
         valForm(msj);
-	
     });
 
 /**
@@ -56,7 +57,7 @@ $(document).on('ready',function()
  */
 function valForm(objeto)
 {
-    $('input[name="grabar"]').on('click',function(e)
+    $('input[name="grabar"],input[name="grabartemp"]').on('click',function(e)
     {
         e.preventDefault();
         if($("input:checked").val()==undefined)

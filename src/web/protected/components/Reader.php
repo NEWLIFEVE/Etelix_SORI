@@ -23,7 +23,7 @@ class Reader
     private $fallas=0;
     private $destino;
     
-    protected $excel;
+    public $excel;
     
     //errores de log
     const ERROR_SAVE_LOG=6;
