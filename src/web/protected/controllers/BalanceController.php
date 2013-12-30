@@ -160,8 +160,6 @@ class BalanceController extends Controller
 
 		//Delclarando variables utiles para el codigo
 		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
-
-
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
@@ -189,32 +187,16 @@ class BalanceController extends Controller
 				$this->lector->setName($diario);
 				//Defino variables internas
 				$this->lector->define($diario);
-				//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
-				//$this->lector->logDiario($diario);
-				/*if($this->lector->error==0)
-				{*/
-					//cargo el archivo en memoria
+				//cargo el archivo en memoria
 				$this->lector->carga($ruta.$diario);
 				//Tercero: verifico la fecha que sea correcta
 				$this->lector->fecha=Utility::formatDate($this->lector->excel->sheets[0]['cells'][1][4]);
-				//$this->lector->validarFecha($nuevafecha);
-				/*}*/
-				/*if($this->lector->error==0)
-				{*/
-					//Cuarto: valido el orden de las columnas
-					/*$this->lector->validarColumnas($this->lista($diario));
-				}
+				//Cuarto: valido el orden de las columnas
+				$this->lector->validarColumnas($this->lista($diario));
 				if($this->lector->error==0)
-				{*/
-					//Guardo en base de datos
-					/*if(*/
+				{
 					$this->lector->diario();
-					/*)
-					{
-						//Si lo guarda grabo en log
-						//Log::registrarLog(LogAction::getId($this->lector->log));
-					}
-				}*/
+				}
 				if($this->lector->error>0)
 				{
 					$fallas.=$this->lector->errorComment;
@@ -393,18 +375,10 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardar()
 	{
-
-		//Delclarando variables utiles para el codigo
-		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
-		$fecha=date('Y-m-d');
-		$nuevafecha=strtotime('-1 day',strtotime($fecha));
-		$nuevafecha=date('Y-m-d',$nuevafecha);
-
-		/*if (Log::existe(1)&&Log::existe(2)){
-			$sql="DELETE FROM balance WHERE date_balance={$nuevafecha}";
-			$command=Yii::app->createComand($sql);
-			$comand->execute();
-		}*/
+		$path=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		$date=date('Y-m-d');
+		$yesterday=strtotime('-1 day',strtotime($date));
+		$yesterday=date('Y-m-d',$yesterday);
 
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
@@ -427,11 +401,19 @@ class BalanceController extends Controller
 					);
 
 				//Primero: verifico que archivos están
-				$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
+				$existentes=$this->lector->getNombreArchivos($path,$diarios,array('xls','XLS'));
 				if(count($existentes)<=0)
 				{
 					$this->lector->error=4;
 					$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
+				}
+				if(Log::existe(LogAction::getLikeId('Carga Ruta External Preliminar')))
+				{
+					Balance::model()->deleteAll('date_balance=:date AND id_destination_int IS NULL', array(':date'=>$yesterday));
+				}
+				if(Log::existe(LogAction::getLikeId('Carga Ruta Internal Preliminar')))
+				{
+					Balance::model()->deleteAll('date_balance=:date AND id_destination IS NULL', array(':date'=>$yesterday));
 				}
 				//Si la primera condicion se cumple, no deberian haber errores
 				if($this->lector->error==0)
@@ -446,9 +428,9 @@ class BalanceController extends Controller
 						if($this->lector->error==0)
 						{
 							//cargo el archivo en memoria
-							$this->lector->carga($ruta.$diario);
+							$this->lector->carga($path.$diario);
 							//Tercero: verifico la fecha que sea correcta
-							$this->lector->validarFecha($nuevafecha);
+							$this->lector->validarFecha($yesterday);
 						}
 						if($this->lector->error==0)
 						{
