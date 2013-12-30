@@ -265,4 +265,8 @@ div.search-form
     margin-top: -80px;
     border-radius:250px 250px 250px 250px;
 }
-
+input#color_zona
+{
+    height: 50px!important;
+    padding: 0px!important;
+}

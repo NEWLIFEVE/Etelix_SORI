@@ -20,7 +20,9 @@ $(document).on('ready',function()
             console.log(msj.acumulador);
             if(msj.acumulador>=2)
             {
-                $('input[type="file"], input[type="submit"]').attr('disabled','disabled');
+                
+                //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
+                $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
             }
             else
             {
@@ -48,7 +50,6 @@ $(document).on('ready',function()
             $('input[type="file"], input[type="submit"]').removeAttr('disabled');
         });
         valForm(msj);
-	
     });
 
 /**
@@ -56,7 +57,7 @@ $(document).on('ready',function()
  */
 function valForm(objeto)
 {
-    $('input[name="grabar"]').on('click',function(e)
+    $('input[name="grabar"],input[name="grabartemp"]').on('click',function(e)
     {
         e.preventDefault();
         if($("input:checked").val()==undefined)
@@ -110,7 +111,7 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
         setTimeout(function()
         {
             aguanta.fadeOut('fast');
-        }, 3000);
+        }, 1500);
     }
     else
     {
@@ -134,7 +135,7 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                     setTimeout(function()
                     {
                         nohaynada.fadeOut('fast');
-                    }, 4000);
+                    }, 1500);
                 }
                 else
                 {
@@ -200,11 +201,11 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                 setTimeout(function()
                                 {
                                     espere.fadeOut('fast');
-                                }, 4000);
+                                }, 2000);
                                 setTimeout(function()
                                 {
                                     $('.cargando').fadeOut('fast');
-                                }, 4000);
+                                }, 2000);
                             }
                         });
                     }
@@ -286,7 +287,7 @@ $('#botAsignarContrato').click('on',function(e)
         setTimeout(function()
         {
             stop.fadeOut('fast');
-        }, 3000);
+        }, 1500);
     }else{
         $.ajax({
             type: "GET",
@@ -488,7 +489,7 @@ $('#botAsignarContrato').click('on',function(e)
                                 {
                                     exito.fadeOut('fast');
                                     $('.cargando').fadeOut('fast');
-                                }, 4000);
+                                }, 3000);
                             }
                         });
                         $("#Contrato_id_company").prop("disabled", true);
@@ -526,7 +527,7 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
         setTimeout(function()
         {
             aguanta.fadeOut('fast');
-        }, 3000);
+        }, 1500);
     }
     else
     {
@@ -560,7 +561,7 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
                     setTimeout(function()
                     {
                         NoHayDatos.fadeOut('fast');
-                    }, 3000);   
+                    }, 1500);   
                 }
                 else
                 {
@@ -610,7 +611,7 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
                                     {
                                         exito.fadeOut('fast');
                                         $('.cargando').fadeOut('fast');
-                                    }, 4000);      
+                                    }, 3000);      
                                 }
                             });
                         }
@@ -682,11 +683,23 @@ $('#GeographicZone_id').change(function()
  */
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {   
+    $('#AccountingDocumentTemp_amount').removeAttr('readonly');
     var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
     $SORI.UI.changeCss('#AccountingDocumentTemp_id_accounting_document','color','#777');
     $SORI.UI.elijeOpciones(tipoDocument);   
     $('div.instruccion').slideUp('fast');
     $('div.valoresDocumento').fadeIn('slow');
+});
+$('#AccountingDocumentTemp_id_carrier').change(function()
+{  
+    var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
+    if(tipoDocument=="7" || tipoDocument=="8")
+    {
+       $('.fechaDeEmision').fadeOut("fast");$('.listaDisputas').remove();
+       $('.fechaIniFact,.fechaFinFact').fadeIn('fast');
+       $SORI.UI.changeCss('.numFactura','width','51%');
+       $('#AccountingDocumentTemp_amount').removeAttr('readonly');
+    }
 });
 
 $('div.hacerUnaNota').click('on',function()
@@ -760,7 +773,7 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                     setTimeout(function() {
                         exito.fadeOut('fast');
                         revisa.fadeOut('fast');
-                    }, 4000);
+                    }, 3000);
 
                 }  
             });
@@ -821,7 +834,7 @@ $('#botConfirmarDatosContableFinal').click('on',function()
                     {
                         exito.fadeOut('fast');
                         $('.cargando').fadeOut('fast');
-                    }, 3000);   
+                    }, 2000);   
                 }
             }else{
                 revisa.fadeOut('slow'); 
@@ -859,30 +872,9 @@ $(function($)
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
 
-//
-//                        $(".cargando").append("<h3>El documento contable\n\
-//                                     fue guardado con exito</h3><table border='4' class='tablamensaje'><tr>\n\
-//                                     <td> Tipo de Doc </td><td> Carrier </td><td> Fecha de Emisión </td><td>\n\
-//                                     Monto </td></tr></table><p><img src='/images/si.png'width='95px' height='95px'/></p>");
-
 //**
 //modulo de colores por zona geografica
 //*
-
-$(".seleColor").on("click",function()
-{
-    var paleta=$('.paletaColores');
-    paleta.toggle("slow");
-});
-$( "button" ).click(function() {
-    var paleta=$('.paletaColores');
-    var text = $( this ).attr('id');
-    $( "input#GeographicZone_color_zona" ).val( text );
-    var color=("#"+text+"");
-    $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' );
-    paleta.hide("slow");
-});
-
 $('#GeographicZone_acciones').change(function()
 {
     var acciones=$('#GeographicZone_acciones').val();
@@ -897,23 +889,27 @@ $('#GeographicZone_acciones').change(function()
         $('select#GeographicZone_name_zona').slideDown('slow');
         $('input#GeographicZone_name_zona').hide('slow');
         $('.acciones').html('Acciones');
-    }
-    
+    } 
+});
+
+$('input#color_zona').change(function()
+{
+   $("#color_zona_hidden").val($(this).val());
+   $("#color_zona").css("background",$(this).val());
 });
 
 $('select#GeographicZone_name_zona').change(function()
 {
-    var id_zonaSelect= $( "select#GeographicZone_name_zona" ).val();
     $.ajax({
         type: "GET",
         url: "buscaColor",
-        data: "&id_zonaSelect="+id_zonaSelect,
+        data: "&id_zonaSelect="+$( "select#GeographicZone_name_zona" ).val(),
 
         success: function(data) 
         {
-            $( "input#GeographicZone_color_zona" ).val( data );
+            $( "input#color_zona_hidden" ).val( data );
             var color=("#"+data+"");
-            $( "input#GeographicZone_color_zona" ).css( "background-color",color ).css( "opacity", '0.2' ); 
+            $( "input#color_zona" ).css( "background-color",color ); 
         }
     });
 });
@@ -921,53 +917,32 @@ $('select#GeographicZone_name_zona').change(function()
 $('.botGuardarZonaColor').click('on',function(e)
 {
     e.preventDefault();
-    var acciones=$('#GeographicZone_acciones').val(),
-    name_zona=$('input#GeographicZone_name_zona').val(),
-    name_zonaSelect=$('select#GeographicZone_name_zona').val(),
-    color_zona=$('#GeographicZone_color_zona').val();
-
-    if(acciones=='' || color_zona=='')
+    var acciones=$('#GeographicZone_acciones').val(), color=$("input#color_zona_hidden").val();
+    if(acciones=='' || color=='')
     {  
-        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(msjIndicador);
-        msjIndicador.fadeIn('fast');
-        setTimeout(function()
+        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msjIndicador);msjIndicador.fadeIn('fast'); setTimeout(function(){ msjIndicador.fadeOut('fast');}, 1000);
+    }else
         {
-            msjIndicador.fadeOut('fast');
-        }, 1000);
-    }else{
-        if (acciones==1){
-            var Action="GuardarZoneColor";
-        }
-        if(acciones==2){
-            Action="UpdateZoneColor";
-        }
-        $.ajax({
-            type: "GET",
-            url: Action,
-            data: "&name_zona="+name_zona+"&color_zona="+color_zona+"&name_zonaSelect="+name_zonaSelect,
-
-            success: function(data) 
-            {
-                obj = JSON.parse(data);
-                var name_zonaSave=obj.name_zonaG, 
-                color_zonaSave=obj.color_zonaG;
-
-                var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-                $("body").append(msjIndicador);
-                msjIndicador.fadeIn('fast');
-                setTimeout(function()
+            if (acciones==1){var Action="GuardarZoneColor";}
+            if(acciones==2){ Action="UpdateZoneColor";}
+            $.ajax({
+                type: "GET",
+                url: Action,
+                data: "name_zona="+$('input#GeographicZone_name_zona').val()+"&color_zona="+color.replace('#','')+"&name_zonaSelect="+$('select#GeographicZone_name_zona').val(),
+    
+                success: function(data) 
                 {
-                    msjIndicador.fadeOut('fast');
-                }, 3000);
-                $("select#GeographicZone_acciones").val('');
-                $("input#GeographicZone_name_zona").val('');
-                $( "select#GeographicZone_name_zona" ).val('');
-                $("#GeographicZone_color_zona").val('');
-                $( "input#GeographicZone_color_zona" ).css( "background-color","white" ).css( "opacity", '1' );
-            }
-        });
-    }
+                    console.log(data);
+                    obj = JSON.parse(data);
+                    var name_zonaSave=obj.name_zonaG, 
+                    color_zonaSave=obj.color_zonaG;
+    
+                    var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide(); $("body").append(msjIndicador);msjIndicador.fadeIn('fast'); setTimeout(function(){   msjIndicador.fadeOut('fast'); }, 3000);
+                    $("select#GeographicZone_acciones,input#GeographicZone_name_zona,select#GeographicZone_name_zona,input#color_zona_hidden").val('');
+                    $( "input#color_zona" ).css( "background-color","white" );
+                }
+            });
+        }
 });
 //**
 //fin modulo de colores por zona geografica

@@ -2,6 +2,20 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Release 1.4.4
+- Habilitada interfaz para carga de archivos din validaciones, donde solo un ususario tiene acceso
+
+Realese 1.4.3
+-Funcion de redondeo para disputas.
+-Se elimino el Readonly en Monto cuando cambia de documento y viene de Notas de Credito.
+Realese 1.4.2
+-Eliminadas las validaciones para disputas.
+-Agregada issue date en formulario de Notas de C.
+-Vista de print arreglada, se agregaron las tablas de Notas de C que no estaban incluidas.
+
+Realese 1.4.1
+/***FALTA***/
+
 Realese 1.4.0
 -Status en modelo Carrier.
 -Status en formulario de Contrato.

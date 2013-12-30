@@ -1,7 +1,7 @@
 <?php
 /**
  * Archivo de clase Reader.
- *
+ * @version 6.1
  * @author Manuel Zambrano <mmzmm3z@gmail.com>
  * @copyright 2013 Sacet Todos los derechos reservados.
  * @package components
@@ -23,7 +23,7 @@ class Reader
     private $fallas=0;
     private $destino;
     
-    protected $excel;
+    public $excel;
     
     //errores de log
     const ERROR_SAVE_LOG=6;
@@ -72,10 +72,10 @@ class Reader
     */
     public function diario()
     {
+        $values='';
         //aumento el tiempo maximo de ejecucion
         ini_set('max_execution_time', 1200);
-        $this->model=new Balance;
-        for($i=5;$i<$this->excel->sheets[0]['numRows'];$i++)
+        for($i=5;$i<=$this->excel->sheets[0]['numRows'];$i++)
         {
             $valores=array();
             for($j=1;$j<=$this->excel->sheets[0]['numCols'];$j++)
@@ -94,13 +94,13 @@ class Reader
                             {
                                 //Obtengo el id de destino externo
                                 $valores['id_destination']=Destination::getId(utf8_encode($this->excel->sheets[0]['cells'][$i][$j]));
-                                $valores['id_destination_int']=NULL;
+                                $valores['id_destination_int']='NULL';
                             }
                             else
                             {
                                 //obtengo el id del destino interno
                                 $valores['id_destination_int']=DestinationInt::getId(utf8_encode($this->excel->sheets[0]['cells'][$i][$j]));
-                                $valores['id_destination']=NULL;
+                                $valores['id_destination']='NULL';
                             }
                         }
                         break;
@@ -211,68 +211,56 @@ class Reader
                         $valores['margin']=Utility::notNull($this->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                        $viejo=$this->model->find('date_balance=:date AND '.$this->destino.'=:destino AND id_carrier_customer=:customer AND id_carrier_supplier=:supplier',array(
-                            ':date'=>$this->fecha,
-                            ':destino'=>$valores[$this->destino],
-                            ':customer'=>$valores['id_carrier_customer'],
-                            ':supplier'=>$valores['id_carrier_supplier']
-                            )
-                        );
-                            
-                        $this->model->date_balance=$this->fecha;
-                        $this->model->minutes=$valores['minutes'];
-                        $this->model->acd=$valores['acd'];
-                        $this->model->asr=$valores['asr'];
-                        $this->model->margin_percentage=$valores['margin_percentage'];
-                        $this->model->margin_per_minute=$valores['margin_per_minute'];
-                        $this->model->cost_per_minute=$valores['cost_per_minute'];
-                        $this->model->revenue_per_minute=$valores['revenue_per_minute'];
-                        $this->model->pdd=$valores['pdd'];
-                        $this->model->incomplete_calls=$valores['incomplete_calls'];
-                        $this->model->incomplete_calls_ner=$valores['incomplete_calls_ner'];
-                        $this->model->complete_calls=$valores['complete_calls'];
-                        $this->model->complete_calls_ner=$valores['complete_calls_ner'];
-                        $this->model->calls_attempts=$valores['calls_attempts'];
-                        $this->model->duration_real=$valores['duration_real'];
-                        $this->model->duration_cost=$valores['duration_cost'];
-                        $this->model->ner02_efficient=$valores['ner02_efficient'];
-                        $this->model->ner02_seizure=$valores['ner02_seizure'];
-                        $this->model->pdd_calls=$valores['pdd_calls'];
-                        $this->model->revenue=$valores['revenue'];
-                        $this->model->cost=$valores['cost'];
-                        $this->model->margin=$valores['margin'];
-                        $this->model->date_change=date('Y-m-d');
-                        $this->model->id_carrier_supplier=$valores['id_carrier_supplier'];
-                        $this->model->id_carrier_customer=$valores['id_carrier_customer'];
-                        $this->model->id_destination=$valores['id_destination'];
-                        $this->model->id_destination_int=$valores['id_destination_int'];
-                        $this->model->status=1;
-                        if($viejo==null)
-                        {
-                            $this->model->setIsNewRecord(true);
-                        }
-                        else
-                        {
-                            $this->model->setIsNewRecord(false);
-                        }
-                        if($this->model->save())
-                        {
-                            $this->model->unsetAttributes();
-                        }
+                        $values.="(";
+                        $values.="'".$this->fecha."',";
+                        $values.=$valores['minutes'].",";
+                        $values.=$valores['acd'].",";
+                        $values.=$valores['asr'].",";
+                        $values.=$valores['margin_percentage'].",";
+                        $values.=$valores['margin_per_minute'].",";
+                        $values.=$valores['cost_per_minute'].",";
+                        $values.=$valores['revenue_per_minute'].",";
+                        $values.=$valores['pdd'].",";
+                        $values.=$valores['incomplete_calls'].",";
+                        $values.=$valores['incomplete_calls_ner'].",";
+                        $values.=$valores['complete_calls'].",";
+                        $values.=$valores['complete_calls_ner'].",";
+                        $values.=$valores['calls_attempts'].",";
+                        $values.=$valores['duration_real'].",";
+                        $values.=$valores['duration_cost'].",";
+                        $values.=$valores['ner02_efficient'].",";
+                        $values.=$valores['ner02_seizure'].",";
+                        $values.=$valores['pdd_calls'].",";
+                        $values.=$valores['revenue'].",";
+                        $values.=$valores['cost'].",";
+                        $values.=$valores['margin'].",";
+                        $values.="'".date('Y-m-d')."',";
+                        $values.=$valores['id_carrier_supplier'].",";
+                        $values.=$valores['id_destination'].",";
+                        $values.=$valores['id_destination_int'].",";
+                        $values.="1,";
+                        $values.=$valores['id_carrier_customer'].")";
                         break;
                 }
             }//fin de for de $j
+            if($i<$this->excel->sheets[0]['numRows'])
+            {
+                $values.=",";
+            }
         }//fin de for de $i
-        if($this->fallas>0)
-        {
-            $this->error=self::ERROR_SAVE_DB;
-            return false;
-        }
-        else
+        $sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
+        $command = Yii::app()->db->createCommand($sql);
+        if($command->execute())
         {
             $this->error=self::ERROR_NONE;
             return true;
         }
+        else
+        {
+            $this->error=self::ERROR_SAVE_DB;
+            return false;
+        }
+        
     }
 
     /**
