@@ -49,7 +49,6 @@ class TypeAccountingDocument extends CActiveRecord
 		return array(
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_type_accounting_document'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_type_accounting_document'),
-			'provisions' => array(self::HAS_MANY, 'Provision', 'id_type_accounting_document'),
 		);
 	}
 
@@ -109,7 +108,7 @@ class TypeAccountingDocument extends CActiveRecord
 	 */
 	public static function getListTypeAccountingDocument()
     {
-        return CHtml::listData(TypeAccountingDocument::model()->findAll("id!=:id order by id",array(':id'=>9)), 'id', 'name');
+        return CHtml::listData(TypeAccountingDocument::model()->findAllBySql("select id, name from type_accounting_document where id not in (9,10,11,12,13)"), 'id', 'name');
     }
 
     /**

@@ -46,7 +46,6 @@ class Currency extends CActiveRecord
 		return array(
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_currency'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_currency'),
-			'provisions' => array(self::HAS_MANY, 'Provision', 'id_currency'),
 		);
 	}
 
