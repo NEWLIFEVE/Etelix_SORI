@@ -49,6 +49,7 @@ class TypeAccountingDocument extends CActiveRecord
 		return array(
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_type_accounting_document'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocument', 'id_type_accounting_document'),
+			'provisions' => array(self::HAS_MANY, 'Provision', 'id_type_accounting_document'),
 		);
 	}
 
