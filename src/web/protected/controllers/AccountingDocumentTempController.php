@@ -279,6 +279,7 @@ class AccountingDocumentTempController extends Controller
                         $modelAD = new AccountingDocument;
                         $modelAD->setAttributes($modelADT->getAttributes());
                         if ($modelAD->save()) {
+                            AccountingDocument::UpdateProv($modelAD);
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
@@ -290,7 +291,6 @@ class AccountingDocumentTempController extends Controller
                 echo $count;
             }
         }
-
 	/**
          * Updates a particular model(modificado).
          * If update is successful, the browser will be redirected to the 'view' page.
