@@ -2,6 +2,9 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Release 1.5
+-Corrección de tiempo de carga de archivos captura
+
 Release 1.4.4
 - Habilitada interfaz para carga de archivos din validaciones, donde solo un ususario tiene acceso
 
