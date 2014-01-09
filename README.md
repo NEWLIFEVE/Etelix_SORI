@@ -2,6 +2,11 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+- Agregada aplicacion de consola para tranferencia de registros de balances
+
+Release 1.5
+-Corrección de tiempo de carga de archivos captura
+
 Release 1.4.4
 - Habilitada interfaz para carga de archivos din validaciones, donde solo un ususario tiene acceso
 

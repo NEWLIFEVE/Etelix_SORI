@@ -4,26 +4,35 @@
 // Any writable CConsoleApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Console Application',
+	'name'=>'Consola SORI',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
+	'import'=>array(
+        'application.models.*',
+        'application.components.*',
+        ),
 
 	// application components
 	'components'=>array(
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		'transfer'=>array(
+            'class'=>"application.components.Transfer",
+        ),
 		// uncomment the following to use a MySQL database
-		/*
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
+			'connectionString'=>'pgsql:host=172.16.17.190;port=5432;dbname=test_sori',
+            'emulatePrepare'=>true,
+            'username'=>'postgres',
+            'password'=>'123',
+            'charset'=>'utf8',
 		),
-		*/
+		'cloud'=>array(
+			'class'=>'CDbConnection',
+			'connectionString'=>'pgsql:host=67.215.160.89;port=5432;dbname=sori',
+			'username'=>'postgres',
+			'password'=>'Nsusfd8263',
+			'charset'=>'utf8',
+		),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
