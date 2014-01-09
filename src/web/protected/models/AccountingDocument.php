@@ -276,9 +276,12 @@ class AccountingDocument extends CActiveRecord
 	}
         public static function UpdateProv($modelAD)
         {
-                $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date));        
+            if($modelAD->id_type_accounting_document=="1")  $tipo_prov="12";
+            else  $tipo_prov="13";
+            
+                $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
                 if($modelProv->id!=NULL) 
-                $modelProv->confirm="1";
+                $modelProv->confirm="-1";
 		if($modelProv->save())  return true;
 		   else   return false;
         }
