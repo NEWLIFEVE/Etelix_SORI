@@ -172,7 +172,6 @@ class AccountingDocumentController extends Controller
                         }
 	}
         
-        
         /**
          * Updates a particular model.
          * If update is successful, the browser will be redirected to the 'view' page.

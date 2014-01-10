@@ -54,7 +54,8 @@ class Carrier extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                         'carrierGroups' => array(self::BELONGS_TO, 'CarrierGroups', 'id_carrier_groups'),
-			'balances' => array(self::HAS_MANY, 'Balance', 'id_carrier'),
+			'balances'=>array(self::HAS_MANY,'Balance','id_carrier_supplier'),
+			'balances1'=>array(self::HAS_MANY,'Balance','id_carrier_customer'),
 			'carrierManagers' => array(self::HAS_MANY, 'CarrierManagers', 'id_carrier'),
 			'accountingDocumentTemps' => array(self::HAS_MANY, 'AccountingDocument', 'id_carrier'),
 			'accountingDocuments' => array(self::HAS_MANY, 'AccountingDocumentTemp', 'id_carrier'),

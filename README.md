@@ -2,6 +2,11 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+
+Release 1.5.1
+- Cambiar estatus de provisiones al momento de ingresar facturas
+- Agregada aplicacion de consola para tranferencia de registros de balances
+
 Release 1.5
 -Corrección de tiempo de carga de archivos captura
 
