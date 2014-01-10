@@ -280,6 +280,7 @@ class AccountingDocument extends CActiveRecord
             else  $tipo_prov="13";
             
                 $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
+<<<<<<< HEAD
                 if($modelProv!=NULL) {
                     $modelProv->confirm="-1";
                     if($modelProv->save())  return true;
@@ -288,5 +289,14 @@ class AccountingDocument extends CActiveRecord
                     return true;
                 }
        
+=======
+                if($modelProv!=NULL){ 
+                $modelProv->confirm="-1";
+		if($modelProv->save())  return true;
+		   else   return false;
+                }else{
+                    return false;
+                }
+>>>>>>> 38de4f610b0cbd449788c6eeb69b8c88efeb935a
         }
 }
