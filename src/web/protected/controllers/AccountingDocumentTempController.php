@@ -281,7 +281,6 @@ class AccountingDocumentTempController extends Controller
                         if ($modelAD->save()) {
                             if($modelAD->id_type_accounting_document=="1"||$modelAD->id_type_accounting_document=="2"){
                               AccountingDocument::UpdateProv($modelAD);}
-                            
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
