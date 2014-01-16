@@ -25,6 +25,7 @@ class Contrato extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+    public $idTerminoPagoSupplier;
     public $id_termino_pago;
     public $id_monetizable;
     public $id_limite_credito;
@@ -33,6 +34,7 @@ class Contrato extends CActiveRecord
     public $id_disputa;
     public $id_disputa_solved;
     public $status;
+    public $id_fact_period;
 	public function tableName()
 	{
 		return 'contrato';
@@ -85,6 +87,7 @@ class Contrato extends CActiveRecord
 			'id_carrier' => 'Carriers',
 			'id_company' => 'Compania',
 			'id_termino_pago' => 'Termino Pago cliente',
+			'idTerminoPagoSupplier' => 'Termino Pago proveedor',
 			'id_monetizable' => 'Monetizable',
 			'id_limite_credito' => 'Limite de Credito',
 			'id_limite_compra' => 'Limite de Compra',
@@ -92,6 +95,7 @@ class Contrato extends CActiveRecord
                         'id_disputa' => 'Dias max para disputar',
                         'id_disputa_solved' => 'Dias para solventar disputas',
                         'up' => 'Unidad de Produccion',
+                        'id_fact_period' => 'Periódo de Facturación',
 		);
 	}
 

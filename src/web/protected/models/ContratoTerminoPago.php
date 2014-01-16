@@ -124,10 +124,20 @@ class ContratoTerminoPago extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public static function getTpId($contrato){
+        public static function getTpId($contrato)
+        {
             $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
             if ($model!=NULL){
                 return $model->id_termino_pago;
+            }else{
+                return '';
+            }
+        }
+        public static function getTpId_supplier($contrato)
+        {
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
+            if ($model!=NULL){
+                return $model->id_termino_pago_supplier;
             }else{
                 return '';
             }

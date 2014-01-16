@@ -82,10 +82,12 @@ class ContratoController extends Controller
                     $company=$_GET['id_company'];
                     $carrier=$_GET['id_carrier'];
                     $termino_pago=$_GET['id_termino_pago'];
+                    $termino_pago_supplier=$_GET['termino_pago_supplier'];
                     $monetizable=$_GET['id_monetizable'];
                     $Contrato_up=$_GET['Contrato_up'];
                     $Contrato_status=$_GET['Contrato_status'];
                     $termino_pagoO=$_GET['id_TP_Oculto'];
+                    $TP_supplier_O=$_GET['TP_supplier_Oculto'];
                     $monetizableO=$_GET['id_M_Oculto'];
                     $companyName='';
                     $carrierName='';
@@ -96,15 +98,18 @@ class ContratoController extends Controller
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier); 
                     $termino_pName.= TerminoPago::getName($termino_pago);
+                    $termino_p_supp_Name= TerminoPago::getName($termino_pago_supplier);
                     $monetizableName.= Monetizable::getName($monetizable);
-                    if ($termino_pagoO=='' || $monetizableO=='')
+                    if ($termino_pagoO=='' || $monetizableO=='' || $TP_supplier_O=='')
                     {
                        $termino_pNameO.=false; 
+                       $TP_supp_NameO=false; 
                        $monetizableNameO.=false;
                     }
                     else
                         {
                         $termino_pNameO.= TerminoPago::getName($termino_pagoO);
+                        $TP_supp_NameO= TerminoPago::getName($TP_supplier_O);
                         $monetizableNameO.= Monetizable::getName($monetizableO);
                         }
                     if ($Contrato_up==0) {
@@ -120,11 +125,13 @@ class ContratoController extends Controller
                     $params['carrierName']=$carrierName;    
                     $params['companyName']=$companyName;    
                     $params['termino_pName']=$termino_pName;    
+                    $params['termino_p_supp_Name']=$termino_p_supp_Name;    
                     $params['monetizableName']=$monetizableName;    
                     $params['Contrato_upConfirma']=$Contrato_up;    
                     $params['Contrato_statusConfirma']=$Contrato_status;    
                     $params['monetizableNameO']=$monetizableNameO;    
                     $params['termino_pNameO']=$termino_pNameO;    
+                    $params['termino_p_supp_NameO']=$TP_supp_NameO;    
                     echo json_encode($params);
     }
         
@@ -143,6 +150,7 @@ class ContratoController extends Controller
                     $company=$_GET['id_company'];
                     $carrier=$_GET['id_carrier'];
                     $termino_pago=$_GET['id_termino_pago'];
+                    $termino_pago_supplier=$_GET['termino_pago_supplier'];
                     $monetizable=$_GET['id_monetizable'];
                     $dias_disputa=$_GET['dias_disputa'];
                     $dias_disputa_solved=$_GET['dias_disputa_solved'];
@@ -198,7 +206,7 @@ class ContratoController extends Controller
                                         }
                                     }
                                 }
-                                /*TERMINO PAGO*/
+                                /*TERMINO PAGO CLIENTE*/
                                                 
                                 $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCTP!=NULL){
@@ -221,6 +229,31 @@ class ContratoController extends Controller
                                         $modelCTPNEW->id_termino_pago =$termino_pago;
                                         if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
                                 }
+                                
+                                /*TERMINO PAGO PROVEEDOR*/
+                                                
+                                $modelCTPsupplier=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                if($modelCTPsupplier!=NULL){
+                                    if($modelCTPsupplier->id_termino_pago_supplier != $termino_pago_supplier){
+                                        $modelCTPsupplier->end_date=date('Y-m-d'); 
+                                        $modelCTPsupplier->save();
+                                        $modelCTPNEW = new ContratoTerminoPago;
+                                        $modelCTPNEW->id_contrato=$modelAux->id;
+                                        $modelCTPNEW->start_date=date('Y-m-d');
+                                        $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
+
+                                        $text.= $termino_pago_supplier.',';
+                                        $termino_p_supp_Name.= TerminoPago::getName($termino_pago_supplier);
+                                    }
+                                }else{
+                                        $modelCTPNEW = new ContratoTerminoPago;
+                                        $modelCTPNEW->id_contrato=$modelAux->id;
+                                        $modelCTPNEW->start_date=date('Y-m-d');
+                                        $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
+                                }
+                                
                                 /*MONETIZABLE*/
                                 $modelCM=  ContratoMonetizable::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCM!=NULL){
@@ -335,12 +368,20 @@ class ContratoController extends Controller
                                 $model->up=$Contrato_up;
                                 if($model->save()){ 
                                 Log::registrarLog(LogAction::getId('Crear Contrato'),NULL, $model->id);
-                                /*TERMINO PAGO*/
+                                /*TERMINO PAGO CLIENTES*/
                                 if($termino_pago!='' || $termino_pago!=NULL){
                                 $modelCTPNEW = new ContratoTerminoPago;
                                 $modelCTPNEW->id_contrato=$model->id;
                                 $modelCTPNEW->start_date=date('Y-m-d');
                                 $modelCTPNEW->id_termino_pago =$termino_pago;
+                                $modelCTPNEW->save();
+                                }
+                                /*TERMINO PAGO PROVEDORES*/
+                                if($termino_pago_supplier!='' || $termino_pago_supplier!=NULL){
+                                $modelCTPNEW = new ContratoTerminoPago;
+                                $modelCTPNEW->id_contrato=$model->id;
+                                $modelCTPNEW->start_date=date('Y-m-d');
+                                $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
                                 $modelCTPNEW->save();
                                 }
                                 /*MONETIZABLE*/
@@ -389,7 +430,7 @@ class ContratoController extends Controller
                             }
                         }                   
 //		}
-             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up;
+             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up;
 
 	}
 
@@ -493,6 +534,7 @@ class ContratoController extends Controller
                 $params['sign_date']=$model->sign_date;
                 $params['production_date']=$model->production_date;
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
+//                $params['termino_pago_supplier']=ContratoTerminoPago::getTpId_supplier($model->id);
                 $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);

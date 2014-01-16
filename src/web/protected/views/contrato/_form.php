@@ -99,20 +99,27 @@
                      <?php echo $form->error($model,'id_termino_pago'); ?>
                 </div>
                 <!--************///////////HAY QUE CONFIGURARLOS////////////***********-->
-                
-                <div class="contratoForm divide_fact">
-                    <label>Divide Fact</label>
-                    <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
+                <div class="contratoForm">
+                    <?php echo $form->labelEx($model,'idTerminoPagoSupplier'); ?>
+                     <?php echo $form->dropDownList($model,'idTerminoPagoSupplier',TerminoPago::getListTermPago(),
                      array('prompt'=>'Seleccione')
                      ); ?> 
-                    <?php echo $form->error($model,'id_termino_pago'); ?>
+                     <?php echo $form->error($model,'idTerminoPagoSupplier'); ?>
+                </div>
+                <div class="contratoForm divide_fact">
+                    <label>Divide Fact</label>
+                    <select id="divide_fact">
+                        <option value=""> Seleccione </option>
+                        <option value="1"> Si </option>
+                        <option value="0"> No </option>
+                    </select>
                 </div>
                 <div class="contratoForm periodo_fact">
                     <label>Periódo</label>
-                    <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
+                     <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
                      array('prompt'=>'Seleccione')
                      ); ?> 
-                    <?php echo $form->error($model,'id_termino_pago'); ?>
+                     <?php echo $form->error($model,'id_fact_period'); ?>
                 </div>
                 <div class="contratoForm dia_ini_fact">
                     <label>Dia</label>
@@ -127,13 +134,7 @@
                         <option value="7"> Domingo </option>
                     </select>
                 </div>
-                <div class="contratoForm">
-                    <label>Termino Pago Prov</label>
-                     <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
-                     array('prompt'=>'Seleccione')
-                     ); ?> 
-                     <?php echo $form->error($model,'id_termino_pago'); ?>
-                </div>
+                
                 <!--************//////////////////////////////////////////////***********-->
                 <div class="contratoForm">
                      <?php echo $form->labelEx($model,'id_monetizable'); ?>
@@ -181,6 +182,7 @@
                      <input type="hidden" id="compra_Oculto"  value="">
                      <input type="hidden" id="monetizable_Oculto"  value="">
                      <input type="hidden" id="TerminoP_Oculto"  value="">
+                     <input type="hidden" id="TerminoP_supplier_Oculto"  value="">
                      <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
                      <input type="hidden" id="F_P_produccion_Oculto"  value="">
                      <input type="hidden" id="Contrato_upOculto"  value="">

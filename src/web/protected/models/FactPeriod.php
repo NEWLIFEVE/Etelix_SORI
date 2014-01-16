@@ -87,4 +87,7 @@ class FactPeriod extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public static function getListFact_Period(){           
+            return CHtml::listData(FactPeriod::model()->findAll(),'id','name');
+        }
 }

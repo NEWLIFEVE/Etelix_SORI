@@ -354,12 +354,12 @@ $SORI.UI=(function()
                 var tipo=$(this).attr('id');
                 if(tipo=="confirma")
                 {  
-                   revisa.fadeOut('slow'); 
+                   $('.cargando,.mensaje').fadeOut('slow'); 
                    $fila.remove();
                    $SORI.AJAX.borrar($fila[0].id);
                 }else{
-                  revisa.fadeOut('slow'); 
-                }setTimeout(function(){revisa.remove();},2000); 
+                  $('.cargando,.mensaje').fadeOut('slow'); 
+                }
             });
         }
 	/**
@@ -719,7 +719,7 @@ function roundNumber(number,decimals) {
 				muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
 				idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
 		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status").val('');
-		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#Contrato_id_monetizable,#dias_disputa_Oculto").val('');
+		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#Contrato_id_monetizable,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
 		    $(".manageractual,.CarrierActual").empty();
 		    $.ajax({
 		        type: "GET",
@@ -748,6 +748,7 @@ function roundNumber(number,decimals) {
 		            $("#Contrato_sign_date").val(obj.sign_date);
 		            $("#Contrato_production_date").val(obj.production_date);
 		            $("#Contrato_id_termino_pago").val(obj.termino_pago);
+		            $("#Contrato_id_termino_pago_supplier").val(obj.termino_pago_supplier);
 		            $("#Contrato_id_monetizable").val(obj.monetizable);
 		            $("#Contrato_id_managers").val(obj.manager);
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
@@ -759,6 +760,7 @@ function roundNumber(number,decimals) {
 		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
 		            $("#F_P_produccion_Oculto").val(obj.production_date);
 		            $("#TerminoP_Oculto").val(obj.termino_pago);
+		            $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
 		            $("#monetizable_Oculto").val(obj.monetizable);
 		            $("#dias_disputa_Oculto").val(obj.dias_disputa);
 		            $("#dias_disputa_solved_Oculto").val(obj.dias_disputa_solved);
@@ -1067,7 +1069,7 @@ function roundNumber(number,decimals) {
         function msj_confirm(cuerpo_msj)
         {
             $(".cargando, .mensaje").remove();
-            var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p><br>Si esta de acuerdo, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><b>Cancelar</b></div>&nbsp;<div id='confirma'class='confirma'><b>Aceptar</b></div></div></div>").hide(); 
+            var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p>Si esta de acuerdo, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><b>Cancelar</b></div>&nbsp;<div id='confirma'class='confirma'><b>Aceptar</b></div></div></div>").hide(); 
             $("body").append(msj);  msj.fadeIn('slow');
         }
         /**
