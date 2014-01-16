@@ -9,10 +9,16 @@
  * @property string $end_date
  * @property integer $id_contrato
  * @property integer $id_termino_pago
+ * @property integer $month_break (0 o 1, indica si se pican o no las facturas por mes)
+ * @property integer $first_day (de ser semanal, el termino de pago, y por dias de semanas, indica el primer dia de los 7 a fcaturar)
+ * @property integer $id_fact_period (clave foranea de tipo de periodo de facturacion)
+ * @property integer $id_termino_pago_supplier (termino pago como proveedor para quellos que poseen distintos, de no ser asi almacena el mismo valor que id_temrino_pago)
  *
  * The followings are the available model relations:
  * @property Contrato $idContrato
  * @property TerminoPago $idTerminoPago
+ * @property TerminoPago $idTerminoPagoSupplier
+ * @property TerminoPago $idFactPeriod
  */
 class ContratoTerminoPago extends CActiveRecord
 {
@@ -33,11 +39,11 @@ class ContratoTerminoPago extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('start_date', 'required'),
-			array('id_contrato, id_termino_pago', 'numerical', 'integerOnly'=>true),
+			array('id_contrato, id_termino_pago, id_termino_pago_supplier, id_fact_period, month_break, first_day', 'numerical', 'integerOnly'=>true),
 			array('end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, start_date, end_date, id_contrato, id_termino_pago', 'safe', 'on'=>'search'),
+			array('id, start_date, end_date, id_contrato, id_termino_pago, id_termino_pago_supplier, id_fact_period, month_break, first_day', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,6 +57,8 @@ class ContratoTerminoPago extends CActiveRecord
 		return array(
 			'idContrato' => array(self::BELONGS_TO, 'Contrato', 'id_contrato'),
 			'idTerminoPago' => array(self::BELONGS_TO, 'TerminoPago', 'id_termino_pago'),
+			'idTerminoPagoSupplier' => array(self::BELONGS_TO, 'TerminoPago', 'id_termino_pago_supplier'),
+			'idFactPeriod' => array(self::BELONGS_TO, 'FactPeriod', 'id_fact_period'),
 		);
 	}
 
@@ -64,7 +72,11 @@ class ContratoTerminoPago extends CActiveRecord
 			'start_date' => 'Start Date',
 			'end_date' => 'End Date',
 			'id_contrato' => 'Id Contrato',
-			'id_termino_pago' => 'Id Termino Pago',
+			'id_termino_pago' => 'Id Termino Pago Cliente',
+			'id_termino_pago_supplier' => 'Id Termino Pago Proveedor',
+			'month_break' => 'Separa Meses',
+			'first_day' => 'Dia Inicio Semana',
+			'id_fact_period' => 'Tipo de Periodo',
 		);
 	}
 
@@ -91,6 +103,10 @@ class ContratoTerminoPago extends CActiveRecord
 		$criteria->compare('end_date',$this->end_date,true);
 		$criteria->compare('id_contrato',$this->id_contrato);
 		$criteria->compare('id_termino_pago',$this->id_termino_pago);
+		$criteria->compare('id_termino_pago_supplier',$this->id_termino_pago_supplier);
+		$criteria->compare('month_break',$this->month_break);
+		$criteria->compare('first_day',$this->first_day);
+		$criteria->compare('id_fact_period',$this->id_fact_period);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
