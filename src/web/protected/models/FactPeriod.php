@@ -8,7 +8,7 @@
  * @property string $name
  *
  * The followings are the available model relations:
- * @property ContratoTerminoPago[] $contratoTerminoPagos
+ * @property ContratoTerminoPagoSupplier[] $contratoTerminoPagoSuppliers
  */
 class FactPeriod extends CActiveRecord
 {
@@ -54,7 +54,7 @@ class FactPeriod extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'contratoTerminoPagos' => array(self::HAS_MANY, 'ContratoTerminoPago', 'id_fact_period'),
+			'contratoTerminoPagoSuppliers' => array(self::HAS_MANY, 'ContratoTerminoPagoSupplier', 'id_fact_period'),
 		);
 	}
 
