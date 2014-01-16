@@ -92,7 +92,6 @@ function valForm(objeto)
         }
     });
 }
-
 /**
  *
  */
@@ -105,13 +104,7 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
 
     if(manager=="")
     {
-        var aguanta=$("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un manager</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(aguanta)
-        aguanta.fadeIn('fast');
-        setTimeout(function()
-        {
-            aguanta.fadeOut('fast');
-        }, 1500);
+         $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar un manager </h3>","aguanta.png","1500","width:40px; height:90px;"); 
     }
     else
     {
@@ -128,41 +121,17 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                   
                 if(asigname<="1" && noasigname<="1")
                 {
-                    var nohaynada=$("<div class='cargando'></div><div class='mensaje'><h3>No hay carriers preselccionados <br> para asignar o \n\
-                                                 desasignar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                    $("body").append(nohaynada)
-                    nohaynada.fadeIn('fast');
-                    setTimeout(function()
-                    {
-                        nohaynada.fadeOut('fast');
-                    }, 1500);
+                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o desasignar</h3>","aguanta.png","1500","width:40px; height:90px;"); 
                 }
                 else
                 {
-                    if(asigname=="")
-                    {
-                        var asig="";
-                    }
-                    else
-                    {
-                        var asig='Asignarle: ';
-                    }
-                    if(noasigname=="")
-                    {
-                        var desA="";
-                    }
-                    else
-                    {
-                        var desA='Dsasignarle:';
-                    }
-                    var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en la Distribucion \n\
-                                      \n\Comercial para el manager: <br><b>"+managerName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
-                                      "+noasigname+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
-                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
-                    $(".cargando").hide();
-                    $(".mensaje").hide();
-                    $("body").append(revisa);
-                    revisa.fadeIn('fast');
+                    if(asigname=="")  var asig="";
+                      else            var asig='Asignarle: ';
+                    
+                    if(noasigname=="")var desA="";
+                      else            var desA='Dsasignarle:';
+                    
+                    $SORI.UI.msj_confirm("Esta a punto de realizar los siguientes cambios en la Distribucion Comercial para el manager: <br><b>"+managerName+"</b></h4><p><h6>"+asig+"<p>"+asigname+"</h6><p><h6>"+desA+"<p>"+noasigname+"</h6>");
                 }
                 $('#confirma,#cancelar').on('click', function()
                 {
@@ -180,38 +149,18 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                                 asigname=carriers[2].split(","),
                                 noasigname=carriers[1].split(",");
 
-                                if(asigname=="")
-                                {
-                                    var pudo="";
-                                }
-                                else
-                                {
-                                    var pudo='Le fue asignado:';
-                                }
-                                if(noasigname=="")
-                                {
-                                    var nopudo="";
-                                }
-                                else
-                                {
-                                    var nopudo='Desasignado:';
-                                }
-                                var espere=$('.mensaje').html("<h5>Al manager <b>" + managerName + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "\
-                                                             <br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                                setTimeout(function()
-                                {
-                                    espere.fadeOut('fast');
-                                }, 2000);
-                                setTimeout(function()
-                                {
-                                    $('.cargando').fadeOut('fast');
-                                }, 2000);
+                                if(asigname=="")  var pudo="";
+                                  else            var pudo='Le fue asignado:';
+                                
+                                if(noasigname=="")var nopudo="";
+                                  else            var nopudo='Desasignado:';
+                                $SORI.UI.msj_change("<h5>Al manager <b>" + managerName + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "<br><b>" + noasigname + "</b></h5>","si.png","2000","width:95px; height:95px;"); 
                             }
                         });
                     }
                     else
                     {
-                        revisa.fadeOut('fast');
+                        $('.cargando,.mensaje').fadeOut('fast');
                     }
                 });
             }
@@ -251,15 +200,25 @@ $("#CarrierManagers_id_managers").change(function()
     });
 });
 //fin de cambio en dist comercial
-
+//INICIO DE CONTRATO//////////////
 $SORI.UI.formChange('Contrato_id_carrier');
+
+$("#Contrato_id_termino_pago").change(function()
+{
+     var tp=$(this).val(), inputs=$(".divide_fact,.periodo_fact,.dia_ini_fact");
+     if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8")
+     { 
+         inputs.css("display","inline-block").hide().show("slow");
+         $("#dia_ini_fact").val(tp);//es provisional, aqui debe ir el termino pago supplier
+     }else{ 
+         $("#dia_ini_fact").val(""); inputs.hide("slow");
+     }
+});
 
 $('#botAsignarContrato').click('on',function(e)
 {
     e.preventDefault();
-    $("#Contrato_id_company").prop("disabled", false);
-    $("#Contrato_end_date").prop("disabled", false);
-    $("#Contrato_sign_date").prop("disabled", false);
+    $("#Contrato_id_company,#Contrato_end_date,#Contrato_sign_date").prop("disabled", false);
     var carrier = $("#Contrato_id_carrier").val(),
     company = $("#Contrato_id_company").val(),
     termino_pago = $("#Contrato_id_termino_pago").val(),
@@ -281,13 +240,7 @@ $('#botAsignarContrato').click('on',function(e)
     compra=$("#Contrato_id_limite_compra").val();
     
     if(monetizable==''||termino_pago=='' ||company=='' ||credito<'1' ||compra<'1' || Contrato_up==''){
-        var stop = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan campos por llenar en el formulario</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(stop)
-        stop.fadeIn('fast');
-        setTimeout(function()
-        {
-            stop.fadeOut('fast');
-        }, 1500);
+        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Faltan campos por llenar </h3>","aguanta.png","1500","width:40px; height:90px;");  
     }else{
         $.ajax({
             type: "GET",
@@ -313,153 +266,52 @@ $('#botAsignarContrato').click('on',function(e)
                 if(TPOculto==false && monetizableOculto==false)
                 {
                     var guardoEdito=" Se guardo con exito el Contrato";
-                    var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de crear un nuevo Contrato: \n\
-                                <br><b>( "+carrierName+" / "+companyName+" )</b></h4><p>Con las siguientes condiciones comerciales:\n\
-                                <h6><p>Status del Carrier: "+termino_pName+"</p>\n\
-                                <p>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
-                                <p>Dias max para disputar: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
-                                <p>Dias para solventar disputas: "+dias_disputa_solved+"</p>\n\
-                                <p>Limite de Compra: "+compra+"</p>\n\
-                                <p>Unidad de producción: "+Contrato_upC+"</p>\n\
-                                <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
-                                <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
-                                </h6>\n\
-                                <p>Si todos los datos a almacenar son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
-                                                   class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
-                                                   <p><label><b>Aceptar</b></label></div></div>").hide();
-                    $("body").append(revisa);
-                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
-                    revisa.fadeIn('fast');
+                    $SORI.UI.msj_confirm("<h4>Esta a punto de crear un nuevo Contrato: \n\
+                                          <br><b>( "+carrierName+" / "+companyName+" )</b></h4><p>Con las siguientes condiciones comerciales:\n\
+                                          <h6><p>Status del Carrier: "+Contrato_StatusC+"</p>\n\
+                                          <p>Termino de pago: "+termino_pName+"</p><p>Monetizable: "+monetizableName+"</p>\n\
+                                          <p>Dias max para disputar: "+dias_disputa+"</p><p>Limite de Credito: "+credito+"</p>\n\
+                                          <p>Dias para solventar disputas: "+dias_disputa_solved+"</p>\n\
+                                          <p>Limite de Compra: "+compra+"</p>\n\
+                                          <p>Unidad de producción: "+Contrato_upC+"</p>\n\
+                                          <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
+                                          <p>Fecha de puesta en produccion: "+production_date+"</p></h6>");
+                    $SORI.UI.changeCss(".mensaje","top","2%");
                 }
                 else
-                {
-                    guardoEdito=" Se realizaron los siguientes cambios en el Contrato";  
-                    if(diasDisputaOculto!=dias_disputa )
-                    {
-                        var backDiasDiasputa="Dias max para disputar de: "+diasDisputaOculto+" a ";
-                    }
-                    else
-                    {   
-                        backDiasDiasputa="Dias max para disputar: ";
-                    }
-                    if(diasDisputaSolvedOculto!=dias_disputa_solved )
-                    {
-                        var backDiasDiasputaSolved="Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ";
-                    }
-                    else
-                    {
-                        backDiasDiasputaSolved="Dias para solventar disputas: ";
-                    }
-                    if(F_Firma_Contrato_Oculto!=sign_date)
-                    {
-                        var backF_Firma ="Fecha de firma de contrato de: "+F_Firma_Contrato_Oculto+" a ";
-                    }
-                    else
-                    {
-                        backF_Firma ="Fecha de firma de contrato: ";
-                    }  
-                    if(F_P_produccion_Oculto!=production_date)
-                    {
-                        var backProduccion ="Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a "; 
-                    }
-                    else
-                    {
-                        backProduccion ="Fecha de Puesta en Produccion: ";
-                    }
-                    if(TPOculto!=termino_pago)
-                    {
-                        var backTPago="Terminos de pago de: "+termino_pNameO+" a ";
-                    }
-                    else
-                    {
-                        backTPago= "Terminos de pago: ";
-                    }
-                    if(monetizableOculto!=monetizable)
-                    {
-                        var backMonetizable="Monetizable de: "+monetizableNameO+" a "; 
-                    }
-                    else
-                    {
-                        backMonetizable="Monetizable: ";  
-                    }
-                    if(creditoO != credito)
-                    {
-                        var backCredito="Limite de Credito de: "+creditoO+" a "; 
-                    }
-                    else
-                    {
-                        backCredito="Limite de Credito: ";  
-                    }
-                    if(compraO != compra)
-                    {
-                        var backCompra="Limite de Compra de: "+compraO+" a ";
-                    }
-                    else
-                    {
-                        backCompra="Limite de Compra: ";  
-                    }
-                    if(Contrato_upOculto==''){
+                {   guardoEdito=" Se realizaron los siguientes cambios en el Contrato";  
+                   
+                    if(Contrato_upOculto==''){     
                         backUP="Unidad de producción: ";  
-                    }else{
-                        if(Contrato_upOculto != Contrato_up)
-                        {
-                            if (Contrato_upOculto==0){
-                                Contrato_upOculto='Ventas';
-                            }else if(Contrato_upOculto==1){
-                                Contrato_upOculto='Presidencia';
-                            }
-                            var backUP="Unidad de producción de: "+Contrato_upOculto+" a ";  
-                        }
-                        else
-                        {
-                            backUP="Unidad de producción: ";  
-                        }
-                    }
-                    if(Contrato_statusOculto==''){
+                    }else{  if(Contrato_upOculto != Contrato_up){
+                                if (Contrato_upOculto==0)          Contrato_upOculto='Ventas';
+                                else if(Contrato_upOculto==1)      Contrato_upOculto='Presidencia';
+                                var backUP="Unidad de producción de: "+Contrato_upOculto+" a ";}
+                              else backUP="Unidad de producción: ";}
+                          
+                    if(Contrato_statusOculto==''){ 
                         backStatus="Status del Carrier: ";  
-                    }else{
-                        if(Contrato_statusOculto != Contrato_status)
-                        {
-                            if (Contrato_statusOculto==0){
-                                Contrato_statusOculto='Inactivo';
-                            }else if(Contrato_statusOculto==1){
-                                Contrato_statusOculto='Activo';
-                            }
-                            var backStatus="Status del Carrier: "+Contrato_statusOculto+" a "; 
-                        }
-                        else
-                        {
-                            backStatus="Status del Carrier: ";  
-                        }
-                    }
-                    if(end_date!="")
-                    {
-                        var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
-                    }
-                    else
-                    { 
-                        advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato\n\
-                                              : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6>\n\
-                                               <p>"+backStatus+ "<span class='status'>"+Contrato_StatusC+"</span><p>\n\
-                                               <p>"+backTPago+ "<span class='termino_pName'>"+termino_pName+"</span><p>\n\
-                                               <p>"+backMonetizable+" <span class='monetizableName'>"+monetizableName+"</span><p>\n\
-                                                   "+backDiasDiasputa+" <span class='dias_disputa'>"+dias_disputa+"</span><p>\n\
-                                                   "+backDiasDiasputaSolved+" <span class='dias_disputa_solved'>"+dias_disputa_solved+"</span><p>\n\
-                                                   "+backCredito+" <span class='credito'>"+credito+"</span><p>\n\
-                                                   "+backCompra+" <span class='compra'>"+compra+"</span><p>\n\
-                                                   "+backUP+" <span class='Contrato_upC'>"+Contrato_upC+"</span><p>\n\
-                                               <p>"+backF_Firma+" <span class='sign_date'>"+sign_date+"</span><p> \n\
-                                                   "+backProduccion+" <span class='production_date'>"+production_date+"</span><p>";
-                    }
+                    }else{  if(Contrato_statusOculto != Contrato_status){
+                                if (Contrato_statusOculto==0)      Contrato_statusOculto='Inactivo';
+                                else if(Contrato_statusOculto==1)  Contrato_statusOculto='Activo';
+                                var backStatus="Status del Carrier: "+Contrato_statusOculto+" a ";}
+                              else backStatus="Status del Carrier: ";}
+                          
+                  if(end_date!="") var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
+                     else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6><p>\n\
+                                        "+backStatus+ "<span class='status'>"+Contrato_StatusC+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(TPOculto,termino_pago,"Terminos de pago de: "+termino_pNameO+" a ","Terminos de pago: ")+ "<span class='termino_pName'>"+termino_pName+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(monetizableOculto,monetizable,"Monetizable de: "+monetizableNameO+" a ","Monetizable: ")+" <span class='monetizableName'>"+monetizableName+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(diasDisputaOculto,dias_disputa,"Dias max para disputar de: "+diasDisputaOculto+" a ","Dias max para disputar: ")+" <span class='dias_disputa'>"+dias_disputa+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(diasDisputaSolvedOculto,dias_disputa_solved,"Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ","Dias para solventar disputas: ")+" <span class='dias_disputa_solved'>"+dias_disputa_solved+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(creditoO,credito,"Limite de Credito de: "+creditoO+" a ","Limite de Credito: ")+" <span class='credito'>"+credito+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(compraO,compra,"Limite de Compra de: "+compraO+" a ","Limite de Compra: ")+" <span class='compra'>"+compra+"</span><p>\n\
+                                        "+backUP+" <span class='Contrato_upC'>"+Contrato_upC+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(F_Firma_Contrato_Oculto,sign_date,"Fecha de firma de contrato de: "+F_Firma_Contrato_Oculto+" a ","Fecha de firma de contrato: ")+" <span class='sign_date'>"+sign_date+"</span><p> \n\
+                                        "+$SORI.UI.resultadoContrato(F_P_produccion_Oculto,production_date,"Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ","Fecha de Puesta en Produccion: ")+" <span class='production_date'>"+production_date+"</span><p></h6>";
                     
-                    var revisa=$("<div class='cargando'></div><div class='mensaje'>"+advertencia+"<p></h6><p><p>Si esta seguro \n\
-                                                   de realizar los cambios, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
-                                                   class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
-                                                   <p><label><b>Aceptar</b></label></div></div>").hide();
-                    $("body").append(revisa);
                     $SORI.UI.casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas
-                    $SORI.UI.changeCss($('.mensaje'),'top','3%');
-                    revisa.fadeIn('fast');         
+                    $SORI.UI.msj_confirm(advertencia);
                 }
                 $('#confirma,#cancelar').on('click',function()
                 {
@@ -472,33 +324,16 @@ $('#botAsignarContrato').click('on',function(e)
                             data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status,
                             success: function(data) 
                             {  
-                            
-                                if(end_date!="")
-                                {
-                                    var efectivo="<h4>El Contrato: <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<p><h6><p>\n\
-                                                Fue Finalizado con exito en la fecha: "+end_date+"<p></h6><p>\n\<img src='/images/si.png'width='90px' height='50px'/>";
-                                }
-                                else
-                                {
-                                    efectivo="<h4>"+guardoEdito+"\n\
-                                               : <br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6><p>Status del Carrier: "+Contrato_StatusC+"<p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p>\n\
-                                               </h6><p><img src='/images/si.png'width='90px' height='50px'/>";
-                                }
-                                var exito=$('.mensaje').html(efectivo).hide().fadeIn('fast');
-                                setTimeout(function()
-                                {
-                                    exito.fadeOut('fast');
-                                    $('.cargando').fadeOut('fast');
-                                }, 3000);
+                                if(end_date!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+carrierName+" / "+companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+end_date+"</h6>","si.png","1000","width:90px; height:50px;");
+                                  else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+carrierName+" / "+companyName+")</b></h4><h6><p>Status del Carrier: "+Contrato_StatusC+"<p>Terminos de Pago:"+termino_pName+"<p>Monetizable: "+monetizableName+"<p>Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>"+end_date+"<p><p></h6>","si.png","1000","width:90px; height:50px;");
                             }
                         });
                         $("#Contrato_id_company").prop("disabled", true);
-                        $("#Contrato_end_date").prop("disabled", false);
-                        $("#Contrato_sign_date").prop("disabled", false);
+                        $("#Contrato_end_date,#Contrato_sign_date").prop("disabled", false);
                     }
                     else
                     {
-                        revisa.fadeOut('slow');  
+                        $('.cargando,.mensaje').fadeOut('slow');  
                     }
                 });
             }
@@ -514,20 +349,11 @@ $('#botAsignarContrato').click('on',function(e)
 $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
 {
     $("#carriers select option").prop("selected",true);
-    var GeographicZone = $("#GeographicZone_id").val(),
-    asignados = $("#select_right").val(),
-    noasignados = $("#select_left").val(), 
-    destinos = $('#GeographicZone_id_destination').val();
+    var GeographicZone = $("#GeographicZone_id").val(), asignados = $("#select_right").val(), noasignados = $("#select_left").val(),  destinos = $('#GeographicZone_id_destination').val();
 
     if(GeographicZone=="")
     {
-        var aguanta = $("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino y una zona geografica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(aguanta)
-        aguanta.fadeIn('fast');
-        setTimeout(function()
-        {
-            aguanta.fadeOut('fast');
-        }, 1500);
+         $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar un destino y una zona geografica </h3>","aguanta.png","1500","width:40px; height:90px;"); 
     }
     else
     {
@@ -550,74 +376,38 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
             success: function(data)
             {
                 var obj = JSON.parse(data),
-                GeographicZoneName = (obj.GeographicZoneName),
-                AsigNames = (obj.asigNames),
-                NoAsigNames = (obj.noasigNames);
+                GeographicZoneName = (obj.GeographicZoneName), AsigNames = (obj.asigNames),  NoAsigNames = (obj.noasigNames);
                 if(AsigNames<1&&NoAsigNames<1)
                 {
-                    var NoHayDatos = $("<div class='cargando'></div><div class='mensaje'><h3>No hay datos que cambiar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                    $("body").append(NoHayDatos)
-                    NoHayDatos.fadeIn('fast');
-                    setTimeout(function()
-                    {
-                        NoHayDatos.fadeOut('fast');
-                    }, 1500);   
+                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay datos que cambiar</h3>","aguanta.png","1500","width:40px; height:90px;"); 
                 }
                 else
                 {
-                    if(AsigNames=="")
-                    {
-                        var asig="";
-                    }
-                    else
-                    {
-                        var asig='Asignarle: ';
-                    }
-                    if(NoAsigNames=="")
-                    {
-                        var desA="";
-                    }
-                    else
-                    {
-                        var desA = 'Dsasignarle:';
-                    }
-                    var revisa = $("<div class='cargando'></div><div class='mensaje'><h4>\n\
-                                        Esta a punto de actualizar "+tipoDestino+" la Zona Geográfica: \n\
-                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
-                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
-                                        "+NoAsigNames+"</h6><p>Si esta seguro presione Aceptar, de lo contrario Cancelar\n\
-                                        <p><p><p><div id='cancelar'class='cancelar'><p><label><b>\n\
-                                        Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
-                                        <p><label><b>Aceptar</b></label></div></div>").hide();
-                    $("body").append(revisa);
-                    revisa.fadeIn('fast');
+                    if(AsigNames=="")   var asig="";
+                      else              var asig='Asignarle: ';
+                    if(NoAsigNames=="") var desA="";
+                      else              var desA = 'Dsasignarle:';
+                      
+                    $SORI.UI.msj_confirm("<h4>Esta a punto de actualizar "+tipoDestino+" la Zona Geográfica: <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4><p><h6><p>"+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>"+NoAsigNames+"</h6>");
                     $('#confirma,#cancelar').on('click',function()
                     {
                         var tipo=$(this).attr('id');
                         if(tipo=="confirma")
-                        {
-                            $('.mensaje').html("<h2>Espere un momento por favor</h2><p><p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/><p><p><p><p><p><p><p><p<p><p>").hide().fadeIn('fast');
+                        {   
+                            $SORI.UI.msj_cargando("<h2>Espere un momento por favor</h2>","image_464753.gif"); 
                             $.ajax({
                                 type: "GET",
                                 url: destination_update,
                                 data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
                                 success: function(data)
                                 {
-                                    var exito=$('.mensaje').html("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: \n\
-                                        <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>\n\
-                                        "+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>\n\
-                                        "+NoAsigNames+"</h6><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                                    setTimeout(function()
-                                    {
-                                        exito.fadeOut('fast');
-                                        $('.cargando').fadeOut('fast');
-                                    }, 3000);      
+                                     $SORI.UI.msj_change("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>"+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6>"+NoAsigNames+"</h6>","si.png","3000","width:95px; height:95px;");      
                                 }
                             });
                         }
                         else
                         {
-                            revisa.fadeOut('fast');
+                            $(".cargando,.mensaje").fadeOut('fast');
                         }
                     });
                 }
@@ -632,14 +422,12 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
  */
 $('#GeographicZone_id_destination').change(function()
 {
-    var GeographicZone=$("#GeographicZone_id").val();
-    var destinos=$('#GeographicZone_id_destination').val();
-    if(GeographicZone!="")
+    if($("#GeographicZone_id").val()!="")
     {
         $.ajax({
             type: "POST",
             url: "DynamicAsignados",
-            data: 'GeographicZone='+GeographicZone+'&destinos='+destinos,
+            data: 'GeographicZone='+$("#GeographicZone_id").val()+'&destinos='+$('#GeographicZone_id_destination').val(),
             success: function(data)
             {
                 $('#select_right').empty().append(data);
@@ -649,17 +437,10 @@ $('#GeographicZone_id_destination').change(function()
 });
 $('#GeographicZone_id').change(function()
 {
-    var GeographicZone=$("#GeographicZone_id").val();
-    var destinos=$('#GeographicZone_id_destination').val();
+    var GeographicZone=$("#GeographicZone_id").val(), destinos=$('#GeographicZone_id_destination').val();
     if(destinos<1)
     {
-        var aguanta=$("<div class='cargando'></div><div class='mensaje'><h3>Debe seleccionar un destino antes de seleccionar la zona geográfica</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(aguanta)
-        aguanta.fadeIn('fast');
-        setTimeout(function()
-        {
-            aguanta.fadeOut('fast');
-        }, 1000);
+        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar un destino antes de seleccionar la zona geográfica</h3>","aguanta.png","1000","width:40px; height:90px;"); 
     }
     else
     {
@@ -714,7 +495,6 @@ $('div.quitaNota').click('on',function()
     $('div.quitaNota').toggle('slow');
     $('div.contratoFormTextArea').toggle('slow');
 });
-
 /*GUARDAR EN LISTA TEMPORAL*/
 $('#botAgregarDatosContable').click('on',function(e)
 {
@@ -727,10 +507,9 @@ $('#botAgregarDatosContable').click('on',function(e)
         $.ajax({
             type: "GET",
             url: "GuardarDoc_ContTemp",
-            //            url: $SORI.UTILS.getURL(selecTipoDoc),
             data: str,
             success: function(data) 
-            {
+            {console.log(data);
                 obj = JSON.parse(data);
                 if((obj.valid==1)){
                     $SORI.UTILS.updateMontoAprobadoDisp();
@@ -746,17 +525,10 @@ $('#botAgregarDatosContable').click('on',function(e)
         }); 
     }
 }); 
-
 $('#botAgregarDatosContableFinal').click('on',function(e)
 {
     e.preventDefault();
-    var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de guardar todos los documentos contables de \n\
-                             forma definitiva<p></h6><p><p>Si esta seguro, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'\n\
-                             class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'>\n\
-                             <p><label><b>Aceptar</b></label></div></div>").hide();
-
-    $("body").append(revisa);
-    revisa.fadeIn('fast');            
+    $SORI.UI.msj_confirm("<h4>Esta a punto de guardar todos los documentos contables de forma definitiva</h4>");          
     $('#confirma,#cancelar').on('click',function()
     {
         var tipo=$(this).attr('id');
@@ -769,16 +541,11 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                 {  
                     $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.botonesParaExportar').fadeOut('fast');
                     $('.vistaTemp').remove();
-                    var exito=$('.mensaje').html("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                    setTimeout(function() {
-                        exito.fadeOut('fast');
-                        revisa.fadeOut('fast');
-                    }, 3000);
-
+                    $SORI.UI.msj_change("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4>","si.png","1000","width:95px; height:95px;"); 
                 }  
             });
         }else{
-            revisa.fadeOut('fast');
+            $(".cargando, .mensaje").fadeOut('fast');
         }
     });
 });
@@ -791,18 +558,9 @@ $('#botConfirmarDatosContableFinal').click('on',function()
     });
     if(dato.length<=0)
     {
-        var stop= $("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ninguna factura para confirmar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();   
-        $("body").append(stop);
-        stop.fadeIn('fast');
-        setTimeout(function()
-        {
-            stop.fadeOut('fast');
-        }, 1000);
+        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No ha seleccionado ninguna factura para confirmar</h3>","aguanta.png","1000","width:40px; height:90px;"); 
     }else{
-        var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de confirmar las siguientes facturas enviadas<p></h4><p><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();           
-        $("body").append(revisa);
-        revisa.fadeIn('fast'); 
-
+        $SORI.UI.msj_confirm("<h4>Esta a punto de confirmar las siguientes facturas enviadas</h4>");  
         $('#confirma,#cancelar').on('click',function()
         {
             var tipo=$(this).attr('id');
@@ -817,9 +575,7 @@ $('#botConfirmarDatosContableFinal').click('on',function()
                         url: "../AccountingDocument/Confirmar/"+id,
                         success: function(data) 
                         {
-      
                             paraBorrar.empty(); 
-                            revisa=null;
                         }
                     });
                 });
@@ -829,16 +585,10 @@ $('#botConfirmarDatosContableFinal').click('on',function()
                     if(id=='on'){
                         cuantos=array.length-1;
                     }
-                    var exito=$('.mensaje').html(" <h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                    setTimeout(function()
-                    {
-                        exito.fadeOut('fast');
-                        $('.cargando').fadeOut('fast');
-                    }, 2000);   
+                    $SORI.UI.msj_change("<h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4>","si.png","2000","width:95px; height:95px;");   
                 }
             }else{
-                revisa.fadeOut('slow'); 
-                revisa=null;
+                $(".cargando, .mensaje").fadeOut('slow'); 
             }
         });   
     }      
@@ -920,7 +670,7 @@ $('.botGuardarZonaColor').click('on',function(e)
     var acciones=$('#GeographicZone_acciones').val(), color=$("input#color_zona_hidden").val();
     if(acciones=='' || color=='')
     {  
-        var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msjIndicador);msjIndicador.fadeIn('fast'); setTimeout(function(){ msjIndicador.fadeOut('fast');}, 1000);
+        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Faltan datos por agregar</h3>","aguanta.png","1000","width:40px; height:90px;"); 
     }else
         {
             if (acciones==1){var Action="GuardarZoneColor";}
@@ -936,8 +686,7 @@ $('.botGuardarZonaColor').click('on',function(e)
                     obj = JSON.parse(data);
                     var name_zonaSave=obj.name_zonaG, 
                     color_zonaSave=obj.color_zonaG;
-    
-                    var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div><p><p><p><p><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide(); $("body").append(msjIndicador);msjIndicador.fadeIn('fast'); setTimeout(function(){   msjIndicador.fadeOut('fast'); }, 3000);
+                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div>","si.png","3000","width:95px; height:95px;"); 
                     $("select#GeographicZone_acciones,input#GeographicZone_name_zona,select#GeographicZone_name_zona,input#color_zona_hidden").val('');
                     $( "input#color_zona" ).css( "background-color","white" );
                 }
@@ -970,18 +719,10 @@ $(".AsignarCarrierGroup").on( "click",function(e)
 {
     e.preventDefault();
     $("#carriers select option").prop("selected",true);
-    var grupo=$('#Carrier_id').val(),
-    asignados=$('#select_left').val(),
-    noasignados=$('#select_right').val();
+    var grupo=$('#Carrier_id').val(), asignados=$('#select_left').val(), noasignados=$('#select_right').val();
     if(grupo<1)
     {
-        var aguanta=$("<div class='cargando'></div><div class='mensaje'><h3>No ha seleccionado ningun grupo</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-        $("body").append(aguanta)
-        aguanta.fadeIn('fast');
-        setTimeout(function()
-        {
-            aguanta.fadeOut('fast');
-        }, 3000);
+        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No ha seleccionado ningun grupo</h3>","aguanta.png","1000","width:40px; height:90px;"); 
         $("#carriers select option").prop("selected",false);
     }else 
     {
@@ -998,43 +739,17 @@ $(".AsignarCarrierGroup").on( "click",function(e)
                       
                 if(asigname<="1" && noasigname<="1")
                 {
-                    var nohaynada=$("<div class='cargando'></div><div class='mensaje'><h3>No hay carriers preselccionados <br> para asignar o \n\
-                                                     desasignar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                    $("body").append(nohaynada);
-                    nohaynada.fadeIn('fast');
-                    setTimeout(function()
-                    {
-                        nohaynada.fadeOut('fast');
-                    }, 4000);
+                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o  desasignar</h3>","aguanta.png","2000","width:40px; height:90px;"); 
                     $("#carriers select option").prop("selected",false);
                 }
                 else
                 {
-                    if(asigname=="")
-                    {
-                        var asig="";
-                    }
-                    else
-                    {
-                        var asig='Asignarle: ';
-                    }
-                    if(noasigname=="")
-                    {
-                        var desA="";
-                    }
-                    else
-                    {
-                        var desA='Dsasignarle:';
-                    }
-                    var revisa=$("<div class='cargando'></div><div class='mensaje'><h4>Esta a punto de realizar los siguientes cambios en el grupo\n\
-                                      <br><b>"+grupoName+"</b></h4>\n\<p><h6>"+asig+"<p>"+asigname+"</h6><p><p><h6>"+desA+"<p>\n\
-                                      "+noasigname+"</h6><p>Si los datos son correctos, presione Aceptar, de lo contrario Cancelar<p><p><p><p><p><p><p><div id='cancelar'\n\
-                                      class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();
-                    $(".cargando").hide();
-                    $(".mensaje").hide();
-                    $("body").append(revisa);
-                    revisa.fadeIn('fast');
-
+                    if(asigname=="")   var asig="";
+                       else            var asig='Asignarle: ';
+                    if(noasigname=="") var desA="";
+                       else            var desA='Dsasignarle:';
+                    
+                    $SORI.UI.msj_confirm("<h4>Esta a punto de realizar los siguientes cambios en el grupo<br><b>"+grupoName+"</b></h4><p><h6>"+asig+"<p>"+asigname+"</h6><h6>"+desA+"<p>"+noasigname+"</h6>");  
                     $('#confirma,#cancelar').on('click', function()
                     {
                         var tipo=$(this).attr('id');
@@ -1048,35 +763,19 @@ $(".AsignarCarrierGroup").on( "click",function(e)
                                 {
                                     obj = JSON.parse(data);
                                     var grupoSave=obj.grupo;
-
-                                    if(asigname=="")
-                                    {
-                                        var pudo="Le fue";
-                                    }
-                                    else
-                                    {
-                                        var pudo='Le fue asignado:';
-                                    }
-                                    if(noasigname=="")
-                                    {
-                                        var nopudo="";
-                                    }
-                                    else
-                                    {
-                                        var nopudo='Desasignado:';
-                                    }
-                                    var aguanta=$('.mensaje').html("<h3>El grupo <b>" + grupoSave + "</b><p>Fue modificado con exito</h3><br><h5>" + pudo + "<br><b>" + asigname + "</b><p>" + nopudo + "<br><b>" + noasigname + "</b></h5><p><p><img src='/images/si.png'width='95px' height='95px'/>").hide().fadeIn('fast');
-                                    setTimeout(function()
-                                    {
-                                        aguanta.fadeOut('fast');
-                                        $('.cargando').fadeOut('fast');
-                                    }, 4000);
+                                    if(asigname=="")  var pudo="Le fue";
+                                      else            var pudo='Le fue asignado:';
+                                    
+                                    if(noasigname=="")var nopudo="";
+                                      else            var nopudo='Desasignado:';
+                                    
+                                    $SORI.UI.msj_change("<h3>El grupo <b>" + grupoSave + "</b><p>Fue modificado con exito</h3><br><h5>" + pudo + "<br><b>" + asigname + "</b><p>" + nopudo + "<br><b>" + noasigname + "</b></h5>","si.png","4000","width:95px; height:95px;"); 
                                     $('#Carrier_id').val('');
                                     $("#carriers select option").prop("selected",false);
                                 }
                             });
                         }else{
-                            revisa.fadeOut();
+                            $(".cargando,.mensaje").fadeOut();
                         }
                     });
                 }
@@ -1090,50 +789,21 @@ $(".AsignarCarrierGroup").on( "click",function(e)
 //**
 //agregar managers
 //**
-
 $(".G_ManagerNuevo").on( "click",function(e)
 {
     e.preventDefault();
-    alert('hola');
-    var name=$('#Managers_name').val(),
-    lastname=$('#Managers_lastname').val(),
-    record_date=$('#Managers_record_date').val(),
-    position=$('#Managers_position').val(),
-    address=$('#Managers_address').val();
-     
     $.ajax({
         type: "GET",
         url: "../Managers/GuardarManager",
-        data:   'name='+name+'&lastname='+lastname+'&record_date='+record_date+'&address='+address+'&position='+position,
+        data:   'name='+$('#Managers_name').val()+'&lastname='+$('#Managers_lastname').val()+'&record_date='+$('#Managers_record_date').val()+'&address='+$('#Managers_address').val()+'&position='+$('#Managers_position').val(),
         success: function(data)
         {
-            var obj = JSON.parse(data),
-            nameSave=obj.nameSave, 
-            lastnameSave=obj.lastnameSave,
-            addressSave=obj.addressSave,
-            record_dateSave=obj.record_dateSave,
-            positionSave=obj.positionSave;
-
-            var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>El Manager <p><b>"+nameSave+" "+lastnameSave+"</b></h3><p>Fue almacenado con exito con los siguientes datos:\n\
-                                            <p><h5>Fecha de Ingreso: <b>"+record_dateSave+"</b><p>Posición: <b>"+positionSave+"</b><p>Dirección: <b>"+addressSave+"</b></h5><p><img src='/images/si.png'width='95px' height='95px'/></div>").hide();
-            $("body").append(msjIndicador);
-            msjIndicador.fadeIn('fast');
-            setTimeout(function()
-            {
-                msjIndicador.fadeOut('fast');
-            }, 4000);
-                
-            $('#Managers_name').val('');
-            $('#Managers_lastname').val('');
-            $('#Managers_record_date').val('');
-            $('#Managers_position').val('');
-            $('#Managers_address').val('');
-            
+            var obj = JSON.parse(data);
+            $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>El Manager <p><b>"+obj.nameSave+" "+obj.lastnameSave+"</b></h3><p>Fue almacenado con exito con los siguientes datos:<p><h5>Fecha de Ingreso: <b>"+obj.record_dateSave+"</b><p>Posición: <b>"+obj.positionSave+"</b><p>Dirección: <b>"+obj.addressSave+"</b></h5>","si.png","2000","width:95px; height:95px;"); 
+            $('#Managers_name,#Managers_lastname,#Managers_record_date,#Managers_position,#Managers_address').val(''); 
         }
     });
-    
 });
-
 //**
 //fin agregar managers
 //**

@@ -348,7 +348,7 @@ $SORI.UI=(function()
          */
 	function _elimina_doc($fila)
 	{  
-            $('.cargando,.mensaje').remove();var revisa=$("<div class='cargando'></div><div class='mensaje'>Esta a punto de eliminar el documento contable seleccionado<p>Si esta seguro presione Aceptar, de lo contrario Cancelar <p><p><p><div id='cancelar' class='cancelar'><p><label><b>Cancelar</b></label></div>&nbsp;<div id='confirma' class='confirma'><p><label><b>Aceptar</b></label></div></div>").hide();$("body").append(revisa);revisa.fadeIn('slow');
+            $('.cargando,.mensaje').remove(); $SORI.UI.msj_confirm("<h3>Esta a punto de eliminar el documento contable seleccionado</h3>");  
             $('#confirma,#cancelar').on('click',function()
             {
                 var tipo=$(this).attr('id');
@@ -675,9 +675,7 @@ function roundNumber(number,decimals) {
         $('.botonCorreo').click('on',function()
         {
             $('.lista_FacEnv,.lista_FacRec,.lista_Cobros,.lista_Pagos,.lista_DispRec,.lista_DispEnv,.lista_NotCredEnv,.lista_NotCredRec').children().children().children(":last-child").remove();
-                  
-            var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Enviando documentos por correo</h2><p>Espere un momento por favor<p><p><p><p><p><p><p><p<p><p><p><img src='/images/image_464753.gif'width='95px' height='95px'/></div>").hide(),
-            tr_fondoblanco=$(".vistaTemp").css('background','white').css('color','gray').css('font','small-caption'),
+            var tr_fondoblanco=$(".vistaTemp").css('background','white').css('color','gray').css('font','small-caption'),
 
             html="Facturas Enviadas:        <table  style='font-weight:bold;color: white;width: 900px;background: rgb(111, 204, 187);border-bottom-color: white;'>" + $(".lista_FacEnv").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
                  "Facturas Recibidas:       <table  style='font-weight:bold;color: white;width: 900px;background: rgb(161, 177, 171);border-bottom-color: white;'>" + $(".lista_FacRec").clone(tr_fondoblanco).html() + "</table>" + "<br/>" + 
@@ -690,7 +688,7 @@ function roundNumber(number,decimals) {
             
             $("#html").val(html);
             $("#FormularioCorreo").submit();
-            $("body").append(msj);msj.fadeIn('slow');
+            $SORI.UI.msj_cargando("<h2>Enviando documentos por correo</h2><p>Espere un momento por favor<p>","image_464753.gif");
         });
         /**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
@@ -720,21 +718,9 @@ function roundNumber(number,decimals) {
 			var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
 				muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
 				idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
-		    $("#Contrato_id_company").val('');
-		    $("#Contrato_sign_date").val('');
-		    $("#Contrato_production_date").val('');
-		    $("#Contrato_id_termino_pago").val('');
-		    $("#Contrato_id_monetizable").val('');
-		    $("#Contrato_up").val('');
-		    $("#Contrato_status").val('');
-		    $("#Contrato_id_disputa").val('');
-		    $("#F_Firma_Contrato_Oculto").val('');
-		    $("#F_P_produccion_Oculto").val('');
-		    $("#TerminoP_Oculto").val('');
-		    $("#Contrato_id_monetizable").val('');
-		    $("#dias_disputa_Oculto").val('');
-		    $(".manageractual").empty();
-		    $(".CarrierActual").empty();
+		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status").val('');
+		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#Contrato_id_monetizable,#dias_disputa_Oculto").val('');
+		    $(".manageractual,.CarrierActual").empty();
 		    $.ajax({
 		        type: "GET",
 		        url: "DynamicDatosContrato",
@@ -755,8 +741,7 @@ function roundNumber(number,decimals) {
 		            }
 		            else
 		            {
-                               $("#Contrato_sign_date").prop("disabled", false)
-		                $("#Contrato_id_company").prop("disabled", false);
+                                $("#Contrato_sign_date,#Contrato_id_company").prop("disabled", false);
 		                $("#Contrato_end_date").prop("disabled", true);
 		               
 		            }
@@ -785,8 +770,8 @@ function roundNumber(number,decimals) {
 		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
 		            	fechaManagerCarrier=(obj.fechaManager),
 
-		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top: \n\ 105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top: \n\ -10px; '></h6></label>");
-		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top: \n\ -106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
+		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top:105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top:-10px;'></h6></label>"),
+		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top:-106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
 		            $('.manageractual').append(managerA);
 		            managerA.slideDown('slow');
 		            $('.CarrierActual').append(carrierA);
@@ -799,7 +784,7 @@ function roundNumber(number,decimals) {
 		    muestraDiv1.slideDown("slow");
 		    muestraformC.slideDown("slow");
 		    NombreCarrier.slideDown("slow");
-		    carrierA=managerA=fechaManagerCarrier=carrierenlabel=manageractual=end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
+		    end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
 		});
 	}
         /**
@@ -891,33 +876,31 @@ function roundNumber(number,decimals) {
              $('.cargando, .mensaje').remove();
              switch (obj.id_type_accounting_document){
                     case '1':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4>";
                         break
                     case '2':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Factura Recibida </b>que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>, con el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>La <b>Factura Recibida </b>que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>, con el N°. <b>"+obj.doc_number+"</b></h4>";
                         break
                     case '3':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de emisión <b>"+obj.issue_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>El <b>Pago</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de emisión <b>"+obj.issue_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4>";
                         break
                     case '4':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de recepción <b>"+obj.valid_received_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj="<h4 align='justify'>El <b>Grupo</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de recepción <b>"+obj.valid_received_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4>";
                         break
                     case '5':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4>";
                         break
                     case '6':
-                         var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b></h4>";
                         break
                     case '7':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                         var msj="<h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destination+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4>";
                         break
                     case '8':
-                        var msj=$("<div class='cargando'></div><div class='mensaje'><h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
+                        var msj="<h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4>";
                         break
              }
-              $("body").append(msj); 
-              msj.fadeIn('slow');
-              setTimeout(function() { msj.fadeOut('slow'); }, 2000);
+              $SORI.UI.msj_cargando("","");$SORI.UI.msj_change(msj,"aguanta.png","2000","width:40px; height:90px;"); 
          }
         /**
          * 
@@ -925,13 +908,8 @@ function roundNumber(number,decimals) {
          */
          function sesionCerrada()
          {
-             var msj=$("<div class='cargando'></div><div class='mensaje'><h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div></div>").hide();
-                $("body").append(msj); 
-                msj.fadeIn('slow');
-                $('.relogin').click('on',function()
-                {
-                    msj.fadeOut('slow');
-                }); 
+             $SORI.UI.msj_cargando("<h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div>","");
+             $('.relogin').click('on',function() { $(".cargando,.mensaje").fadeOut('slow'); }); 
          }
         /**
          * 
@@ -988,48 +966,16 @@ function roundNumber(number,decimals) {
          */
         function casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
-           if(diasDisputaOculto!=dias_disputa )
-           {
-                   $SORI.UI.changeCss($('.dias_disputa'),'color','red');
-           }
-
-           if(diasDisputaSolvedOculto!=dias_disputa_solved )
-           {
-                   $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
-           }
-           if(F_Firma_Contrato_Oculto!=sign_date)
-           {
-                   $SORI.UI.changeCss($('.sign_date'),'color','red');
-           }
-           if(F_P_produccion_Oculto!=production_date)
-           {
-                   $SORI.UI.changeCss($('.production_date'),'color','red'); 
-           }
-           if(TPOculto!=termino_pago)
-           {
-                   $SORI.UI.changeCss($('.termino_pName'),'color','red');
-           }
-           if(monetizableOculto!=monetizable)
-           {
-                   $SORI.UI.changeCss($('.monetizableName'),'color','red');
-           }
-           if(creditoO != credito)
-           {
-                   $SORI.UI.changeCss($('.credito'),'color','red');
-           }
-           if(compraO != compra)
-           {
-                   $SORI.UI.changeCss($('.compra'),'color','red');
-           }
-           if(Contrato_upOculto != Contrato_up)
-           { 
-                   $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
-           }
-           if(Contrato_statusOculto != Contrato_status)
-           {
-                   $SORI.UI.changeCss($('.status'),'color','red');
-           }
-           
+           if(diasDisputaOculto != dias_disputa )              $SORI.UI.changeCss($('.dias_disputa'),'color','red');
+           if(diasDisputaSolvedOculto != dias_disputa_solved ) $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
+           if(F_Firma_Contrato_Oculto != sign_date)            $SORI.UI.changeCss($('.sign_date'),'color','red');
+           if(F_P_produccion_Oculto != production_date)        $SORI.UI.changeCss($('.production_date'),'color','red'); 
+           if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
+           if(monetizableOculto != monetizable)                $SORI.UI.changeCss($('.monetizableName'),'color','red');
+           if(creditoO != credito)                             $SORI.UI.changeCss($('.credito'),'color','red');
+           if(compraO != compra)                               $SORI.UI.changeCss($('.compra'),'color','red');
+           if(Contrato_upOculto != Contrato_up)                $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
+           if(Contrato_statusOculto != Contrato_status)        $SORI.UI.changeCss($('.status'),'color','red');
         }
         /**
          * 
@@ -1102,10 +1048,40 @@ function roundNumber(number,decimals) {
                         break;
                      }else{respuesta=1;}
                 };
-                if(respuesta==0){var msjIndicador = $("<div class='cargando'></div><div class='mensaje'><h3>Faltan datos por agregar</h3><p><p><p><p><p><p><p><p><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();
-                                                    $("body").append(msjIndicador);msjIndicador.fadeIn('fast');setTimeout(function(){ msjIndicador.fadeOut('fast');msjIndicador.remove(3000); }, 1000);}
-           
+                if(respuesta==0){$SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Faltan datos por agregar</h3>","aguanta.png","1000","width:40px; height:90px;"); }
                 return respuesta;
+        }
+        
+        function msj_cargando(cuerpo_msj,imagen)
+        {
+            if(imagen!=null||imagen!="")var imagen_url="<img src='/images/"+imagen+"'>";else imagen_url="";
+            $(".cargando, .mensaje").remove();
+            var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p><br>"+imagen_url+"</div>").hide(); 
+            $("body").append(msj); msj.fadeIn('slow');
+        }
+        /**
+         * 
+         * @param {type} cuerpo_msj
+         * @returns {undefined}
+         */
+        function msj_confirm(cuerpo_msj)
+        {
+            $(".cargando, .mensaje").remove();
+            var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p><br>Si esta de acuerdo, presione Aceptar, de lo contrario Cancelar<p><p><div id='cancelar'class='cancelar'><b>Cancelar</b></div>&nbsp;<div id='confirma'class='confirma'><b>Aceptar</b></div></div></div>").hide(); 
+            $("body").append(msj);  msj.fadeIn('slow');
+        }
+        /**
+         * 
+         * @param {type} cuerpo_msj
+         * @param {type} imagen
+         * @param {type} tiempo
+         * @param {type} style
+         * @returns {undefined}
+         */
+        function msj_change(cuerpo_msj,imagen,tiempo,style)
+        {
+            $(".mensaje").html(""+cuerpo_msj+"<p><img style='"+style+"' src='/images/"+imagen+"'>");
+            setTimeout(function() { $(".cargando, .mensaje").fadeOut('slow'); }, tiempo);
         }
         /**
          * 
@@ -1183,6 +1159,20 @@ function roundNumber(number,decimals) {
                     break
             }
         }
+        /**
+         * 
+         * @param {type} var_hide
+         * @param {type} var_show
+         * @param {type} if_result
+         * @param {type} else_result
+         * @returns {unresolved}
+         */
+        function resultadoContrato(var_hide,var_show,if_result,else_result)
+        {
+            if(var_hide!=var_show )return if_result;
+             
+              else                 return else_result; 
+        }
 	/**
 	 * Retorna los mestodos publicos
 	 */
@@ -1203,7 +1193,11 @@ function roundNumber(number,decimals) {
                 elijeOpciones:elijeOpciones,
                 sesionCerrada:sesionCerrada,
                 casosParaMsjConfirm:casosParaMsjConfirm,
-                roundNumber:roundNumber
+                roundNumber:roundNumber,
+                msj_cargando:msj_cargando,
+                msj_confirm:msj_confirm,
+                msj_change:msj_change,
+                resultadoContrato:resultadoContrato
 	};
 })();
 

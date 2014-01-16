@@ -955,3 +955,7 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     padding: 19px!important;
     height: 47px!important;
 }
+.divide_fact,.periodo_fact,.dia_ini_fact
+{
+    display:none;
+}
