@@ -9,6 +9,7 @@
  *
  * The followings are the available model relations:
  * @property ContratoTerminoPago[] $contratoTerminoPagos
+ * @property ContratoTerminoPagoSupplier[] $contratoTerminoPagoSuppliers
  */
 class TerminoPago extends CActiveRecord
 {
@@ -45,6 +46,7 @@ class TerminoPago extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'contratoTerminoPagos' => array(self::HAS_MANY, 'ContratoTerminoPago', 'id_termino_pago'),
+			'contratoTerminoPagoSuppliers' => array(self::HAS_MANY, 'ContratoTerminoPago', 'id_termino_pago_supplier'),
 		);
 	}
 
