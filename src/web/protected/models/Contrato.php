@@ -25,7 +25,7 @@ class Contrato extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-    public $idTerminoPagoSupplier;
+    public $id_termino_pago_supplier;
     public $id_termino_pago;
     public $id_monetizable;
     public $id_limite_credito;

@@ -110,4 +110,14 @@ class ContratoTerminoPagoSupplier extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+                
+        public static function getTpId_supplier($contrato)
+        {
+            $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
+            if ($model!=NULL){
+                return $model->id_termino_pago_supplier;
+            }else{
+                return '';
+            }
+        }
 }

@@ -100,11 +100,11 @@
                 </div>
                 <!--************///////////HAY QUE CONFIGURARLOS////////////***********-->
                 <div class="contratoForm">
-                    <?php echo $form->labelEx($model,'idTerminoPagoSupplier'); ?>
-                     <?php echo $form->dropDownList($model,'idTerminoPagoSupplier',TerminoPago::getListTermPago(),
+                    <?php echo $form->labelEx($model,'id_termino_pago_supplier'); ?>
+                     <?php echo $form->dropDownList($model,'id_termino_pago_supplier',TerminoPago::getListTermPago(),
                      array('prompt'=>'Seleccione')
                      ); ?> 
-                     <?php echo $form->error($model,'idTerminoPagoSupplier'); ?>
+                     <?php echo $form->error($model,'id_termino_pago_supplier'); ?>
                 </div>
                 <div class="contratoForm divide_fact">
                     <label>Divide Fact</label>

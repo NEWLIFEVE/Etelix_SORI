@@ -159,6 +159,7 @@ class ContratoController extends Controller
                     $Contrato_up=$_GET['Contrato_up'];
                     $Contrato_status=$_GET['Contrato_status'];
                     $termino_pName='';
+                    $termino_p_supp_Name='';
                     $monetizaName='';
                     $companyName='';
                     $carrierName='';
@@ -220,7 +221,7 @@ class ContratoController extends Controller
                                         if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
 
                                         $text.= $termino_pago.',';
-                                        $termino_pName.= TerminoPago::getName($termino_pago);
+                                        $termino_pName= TerminoPago::getName($termino_pago);
                                     }
                                 }else{
                                         $modelCTPNEW = new ContratoTerminoPago;
@@ -232,26 +233,26 @@ class ContratoController extends Controller
                                 
                                 /*TERMINO PAGO PROVEEDOR*/
                                                 
-                                $modelCTPsupplier=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
+                                $modelCTPsupplier=ContratoTerminoPagoSupplier::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
                                 if($modelCTPsupplier!=NULL){
                                     if($modelCTPsupplier->id_termino_pago_supplier != $termino_pago_supplier){
                                         $modelCTPsupplier->end_date=date('Y-m-d'); 
                                         $modelCTPsupplier->save();
-                                        $modelCTPNEW = new ContratoTerminoPago;
-                                        $modelCTPNEW->id_contrato=$modelAux->id;
-                                        $modelCTPNEW->start_date=date('Y-m-d');
-                                        $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
-                                        if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
+                                        $modelCTPSNEW = new ContratoTerminoPagoSupplier;
+                                        $modelCTPSNEW->id_contrato=$modelAux->id;
+                                        $modelCTPSNEW->start_date=date('Y-m-d');
+                                        $modelCTPSNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        if($modelCTPSNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPSNEW->id);
 
                                         $text.= $termino_pago_supplier.',';
-                                        $termino_p_supp_Name.= TerminoPago::getName($termino_pago_supplier);
+                                        $termino_p_supp_Name= TerminoPago::getName($termino_pago_supplier);
                                     }
                                 }else{
-                                        $modelCTPNEW = new ContratoTerminoPago;
-                                        $modelCTPNEW->id_contrato=$modelAux->id;
-                                        $modelCTPNEW->start_date=date('Y-m-d');
-                                        $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
-                                        if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
+                                        $modelCTPSNEW = new ContratoTerminoPagoSupplier;
+                                        $modelCTPSNEW->id_contrato=$modelAux->id;
+                                        $modelCTPSNEW->start_date=date('Y-m-d');
+                                        $modelCTPSNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        if($modelCTPSNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPSNEW->id);
                                 }
                                 
                                 /*MONETIZABLE*/
@@ -266,7 +267,7 @@ class ContratoController extends Controller
                                         $modelCMNEW->id_monetizable =$monetizable;
                                         if($modelCMNEW->save())Log::registrarLog(LogAction::getId('Modificar Monetizable'),NULL, $modelCMNEW->id);
                                         $text.= $monetizable.',';
-                                        $monetizaName.= Monetizable::getName($monetizable);
+                                        $monetizaName= Monetizable::getName($monetizable);
                                     }
                                 }else{
                                         $modelCMNEW = new ContratoMonetizable;
@@ -534,7 +535,7 @@ class ContratoController extends Controller
                 $params['sign_date']=$model->sign_date;
                 $params['production_date']=$model->production_date;
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
-//                $params['termino_pago_supplier']=ContratoTerminoPago::getTpId_supplier($model->id);
+                $params['termino_pago_supplier']= ContratoTerminoPagoSupplier::getTpId_supplier($model->id);
                 $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);
@@ -554,6 +555,7 @@ class ContratoController extends Controller
                 $params['sign_date']='';
                 $params['production_date']='';
                 $params['termino_pago']='';
+                $params['termino_pago_supplier']='';
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['Contrato_up']='Seleccione';

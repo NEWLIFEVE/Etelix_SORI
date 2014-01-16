@@ -205,7 +205,7 @@ $("#CarrierManagers_id_managers").change(function()
 //INICIO DE CONTRATO//////////////
 $SORI.UI.formChange('Contrato_id_carrier');
 
-$("#Contrato_idTerminoPagoSupplier").change(function()
+$("#Contrato_id_termino_pago_supplier").change(function()
 {
      var tp=$(this).val(), inputs=$(".divide_fact,.periodo_fact,.dia_ini_fact");
      if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
@@ -220,7 +220,7 @@ $("#Contrato_id_termino_pago").change(function()
 {
      $("#Contrato_idTerminoPagoSupplier").val($(this).val());
      var inputs=$(".divide_fact,.periodo_fact,.dia_ini_fact");
-     var tp=$("#Contrato_idTerminoPagoSupplier").val();
+     var tp=$("#Contrato_id_termino_pago_supplier").val();
      
      if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
      { 
@@ -237,7 +237,7 @@ $('#botAsignarContrato').click('on',function(e)
     var carrier = $("#Contrato_id_carrier").val(),
     company = $("#Contrato_id_company").val(),
     termino_pago = $("#Contrato_id_termino_pago").val(),
-    termino_pago_supplier = $("#Contrato_idTerminoPagoSupplier").val(),
+    termino_pago_supplier = $("#Contrato_id_termino_pago_supplier").val(),
     monetizable = $("#Contrato_id_monetizable").val(),
     Contrato_up = $("#Contrato_up").val(),
     Contrato_status = $("#Contrato_status").val(),
