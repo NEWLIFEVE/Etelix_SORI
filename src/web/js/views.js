@@ -204,31 +204,34 @@ $("#CarrierManagers_id_managers").change(function()
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
 $SORI.UI.formChange('Contrato_id_carrier');
-
-$("#Contrato_id_termino_pago_supplier").change(function()
+//esto tengo que modularlo....
+$("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier").change(function()
 {
-     var tp=$(this).val(), inputs=$(".divide_fact,.periodo_fact,.dia_ini_fact");
-     if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
-     { 
-         inputs.css("display","inline-block").hide().show("slow");
-     }else{ 
-         $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,").val(""); inputs.hide("slow");
-     }  
+    var inputs=$(".divide_fact,.periodo_fact"),
+    fac_period="Contrato_id_fact_period";
+      if($(this).attr('id')=="Contrato_id_termino_pago") {$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
+      
+    var tp=$("#Contrato_id_termino_pago_supplier").val();
+    
+      if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
+      {
+          inputs.css("display","inline-block").hide().show("slow");
+          
+            if(tp=="1"||tp=="3"||tp=="4"||tp=="5") 
+            {
+                $(".dia_ini_fact").css("display","inline-block").hide().show("slow");
+                $("#"+fac_period+" option[value='3'],#"+fac_period+" option[value='4']").hide("fast");
+                $("#"+fac_period+" option[value='1'],#"+fac_period+" option[value='2']").show("fast");
+            }else{
+                  $(".dia_ini_fact").hide().hide("slow");
+                  $("#"+fac_period+" option[value='3'],#"+fac_period+" option[value='4']").show("fast");
+                  $("#"+fac_period+" option[value='1'],#"+fac_period+" option[value='2']").hide("fast");
+            }
+      }else{
+            $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); inputs.hide("slow");$(".dia_ini_fact").hide("slow");
+      }
 });
-
-$("#Contrato_id_termino_pago").change(function()
-{
-     $("#Contrato_idTerminoPagoSupplier").val($(this).val());
-     var inputs=$(".divide_fact,.periodo_fact,.dia_ini_fact");
-     var tp=$("#Contrato_id_termino_pago_supplier").val();
-     
-     if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
-     { 
-         inputs.css("display","inline-block").hide().show("slow");
-     }else{ 
-         $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,").val(""); inputs.hide("slow");
-     } 
-});
+//calma calma calma .)
 
 $('#botAsignarContrato').click('on',function(e)
 {
@@ -238,6 +241,9 @@ $('#botAsignarContrato').click('on',function(e)
     company = $("#Contrato_id_company").val(),
     termino_pago = $("#Contrato_id_termino_pago").val(),
     termino_pago_supplier = $("#Contrato_id_termino_pago_supplier").val(),
+    divide_fact = $("#divide_fact").val(),
+    fact_period = $("#Contrato_id_fact_period").val(),
+    dia_ini_fact = $("#dia_ini_fact").val(),
     monetizable = $("#Contrato_id_monetizable").val(),
     Contrato_up = $("#Contrato_up").val(),
     Contrato_status = $("#Contrato_status").val(),
@@ -248,6 +254,11 @@ $('#botAsignarContrato').click('on',function(e)
     monetizableOculto = $("#monetizable_Oculto").val(),      
     TPOculto = $("#TerminoP_Oculto").val(),
     TP_supplier_Oculto = $("#TerminoP_supplier_Oculto").val(),
+    
+    divide_fact_Oculto = $("#divide_fact_Oculto").val(),
+    fact_period_Oculto = $("#Contrato_id_fact_period_Oculto").val(),
+    dia_ini_fact_Oculto = $("#dia_ini_fact_Oculto").val(),
+    
     Contrato_upOculto = $("#Contrato_upOculto").val(),
     Contrato_statusOculto = $("#Contrato_statusOculto").val();
     
@@ -255,15 +266,17 @@ $('#botAsignarContrato').click('on',function(e)
     dias_disputa_solved=$("#Contrato_id_disputa_solved").val(),
     credito=$("#Contrato_id_limite_credito").val(),
     compra=$("#Contrato_id_limite_compra").val();
-    
-    if(monetizable==''||termino_pago=='' ||termino_pago_supplier=='' ||company=='' ||credito<'1' ||compra<'1' || Contrato_up==''){
-        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Faltan campos por llenar </h3>","aguanta.png","1500","width:40px; height:90px;");  
-    }else{
+   
+    var valid_input=$SORI.UI.seleccionaCampos('general'),
+    valid_tp_supp=$SORI.UI.seleccionaCampos('tp_supplier'); 
+      
+    if(valid_input==1 && valid_tp_supp==1)
+    {
         $.ajax({
             type: "GET",
             url: "ContratoConfirma",
-            data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto+"&termino_pago_supplier="+termino_pago_supplier+"&TP_supplier_Oculto="+TP_supplier_Oculto,
-            success: function(data)
+            data: "id_carrier="+carrier+"&id_company="+company+"&id_monetizable="+monetizable+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status+"&id_M_Oculto="+monetizableOculto+"&id_termino_pago="+termino_pago+"&id_TP_Oculto="+TPOculto+"&termino_pago_supplier="+termino_pago_supplier+"&TP_supplier_Oculto="+TP_supplier_Oculto+"&fact_period="+fact_period+"&fact_period_Oculto="+fact_period_Oculto+"&divide_fact="+divide_fact+"&divide_fact_Oculto="+divide_fact_Oculto+"&dia_ini_fact="+dia_ini_fact+"&dia_ini_fact_Oculto="+dia_ini_fact_Oculto,
+            success: function(data) 
             {
                 var obj=JSON.parse(data),
                 carrierName=obj.carrierName,
@@ -323,7 +336,7 @@ $('#botAsignarContrato').click('on',function(e)
                      else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4>\n\<h6><p>\n\
                                         "+backStatus+ "<span class='status'>"+Contrato_StatusC+"</span><p>\n\
                                         "+$SORI.UI.resultadoContrato(TPOculto,termino_pago,"Terminos de pago client de: "+termino_pNameO+" a ","Terminos de pago client: ")+ "<span class='termino_pName'>"+termino_pName+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(TP_supplier_Oculto,termino_pago_supplier,"Terminos de pago prov de: "+termino_p_supp_NameO+" a ","Terminos de pago prov: ")+ "<span class='termino_pName'>"+termino_p_supp_Name+"</span><p>\n\
+                                        "+$SORI.UI.resultadoContrato(TP_supplier_Oculto,termino_pago_supplier,"Terminos de pago prov de: "+termino_p_supp_NameO+" a ","Terminos de pago prov: ")+ "<span class='termino_pago_supplier'>"+termino_p_supp_Name+"</span><p>\n\
                                         "+$SORI.UI.resultadoContrato(monetizableOculto,monetizable,"Monetizable de: "+monetizableNameO+" a ","Monetizable: ")+" <span class='monetizableName'>"+monetizableName+"</span><p>\n\
                                         "+$SORI.UI.resultadoContrato(diasDisputaOculto,dias_disputa,"Dias max para disputar de: "+diasDisputaOculto+" a ","Dias max para disputar: ")+" <span class='dias_disputa'>"+dias_disputa+"</span><p>\n\
                                         "+$SORI.UI.resultadoContrato(diasDisputaSolvedOculto,dias_disputa_solved,"Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ","Dias para solventar disputas: ")+" <span class='dias_disputa_solved'>"+dias_disputa_solved+"</span><p>\n\
@@ -333,9 +346,9 @@ $('#botAsignarContrato').click('on',function(e)
                                         "+$SORI.UI.resultadoContrato(F_Firma_Contrato_Oculto,sign_date,"Fecha de firma de contrato de: "+F_Firma_Contrato_Oculto+" a ","Fecha de firma de contrato: ")+" <span class='sign_date'>"+sign_date+"</span><p> \n\
                                         "+$SORI.UI.resultadoContrato(F_P_produccion_Oculto,production_date,"Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ","Fecha de Puesta en Produccion: ")+" <span class='production_date'>"+production_date+"</span><p></h6>";
                     
-                    $SORI.UI.casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas
                     $SORI.UI.msj_confirm(advertencia);
                     $SORI.UI.changeCss(".mensaje","top","2%");
+                    $SORI.UI.casosParaMsjConfirmContrato(TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas 
                 }
                 $('#confirma,#cancelar').on('click',function()
                 {
@@ -345,7 +358,7 @@ $('#botAsignarContrato').click('on',function(e)
                         $.ajax({
                             type: "GET",
                             url: "Contrato",
-                            data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&termino_pago_supplier="+termino_pago_supplier+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status,
+                            data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&termino_pago_supplier="+termino_pago_supplier+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status+"&fact_period="+fact_period+"&divide_fact="+divide_fact+"&dia_ini_fact="+dia_ini_fact,
                             success: function(data) 
                             {  
                                 if(end_date!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+carrierName+" / "+companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+end_date+"</h6>","si.png","1000","width:90px; height:90px;");

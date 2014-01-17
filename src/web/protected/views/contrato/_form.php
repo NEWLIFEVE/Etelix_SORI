@@ -108,7 +108,7 @@
                 </div>
                 <div class="contratoForm divide_fact">
                     <label>Divide Fact</label>
-                    <select id="divide_fact">
+                    <select name="divide_fact" id="divide_fact">
                         <option value=""> Seleccione </option>
                         <option value="1"> Si </option>
                         <option value="0"> No </option>
@@ -123,7 +123,7 @@
                 </div>
                 <div class="contratoForm dia_ini_fact">
                     <label>Dia</label>
-                    <select id="dia_ini_fact">
+                    <select name="dia_ini_fact" id="dia_ini_fact">
                         <option value=""> Seleccione </option>
                         <option value="1"> Lunes </option>
                         <option value="2"> Martes </option>
@@ -183,6 +183,9 @@
                      <input type="hidden" id="monetizable_Oculto"  value="">
                      <input type="hidden" id="TerminoP_Oculto"  value="">
                      <input type="hidden" id="TerminoP_supplier_Oculto"  value="">
+                     <input type="hidden" id="divide_fact_Oculto"  value="">
+                     <input type="hidden" id="Contrato_id_fact_period_Oculto"  value="">
+                     <input type="hidden" id="dia_ini_fact_Oculto"  value="">
                      <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
                      <input type="hidden" id="F_P_produccion_Oculto"  value="">
                      <input type="hidden" id="Contrato_upOculto"  value="">

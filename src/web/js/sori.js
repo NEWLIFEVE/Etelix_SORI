@@ -715,6 +715,7 @@ function roundNumber(number,decimals) {
 	{
 		$('#'+id).change(function()
 		{
+                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
 			var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
 				muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
 				idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
@@ -778,6 +779,7 @@ function roundNumber(number,decimals) {
 		            managerA.slideDown('slow');
 		            $('.CarrierActual').append(carrierA);
 		            carrierA.slideDown('slow');
+//                            if(obj.termino_pago_supplier)
 		        }
 		    });
 		    muestraDiv2.slideDown("slow");
@@ -944,6 +946,8 @@ function roundNumber(number,decimals) {
         }
         /**
          * esta funcion obligatoriamente se debe modular, pero por los momentos... :[
+         * @param {type} TP_supplier_Oculto
+         * @param {type} termino_pago_supplier
          * @param {type} diasDisputaOculto
          * @param {type} dias_disputa
          * @param {type} diasDisputaSolvedOculto
@@ -966,8 +970,9 @@ function roundNumber(number,decimals) {
          * @param {type} Contrato_status
          * @returns {undefined}
          */
-        function casosParaMsjConfirm(diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
+        function casosParaMsjConfirmContrato(TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
+           if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_pago_supplier'),'color','red');
            if(diasDisputaOculto != dias_disputa )              $SORI.UI.changeCss($('.dias_disputa'),'color','red');
            if(diasDisputaSolvedOculto != dias_disputa_solved ) $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
            if(F_Firma_Contrato_Oculto != sign_date)            $SORI.UI.changeCss($('.sign_date'),'color','red');
@@ -1031,7 +1036,20 @@ function roundNumber(number,decimals) {
             case '8'://notas de credito recibidas
 
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
-                break               
+                break 
+            //esta parte aplica solo para contrato
+            case 'tp_supplier':
+                 var tp=$("#Contrato_id_termino_pago_supplier").val();
+                    if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12"){
+                        if(tp=="1"||tp=="3"||tp=="4"||tp=="5") var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period,#dia_ini_fact').serializeArray());
+                          else                                 var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period').serializeArray());
+                    }else{
+                        var respuesta=1; 
+                    }
+                break
+            case 'general':
+                    var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up').serializeArray());
+                break
            }
            return respuesta;
         }
@@ -1171,9 +1189,12 @@ function roundNumber(number,decimals) {
          */
         function resultadoContrato(var_hide,var_show,if_result,else_result)
         {
-            if(var_hide!=var_show )return if_result;
-             
-              else                 return else_result; 
+            if(var_hide != var_show ){
+                if(var_hide==null||var_hide=="")return else_result;
+                  else       return if_result;
+            } else {
+                return else_result; 
+            }
         }
 	/**
 	 * Retorna los mestodos publicos
@@ -1194,7 +1215,7 @@ function roundNumber(number,decimals) {
                 seleccionaCampos:seleccionaCampos,
                 elijeOpciones:elijeOpciones,
                 sesionCerrada:sesionCerrada,
-                casosParaMsjConfirm:casosParaMsjConfirm,
+                casosParaMsjConfirmContrato:casosParaMsjConfirmContrato,
                 roundNumber:roundNumber,
                 msj_cargando:msj_cargando,
                 msj_confirm:msj_confirm,

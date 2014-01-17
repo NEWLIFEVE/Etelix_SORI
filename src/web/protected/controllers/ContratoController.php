@@ -79,6 +79,14 @@ class ContratoController extends Controller
 	}
        public function actionContratoConfirma()
        {    
+//           divide_fact 
+//           fact_period 
+//           dia_ini_fact 
+//           divide_fact_Oculto 
+//           fact_period_Oculto 
+//           dia_ini_fact_Oculto       asi salen desde ajax!!!!!!!!!!!!!!!
+           
+           
                     $company=$_GET['id_company'];
                     $carrier=$_GET['id_carrier'];
                     $termino_pago=$_GET['id_termino_pago'];
@@ -94,6 +102,7 @@ class ContratoController extends Controller
                     $monetizableName='';
                     $termino_pName='';
                     $termino_pNameO='';
+                    $TP_supp_NameO='';
                     $monetizableNameO='';
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier); 
@@ -103,13 +112,13 @@ class ContratoController extends Controller
                     if ($termino_pagoO=='' || $monetizableO=='' || $TP_supplier_O=='')
                     {
                        $termino_pNameO.=false; 
-                       $TP_supp_NameO=false; 
+                       $TP_supp_NameO.=false; 
                        $monetizableNameO.=false;
                     }
                     else
                         {
                         $termino_pNameO.= TerminoPago::getName($termino_pagoO);
-                        $TP_supp_NameO= TerminoPago::getName($TP_supplier_O);
+                        $TP_supp_NameO.= TerminoPago::getName($TP_supplier_O);
                         $monetizableNameO.= Monetizable::getName($monetizableO);
                         }
                     if ($Contrato_up==0) {
@@ -137,6 +146,10 @@ class ContratoController extends Controller
         
 	public function actionContrato()
 	{
+//           divide_fact 
+//           fact_period 
+//           dia_ini_fact      asi salen desde ajax  !!!!!!!!!!!!
+            
 		$model=new Contrato;
 
 		// Uncomment the following line if AJAX validation is needed
