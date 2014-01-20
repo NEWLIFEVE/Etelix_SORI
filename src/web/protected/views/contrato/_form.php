@@ -106,21 +106,23 @@
                      ); ?> 
                      <?php echo $form->error($model,'id_termino_pago_supplier'); ?>
                 </div>
+                <div class="contratoForm periodo_fact">
+                    <label>Tipo de Ciclo de Fact</label>
+                     <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
+                     array('prompt'=>'Seleccione')
+                     ); ?> 
+                     <?php echo $form->error($model,'id_fact_period'); ?>
+                </div>
+                
                 <div class="contratoForm divide_fact">
-                    <label>Divide Fact</label>
+                    <label>Divide Fact por Mes</label>
                     <select name="divide_fact" id="divide_fact">
                         <option value=""> Seleccione </option>
                         <option value="1"> Si </option>
                         <option value="0"> No </option>
                     </select>
                 </div>
-                <div class="contratoForm periodo_fact">
-                    <label>Periódo</label>
-                     <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
-                     array('prompt'=>'Seleccione')
-                     ); ?> 
-                     <?php echo $form->error($model,'id_fact_period'); ?>
-                </div>
+                
                 <div class="contratoForm dia_ini_fact">
                     <label>Dia</label>
                     <select name="dia_ini_fact" id="dia_ini_fact">

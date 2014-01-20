@@ -779,7 +779,7 @@ function roundNumber(number,decimals) {
 		            managerA.slideDown('slow');
 		            $('.CarrierActual').append(carrierA);
 		            carrierA.slideDown('slow');
-//                            if(obj.termino_pago_supplier)
+                            $SORI.UI.resuelveInputContrato(obj.termino_pago_supplier,"2");
 		        }
 		    });
 		    muestraDiv2.slideDown("slow");
@@ -791,6 +791,36 @@ function roundNumber(number,decimals) {
 		    end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
 		});
 	}
+        /**
+         * 
+         * @param {type} tp
+         * @param {type} fact_period
+         * @returns {undefined}
+         */
+        function resuelveInputContrato(tp,fact_period)
+        {     
+            var periodo_semanal= $("#Contrato_id_fact_period option[value='1'],#Contrato_id_fact_period option[value='2']"), periodo_quincenal = $("#Contrato_id_fact_period option[value='3'],#Contrato_id_fact_period option[value='4']");
+              if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
+              {
+                  $(".periodo_fact").css("display","inline-block").hide().show("slow");
+                    if(tp=="1"||tp=="3"||tp=="4"||tp=="5") 
+                    { 
+                        periodo_semanal.show("fast"); periodo_quincenal.hide("fast");
+                        if(fact_period=="1") { 
+                            $(".divide_fact,.dia_ini_fact").hide("slow");$("#dia_ini_fact,#divide_fact").val("");
+                        }else if(fact_period=="2") {
+                            $(".dia_ini_fact,.divide_fact").css("display","inline-block").hide().show("slow");
+                        }else {
+                            $(".dia_ini_fact,.divide_fact").hide("slow");
+                        }
+                    }else{  
+                          periodo_semanal.hide("fast");  periodo_quincenal.show("fast");
+                          $(".dia_ini_fact,.divide_fact").hide("slow");
+                    }
+              }else{
+                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+              } 
+        }
         /**
          * 
          * @param {type} obj
@@ -1039,19 +1069,36 @@ function roundNumber(number,decimals) {
                 break 
             //esta parte aplica solo para contrato
             case 'tp_supplier':
-                 var tp=$("#Contrato_id_termino_pago_supplier").val();
-                    if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12"){
-                        if(tp=="1"||tp=="3"||tp=="4"||tp=="5") var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period,#dia_ini_fact').serializeArray());
-                          else                                 var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period').serializeArray());
-                    }else{
-                        var respuesta=1; 
-                    }
+                var respuesta=SORI.UI.validaContratoTpSemanal($("#Contrato_id_termino_pago_supplier").val());
                 break
             case 'general':
-                    var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up').serializeArray());
                 break
            }
            return respuesta;
+        }
+        /**
+         * 
+         * @param {type} tp
+         * @returns {Number}
+         */
+        function validaContratoTpSemanal(tp)
+        {
+            if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
+            {
+                if(tp=="1"||tp=="3"||tp=="4"||tp=="5") {
+                    if($("#Contrato_id_fact_period").val()=="1"){
+                            var respuesta=$SORI.UI.validaCampos($('#Contrato_id_fact_period').serializeArray());
+                        }else{
+                            var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period,#dia_ini_fact').serializeArray());
+                        }
+                }else{                              
+                    var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period').serializeArray());
+                }
+            }else{
+                var respuesta=1; 
+            }
+            return respuesta;
         }
          /**
 	 * Valida los input y select del formulario- 1
@@ -1220,7 +1267,9 @@ function roundNumber(number,decimals) {
                 msj_cargando:msj_cargando,
                 msj_confirm:msj_confirm,
                 msj_change:msj_change,
-                resultadoContrato:resultadoContrato
+                resultadoContrato:resultadoContrato,
+                resuelveInputContrato:resuelveInputContrato,
+                validaContratoTpSemanal:validaContratoTpSemanal
 	};
 })();
 

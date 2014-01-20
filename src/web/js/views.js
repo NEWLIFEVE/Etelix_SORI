@@ -205,31 +205,11 @@ $("#CarrierManagers_id_managers").change(function()
 //INICIO DE CONTRATO//////////////
 $SORI.UI.formChange('Contrato_id_carrier');
 //esto tengo que modularlo....
-$("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier").change(function()
+$("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
-    var inputs=$(".divide_fact,.periodo_fact"),
-    fac_period="Contrato_id_fact_period";
-      if($(this).attr('id')=="Contrato_id_termino_pago") {$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
-      
-    var tp=$("#Contrato_id_termino_pago_supplier").val();
+    if($(this).attr('id')=="Contrato_id_termino_pago") {$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
     
-      if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
-      {
-          inputs.css("display","inline-block").hide().show("slow");
-          
-            if(tp=="1"||tp=="3"||tp=="4"||tp=="5") 
-            {
-                $(".dia_ini_fact").css("display","inline-block").hide().show("slow");
-                $("#"+fac_period+" option[value='3'],#"+fac_period+" option[value='4']").hide("fast");
-                $("#"+fac_period+" option[value='1'],#"+fac_period+" option[value='2']").show("fast");
-            }else{
-                  $(".dia_ini_fact").hide().hide("slow");
-                  $("#"+fac_period+" option[value='3'],#"+fac_period+" option[value='4']").show("fast");
-                  $("#"+fac_period+" option[value='1'],#"+fac_period+" option[value='2']").hide("fast");
-            }
-      }else{
-            $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); inputs.hide("slow");$(".dia_ini_fact").hide("slow");
-      }
+    $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val(),$("#Contrato_id_fact_period").val()); 
 });
 //calma calma calma .)
 
