@@ -323,7 +323,7 @@ $('#botAsignarContrato').click('on',function(e)
                                 var backStatus="Status del Carrier: "+Contrato_statusOculto+" a ";}
                               else backStatus="Status del Carrier: ";}
                     var cambio_bank_fee="";
-                    if(bank_fee=="1" && bank_feeOculto =="0") {cambio_bank_fee="<span class='bank_feeName'>Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</span>";$SORI.UI.changeCss($('.mensaje'),'top','6%!important');}
+                    if(bank_fee=="1" && bank_feeOculto =="0") {cambio_bank_fee="<span class='bank_feeName'>Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</span>";}
                           
                   if(end_date!="") var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
                      else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4><div class='scroll_msj'><h6><p>\n\
@@ -344,7 +344,7 @@ $('#botAsignarContrato').click('on',function(e)
                                         "+$SORI.UI.resultadoContrato(bank_feeNameO,bank_feeName,"Se Asume Bank Fee de: "+bank_feeNameO+" a ","Se Asume Bank Fee: ")+" <span class='bank_feeName'>"+bank_feeName+"</span><p></h6></div>"+cambio_bank_fee+"<p>";
                     
                     $SORI.UI.msj_confirm(advertencia);
-                    $SORI.UI.casosParaMsjConfirmContrato(bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas 
+                    $SORI.UI.casosParaMsjConfirmContrato(cambio_bank_fee,bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas 
                 }
                 $('#confirma,#cancelar').on('click',function()
                 {

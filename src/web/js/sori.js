@@ -1015,7 +1015,7 @@ function roundNumber(number,decimals) {
         * @param {type} Contrato_status
         * @returns {undefined} * 
         */
-        function casosParaMsjConfirmContrato(bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
+        function casosParaMsjConfirmContrato(cambio_bank_fee,bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
            if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
            if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_pago_supplier'),'color','red');
@@ -1032,6 +1032,7 @@ function roundNumber(number,decimals) {
            if(Contrato_upOculto != Contrato_up)                $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
            if(Contrato_statusOculto != Contrato_status)        $SORI.UI.changeCss($('.status'),'color','red');
            if(bank_feeNameO != bank_feeName)                   $SORI.UI.changeCss($('.bank_feeName'),'color','red');
+           if(cambio_bank_fee!="")                             $SORI.UI.changeCss($('.mensaje'),'top','6%!important');
         }
         /**
          * 
