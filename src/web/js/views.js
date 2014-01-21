@@ -204,14 +204,12 @@ $("#CarrierManagers_id_managers").change(function()
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
 $SORI.UI.formChange('Contrato_id_carrier');
-//esto tengo que modularlo....
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
     if($(this).attr('id')=="Contrato_id_termino_pago") {$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
-    
     $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val(),$("#Contrato_id_fact_period").val()); 
 });
-//calma calma calma .)
+
 
 $('#botAsignarContrato').click('on',function(e)
 {

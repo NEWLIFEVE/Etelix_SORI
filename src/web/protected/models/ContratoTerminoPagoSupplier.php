@@ -79,7 +79,7 @@ class ContratoTerminoPagoSupplier extends CActiveRecord
 			'start_date' => 'Start Date',
 			'end_date' => 'End Date',
 			'id_contrato' => 'Id Contrato',
-			'id_termino_pago_supplier' => 'Id Termino Pago Supplier',
+			'id_termino_pago_supplier' => 'Termino Pago Proveedor',
 			'month_break' => 'Month Break',
 			'first_day' => 'First Day',
 			'id_fact_period' => 'Id Fact Period',

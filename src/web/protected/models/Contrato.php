@@ -87,7 +87,7 @@ class Contrato extends CActiveRecord
 			'id_carrier' => 'Carriers',
 			'id_company' => 'Compania',
 			'id_termino_pago' => 'Termino Pago cliente',
-			'idTerminoPagoSupplier' => 'Termino Pago proveedor',
+			'id_termino_pago_supplier' => 'Termino Pago proveedor',
 			'id_monetizable' => 'Monetizable',
 			'id_limite_credito' => 'Limite de Credito',
 			'id_limite_compra' => 'Limite de Compra',
