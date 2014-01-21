@@ -715,13 +715,13 @@ function roundNumber(number,decimals) {
 	{
 		$('#'+id).change(function()
 		{
-                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
-			var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
-				muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
-				idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
-		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status").val('');
+                    var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
+                            muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
+                            idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
+		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
 		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#Contrato_id_monetizable,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
 		    $(".manageractual,.CarrierActual").empty();
+                    $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
 		    $.ajax({
 		        type: "GET",
 		        url: "DynamicDatosContrato",
@@ -758,9 +758,11 @@ function roundNumber(number,decimals) {
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
 		            $("#Contrato_id_disputa_solved").val(obj.dias_disputa_solved);
 		            $("#Contrato_up").val(obj.Contrato_up);
+		            $("#Contrato_bank_fee").val(obj.bank_fee);
 		            $("#Contrato_status").val(obj.Contrato_status);
 		            $("#Contrato_statusOculto").val(obj.Contrato_status);
 		            $("#Contrato_upOculto").val(obj.Contrato_up);
+		            $("#bank_feeOculto").val(obj.bank_fee);
 		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
 		            $("#F_P_produccion_Oculto").val(obj.production_date);
 		            $("#TerminoP_Oculto").val(obj.termino_pago);
@@ -1013,7 +1015,7 @@ function roundNumber(number,decimals) {
         * @param {type} Contrato_status
         * @returns {undefined} * 
         */
-        function casosParaMsjConfirmContrato(fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
+        function casosParaMsjConfirmContrato(bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
            if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
            if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_pago_supplier'),'color','red');
@@ -1029,6 +1031,7 @@ function roundNumber(number,decimals) {
            if(compraO != compra)                               $SORI.UI.changeCss($('.compra'),'color','red');
            if(Contrato_upOculto != Contrato_up)                $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
            if(Contrato_statusOculto != Contrato_status)        $SORI.UI.changeCss($('.status'),'color','red');
+           if(bank_feeNameO != bank_feeName)                   $SORI.UI.changeCss($('.bank_feeName'),'color','red');
         }
         /**
          * 
@@ -1088,7 +1091,7 @@ function roundNumber(number,decimals) {
                 var respuesta=$SORI.UI.validaContratoTpSemanal($("#Contrato_id_termino_pago_supplier").val());
                 break
             case 'general':
-                var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up,#Contrato_bank_fee').serializeArray());
                 break
            }
            return respuesta;

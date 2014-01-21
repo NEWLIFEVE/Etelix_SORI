@@ -11,6 +11,7 @@
  * @property integer $id_carrier
  * @property integer $id_company
  * @property integer $up
+ * @property integer $bank_fee
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
@@ -53,7 +54,7 @@ class Contrato extends CActiveRecord
 			array('production_date, end_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, sign_date, production_date, end_date, id_carrier, id_company, up', 'safe', 'on'=>'search'),
+			array('id, sign_date, production_date, end_date, id_carrier, id_company, up, bank_fee', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -96,6 +97,7 @@ class Contrato extends CActiveRecord
                         'id_disputa_solved' => 'Dias para solventar disputas',
                         'up' => 'Unidad de Produccion',
                         'id_fact_period' => 'Periódo de Facturación',
+                        'bank_fee' => 'Se Asume Bank Fee',
 		);
 	}
 
@@ -124,6 +126,7 @@ class Contrato extends CActiveRecord
 		$criteria->compare('id_carrier',$this->id_carrier);
 		$criteria->compare('id_company',$this->id_company);
 		$criteria->compare('up',$this->up);
+		$criteria->compare('bank_fee',$this->bank_fee);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -157,5 +160,8 @@ class Contrato extends CActiveRecord
         }   
         public static function getUP($id){           
             return self::model()->find("id_carrier=:id_carrier", array(':id_carrier'=>$id))->up;
+        }
+        public static function getBankFee($id){           
+            return self::model()->find("id_carrier=:id_carrier AND end_date IS NULL", array(':id_carrier'=>$id))->bank_fee;
         }
 }

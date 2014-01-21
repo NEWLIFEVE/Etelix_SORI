@@ -87,6 +87,7 @@ class ContratoController extends Controller
             $params['divide_fact_Name']=self::filtraVariablesNull($_GET['divide_fact'],"Si","No");
             $params['fact_period_Name']=self::defineOcultosyNull("periodo",$_GET['fact_period']);
             $params['dia_ini_fact_Name']=self::defineOcultosyNull("dia",$_GET['dia_ini_fact']); 
+            $params['bank_feeName']=self::filtraVariablesNull($_GET['bank_fee'],"Si","No"); 
             $params['Contrato_upConfirma']=self::filtraVariablesNull($_GET['Contrato_up'],"Presidencia","Ventas"); 
             $params['Contrato_statusConfirma']=self::filtraVariablesNull($_GET['Contrato_status'],"Activo","Inactivo");    
             $params['termino_pNameO']=self::defineOcultosyNull("tp",$_GET['id_TP_Oculto']); 
@@ -95,6 +96,7 @@ class ContratoController extends Controller
             $params['divide_fact_NameO']=self::filtraVariablesNull($_GET['divide_fact_Oculto'],"Si","No");
             $params['fact_period_NameO']=self::defineOcultosyNull("periodoO",$_GET['fact_period_Oculto']);
             $params['dia_ini_fact_NameO']=self::defineOcultosyNull("diaO",$_GET['dia_ini_fact_Oculto']); 
+            $params['bank_feeNameO']=self::filtraVariablesNull($_GET['bank_feeOculto'],"Si","No");
             echo json_encode($params);
     }
     
@@ -196,6 +198,7 @@ class ContratoController extends Controller
                     $compra=$_GET['compra'];
                     $Contrato_up=$_GET['Contrato_up'];
                     $Contrato_status=$_GET['Contrato_status'];
+                    $bank_fee=$_GET['bank_fee'];
                     $termino_pName='';
                     $termino_p_supp_Name='';
                     $monetizaName='';
@@ -205,10 +208,6 @@ class ContratoController extends Controller
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
                     
-                    $divide_factName=self::filtraVariablesNull($_GET['divide_fact'],"Si","No");
-                    $fact_periodName=self::defineOcultosyNull("periodo",$_GET['fact_period']);
-                    $dia_ini_factName=self::defineOcultosyNull("dia",$_GET['dia_ini_fact']); 
-
                     if($sign_date!='' || $sign_date!=NULL){
                         $sign_date=$sign_date;
                     }else{
@@ -235,6 +234,10 @@ class ContratoController extends Controller
                                 $modelAux->up=$Contrato_up;
                                 Log::registrarLog(LogAction::getId('Modificar UP'),NULL, $modelAux->id);
                                 }
+                                if ($bank_fee != $modelAux->bank_fee){
+                                $modelAux->bank_fee=$bank_fee;
+                                }
+                                
                                 if ($end_date!='' || $end_date!=NULL){
                                     $modelAux->end_date=$end_date;
                                 }else{
@@ -248,6 +251,17 @@ class ContratoController extends Controller
                                             if($modelCarrier->save())Log::registrarLog(LogAction::getId('Modificar Status Carrier'),NULL,$carrier);
                                         }
                                     }
+                                }
+                                $modelGroup= Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
+                                 if($modelGroup!=NULL){
+                                     foreach ($modelGroup as $key => $group) 
+                                     {
+                                        $modelContBankFee= Contrato::model()->find('id_carrier=:carrier AND end_date IS NULL',array(':carrier'=>$group->id));
+                                        if ($bank_fee != $modelContBankFee->bank_fee){
+                                            $modelContBankFee->bank_fee=$bank_fee;  
+                                            $modelContBankFee->save();     
+                                        }  
+                                     }
                                 }
                                 /*TERMINO PAGO CLIENTE*/
                                                 
@@ -423,6 +437,16 @@ class ContratoController extends Controller
                                 $model->production_date=$production_date;
                                 $model->end_date=NULL;
                                 $model->up=$Contrato_up;
+                                $model->bank_fee=$bank_fee;
+                                $modelGroup=  Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
+                                 if($modelGroup!=NULL){
+                                     foreach ($modelGroup as $key => $group) 
+                                     {
+                                        $modelContBankFee= Contrato::model()->find('id_carrier=:carrier and end_date IS NULL',array(':carrier'=>$group->id));
+                                        $modelContBankFee->bank_fee=$bank_fee; 
+                                        $modelContBankFee->save();
+                                     }
+                                }
                                 if($model->save()){ 
                                 Log::registrarLog(LogAction::getId('Crear Contrato'),NULL, $model->id);
                                 /*TERMINO PAGO CLIENTES*/
@@ -489,8 +513,9 @@ class ContratoController extends Controller
                                 }   
                             }
                         }                   
-//		}
-             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up.'|'.$divide_factName.'|'.$fact_periodName.'|'.$dia_ini_factName;
+		var_dump ("guardo ;)");
+                                             
+//             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up.'|'.$divide_factName.'|'.$fact_periodName.'|'.$dia_ini_factName;
 
 	}
 
@@ -601,6 +626,7 @@ class ContratoController extends Controller
                 $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);
+                $params['bank_fee']=Contrato::getBankFee($_GET['idCarrier']);
 //                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
                 $params['Contrato_status']=Carrier::getStatus($_GET['idCarrier']);
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
@@ -624,6 +650,8 @@ class ContratoController extends Controller
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['Contrato_up']='Seleccione';
+                $params['bank_fee']='Seleccione';
+                $params['Contrato_status']='Seleccione';
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';

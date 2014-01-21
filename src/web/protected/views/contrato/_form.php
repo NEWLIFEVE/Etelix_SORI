@@ -98,7 +98,7 @@
                      ); ?> 
                      <?php echo $form->error($model,'id_termino_pago'); ?>
                 </div>
-                <!--************///////////HAY QUE CONFIGURARLOS////////////***********-->
+                
                 <div class="contratoForm">
                     <?php echo $form->labelEx($model,'id_termino_pago_supplier'); ?>
                      <?php echo $form->dropDownList($model,'id_termino_pago_supplier',TerminoPago::getListTermPago(),
@@ -106,6 +106,7 @@
                      ); ?> 
                      <?php echo $form->error($model,'id_termino_pago_supplier'); ?>
                 </div>
+                
                 <div class="contratoForm periodo_fact">
                     <label>Tipo de Ciclo de Fact</label>
                      <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
@@ -137,7 +138,6 @@
                     </select>
                 </div>
                 
-                <!--************//////////////////////////////////////////////***********-->
                 <div class="contratoForm">
                      <?php echo $form->labelEx($model,'id_monetizable'); ?>
                      <?php echo $form->dropDownList($model,'id_monetizable',Monetizable::getListMonetizable(),
@@ -151,6 +151,7 @@
                      <?php echo $form->textField($model, 'id_disputa'); ?>
                      <?php echo $form->error($model, 'id_disputa'); ?>
                 </div>
+                
                 <div class="contratoForm">
                      <?php echo $form->labelEx($model, 'id_disputa_solved'); ?>
                      <?php echo $form->textField($model, 'id_disputa_solved'); ?>
@@ -168,30 +169,39 @@
                      <?php echo $form->textField($model, 'id_limite_compra'); ?> 
                      <?php echo $form->error($model, 'id_limite_compra'); ?>
                 </div>
+                
                 <div class="contratoForm">
                     <?php echo $form->labelEx($model, 'up'); ?>
                     <?php echo $form->dropDownList($model, 'up',array( 0=>"Ventas", 1=>"Presidencia"),array('prompt'=>'Seleccione')); ?> 
                     <?php echo $form->error($model, 'up'); ?>
                 </div>
+                
                 <div class="contratoForm">
                     <?php echo $form->labelEx($model, 'status'); ?>
                     <?php echo $form->dropDownList($model, 'status',array( 0=>"Inactivo", 1=>"Activo"),array('prompt'=>'Seleccione')); ?> 
                     <?php echo $form->error($model, 'status'); ?>
                 </div>
-                     <input type="hidden" id="dias_disputa_Oculto"  value="">
-                     <input type="hidden" id="dias_disputa_solved_Oculto"  value="">
-                     <input type="hidden" id="credito_Oculto"  value="">
-                     <input type="hidden" id="compra_Oculto"  value="">
-                     <input type="hidden" id="monetizable_Oculto"  value="">
-                     <input type="hidden" id="TerminoP_Oculto"  value="">
-                     <input type="hidden" id="TerminoP_supplier_Oculto"  value="">
-                     <input type="hidden" id="divide_fact_Oculto"  value="">
-                     <input type="hidden" id="Contrato_id_fact_period_Oculto"  value="">
-                     <input type="hidden" id="dia_ini_fact_Oculto"  value="">
-                     <input type="hidden" id="F_Firma_Contrato_Oculto"  value="">
-                     <input type="hidden" id="F_P_produccion_Oculto"  value="">
-                     <input type="hidden" id="Contrato_upOculto"  value="">
-                     <input type="hidden" id="Contrato_statusOculto"  value="">
+                
+                <div class="contratoForm Bank Fee">
+                    <?php echo $form->labelEx($model, 'bank_fee'); ?>
+                    <?php echo $form->dropDownList($model, 'bank_fee',array( 0=>"No", 1=>"Si"),array('prompt'=>'Seleccione')); ?> 
+                    <?php echo $form->error($model, 'bank_fee'); ?>
+                </div>
+                     <input type="hidden" name="dias_disputa_Oculto"     id="dias_disputa_Oculto"  value="">
+                     <input type="hidden" name="dias_disputa_solved_Oculto"id="dias_disputa_solved_Oculto"  value="">
+                     <input type="hidden" name="credito_Oculto"          id=" credito_Oculto"  value="">
+                     <input type="hidden" name="compra_Oculto"           id="compra_Oculto"  value="">
+                     <input type="hidden" name="monetizable_Oculto"      id="monetizable_Oculto"  value="">
+                     <input type="hidden" name="TerminoP_Oculto"         id="TerminoP_Oculto"  value="">
+                     <input type="hidden" name="TerminoP_supplier_Oculto"id="TerminoP_supplier_Oculto"  value="">
+                     <input type="hidden" name="divide_fact_Oculto"      id="divide_fact_Oculto"  value="">
+                     <input type="hidden" name="Contrato_id_fact_period_Oculto"id="Contrato_id_fact_period_Oculto"  value="">
+                     <input type="hidden" name="dia_ini_fact_Oculto"     id="dia_ini_fact_Oculto"  value="">
+                     <input type="hidden" name="F_Firma_Contrato_Oculto" id="F_Firma_Contrato_Oculto"  value="">
+                     <input type="hidden" name="F_P_produccion_Oculto"   id="F_P_produccion_Oculto"  value="">
+                     <input type="hidden" name="Contrato_upOculto"       id="Contrato_upOculto"  value="">
+                     <input type="hidden" name="Contrato_statusOculto"   id="Contrato_statusOculto"  value="">
+                     <input type="hidden" name="bank_feeOculto"          id="bank_feeOculto"  value="">
             </div>
 
             <br>
