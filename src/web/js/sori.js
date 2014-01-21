@@ -750,6 +750,9 @@ function roundNumber(number,decimals) {
 		            $("#Contrato_production_date").val(obj.production_date);
 		            $("#Contrato_id_termino_pago").val(obj.termino_pago);
 		            $("#Contrato_id_termino_pago_supplier").val(obj.termino_pago_supplier);
+		            $("#Contrato_id_fact_period").val(obj.fact_period);
+		            $("#dia_ini_fact").val(obj.dia_ini_fact);
+		            $("#divide_fact").val(obj.divide_fact);
 		            $("#Contrato_id_monetizable").val(obj.monetizable);
 		            $("#Contrato_id_managers").val(obj.manager);
 		            $("#Contrato_id_disputa").val(obj.dias_disputa);
@@ -762,6 +765,9 @@ function roundNumber(number,decimals) {
 		            $("#F_P_produccion_Oculto").val(obj.production_date);
 		            $("#TerminoP_Oculto").val(obj.termino_pago);
 		            $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
+		            $("#Contrato_id_fact_period_Oculto").val(obj.fact_period);
+		            $("#dia_ini_fact_Oculto").val(obj.dia_ini_fact);
+		            $("#divide_fact_Oculto").val(obj.divide_fact);
 		            $("#monetizable_Oculto").val(obj.monetizable);
 		            $("#dias_disputa_Oculto").val(obj.dias_disputa);
 		            $("#dias_disputa_solved_Oculto").val(obj.dias_disputa_solved);
@@ -769,7 +775,6 @@ function roundNumber(number,decimals) {
 		            $("#credito_Oculto").val(obj.credito);
 		            $("#Contrato_id_limite_compra").val(obj.compra);
 		            $("#compra_Oculto").val(obj.compra);
-
 		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
 		            	fechaManagerCarrier=(obj.fechaManager),
 
@@ -812,10 +817,12 @@ function roundNumber(number,decimals) {
                             $(".dia_ini_fact,.divide_fact").css("display","inline-block").hide().show("slow");
                         }else {
                             $(".dia_ini_fact,.divide_fact").hide("slow");
+                            $("#dia_ini_fact,#divide_fact").val("");
                         }
                     }else{  
                           periodo_semanal.hide("fast");  periodo_quincenal.show("fast");
                           $(".dia_ini_fact,.divide_fact").hide("slow");
+                          $("#dia_ini_fact,#divide_fact").val("");
                     }
               }else{
                     $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
@@ -975,40 +982,49 @@ function roundNumber(number,decimals) {
             $(clase).css(attr,value);
         }
         /**
-         * esta funcion obligatoriamente se debe modular, pero por los momentos... :[
-         * @param {type} TP_supplier_Oculto
-         * @param {type} termino_pago_supplier
-         * @param {type} diasDisputaOculto
-         * @param {type} dias_disputa
-         * @param {type} diasDisputaSolvedOculto
-         * @param {type} dias_disputa_solved
-         * @param {type} F_Firma_Contrato_Oculto
-         * @param {type} sign_date
-         * @param {type} F_P_produccion_Oculto
-         * @param {type} production_date
-         * @param {type} TPOculto
-         * @param {type} termino_pago
-         * @param {type} monetizableOculto
-         * @param {type} monetizable
-         * @param {type} creditoO
-         * @param {type} credito
-         * @param {type} compraO
-         * @param {type} compra
-         * @param {type} Contrato_upOculto
-         * @param {type} Contrato_up
-         * @param {type} Contrato_statusOculto
-         * @param {type} Contrato_status
-         * @returns {undefined}
-         */
-        function casosParaMsjConfirmContrato(TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
+        * esta funcion obligatoriamente se debe modular, pero por los momentos... :[
+        * @param {type} fact_period_NameO
+        * @param {type} fact_period_Name
+        * @param {type} dia_ini_fact_NameO
+        * @param {type} dia_ini_fact_Name
+        * @param {type} divide_fact_NameO
+        * @param {type} divide_fact_Name
+        * @param {type} TP_supplier_Oculto
+        * @param {type} termino_pago_supplier
+        * @param {type} diasDisputaOculto
+        * @param {type} dias_disputa
+        * @param {type} diasDisputaSolvedOculto
+        * @param {type} dias_disputa_solved
+        * @param {type} F_Firma_Contrato_Oculto
+        * @param {type} sign_date
+        * @param {type} F_P_produccion_Oculto
+        * @param {type} production_date
+        * @param {type} TPOculto
+        * @param {type} termino_pago
+        * @param {type} monetizableOculto
+        * @param {type} monetizable
+        * @param {type} creditoO
+        * @param {type} credito
+        * @param {type} compraO
+        * @param {type} compra
+        * @param {type} Contrato_upOculto
+        * @param {type} Contrato_up
+        * @param {type} Contrato_statusOculto
+        * @param {type} Contrato_status
+        * @returns {undefined} * 
+        */
+        function casosParaMsjConfirmContrato(fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
+           if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
            if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_pago_supplier'),'color','red');
+           if(fact_period_NameO != fact_period_Name )          $SORI.UI.changeCss($('.fact_period_Name'),'color','red');
+           if(dia_ini_fact_NameO != dia_ini_fact_Name )        $SORI.UI.changeCss($('.dia_ini_fact_Name'),'color','red');
+           if(divide_fact_NameO != divide_fact_Name )          $SORI.UI.changeCss($('.divide_fact_Name'),'color','red');
+           if(monetizableOculto != monetizable)                $SORI.UI.changeCss($('.monetizableName'),'color','red');
            if(diasDisputaOculto != dias_disputa )              $SORI.UI.changeCss($('.dias_disputa'),'color','red');
            if(diasDisputaSolvedOculto != dias_disputa_solved ) $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
            if(F_Firma_Contrato_Oculto != sign_date)            $SORI.UI.changeCss($('.sign_date'),'color','red');
            if(F_P_produccion_Oculto != production_date)        $SORI.UI.changeCss($('.production_date'),'color','red'); 
-           if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
-           if(monetizableOculto != monetizable)                $SORI.UI.changeCss($('.monetizableName'),'color','red');
            if(creditoO != credito)                             $SORI.UI.changeCss($('.credito'),'color','red');
            if(compraO != compra)                               $SORI.UI.changeCss($('.compra'),'color','red');
            if(Contrato_upOculto != Contrato_up)                $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
@@ -1069,7 +1085,7 @@ function roundNumber(number,decimals) {
                 break 
             //esta parte aplica solo para contrato
             case 'tp_supplier':
-                var respuesta=SORI.UI.validaContratoTpSemanal($("#Contrato_id_termino_pago_supplier").val());
+                var respuesta=$SORI.UI.validaContratoTpSemanal($("#Contrato_id_termino_pago_supplier").val());
                 break
             case 'general':
                 var respuesta=$SORI.UI.validaCampos($('#Contrato_id_monetizable,#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_company,#Contrato_id_limite_credito,#Contrato_id_limite_compra,#Contrato_up').serializeArray());
@@ -1093,7 +1109,7 @@ function roundNumber(number,decimals) {
                             var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period,#dia_ini_fact').serializeArray());
                         }
                 }else{                              
-                    var respuesta=$SORI.UI.validaCampos($('#divide_fact,#Contrato_id_fact_period').serializeArray());
+                    var respuesta=$SORI.UI.validaCampos($('#Contrato_id_fact_period').serializeArray());
                 }
             }else{
                 var respuesta=1; 
@@ -1243,6 +1259,11 @@ function roundNumber(number,decimals) {
                 return else_result; 
             }
         }
+        function defineNull(variable, resultado)
+        {
+            if(variable=="" || variable==null) return resultado;
+              else return variable;
+        }
 	/**
 	 * Retorna los mestodos publicos
 	 */
@@ -1269,7 +1290,8 @@ function roundNumber(number,decimals) {
                 msj_change:msj_change,
                 resultadoContrato:resultadoContrato,
                 resuelveInputContrato:resuelveInputContrato,
-                validaContratoTpSemanal:validaContratoTpSemanal
+                validaContratoTpSemanal:validaContratoTpSemanal,
+                defineNull:defineNull
 	};
 })();
 

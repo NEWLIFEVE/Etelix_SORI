@@ -79,77 +79,98 @@ class ContratoController extends Controller
 	}
        public function actionContratoConfirma()
        {    
-//           divide_fact 
-//           fact_period 
-//           dia_ini_fact 
-//           divide_fact_Oculto 
-//           fact_period_Oculto 
-//           dia_ini_fact_Oculto       asi salen desde ajax!!!!!!!!!!!!!!!
-           
-           
-                    $company=$_GET['id_company'];
-                    $carrier=$_GET['id_carrier'];
-                    $termino_pago=$_GET['id_termino_pago'];
-                    $termino_pago_supplier=$_GET['termino_pago_supplier'];
-                    $monetizable=$_GET['id_monetizable'];
-                    $Contrato_up=$_GET['Contrato_up'];
-                    $Contrato_status=$_GET['Contrato_status'];
-                    $termino_pagoO=$_GET['id_TP_Oculto'];
-                    $TP_supplier_O=$_GET['TP_supplier_Oculto'];
-                    $monetizableO=$_GET['id_M_Oculto'];
-                    $companyName='';
-                    $carrierName='';
-                    $monetizableName='';
-                    $termino_pName='';
-                    $termino_pNameO='';
-                    $TP_supp_NameO='';
-                    $monetizableNameO='';
-                    $companyName.=Company::getName($company);
-                    $carrierName.=Carrier::getName($carrier); 
-                    $termino_pName.= TerminoPago::getName($termino_pago);
-                    $termino_p_supp_Name= TerminoPago::getName($termino_pago_supplier);
-                    $monetizableName.= Monetizable::getName($monetizable);
-                    if ($termino_pagoO=='' || $monetizableO=='' || $TP_supplier_O=='')
-                    {
-                       $termino_pNameO.=false; 
-                       $TP_supp_NameO.=false; 
-                       $monetizableNameO.=false;
-                    }
-                    else
-                        {
-                        $termino_pNameO.= TerminoPago::getName($termino_pagoO);
-                        $TP_supp_NameO.= TerminoPago::getName($TP_supplier_O);
-                        $monetizableNameO.= Monetizable::getName($monetizableO);
-                        }
-                    if ($Contrato_up==0) {
-                        $Contrato_up="Ventas";
-                    }else if($Contrato_up==1){
-                        $Contrato_up="Presidencia";
-                    }
-                    if ($Contrato_status==0) {
-                        $Contrato_status="Inactivo";
-                    }else if($Contrato_status==1){
-                        $Contrato_status="Activo";
-                    }
-                    $params['carrierName']=$carrierName;    
-                    $params['companyName']=$companyName;    
-                    $params['termino_pName']=$termino_pName;    
-                    $params['termino_p_supp_Name']=$termino_p_supp_Name;    
-                    $params['monetizableName']=$monetizableName;    
-                    $params['Contrato_upConfirma']=$Contrato_up;    
-                    $params['Contrato_statusConfirma']=$Contrato_status;    
-                    $params['monetizableNameO']=$monetizableNameO;    
-                    $params['termino_pNameO']=$termino_pNameO;    
-                    $params['termino_p_supp_NameO']=$TP_supp_NameO;    
-                    echo json_encode($params);
+            $params['carrierName']=Carrier::getName($_GET['id_carrier']);  
+            $params['companyName']=Company::getName($_GET['id_company']);    
+            $params['termino_pName']=TerminoPago::getName($_GET['id_termino_pago']);  
+            $params['termino_p_supp_Name']=TerminoPago::getName($_GET['termino_pago_supplier']);    
+            $params['monetizableName']=Monetizable::getName($_GET['id_monetizable']);  
+            $params['divide_fact_Name']=self::filtraVariablesNull($_GET['divide_fact'],"Si","No");
+            $params['fact_period_Name']=self::defineOcultosyNull("periodo",$_GET['fact_period']);
+            $params['dia_ini_fact_Name']=self::defineOcultosyNull("dia",$_GET['dia_ini_fact']); 
+            $params['Contrato_upConfirma']=self::filtraVariablesNull($_GET['Contrato_up'],"Presidencia","Ventas"); 
+            $params['Contrato_statusConfirma']=self::filtraVariablesNull($_GET['Contrato_status'],"Activo","Inactivo");    
+            $params['termino_pNameO']=self::defineOcultosyNull("tp",$_GET['id_TP_Oculto']); 
+            $params['termino_p_supp_NameO']=self::defineOcultosyNull("tpO",$_GET['TP_supplier_Oculto']);  
+            $params['monetizableNameO']=self::defineOcultosyNull("monetizableO",$_GET['id_M_Oculto']);
+            $params['divide_fact_NameO']=self::filtraVariablesNull($_GET['divide_fact_Oculto'],"Si","No");
+            $params['fact_period_NameO']=self::defineOcultosyNull("periodoO",$_GET['fact_period_Oculto']);
+            $params['dia_ini_fact_NameO']=self::defineOcultosyNull("diaO",$_GET['dia_ini_fact_Oculto']); 
+            echo json_encode($params);
+    }
+    
+    public function filtraVariablesNull($var,$opcionA,$opcionB)
+    {
+         if($var!=NULL||$var!="")  {          
+            if ($var==1)      $var_name=$opcionA;
+            else if($var==0)  $var_name=$opcionB;
+        }else{
+            $var_name="";
+        }
+        return $var_name;
+    }
+    public function defineDiaSemana($id_dia)
+    {
+        switch ($id_dia) {
+            case 1:
+            return "Lunes";
+                break;
+            case 2:
+            return "Martes";
+                break;
+            case 3:
+            return "Miercoles";
+                break;
+            case 4:
+            return "Jueves";
+                break;
+            case 5:
+            return "Viernes";
+                break;
+            case 5:
+            return "Sabado";
+                break;
+            case 5:
+            return "Domingo";
+                break;
+            default:
+                return "Lunes";
+                break;
+        }
+    }
+    
+    public function defineOcultosyNull($input,$var)
+    {
+        if ($var==""||$var==NULL){
+            return "";
+        }else{
+            switch ($input) {
+                 case "periodo":
+                      return FactPeriod::getName($var);
+                     break;
+                 case "dia":
+                     return self::defineDiaSemana($var);   
+                     break;
+                 case "tpO":
+                     return TerminoPago::getName($var);
+                     break;
+                 case "monetizableO":
+                     return Monetizable::getName($var);
+                     break;
+                 case "periodoO":
+                     return FactPeriod::getName($var);
+                     break;
+                 case "diaO":
+                     return self::defineDiaSemana($var);
+                     break;
+                 default:
+                     return "";
+                     break;
+                 } 
+        }
     }
         
 	public function actionContrato()
 	{
-//           divide_fact 
-//           fact_period 
-//           dia_ini_fact      asi salen desde ajax  !!!!!!!!!!!!
-            
 		$model=new Contrato;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -157,6 +178,10 @@ class ContratoController extends Controller
                
 //		if(isset($_POST['Contrato']))
 //		{
+                
+               $divide_fact=$_GET['divide_fact'];
+               $fact_period=$_GET['fact_period'];
+               $dia_ini_fact=$_GET['dia_ini_fact'];
                     $sign_date=$_GET['sign_date'];
                     $production_date=$_GET['production_date'];
                     $end_date=$_GET['end_date'];
@@ -179,6 +204,10 @@ class ContratoController extends Controller
                     $text='';
                     $companyName.=Company::getName($company);
                     $carrierName.=Carrier::getName($carrier);
+                    
+                    $divide_factName=self::filtraVariablesNull($_GET['divide_fact'],"Si","No");
+                    $fact_periodName=self::defineOcultosyNull("periodo",$_GET['fact_period']);
+                    $dia_ini_factName=self::defineOcultosyNull("dia",$_GET['dia_ini_fact']); 
 
                     if($sign_date!='' || $sign_date!=NULL){
                         $sign_date=$sign_date;
@@ -255,7 +284,18 @@ class ContratoController extends Controller
                                         $modelCTPSNEW->id_contrato=$modelAux->id;
                                         $modelCTPSNEW->start_date=date('Y-m-d');
                                         $modelCTPSNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        $modelCTPSNEW->month_break =Utility::snull($divide_fact);
+                                        $modelCTPSNEW->first_day =Utility::snull($dia_ini_fact);
+                                        $modelCTPSNEW->id_fact_period =Utility::snull($fact_period);
                                         if($modelCTPSNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPSNEW->id);
+
+                                        $text.= $termino_pago_supplier.',';
+                                        $termino_p_supp_Name= TerminoPago::getName($termino_pago_supplier);
+                                    }else{
+                                        $modelCTPsupplier->month_break =Utility::snull($divide_fact);
+                                        $modelCTPsupplier->first_day =Utility::snull($dia_ini_fact);
+                                        $modelCTPsupplier->id_fact_period =Utility::snull($fact_period);
+                                        if($modelCTPsupplier->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPsupplier->id);
 
                                         $text.= $termino_pago_supplier.',';
                                         $termino_p_supp_Name= TerminoPago::getName($termino_pago_supplier);
@@ -265,6 +305,9 @@ class ContratoController extends Controller
                                         $modelCTPSNEW->id_contrato=$modelAux->id;
                                         $modelCTPSNEW->start_date=date('Y-m-d');
                                         $modelCTPSNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                        $modelCTPSNEW->month_break =Utility::snull($divide_fact);
+                                        $modelCTPSNEW->first_day =Utility::snull($dia_ini_fact);
+                                        $modelCTPSNEW->id_fact_period =Utility::snull($fact_period);
                                         if($modelCTPSNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPSNEW->id);
                                 }
                                 
@@ -392,11 +435,14 @@ class ContratoController extends Controller
                                 }
                                 /*TERMINO PAGO PROVEDORES*/
                                 if($termino_pago_supplier!='' || $termino_pago_supplier!=NULL){
-                                $modelCTPNEW = new ContratoTerminoPago;
-                                $modelCTPNEW->id_contrato=$model->id;
-                                $modelCTPNEW->start_date=date('Y-m-d');
-                                $modelCTPNEW->id_termino_pago_supplier =$termino_pago_supplier;
-                                $modelCTPNEW->save();
+                                $modelCTPSNEW = new ContratoTerminoPagoSupplier;
+                                $modelCTPSNEW->id_contrato=$model->id;
+                                $modelCTPSNEW->start_date=date('Y-m-d');
+                                $modelCTPSNEW->id_termino_pago_supplier =$termino_pago_supplier;
+                                $modelCTPSNEW->month_break =Utility::snull($divide_fact);
+                                $modelCTPSNEW->first_day =Utility::snull($dia_ini_fact);
+                                $modelCTPSNEW->id_fact_period =Utility::snull($fact_period);
+                                $modelCTPSNEW->save();
                                 }
                                 /*MONETIZABLE*/
                                 if($monetizable!='' || $monetizable!=NULL){
@@ -444,7 +490,7 @@ class ContratoController extends Controller
                             }
                         }                   
 //		}
-             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up;
+             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up.'|'.$divide_factName.'|'.$fact_periodName.'|'.$dia_ini_factName;
 
 	}
 
@@ -548,7 +594,10 @@ class ContratoController extends Controller
                 $params['sign_date']=$model->sign_date;
                 $params['production_date']=$model->production_date;
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
-                $params['termino_pago_supplier']= ContratoTerminoPagoSupplier::getTpId_supplier($model->id);
+                $params['termino_pago_supplier']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"id_termino_pago_supplier");
+                $params['fact_period']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"id_fact_period");
+                $params['divide_fact']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"month_break");
+                $params['dia_ini_fact']=ContratoTerminoPagoSupplier::getTpId_Element($model->id,"first_day");
                 $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
                 $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);
@@ -569,6 +618,9 @@ class ContratoController extends Controller
                 $params['production_date']='';
                 $params['termino_pago']='';
                 $params['termino_pago_supplier']='';
+                $params['fact_period']='';
+                $params['divide_fact']='';
+                $params['dia_ini_fact']='';
                 $params['monetizable']='';
                 $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
                 $params['Contrato_up']='Seleccione';

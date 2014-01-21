@@ -90,4 +90,7 @@ class FactPeriod extends CActiveRecord
         public static function getListFact_Period(){      
             return CHtml::listData(FactPeriod::model()->findAll(),'id','name');
         }
+        public static function getName($FactPeriod){           
+            return self::model()->find("id=:id", array(':id'=>$FactPeriod))->name;
+        }
 }

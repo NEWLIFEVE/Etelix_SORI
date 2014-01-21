@@ -124,7 +124,7 @@
                 </div>
                 
                 <div class="contratoForm dia_ini_fact">
-                    <label>Dia</label>
+                    <label>Dia de Inicio de Ciclo</label>
                     <select name="dia_ini_fact" id="dia_ini_fact">
                         <option value=""> Seleccione </option>
                         <option value="1"> Lunes </option>

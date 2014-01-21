@@ -111,11 +111,11 @@ class ContratoTerminoPagoSupplier extends CActiveRecord
 		));
 	}
                 
-        public static function getTpId_supplier($contrato)
+        public static function getTpId_Element($contrato,$columna)
         {
             $model = self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
             if ($model!=NULL){
-                return $model->id_termino_pago_supplier;
+                return $model->$columna;
             }else{
                 return '';
             }
