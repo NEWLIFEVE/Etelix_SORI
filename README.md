@@ -2,6 +2,8 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+Release 1.5.2
+-Termino de pago para los carriers como suppliers
 
 Release 1.5.1
 - Cambiar estatus de provisiones al momento de ingresar facturas
