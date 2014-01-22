@@ -961,7 +961,7 @@ function roundNumber(number,decimals) {
         function emptyFields(){
             $("#AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                 if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
-                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date").val('');
+                     $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_bank_fee").val('');
                 } 
                 if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
                      $("#AccountingDocumentTemp_min_etx,AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier,#AccountingDocumentTemp_select_dest_supplier,#AccountingDocumentTemp_input_dest_supplier").val('');

@@ -671,6 +671,13 @@ class AccountingDocumentTemp extends CActiveRecord
         }
         
         public static function saveBankFee($model){
+//            $model->amount = $model->bank_fee;
+//            $model->id_accounting_document = $model->id;
+//            $model->setIsNewRecord(TRUE);
+//            IF($model->save()){
+//                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+//                Log::registrarLog($idAction, NULL, $model->id);
+//            }
             $modelBF = new AccountingDocumentTemp;
             $modelBF->id_type_accounting_document = 14;
             $modelBF->id_carrier = $model->id_carrier;
