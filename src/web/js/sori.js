@@ -719,7 +719,7 @@ function roundNumber(number,decimals) {
                             muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
                             idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
 		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
-		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#Contrato_id_monetizable,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
+		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
 		    $(".manageractual,.CarrierActual").empty();
                     $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
 		    $.ajax({
@@ -1018,7 +1018,7 @@ function roundNumber(number,decimals) {
         function casosParaMsjConfirmContrato(cambio_bank_fee,bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
         {
            if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
-           if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_pago_supplier'),'color','red');
+           if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_p_supp_Name'),'color','red');
            if(fact_period_NameO != fact_period_Name )          $SORI.UI.changeCss($('.fact_period_Name'),'color','red');
            if(dia_ini_fact_NameO != dia_ini_fact_Name )        $SORI.UI.changeCss($('.dia_ini_fact_Name'),'color','red');
            if(divide_fact_NameO != divide_fact_Name )          $SORI.UI.changeCss($('.divide_fact_Name'),'color','red');

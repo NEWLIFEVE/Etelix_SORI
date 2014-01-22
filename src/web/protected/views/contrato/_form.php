@@ -189,7 +189,7 @@
                 </div>
                      <input type="hidden" name="dias_disputa_Oculto"     id="dias_disputa_Oculto"  value="">
                      <input type="hidden" name="dias_disputa_solved_Oculto"id="dias_disputa_solved_Oculto"  value="">
-                     <input type="hidden" name="credito_Oculto"          id=" credito_Oculto"  value="">
+                     <input type="hidden" name="credito_Oculto"          id="credito_Oculto"  value="">
                      <input type="hidden" name="compra_Oculto"           id="compra_Oculto"  value="">
                      <input type="hidden" name="monetizable_Oculto"      id="monetizable_Oculto"  value="">
                      <input type="hidden" name="TerminoP_Oculto"         id="TerminoP_Oculto"  value="">

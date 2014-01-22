@@ -287,25 +287,45 @@ $('#botAsignarContrato').click('on',function(e)
                 {
                     var guardoEdito=" Se guardo con exito el Contrato";
                     $SORI.UI.msj_confirm("<h4>Esta a punto de crear un nuevo Contrato: \n\
-                                          <br><b>( "+carrierName+" / "+companyName+" )</b></h4><div class='scroll_msj'><h6><p><p>Con las siguientes condiciones comerciales:\n\
-                                          <h6><p>Status del Carrier: "+Contrato_StatusC+"</p>\n\
-                                          <p>Termino de pago Cliente: "+termino_pName+"</p>\n\
-                                          <p>Termino de pago Proveedor: "+termino_p_supp_Name+"</p>\n\
-                                          <p>Tipo de Ciclo de Fact: "+fact_period_Name+"</p>\n\
-                                          <p>Dia de Inicio de Ciclo: "+dia_ini_fact_Name+"</p>\n\
-                                          <p>Divide Fact por Mes: "+divide_fact_Name+"</p>\n\
-                                          <p>Monetizable: "+monetizableName+"</p>\n\
-                                          <p>Dias max para disputar: "+dias_disputa+"</p>\n\
-                                          <p>Limite de Credito: "+credito+"</p>\n\
-                                          <p>Dias para solventar disputas: "+dias_disputa_solved+"</p>\n\
-                                          <p>Limite de Compra: "+compra+"</p>\n\
-                                          <p>Unidad de producción: "+Contrato_upC+"</p>\n\
-                                          <p>Fecha de Firma de contrato: "+sign_date+"</p>\n\
-                                          <p>Fecha de puesta en produccion: "+production_date+"</p>\n\
-                                          <p>Se Asume Bank Fee: "+bank_feeName+"</p></h6></div>");
+                                          <br><b>( "+carrierName+" / "+companyName+" )</b></h4><h6><p><p>Con las siguientes condiciones comerciales:\n\
+                                          <div><table class='table_contrato'>\n\
+                                           <tr class='tr_contrato'>\n\
+                                              <td>Fecha de Firma de contrato:</td><td class='td_basic_contr'>"+sign_date+"</td>\n\
+                                              <td>Fecha de puesta en produccion:</td><td class='td_basic_contr'>"+production_date+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Termino de pago Cliente:</td><td class='td_basic_contr'>"+termino_pName+"</td>\n\
+                                              <td>Termino de pago Cliente:</td><td class='td_basic_contr'>"+termino_p_supp_Name+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Tipo de Ciclo de Fact:</td><td class='td_basic_contr'>"+fact_period_Name+"</td>\n\
+                                              <td>Dia de Inicio de Ciclo:</td><td class='td_basic_contr'>"+dia_ini_fact_Name+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Divide Fact por Mes:</td><td class='td_basic_contr'>"+divide_fact_Name+"</td>\n\
+                                              <td>Monetizable:</td><td class='td_basic_contr'>"+monetizableName+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Dias max para disputar:</td><td class='td_basic_contr'>"+dias_disputa+"</td>\n\
+                                              <td>Dias para solventar disputas:</td><td class='td_basic_contr'>"+dias_disputa_solved+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Limite de Credito:</td><td class='td_basic_contr'>"+credito+"</td>\n\
+                                              <td>Limite de Compra:</td><td class='td_basic_contr'>"+compra+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Unidad de producción:</td><td class='td_basic_contr'>"+Contrato_upC+"</td>\n\
+                                              <td>Status del Carrier:</td><td class='td_basic_contr'>"+Contrato_StatusC+"</td>\n\
+                                            </tr>\n\
+                                            <tr class='tr_contrato'>\n\
+                                              <td>Se Asume Bank Fee:</td><td class='td_basic_contr'>"+bank_feeName+"</td><td></td><td></td>\n\
+                                            </tr>\n\
+                                            </table></div>\n\
+                                          </h6>");
+                    $('.mensaje').css('width','654px').css('margin-left','25%');$('.cancelar').css('margin-left','236px');$('.confirma').css('margin-left','334px');
                 }
                 else
-                {   guardoEdito=" Se realizaron los siguientes cambios en el Contrato";  
+                {   guardoEdito=" Todos los cambios fueron efectuados con exito en el Contrato";  
                    
                     if(Contrato_upOculto==''){     
                         backUP="Unidad de producción: ";  
@@ -323,27 +343,47 @@ $('#botAsignarContrato').click('on',function(e)
                                 var backStatus="Status del Carrier: "+Contrato_statusOculto+" a ";}
                               else backStatus="Status del Carrier: ";}
                     var cambio_bank_fee="";
-                    if(bank_fee=="1" && bank_feeOculto =="0") {cambio_bank_fee="<span class='bank_feeName'>Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</span>";}
+                  if(bank_fee=="1" && bank_feeOculto =="0") {cambio_bank_fee="<p class='bank_fee_note'><b>Nota:</b> Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</p>";}
                           
                   if(end_date!="") var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
-                     else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4><div class='scroll_msj'><h6><p>\n\
-                                        "+backStatus+ "<span class='status'>"+Contrato_StatusC+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(TPOculto,termino_pago,"Terminos de pago client de: "+termino_pNameO+" a ","Terminos de pago client: ")+ "<span class='termino_pName'>"+termino_pName+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(TP_supplier_Oculto,termino_pago_supplier,"Terminos de pago prov de: "+termino_p_supp_NameO+" a ","Terminos de pago prov: ")+ "<span class='termino_pago_supplier'>"+termino_p_supp_Name+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(fact_period_NameO,fact_period_Name,"Tipo de Ciclo de Fact de: "+fact_period_NameO+" a ","Tipo de Ciclo de Fact: ")+" <span class='fact_period_Name'>"+$SORI.UI.defineNull(fact_period_Name,"No aplica")+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(dia_ini_fact_NameO,dia_ini_fact_Name,"Dia de Inicio de Ciclo de: "+dia_ini_fact_NameO+" a ","Dia de Inicio de Ciclo: ")+" <span class='dia_ini_fact_Name'>"+$SORI.UI.defineNull(dia_ini_fact_Name,"No aplica")+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(divide_fact_NameO,divide_fact_Name,"Divide Fact por Mes de: "+divide_fact_NameO+" a ","Divide Fact por Mes: ")+" <span class='divide_fact_Name'>"+$SORI.UI.defineNull(divide_fact_Name,"No aplica")+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(monetizableOculto,monetizable,"Monetizable de: "+monetizableNameO+" a ","Monetizable: ")+" <span class='monetizableName'>"+monetizableName+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(diasDisputaOculto,dias_disputa,"Dias max para disputar de: "+diasDisputaOculto+" a ","Dias max para disputar: ")+" <span class='dias_disputa'>"+dias_disputa+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(diasDisputaSolvedOculto,dias_disputa_solved,"Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ","Dias para solventar disputas: ")+" <span class='dias_disputa_solved'>"+dias_disputa_solved+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(creditoO,credito,"Limite de Credito de: "+creditoO+" a ","Limite de Credito: ")+" <span class='credito'>"+credito+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(compraO,compra,"Limite de Compra de: "+compraO+" a ","Limite de Compra: ")+" <span class='compra'>"+compra+"</span><p>\n\
-                                        "+backUP+" <span class='Contrato_upC'>"+Contrato_upC+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(F_Firma_Contrato_Oculto,sign_date,"Fecha de firma de contrato de: "+F_Firma_Contrato_Oculto+" a ","Fecha de firma de contrato: ")+" <span class='sign_date'>"+sign_date+"</span><p> \n\
-                                        "+$SORI.UI.resultadoContrato(F_P_produccion_Oculto,production_date,"Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ","Fecha de Puesta en Produccion: ")+" <span class='production_date'>"+production_date+"</span><p>\n\
-                                        "+$SORI.UI.resultadoContrato(bank_feeNameO,bank_feeName,"Se Asume Bank Fee de: "+bank_feeNameO+" a ","Se Asume Bank Fee: ")+" <span class='bank_feeName'>"+bank_feeName+"</span><p></h6></div>"+cambio_bank_fee+"<p>";
+                     else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4><h6>\n\
+                                        <div><table class='table_contrato'>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(F_Firma_Contrato_Oculto,sign_date,"Fecha de firma de contrato de: "+F_Firma_Contrato_Oculto+" a ","Fecha de firma de contrato: ")+" </td><td class='sign_date td_basic_contr'>"+sign_date+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(F_P_produccion_Oculto,production_date,"Fecha de Puesta en Produccion de: "+F_P_produccion_Oculto+" a ","Fecha de Puesta en Produccion: ")+" </td><td class='production_date td_basic_contr'>"+production_date+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(TPOculto,termino_pago,"Terminos de pago client de: "+termino_pNameO+" a ","Terminos de pago client: ")+" </td><td class='termino_pName td_basic_contr'>"+termino_pName+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(TP_supplier_Oculto,termino_pago_supplier,"Terminos de pago prov de: "+termino_p_supp_NameO+" a ","Terminos de pago prov: ")+" </td><td class='termino_p_supp_Name td_basic_contr'>"+termino_p_supp_Name+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(fact_period_NameO,fact_period_Name,"Tipo de Ciclo de Fact de: "+fact_period_NameO+" a ","Tipo de Ciclo de Fact: ")+" </td><td class='fact_period_Name td_basic_contr'>"+$SORI.UI.defineNull(fact_period_Name,'No aplica')+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(dia_ini_fact_NameO,dia_ini_fact_Name,"Dia de Inicio de Ciclo de: "+dia_ini_fact_NameO+" a ","Dia de Inicio de Ciclo: ")+" </td><td class='dia_ini_fact_Name td_basic_contr'>"+$SORI.UI.defineNull(dia_ini_fact_Name,'No aplica')+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(divide_fact_NameO,divide_fact_Name,"Divide Fact por Mes de: "+divide_fact_NameO+" a ","Divide Fact por Mes: ")+" </td><td class='divide_fact_Name td_basic_contr'>"+$SORI.UI.defineNull(divide_fact_Name,'No aplica')+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(monetizableOculto,monetizable,"Monetizable de: "+monetizableNameO+" a ","Monetizable: ")+" </td><td class='monetizableName td_basic_contr'>"+monetizableName+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(diasDisputaOculto,dias_disputa,"Dias max para disputar de: "+diasDisputaOculto+" a ","Dias max para disputar: ")+" </td><td class='dias_disputa td_basic_contr'>"+dias_disputa+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(diasDisputaSolvedOculto,dias_disputa_solved,"Dias para solventar disputas de: "+diasDisputaSolvedOculto+" a ","Dias para solventar disputas: ")+" </td><td class='dias_disputa_solved td_basic_contr'>"+dias_disputa_solved+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(creditoO,credito,"Limite de Credito de: "+creditoO+" a ","Limite de Credito: ")+" </td><td class='credito td_basic_contr'>"+credito+"</td> \n\
+                                             <td>"+$SORI.UI.resultadoContrato(compraO,compra,"Limite de Compra de: "+compraO+" a ","Limite de Compra: ")+" </td><td class='compra td_basic_contr'>"+compra+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+backUP+" </td><td class='Contrato_upC td_basic_contr'>"+Contrato_upC+"</td> \n\
+                                             <td>"+backStatus+" </td><td class='Contrato_StatusC td_basic_contr'>"+Contrato_StatusC+"</td> \n\
+                                           </tr>\n\
+                                           <tr class='tr_contrato'>\n\
+                                             <td>"+$SORI.UI.resultadoContrato(bank_feeNameO,bank_feeName,"Se Asume Bank Fee de: "+bank_feeNameO+" a ","Se Asume Bank Fee: ")+" </td><td class='bank_feeName td_basic_contr'>"+bank_feeName+"</td> \n\
+                                             <td></td><td></td>\n\
+                                           </tr>\n\
+                                          </table></div></h6>"+cambio_bank_fee+"<p>";
                     
                     $SORI.UI.msj_confirm(advertencia);
+                    $('.mensaje').css('width','654px').css('margin-left','25%');$('.cancelar').css('margin-left','236px');$('.confirma').css('margin-left','334px');
                     $SORI.UI.casosParaMsjConfirmContrato(cambio_bank_fee,bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status);//esta function sedebe modular, espero poder hacerlo esta semana, junto con todo lo demas 
                 }
                 $('#confirma,#cancelar').on('click',function()
@@ -357,16 +397,10 @@ $('#botAsignarContrato').click('on',function(e)
                             data: "sign_date="+sign_date+"&production_date="+production_date+"&end_date="+end_date+"&id_carrier="+carrier+"&id_company="+company+"&id_termino_pago="+termino_pago+"&termino_pago_supplier="+termino_pago_supplier+"&id_monetizable="+monetizable+"&dias_disputa="+dias_disputa+"&dias_disputa_solved="+dias_disputa_solved+"&credito="+credito+"&compra="+compra+"&Contrato_up="+Contrato_up+"&Contrato_status="+Contrato_status+
                                     "&fact_period="+fact_period+"&divide_fact="+divide_fact+"&dia_ini_fact="+dia_ini_fact+"&bank_fee="+bank_fee,
                             success: function(data) 
-                            {  console.log(data);
+                            {   
+                                console.log(data);$('.mensaje').css('width','490px').css('margin-left','30%');
                                 if(end_date!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+carrierName+" / "+companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+end_date+"</h6>","si.png","1000","width:90px; height:90px;");
-                                  else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+carrierName+" / "+companyName+")</b></h4><div class='scroll_msj'><h6><p>\n\
-                                                                     Status del Carrier: "+Contrato_StatusC+"<p> Terminos Pago client:"+termino_pName+"<p>\n\
-                                                                     Termino pago prov:"+termino_p_supp_Name+"<p>Tipo de Ciclo de Fact: "+$SORI.UI.defineNull(fact_period_Name,"No aplica")+"</p>\n\
-                                                                     Dia de Inicio de Ciclo: "+$SORI.UI.defineNull(dia_ini_fact_Name,"No aplica")+"</p>\n\
-                                                                     Divide Fact por Mes: "+$SORI.UI.defineNull(divide_fact_Name,"No aplica")+"</p><p>Monetizable: "+monetizableName+"<p>\n\
-                                                                     Dias max para disputar:"+dias_disputa+"<p>Dias para solventar disputas:"+dias_disputa_solved+"<p>\n\
-                                                                     Limite de Credito:"+credito+"<p>Limite de Compra:"+compra+"<p>Unidad de producción: "+Contrato_upC+"<p>\n\
-                                                                     Fecha de firma de contrato: "+sign_date+"<p>Fecha de puesta en Produccion:"+production_date+"<p>Se Asume Bank Fee:"+bank_feeName+"</h6></div>","si.png","1000","width:90px; height:90px;");
+                                  else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+carrierName+" / "+companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");
                             }
                         });
                         $("#Contrato_id_company").prop("disabled", true);

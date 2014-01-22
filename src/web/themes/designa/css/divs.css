@@ -184,14 +184,36 @@
     margin-left:30%;
     line-height: normal;
 }
-.scroll_msj
+.table_contrato
 {
-    overflow-y: scroll;
-    height: 242px;
+    width: 657px;
 }
-.scroll_msj:hover 
+
+.tr_contrato
+{
+    /*border:1px solid rgba(111,204,187,1);*/
+    text-align: left;
+    /*overflow-y: scroll;*/
+    height: 24px;
+}
+.tr_contrato:hover 
+{
+    background: rgba(111,204,187,1);
+    color:white;
+}
+.td_basic_contr 
+{
+    font-weight: 100;
+}
+.td_basic_contr:hover
 {
     background: #C3D5D0;
+    color:black;
+}
+.bank_fee_note
+{
+    color:red;
+    text-align: justify;
 }
 
 .cancelar
