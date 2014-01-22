@@ -2,8 +2,14 @@ Etelix_SORI
 ===========
 
 Sistema de Origen
+
+Realese 1.5.3
+-Agregado Bank fee a COndiciones Ocmerciales
+-Agregado Bank Fee a Documentos contables
+
 Release 1.5.2
 -Termino de pago para los carriers como suppliers
+-Agregadas condiciones de tipo de ciclos de fact
 
 Release 1.5.1
 - Cambiar estatus de provisiones al momento de ingresar facturas
