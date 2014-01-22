@@ -1178,7 +1178,7 @@ function roundNumber(number,decimals) {
         
         function elijeOpciones(tipoDocument)
 	{
-            var ocultar =['.tabla_N_C,.CarrierDocument','.GrupoDocument','.emailReceivedDate','.validReceivedDate','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedTime','.minutosDoc','.minutosEtx','.minutosProveedor','.DestinoEtx','.DestinoProv','.Moneda','select#AccountingDocumentTemp_id_destination_supplier','input#AccountingDocumentTemp_id_destination_supplier','.montoDoc','.numDocument','.numFactura','.rateEtx','.rateProveedor'];
+            var ocultar =['.tabla_N_C,.CarrierDocument','.GrupoDocument','.emailReceivedDate','.validReceivedDate','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.emailReceivedTime','.minutosDoc','.minutosEtx','.minutosProveedor','.DestinoEtx','.DestinoProv','.Moneda','select#AccountingDocumentTemp_id_destination_supplier','input#AccountingDocumentTemp_id_destination_supplier','.montoDoc','.numDocument','.numFactura','.rateEtx','.rateProveedor,.bank_fee'];
             switch (tipoDocument){
                 case '1'://facturas enviadas
                     var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosDoc'];
@@ -1219,7 +1219,7 @@ function roundNumber(number,decimals) {
                     var mostrar =['.numFactura','.fechaIniFact','.fechaFinFact','.CarrierDocument','.minutosEtx','.minutosProveedor','.DestinoProv','.rateEtx','.rateProveedor','select#AccountingDocumentTemp_id_destination_supplier'];
                     $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                     $SORI.UI.changeCss('.numFactura','width','24%');
-                    $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier").val('');
+                    $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date, #AccountingDocumentTemp_id_destination, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_bank_fee").val('');
                     $("#AccountingDocumentTemp_id_accounting_document").html("");
                     $SORI.UI.buscaFactura('#AccountingDocumentTemp_id_carrier, #AccountingDocumentTemp_from_date, #AccountingDocumentTemp_to_date');
                     $SORI.UI.toggleDestProv();

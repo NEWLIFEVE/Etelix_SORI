@@ -343,7 +343,7 @@ $('#botAsignarContrato').click('on',function(e)
                                 var backStatus="Status del Carrier: "+Contrato_statusOculto+" a ";}
                               else backStatus="Status del Carrier: ";}
                     var cambio_bank_fee="";
-                  if(bank_fee=="1" && bank_feeOculto =="0") {cambio_bank_fee="<p class='bank_fee_note'><b>Nota:</b> Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</p>";}
+                  if(bank_fee != bank_feeOculto) {cambio_bank_fee="<p class='bank_fee_note'><b>Nota:</b> Esta a punto de definir que <b>"+companyName+"</b> asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</p>";}
                           
                   if(end_date!="") var advertencia=" <h4>Esta a punto de finalizar el Contrato<br><b>("+carrierName+" / "+companyName+")</b></h4>";
                      else  advertencia="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+carrierName+" / "+companyName+")</b></h4><h6>\n\
@@ -556,6 +556,21 @@ $('#AccountingDocumentTemp_id_carrier').change(function()
        $SORI.UI.changeCss('.numFactura','width','51%');
        $('#AccountingDocumentTemp_amount').removeAttr('readonly');
     }
+});
+$('#AccountingDocumentTemp_carrier_groups').change(function()
+{  
+    $.ajax({
+            type: "GET",
+            url: "../Contrato/Comprueba_BankFee",
+            data: 'id_group='+$(this).val(),
+            success: function(data) 
+            {
+               if($('#AccountingDocumentTemp_id_type_accounting_document').val()=="4" && data==1)
+                   $(".bank_fee").show("slow");
+                else 
+                   $(".bank_fee").hide("slow"); 
+            }
+    });
 });
 
 $('div.hacerUnaNota').click('on',function()

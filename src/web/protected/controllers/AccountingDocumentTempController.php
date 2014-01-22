@@ -117,6 +117,7 @@ class AccountingDocumentTempController extends Controller
                 if ($model->save()) {
                     $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                     Log::registrarLog($idAction, NULL, $model->id);
+                    if($model->bank_fee!=NULL){  $model->saveBankFee($model);}
                     echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
                     }
                 }else{
@@ -331,12 +332,20 @@ class AccountingDocumentTempController extends Controller
         /**
          * Deletes a particular model.
          * If deletion is successful, the browser will be redirected to the 'admin' page.
+         * CASO PARTICULAR DE COBROS Y BANK FEE-> "busca el id_type_accounting_document del documento, antes de eliminarlo
+         * chequea si id_type_accounting_document es igual a cobro, se ser asi utiliza el $id para buscar id del bank fee
+         * y de esta manera usa el id del documento bank fee para eliminarlo"
          * @access public
          * @param integer $id the ID of the model to be deleted
          */
 	public function actionBorrar($id)
 	{
+                $type_doc=AccountingDocumentTemp::getTypeDoc($id);               
 		$this->loadModel($id)->delete();
+                if($type_doc==4){                                                 
+                    $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id);    
+                    if($id_bank_fee!=NULL)$this->loadModel($id_bank_fee)->delete();
+                }
 	}
 
 	/**

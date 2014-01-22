@@ -28,7 +28,7 @@ class ContratoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicDatosContrato','Contrato','ContratoConfirma'),
+				'actions'=>array('index','view','DynamicDatosContrato','Contrato','ContratoConfirma','Comprueba_BankFee'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -659,6 +659,14 @@ class ContratoController extends Controller
                 $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);
            }
            echo json_encode($params);
-        }       
+        } 
+        
+        public function actionComprueba_BankFee()
+        {
+            $modelGroup=  Carrier::model()->find('id_carrier_groups=:groups',array(':groups'=>$_GET['id_group']));       
+            $bank_fee= Contrato::model()->find('id_carrier=:carrier and bank_fee=1 and end_date IS NULL',array(':carrier'=>$modelGroup->id));
+            if($bank_fee!=NULL)echo $bank_fee->bank_fee;  
+              else             echo "0";
+        }
 
 }

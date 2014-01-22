@@ -266,6 +266,12 @@
                 <?php echo $form->error($model,'id_currency'); ?>
             </div>
             
+            <div class="contratoForm bank_fee">
+                <?php echo $form->labelEx($model,'bank_fee'); ?>
+                <?php echo $form->textField($model,'bank_fee'); ?>
+                <?php echo $form->error($model,'bank_fee'); ?>
+            </div>
+            
             <div class="hacerUnaNota">
                 <br>
                 <label>Nota (+)</label>
