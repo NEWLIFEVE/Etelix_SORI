@@ -138,12 +138,12 @@ class SiteController extends Controller
                             array('label'=>'Home', 'url'=>array('/site/index')),
                             array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
                             array('label'=>'Dist. Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Admin. Grupos', 'url'=>array('/carrier/NewGroupCarrier')),
                             array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
 //                            array('label'=>'Destinos y Zonas Geográficas', 'url'=>array('/GeographicZone/create')),
 //                            array('label'=>'Zonas Geográficas', 'url'=>array('/GeographicZone/CreateZoneColor')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
                             array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
-                            array('label'=>'Admin. Grupos', 'url'=>array('/carrier/NewGroupCarrier')),
                             array('label'=>'Log', 'url'=>array('/log/admin')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
@@ -161,6 +161,8 @@ class SiteController extends Controller
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
                             array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
+                            array('label'=>'Dist. Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Admin. Grupos', 'url'=>array('/carrier/NewGroupCarrier')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
@@ -168,8 +170,7 @@ class SiteController extends Controller
         if ($tipoUsuario == 4) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-//                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
-//                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
+                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
                             array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
