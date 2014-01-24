@@ -3,13 +3,22 @@
 
 Sistema de Origen
 
-Relase 1.5.3
+
+Relase 1.5.4
 - Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.
 - Se agrego input bank fee, donde se declara si eteliz asume bank fee o no, esta opcion sera aplicada en todos los carrier pertenecientes a un mismo grupo, si modifica otro carrier del mismo grupo, la condicion se volvera a modificar y cambiara para los demas carrier.
 - Se modificaron los msjs en condiciones comerciales para que muestre una tabla mas organizada de las condiciones elegidas.
 - En documentos contables, al seleccionar cobros y un grupo, la aplicacion buscara si se asume el bank fee para el grupo elegido.
 - Al guardar cobros, el sistema automaticamente guardara otro documento contable paralelo con el monto bank fee introducido por el usuario.
 - Si se elimina el cobro, tambien se eliminara el bank fee asociado.
+
+Realese 1.5.3
+-Agregado Bank fee a COndiciones Ocmerciales
+-Agregado Bank Fee a Documentos contables
+
+Release 1.5.2
+-Termino de pago para los carriers como suppliers
+-Agregadas condiciones de tipo de ciclos de fact
 
 Release 1.5.1
 - Cambiar estatus de provisiones al momento de ingresar facturas

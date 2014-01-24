@@ -208,7 +208,8 @@ class AccountingDocumentTemp extends CActiveRecord
          */
         public static function getid_bank_fee($id)
         {
-           return self::model()->find("id_accounting_document =:idAcDoc",array(":idAcDoc"=>$id))->id;
+            var_dump($id);
+           return self::model()->find("id_accounting_document =:idAcDoc",array(":idAcDoc"=>$id));
         }
         /*
         * con el id de documento me trae el id de carrier
@@ -303,11 +304,14 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function listaCobros($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Cobro Temp');
-		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
-			  FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
-			  	   FROM accounting_document_temp
-			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
-			  WHERE d.id_type_accounting_document=4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
+		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, d.id_accounting_document, t.name AS id_type_accounting_document,
+                            (select x.amount from accounting_document_temp x where x.id_accounting_document=d.id) as bank_fee, g.name as id_carrier, e.name AS id_currency
+                              FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency,id_accounting_document
+                                   FROM accounting_document_temp
+                                   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+                              WHERE d.id_type_accounting_document =4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
+                            ORDER BY id DESC";
+		
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -474,6 +478,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->id_destination_supplier))$params['destinationSupp'] =DestinationSupplier::getName($model->id_destination_supplier);
             if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
             if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
+            if (isset($model->bank_fee))$params['amount_bank_fee'] = $model->bank_fee;
             $params['valid'] = $valid;
             return $params;
         }

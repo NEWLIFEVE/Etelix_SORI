@@ -103,8 +103,8 @@ $SORI.UI=(function()
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img name='save_Cobros' alt='save' src='/images/icon_check.png'><img name='cancel_Cobros' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img name='save_Cobros' alt='save' src='/images/icon_check.png'><img name='cancel_Cobros' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -233,8 +233,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -362,6 +362,15 @@ $SORI.UI=(function()
                 }
             });
         }
+	function _readonly(input,value)
+	{  
+                var input_cuestion= $("input[name='AccountingDocumentTemp["+input+"]']");
+
+                if(input_cuestion.val() == value)
+                {
+                input_cuestion.attr('readonly', true);
+                }
+        }
 	/**
 	 * Metodo encargado de ejecutar las repectivas llamadas
 	 * @access public
@@ -409,6 +418,7 @@ $SORI.UI=(function()
 			if($(this).attr('name')=='edit_Cobros')
 			{
 				_editar_Cobros($fila);
+				_readonly("amount_bank_fee","N/A");
 			}
                         if($(this).attr('name')=='save_Cobros')
 			{
@@ -862,6 +872,7 @@ function roundNumber(number,decimals) {
                 if(min_etx !== undefined && rate_etx !== undefined) var amount_etx="<td id='AccountingDocumentTemp[amount_etx]'>"+(obj.min_etx*obj.rate_etx).toFixed(2)+"</td>";
                 if(min_carrier !== undefined && rate_carrier !== undefined) var amount_carrier="<td id='AccountingDocumentTemp[amount_carrier]'>"+(obj.min_carrier*obj.rate_carrier).toFixed(2)+"</td>";
                 if(amount_etx !== undefined && amount_carrier !== undefined) var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_etx*obj.rate_etx)-(obj.min_carrier*obj.rate_carrier)).toFixed(2)+"</td>";
+                if(obj.amount_bank_fee !== undefined) var amount_bank_fee="<td id='AccountingDocumentTemp[amount_bank_fee]'>"+obj.amount_bank_fee+"</td>"; 
                 console.dir(id+group+issue_date+doc_number+amount+currency);
                 switch (obj.id_type_accounting_document){
                     case '1':
@@ -880,7 +891,7 @@ function roundNumber(number,decimals) {
                         label='.LabelPagos';
                         break
                     case '4':
-                        var tabla = id+group+valid_received_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+group+valid_received_date+doc_number+amount+amount_bank_fee+currency+"<td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_Cobros",
                         label='.LabelCobros';
                         break
