@@ -26,9 +26,8 @@
 
     <div class="row carrierSelect">
         <?php echo $form->labelEx($model, 'id_carrier'); ?>  
-        <?php echo $form->textField($model, 'id_carrier'); ?>
+        <?php echo $form->dropDownList($model, 'id_carrier', Carrier::getListCarrierNoUNKNOWN(), array('prompt' => 'Seleccione')); ?>
         <?php echo $form->error($model, 'id_carrier'); ?>
-        <!--<div id="getContrato">Ir</div>-->
     </div>
     <div class="formularioContrato">
         <div class="pManager"><p><b>Account Manager</b></p></div>
