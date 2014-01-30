@@ -3,6 +3,10 @@
 
 Sistema de Origen
 
+Relase 1.5.4
+-Reparacion de comportamiento en inputs dentro de condiciones comerciales.
+-cambio del select id_carrier por un input autocomplete en la misma interfaz.
+
 
 Relase 1.5.4
 - Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.

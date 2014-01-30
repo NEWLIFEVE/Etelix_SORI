@@ -20,21 +20,21 @@
     <p class="note">Los Campos con <span class="required">*</span> son obligatorios.</p>
 
     <div class="CarrierActual">
+            <h1 class="hCarrierA"></h1>
     </div>
         <?php echo $form->errorSummary($model); ?>
 
     <div class="row carrierSelect">
         <?php echo $form->labelEx($model, 'id_carrier'); ?>  
-        <?php echo $form->dropDownList($model, 'id_carrier', Carrier::getListCarrierNoUNKNOWN(), array('prompt' => 'Seleccione')); ?> 
+        <?php echo $form->textField($model, 'id_carrier'); ?>
         <?php echo $form->error($model, 'id_carrier'); ?>
+        <!--<div id="getContrato">Ir</div>-->
     </div>
     <div class="formularioContrato">
         <div class="pManager"><p><b>Account Manager</b></p></div>
-        <div class="divOculto1">
-            <div class="manageractual"> </div>
+        <div class="manageractual"> 
+             <h3 class="hManagerA"></h3>
         </div>
-
-        <div class="divOculto">
             <div class="valores">
                 <div class="contratoForm">
 
@@ -90,7 +90,6 @@
                     <?php echo $form->error($model, 'end_date'); ?>
 
                 </div>
-                <!--<div class="SegundoNivel">-->
                 <div class="contratoForm">
                      <?php echo $form->labelEx($model,'id_termino_pago'); ?>
                      <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
@@ -208,9 +207,8 @@
 <?php $this->endWidget(); ?>
 
             <div id="botAsignarContrato" class="row buttons">
-<?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
+                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Save'); ?>
             </div>
-        </div>
     </div>
 </div><!-- form -->
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/views.js"/></script>

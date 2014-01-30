@@ -568,7 +568,8 @@ $SORI.UI=(function()
         
 
 
-function roundNumber(number,decimals) {
+function roundNumber(number,decimals) 
+{
 	var newString;// The new rounded number
 	decimals = Number(decimals);
 	if (decimals < 1) {
@@ -723,122 +724,141 @@ function roundNumber(number,decimals) {
 	 */ 
 	function formChange(id)
 	{
-		$('#'+id).change(function()
-		{
-                    var nota=$('.note'), muestraDiv1= $('.divOculto'), muestraformC= $('.formularioContrato'),
-                            muestraDiv2=$('.divOculto1'), pManager=$('.pManager'), NombreCarrier=$('.CarrierActual'),
-                            idCarrier=$("#Contrato_id_carrier").val(), end_date=$("#Contrato_end_date").val();
-		    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
-		    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
-		    $(".manageractual,.CarrierActual").empty();
+            $('#'+id).click(function()
+            {
+                if($(this).val()!="" && $(this).val() != $(".hCarrierA").html())
+                {        
+                    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
+                    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
+                    $(".hManagerA,.hCarrierA").empty();
                     $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
-		    $.ajax({
-		        type: "GET",
-		        url: "DynamicDatosContrato",
-		        data: "idCarrier="+idCarrier,
-		        success: function(data)
-		        {   
-		            obj=JSON.parse(data);
-		            $("#Contrato_id_company").val(obj.company);
-		            if(obj.company!='')
-		            {
-		                $("#Contrato_id_company").prop("disabled", true);
-		                $("#Contrato_end_date").prop("disabled", false);
-		                 if(obj.sign_date=='' || obj.sign_date == null){
+                    $(".formularioContrato").fadeOut("fast");
+                    $.ajax({
+                        type: "GET",
+                        url: "DynamicDatosContrato",
+                        data: "idCarrier="+$(this).val(),
+                        success: function(data)
+                        {   
+                            obj=JSON.parse(data);
+                            $("#Contrato_id_company").val(obj.company);
+                            if(obj.company!='')
+                            {
+                                $("#Contrato_id_company").prop("disabled", true);
+                                $("#Contrato_end_date").prop("disabled", false);
+                                 if(obj.sign_date=='' || obj.sign_date == null){
                                      $("#Contrato_sign_date").prop("disabled", false);
                                 }else{
                                      $("#Contrato_sign_date").prop("disabled", true);
                                 }
-		            }
-		            else
-		            {
+                            }
+                            else
+                            {
                                 $("#Contrato_sign_date,#Contrato_id_company").prop("disabled", false);
-		                $("#Contrato_end_date").prop("disabled", true);
-		               
-		            }
-		            $("#Contrato_sign_date").val(obj.sign_date);
-		            $("#Contrato_production_date").val(obj.production_date);
-		            $("#Contrato_id_termino_pago").val(obj.termino_pago);
-		            $("#Contrato_id_termino_pago_supplier").val(obj.termino_pago_supplier);
-		            $("#Contrato_id_fact_period").val(obj.fact_period);
-		            $("#dia_ini_fact").val(obj.dia_ini_fact);
-		            $("#divide_fact").val(obj.divide_fact);
-		            $("#Contrato_id_monetizable").val(obj.monetizable);
-		            $("#Contrato_id_managers").val(obj.manager);
-		            $("#Contrato_id_disputa").val(obj.dias_disputa);
-		            $("#Contrato_id_disputa_solved").val(obj.dias_disputa_solved);
-		            $("#Contrato_up").val(obj.Contrato_up);
-		            $("#Contrato_bank_fee").val(obj.bank_fee);
-		            $("#Contrato_status").val(obj.Contrato_status);
-		            $("#Contrato_statusOculto").val(obj.Contrato_status);
-		            $("#Contrato_upOculto").val(obj.Contrato_up);
-		            $("#bank_feeOculto").val(obj.bank_fee);
-		            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
-		            $("#F_P_produccion_Oculto").val(obj.production_date);
-		            $("#TerminoP_Oculto").val(obj.termino_pago);
-		            $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
-		            $("#Contrato_id_fact_period_Oculto").val(obj.fact_period);
-		            $("#dia_ini_fact_Oculto").val(obj.dia_ini_fact);
-		            $("#divide_fact_Oculto").val(obj.divide_fact);
-		            $("#monetizable_Oculto").val(obj.monetizable);
-		            $("#dias_disputa_Oculto").val(obj.dias_disputa);
-		            $("#dias_disputa_solved_Oculto").val(obj.dias_disputa_solved);
-		            $("#Contrato_id_limite_credito").val(obj.credito);
-		            $("#credito_Oculto").val(obj.credito);
-		            $("#Contrato_id_limite_compra").val(obj.compra);
-		            $("#compra_Oculto").val(obj.compra);
-		            var manageractual=(obj.manager), carrierenlabel=(obj.carrier),
-		            	fechaManagerCarrier=(obj.fechaManager),
-
-		            	managerA=$("<label><h3 style='margin-left: -66px; margin-top:105px; color:rgba(111,204,187,1)'>"+manageractual+" / " +fechaManagerCarrier+"</h3></label><label><h6 style='margin-left: -66px; margin-top:-10px;'></h6></label>"),
-		            	carrierA=$("<label id='labelCarrier'><h1 align='right' style='margin-left: 8px; margin-top:-106px; color:rgba(111,204,187,1)'>"+carrierenlabel+"</h1></label>");
-		            $('.manageractual').append(managerA);
-		            managerA.slideDown('slow');
-		            $('.CarrierActual').append(carrierA);
-		            carrierA.slideDown('slow');
-                            $SORI.UI.resuelveInputContrato(obj.termino_pago_supplier,"2");
-		        }
-		    });
-		    muestraDiv2.slideDown("slow");
-		    nota.fadeIn("slow");
-		    pManager.slideDown("slow");
-		    muestraDiv1.slideDown("slow");
-		    muestraformC.slideDown("slow");
-		    NombreCarrier.slideDown("slow");
-		    end_date=idCarrier=NombreCarrier=pManager=muestraDiv2=muestraformC=muestraDiv1=nota=null;
-		});
+                                $("#Contrato_end_date").prop("disabled", true);
+                            }
+                            $("#Contrato_sign_date").val(obj.sign_date);
+                            $("#Contrato_production_date").val(obj.production_date);
+                            $("#Contrato_id_termino_pago").val(obj.termino_pago);
+                            $("#Contrato_id_termino_pago_supplier").val(obj.termino_pago_supplier);
+                            $("#Contrato_id_fact_period").val(obj.fact_period);
+                            $("#dia_ini_fact").val(obj.dia_ini_fact);
+                            $("#divide_fact").val(obj.divide_fact);
+                            $("#Contrato_id_monetizable").val(obj.monetizable);
+                            $("#Contrato_id_managers").val(obj.manager);
+                            $("#Contrato_id_disputa").val(obj.dias_disputa);
+                            $("#Contrato_id_disputa_solved").val(obj.dias_disputa_solved);
+                            $("#Contrato_up").val(obj.Contrato_up);
+                            $("#Contrato_bank_fee").val(obj.bank_fee);
+                            $("#Contrato_status").val(obj.Contrato_status);
+                            $("#Contrato_statusOculto").val(obj.Contrato_status);
+                            $("#Contrato_upOculto").val(obj.Contrato_up);
+                            $("#bank_feeOculto").val(obj.bank_fee);
+                            $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
+                            $("#F_P_produccion_Oculto").val(obj.production_date);
+                            $("#TerminoP_Oculto").val(obj.termino_pago);
+                            $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
+                            $("#Contrato_id_fact_period_Oculto").val(obj.fact_period);
+                            $("#dia_ini_fact_Oculto").val(obj.dia_ini_fact);
+                            $("#divide_fact_Oculto").val(obj.divide_fact);
+                            $("#monetizable_Oculto").val(obj.monetizable);
+                            $("#dias_disputa_Oculto").val(obj.dias_disputa);
+                            $("#dias_disputa_solved_Oculto").val(obj.dias_disputa_solved);
+                            $("#Contrato_id_limite_credito").val(obj.credito);
+                            $("#credito_Oculto").val(obj.credito);
+                            $("#Contrato_id_limite_compra").val(obj.compra);
+                            $("#compra_Oculto").val(obj.compra);
+                            $('.hManagerA').html(""+obj.manager+" / " +obj.fechaManager+"");
+                            $('.hCarrierA').html(""+obj.carrier+"");
+                            
+                            $SORI.UI.resuelveInputContrato(obj.termino_pago_supplier);
+                            $SORI.UI.resuelveInputPeriodo(obj.fact_period); 
+                            $('.manageractual').show("slow");
+                            $('.note').fadeIn("slow");
+                            $('.pManager').slideDown("slow");
+                            $('.formularioContrato').slideDown("slow");
+                            $('.CarrierActual').slideDown("slow");
+                        }
+                    });
+                }else{
+                    console.log("o esta vacio o input carrier y carier actual son iguales");
+                }
+            });
 	}
         /**
          * 
          * @param {type} tp
+         * @returns {undefined}
+         */
+        function resuelveInputContrato(tp)
+        {     
+            var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
+             periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
+            switch (tp)
+            {
+                case "1": case "3": case "4": case "5":
+                   $(".periodo_fact").css("display","inline-block").hide().show("slow");
+                   $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
+                    break;
+                case "6": case "7": case "8": case "12":
+                   $(".periodo_fact").css("display","inline-block").hide().show("slow");
+                   $(".dia_ini_fact,.divide_fact").hide("slow");
+                   $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
+                    break;
+                case "2": case "9": case "10": case "11": case "13":
+                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+                    break;
+            } 
+        }
+        /**
+         * 
          * @param {type} fact_period
          * @returns {undefined}
          */
-        function resuelveInputContrato(tp,fact_period)
-        {     
-            var periodo_semanal= $("#Contrato_id_fact_period option[value='1'],#Contrato_id_fact_period option[value='2']"), periodo_quincenal = $("#Contrato_id_fact_period option[value='3'],#Contrato_id_fact_period option[value='4']");
-              if(tp=="1"||tp=="3"||tp=="4"||tp=="5"||tp=="6"||tp=="7"||tp=="8"||tp=="12")
-              {
-                  $(".periodo_fact").css("display","inline-block").hide().show("slow");
-                    if(tp=="1"||tp=="3"||tp=="4"||tp=="5") 
-                    { 
-                        periodo_semanal.show("fast"); periodo_quincenal.hide("fast");
-                        if(fact_period=="1") { 
-                            $(".divide_fact,.dia_ini_fact").hide("slow");$("#dia_ini_fact,#divide_fact").val("");
-                        }else if(fact_period=="2") {
-                            $(".dia_ini_fact,.divide_fact").css("display","inline-block").hide().show("slow");
-                        }else {
-                            $(".dia_ini_fact,.divide_fact").hide("slow");
-                            $("#dia_ini_fact,#divide_fact").val("");
-                        }
-                    }else{  
-                          periodo_semanal.hide("fast");  periodo_quincenal.show("fast");
-                          $(".dia_ini_fact,.divide_fact").hide("slow");
-                          $("#dia_ini_fact,#divide_fact").val("");
-                    }
-              }else{
-                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
-              } 
+        function resuelveInputPeriodo(fact_period)
+        {    
+            var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
+             periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
+            switch (fact_period)
+            {
+                case "1":case 1:
+                   $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
+                   $(".divide_fact,.dia_ini_fact").hide("slow");$("#dia_ini_fact,#divide_fact").val("");
+                    break;
+                case "2":case 2:
+                   $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
+                   $(".dia_ini_fact,.divide_fact,.periodo_fact").css("display","inline-block").hide().show("slow");
+                    break;
+                case "3": case "4": case 3: case 4: 
+                   $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
+                   $(".dia_ini_fact,.divide_fact").hide("slow");
+                   $("#dia_ini_fact,#divide_fact").val("");
+                    break;
+                case null:
+                   periodo_semanal.hide("fast"); periodo_quincenal.hide("fast");
+                   $(".dia_ini_fact,.divide_fact,.periodo_fact").hide("slow");
+                   $("#dia_ini_fact,#divide_fact").val("");
+                    break;
+            } 
         }
         /**
          * 
@@ -1306,7 +1326,8 @@ function roundNumber(number,decimals) {
                 resultadoContrato:resultadoContrato,
                 resuelveInputContrato:resuelveInputContrato,
                 validaContratoTpSemanal:validaContratoTpSemanal,
-                defineNull:defineNull
+                defineNull:defineNull,
+                resuelveInputPeriodo:resuelveInputPeriodo
 	};
 })();
 
@@ -1315,6 +1336,10 @@ function roundNumber(number,decimals) {
  */
 $SORI.AJAX=(function()
 {	
+        function init()
+	{
+            _getNamesCarriers();
+	}
 	/**
 	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
 	 * @param id int id de la fila que se va a eliminar
@@ -1361,14 +1386,32 @@ $SORI.AJAX=(function()
 		});
 		id=null;
 	}
+        /**
+         * autocomplete para carriers
+         * @returns {undefined}
+         */
+        function _getNamesCarriers()
+	{
+            $.ajax({url:"../Carrier/Nombres",success:function(datos)
+            {
+                 $SORI.DATA.carriers=JSON.parse(datos);
+                 $SORI.DATA.nombresCarriers=Array();
+                 for(var i=0, j=$SORI.DATA.carriers.length-1; i<=j; i++)
+                 {
+                      $SORI.DATA.nombresCarriers[i]=$SORI.DATA.carriers[i].name;
+                 };
+                 $('input#Contrato_id_carrier').autocomplete({source:$SORI.DATA.nombresCarriers});
+            }
+            });
+	}
 	/**
 	 * retorna los metodos publicos*/
-return{
+return{ init:init,
 	actualizar:actualizar,
 	borrar:borrar
 	}
 })();
-
+$SORI.DATA={};
 /**
  * Submodulo de utilidades
  */
@@ -1447,12 +1490,6 @@ $SORI.UTILS=(function()
 		updateMontoAprobadoDisp:updateMontoAprobadoDisp
 	}
 })();
-
-$SORI.constructor=(function()
- {
-    $SORI.UI.init();
- })();
-
 /**
 *
 */

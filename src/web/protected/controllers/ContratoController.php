@@ -79,7 +79,7 @@ class ContratoController extends Controller
 	}
        public function actionContratoConfirma()
        {    
-            $params['carrierName']=Carrier::getName($_GET['id_carrier']);  
+            $params['carrierName']=$_GET['id_carrier'];  
             $params['companyName']=Company::getName($_GET['id_company']);    
             $params['termino_pName']=TerminoPago::getName($_GET['id_termino_pago']);  
             $params['termino_p_supp_Name']=TerminoPago::getName($_GET['termino_pago_supplier']);    
@@ -181,14 +181,14 @@ class ContratoController extends Controller
 //		if(isset($_POST['Contrato']))
 //		{
                 
-               $divide_fact=$_GET['divide_fact'];
-               $fact_period=$_GET['fact_period'];
-               $dia_ini_fact=$_GET['dia_ini_fact'];
+                    $divide_fact=$_GET['divide_fact'];
+                    $fact_period=$_GET['fact_period'];
+                    $dia_ini_fact=$_GET['dia_ini_fact'];
                     $sign_date=$_GET['sign_date'];
                     $production_date=$_GET['production_date'];
                     $end_date=$_GET['end_date'];
                     $company=$_GET['id_company'];
-                    $carrier=$_GET['id_carrier'];
+                    $carrier=Carrier::getIdcarrier($_GET['id_carrier']);
                     $termino_pago=$_GET['id_termino_pago'];
                     $termino_pago_supplier=$_GET['termino_pago_supplier'];
                     $monetizable=$_GET['id_monetizable'];
@@ -206,7 +206,7 @@ class ContratoController extends Controller
                     $carrierName='';
                     $text='';
                     $companyName.=Company::getName($company);
-                    $carrierName.=Carrier::getName($carrier);
+                    $carrierName.=$_GET['id_carrier'];
                     
                     if($sign_date!='' || $sign_date!=NULL){
                         $sign_date=$sign_date;
@@ -611,8 +611,9 @@ class ContratoController extends Controller
 		}
 	}
        public function actionDynamicDatosContrato()
-        {           
-           $model = Contrato::DatosContrato($_GET['idCarrier']);
+        {  
+           $idCarrier=Carrier::getIdcarrier($_GET['idCarrier']);
+           $model = Contrato::DatosContrato($idCarrier);
 
            if($model!=NULL){      
                 $params['company']=$model->id_company;
@@ -625,10 +626,10 @@ class ContratoController extends Controller
                 $params['dia_ini_fact']=ContratoTerminoPagoSupplier::getTpId_Element($model->id,"first_day");
                 $params['monetizable']=ContratoMonetizable::getMonetizableId($model->id);
                 $params['manager']= Managers::getName(CarrierManagers::getIdManager($model->id_carrier));
-                $params['Contrato_up']=Contrato::getUP($_GET['idCarrier']);
-                $params['bank_fee']=Contrato::getBankFee($_GET['idCarrier']);
+                $params['Contrato_up']=Contrato::getUP($idCarrier);
+                $params['bank_fee']=Contrato::getBankFee($idCarrier);
 //                $params['managerUP']= Managers::getUP(CarrierManagers::getIdManager($model->id_carrier));
-                $params['Contrato_status']=Carrier::getStatus($_GET['idCarrier']);
+                $params['Contrato_status']=Carrier::getStatus($idCarrier);
                 $params['dias_disputa']= DaysDisputeHistory::getDays($model->id);
                 $params['dias_disputa_solved']= SolvedDaysDisputeHistory::getDays($model->id);
                 $params['carrier']= Carrier::getName($model->id_carrier);
@@ -648,15 +649,15 @@ class ContratoController extends Controller
                 $params['divide_fact']='';
                 $params['dia_ini_fact']='';
                 $params['monetizable']='';
-                $params['manager']=Managers::getName(CarrierManagers::getIdManager($_GET['idCarrier']));;
+                $params['manager']=Managers::getName(CarrierManagers::getIdManager($idCarrier));
                 $params['Contrato_up']='Seleccione';
                 $params['bank_fee']='Seleccione';
                 $params['Contrato_status']='Seleccione';
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';
-                $params['carrier']= Carrier::getName($_GET['idCarrier']);
-                $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);
+                $params['carrier']= $_GET['idCarrier'];
+                $params['fechaManager']=CarrierManagers::getFechaManager($idCarrier);
            }
            echo json_encode($params);
         } 
