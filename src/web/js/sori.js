@@ -724,10 +724,8 @@ function roundNumber(number,decimals)
 	 */ 
 	function formChange(id)
 	{
-            $('#'+id).click(function()
-            {
-                if($(this).val()!="" && $(this).val() != $(".hCarrierA").html())
-                {        
+            $('#'+id).change(function()
+            {       
                     $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
                     $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
                     $(".hManagerA,.hCarrierA").empty();
@@ -799,9 +797,6 @@ function roundNumber(number,decimals)
                             $('.CarrierActual').slideDown("slow");
                         }
                     });
-                }else{
-                    console.log("o esta vacio o input carrier y carier actual son iguales");
-                }
             });
 	}
         /**
@@ -854,7 +849,6 @@ function roundNumber(number,decimals)
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
                 case null:
-                   periodo_semanal.hide("fast"); periodo_quincenal.hide("fast");
                    $(".dia_ini_fact,.divide_fact,.periodo_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
@@ -1400,7 +1394,7 @@ $SORI.AJAX=(function()
                  {
                       $SORI.DATA.nombresCarriers[i]=$SORI.DATA.carriers[i].name;
                  };
-                 $('input#Contrato_id_carrier').autocomplete({source:$SORI.DATA.nombresCarriers});
+//                 $('input#Contrato_id_carrier').autocomplete({source:$SORI.DATA.nombresCarriers});
             }
             });
 	}
