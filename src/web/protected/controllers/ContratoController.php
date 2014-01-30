@@ -217,6 +217,8 @@ class ContratoController extends Controller
                         $production_date=NULL;
                     }
                     $modelAux=Contrato::model()->find('id_carrier=:carrier',array(':carrier'=>$_GET['id_carrier']));
+                    $modelCarrier=  Carrier::model()->find('id=:id_carrier',array(':id_carrier'=>$_GET['id_carrier']));
+                    $modelGroup= Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
                     /*
                      * ESTE CAMBIO ES PROVISIONAL, MIENTRAS NO SE POSEA LA INFORMACION DE LAS FECHAS
                      *SE HIZO ESTE CAMBIO PARA EVITAR QUE EL CODIGO GENERE NUEVOS CONTRATOS A LA HORA DE MODIFICAR,
@@ -242,7 +244,6 @@ class ContratoController extends Controller
                                     $modelAux->end_date=NULL;
                                 }
                                  if ($Contrato_status!='' || $Contrato_status!=NULL){
-                                    $modelCarrier=  Carrier::model()->find('id=:id_carrier',array(':id_carrier'=>$_GET['id_carrier']));
                                     if($modelCarrier!=NULL){
                                         if($modelCarrier->status != $Contrato_status){
                                             $modelCarrier->status = $Contrato_status;
@@ -250,8 +251,7 @@ class ContratoController extends Controller
                                         }
                                     }
                                 }
-                                $modelGroup= Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
-                                 if($modelGroup!=NULL){
+                                 if($modelGroup!==NULL||$modelGroup!==FALSE){
                                      foreach ($modelGroup as $key => $group) 
                                      {
                                         $modelContBankFee= Contrato::model()->find('id_carrier=:carrier AND end_date IS NULL',array(':carrier'=>$group->id));
@@ -260,7 +260,7 @@ class ContratoController extends Controller
                                             $modelContBankFee->save();     
                                         }  
                                      }
-                                }
+                                 }
                                 /*TERMINO PAGO CLIENTE*/
                                                 
                                 $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelAux->id)); 
@@ -436,17 +436,19 @@ class ContratoController extends Controller
                                 $model->end_date=NULL;
                                 $model->up=$Contrato_up;
                                 $model->bank_fee=$bank_fee;
-                                $modelGroup=  Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
-                                 if($modelGroup!=NULL){
-                                     foreach ($modelGroup as $key => $group) 
-                                     {
-                                        $modelContBankFee= Contrato::model()->find('id_carrier=:carrier and end_date IS NULL',array(':carrier'=>$group->id));
-                                        $modelContBankFee->bank_fee=$bank_fee; 
-                                        $modelContBankFee->save();
-                                     }
-                                }
                                 if($model->save()){ 
                                 Log::registrarLog(LogAction::getId('Crear Contrato'),NULL, $model->id);
+                                /*BANCK FEE PARA LOS DEMAS CARRIERS DEL GRUPO*/
+                                if($modelGroup!==NULL||$modelGroup!==FALSE){
+                                     foreach ($modelGroup as $key => $group) 
+                                     {
+                                        $modelContBankFee= Contrato::model()->find('id_carrier=:carrier AND end_date IS NULL',array(':carrier'=>$group->id));
+                                         if($modelContBankFee->id != $model->id_carrier){
+                                            $modelContBankFee->bank_fee=$bank_fee;  
+                                            $modelContBankFee->save(); 
+                                         }
+                                     }
+                                }
                                 /*TERMINO PAGO CLIENTES*/
                                 if($termino_pago!='' || $termino_pago!=NULL){
                                 $modelCTPNEW = new ContratoTerminoPago;
@@ -512,6 +514,7 @@ class ContratoController extends Controller
                             }
                         }                   
 		var_dump ("guardo ;)");
+                var_dump($group->id);
                                              
 //             echo $carrierName.'|'.$companyName.'|'.$termino_pName.'|'.$termino_p_supp_Name.'|'.$monetizaName.'|'.$dias_disputa.'|'.$credito.'|'.$compra.'|'.$Contrato_up.'|'.$divide_factName.'|'.$fact_periodName.'|'.$dia_ini_factName;
 
@@ -653,7 +656,7 @@ class ContratoController extends Controller
                 $params['dias_disputa']='';
                 $params['credito']='';
                 $params['compra']='';
-                $params['carrier']= $_GET['idCarrier'];
+                $params['carrier']= Carrier::getName($_GET['idCarrier']);
                 $params['fechaManager']=CarrierManagers::getFechaManager($_GET['idCarrier']);
            }
            echo json_encode($params);
