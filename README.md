@@ -3,6 +3,10 @@
 
 Sistema de Origen
 
+Realese 1.5.5
+-Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier
+-Se agrego menu para tipo de usuario LEGAL
+
 Relase 1.5.4
 -Reparacion de comportamiento en inputs dentro de condiciones comerciales.
 -cambio del select id_carrier por un input autocomplete en la misma interfaz.
