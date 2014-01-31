@@ -1,6 +1,7 @@
 $(document).on('ready',function()
     {
-        /**
+        $SORI.AJAX.init();
+     /**
      *
      */
         var msj=new mensajes();
@@ -203,13 +204,27 @@ $("#CarrierManagers_id_managers").change(function()
 });
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
+
 $SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
-    if($(this).attr('id')=="Contrato_id_termino_pago") {$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
-    $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val(),$("#Contrato_id_fact_period").val()); 
+    if($(this).attr('id')=="Contrato_id_termino_pago" ||  $(this).attr('id')=="Contrato_id_termino_pago_supplier")
+    {       
+        if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()=="")
+        {
+            $("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());
+            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+        }
+       
+        if($(this).attr('id')=="Contrato_id_termino_pago_supplier")
+        {
+            $("#Contrato_id_fact_period").val("");
+            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+        }       
+    }
+    else
+    {$SORI.UI.resuelveInputPeriodo($(this).val()); }
 });
-
 
 $('#botAsignarContrato').click('on',function(e)
 {
@@ -401,6 +416,9 @@ $('#botAsignarContrato').click('on',function(e)
                                 console.log(data);$('.mensaje').css('width','490px').css('margin-left','30%');
                                 if(end_date!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+carrierName+" / "+companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+end_date+"</h6>","si.png","1000","width:90px; height:90px;");
                                   else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+carrierName+" / "+companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");
+                                
+                                $("#monetizable_Oculto").val(monetizable);
+                                $("#dias_disputa_Oculto").val(dias_disputa);
                             }
                         });
                         $("#Contrato_id_company").prop("disabled", true);

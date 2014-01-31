@@ -32,8 +32,8 @@
 	<div class="container">
 		<header id="navtop">
 			<a href="/" class="logo fleft">
-				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.5.2">
-			</a>V 1.5.3
+				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.5.5">
+			</a>V 1.5.5
 
 			<nav class="fright">
 				<?php
@@ -129,7 +129,7 @@
 	<script src="http://code.jquery.com/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery-2.0.2.min.js"><\/script>')</script>
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.flexslider-min.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<!--<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/sori.js"></script>
 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/views.js"></script>
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/scripts.js"></script>
