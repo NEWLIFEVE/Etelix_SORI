@@ -848,6 +848,10 @@ function roundNumber(number,decimals)
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
+                case "":
+                   $(".dia_ini_fact,.divide_fact").hide("slow");
+                   $("#dia_ini_fact,#divide_fact").val("");
+                    break;
                 case null:
                    $(".dia_ini_fact,.divide_fact,.periodo_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");

@@ -208,10 +208,22 @@ $("#CarrierManagers_id_managers").change(function()
 $SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
-    if($(this).attr('id')=="Contrato_id_termino_pago" ||  $(this).attr('id')=="Contrato_id_termino_pago_supplier"){
-        if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()==""){$("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());}
-        $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
-    }else{$SORI.UI.resuelveInputPeriodo($(this).val()); }
+    if($(this).attr('id')=="Contrato_id_termino_pago" ||  $(this).attr('id')=="Contrato_id_termino_pago_supplier")
+    {       
+        if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()=="")
+        {
+            $("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());
+            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+        }
+       
+        if($(this).attr('id')=="Contrato_id_termino_pago_supplier")
+        {
+            $("#Contrato_id_fact_period").val("");
+            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+        }       
+    }
+    else
+    {$SORI.UI.resuelveInputPeriodo($(this).val()); }
 });
 
 $('#botAsignarContrato').click('on',function(e)
