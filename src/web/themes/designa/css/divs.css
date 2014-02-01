@@ -293,10 +293,9 @@ width: 20%;
 }*/
 .manageractual
 {
-/*background-color: red; */
-    margin-top: 50px;
-    margin-left: -5%;
-    width: 300px;
+    margin-top: -134px;
+    margin-left: 58%;
+    width: 466px;
     text-align: -webkit-right;
 }
 .pManager
@@ -377,9 +376,25 @@ width: 20%;
     margin-top: -70px;
     display: none; 
 }
+
+.hCarrierA
+{
+    text-align:right;
+    margin-left: 8px;
+    margin-top:-106px;
+    color:rgba(111,204,187,1);
+}
+
+.hManagerA
+{
+    margin-left: 66px;
+    margin-top:105px; 
+    color:rgba(111,204,187,1); 
+}
+
 #Contrato_id_carrier
 {
-    width: 46%;    
+    width: 45.8%;    
 }
 .carrierSelect
 {
@@ -978,4 +993,23 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
 .divide_fact,.periodo_fact,.dia_ini_fact
 {
     display:none;
+}
+#getContrato
+{
+    width: 22px;
+    height: 34px;
+    background: #E8ECEE;
+    display: inline-table;
+    padding-left: 6px;
+    margin-top: -1px;
+    padding-top: 12px;
+    color: #333;
+    font-weight: bold;
+}
+#getContrato:hover
+{
+    background: white;
+    border: 1px solid silver;
+    margin-top: 0px;
+    height: 32px;
 }

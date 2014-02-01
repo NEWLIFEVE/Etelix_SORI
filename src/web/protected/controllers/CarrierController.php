@@ -28,7 +28,7 @@ class CarrierController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','contrato','newGroupCarrier','saveCarrierGroup','buscaNombres'),
+				'actions'=>array('index','view','contrato','newGroupCarrier','saveCarrierGroup','buscaNombres','Nombres'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -265,6 +265,19 @@ class CarrierController extends Controller
                     $params['asignados']=$asigNames;    
                     $params['noasignados']=$noasigNames;    
                        echo json_encode($params);
+	}
+        public function actionNombres()
+	{
+            $model=Carrier::getNames();
+            $array=array();
+            $pos=0;
+            foreach ($model as $key => $value)
+            {
+                    $array[$pos]['id']=$value->id;
+                    $array[$pos]['name']=$value->name;
+                    $pos=$pos+1;
+            }
+            echo json_encode($array);
 	}
         
 }
