@@ -118,6 +118,7 @@ class AccountingDocumentTempController extends Controller
                     $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
                     Log::registrarLog($idAction, NULL, $model->id);
                     if($model->bank_fee!=NULL){  $model->saveBankFee($model);}
+                      else{$model->bank_fee="N/A";}
                     echo json_encode(AccountingDocumentTemp::getJSonParams($model,1));
                     }
                 }else{
@@ -286,7 +287,9 @@ class AccountingDocumentTempController extends Controller
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
                             Log::updateDocLog($Log, $modelAD->id);
+                            if($modelAD->id_type_accounting_document!="14"){
                             $count++;
+                            }
                         }
                     }
                 }
@@ -301,6 +304,8 @@ class AccountingDocumentTempController extends Controller
          */
         public function actionUpdate($id)
         {
+            $type_doc=AccountingDocumentTemp::getTypeDoc($id);    
+                
             $model=$this->loadModel($id);     
             if(isset($_POST['AccountingDocumentTemp']))
             {
@@ -325,6 +330,18 @@ class AccountingDocumentTempController extends Controller
                             echo "Actualizado id: ".$model->id;
                 }else{
                             echo "Algo salio mal";
+                }
+            }
+            if($type_doc==4){                                                 
+                $bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+                if($bank_fee!=NULL){
+                    $model=$this->loadModel($bank_fee->id);     
+                    if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
+                    if($model->save()){
+                                echo " y id: ".$model->id;
+                    }else{
+                                echo "Algo salio mal";
+                    } 
                 }
             }
         }

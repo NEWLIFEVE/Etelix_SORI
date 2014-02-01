@@ -176,11 +176,11 @@ class SiteController extends Controller
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
-        /* RETAIL */
+        /* LEGAL */
         if ($tipoUsuario == 5) {
             return array(
                             array('label'=>'Home', 'url'=>array('/site/index')),
-                            array('label'=>'Dist.Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }

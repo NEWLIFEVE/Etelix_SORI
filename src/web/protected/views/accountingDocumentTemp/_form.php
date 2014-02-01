@@ -390,6 +390,7 @@
                     <td> Fecha Recep Valida</td>
                     <td> N°Documento </td>
                     <td> Cantidad </td>
+                    <td> Bank fee </td>
                     <td> Moneda </td>
                     <td> Acciones </td>
                 </tr>
@@ -398,11 +399,15 @@
                     {
                         foreach ($lista_Cobros as $key => $value)
                         { 
+                            if($value->bank_fee!="")$bank_fee=$value->bank_fee;
+                              else                  $bank_fee="N/A";
+                            
                             echo "<tr class='vistaTemp' id='".$value->id."'>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
                                     <td id='AccountingDocumentTemp[valid_received_date]'>".$value->valid_received_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[amount_bank_fee]'>".$bank_fee."</td>
                                     <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
                                     <td><img class='edit' name='edit_Cobros' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
