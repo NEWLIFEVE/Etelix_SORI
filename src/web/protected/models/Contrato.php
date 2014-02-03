@@ -164,4 +164,7 @@ class Contrato extends CActiveRecord
         public static function getBankFee($id){           
             return self::model()->find("id_carrier=:id_carrier AND end_date IS NULL", array(':id_carrier'=>$id))->bank_fee;
         }
+        public static function geIdCompany($id){           
+            return self::model()->find("id_carrier=:id_carrier AND end_date IS NULL", array(':id_carrier'=>$id))->id_company;
+        }
 }

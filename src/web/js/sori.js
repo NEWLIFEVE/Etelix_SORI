@@ -944,7 +944,7 @@ function roundNumber(number,decimals)
              $('.cargando, .mensaje').remove();
              switch (obj.id_type_accounting_document){
                     case '1':
-                         var msj="<h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4>";
+                         var msj="<h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b> emitida desde la compañia: <b>"+obj.company_name+"</b></h4>";
                         break
                     case '2':
                          var msj="<h4 align='justify'>La <b>Factura Recibida </b>que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>, con el N°. <b>"+obj.doc_number+"</b></h4>";

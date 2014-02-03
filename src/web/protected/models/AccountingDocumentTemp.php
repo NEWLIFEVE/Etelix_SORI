@@ -377,8 +377,8 @@ class AccountingDocumentTemp extends CActiveRecord
         { 
             switch ($model->id_type_accounting_document){
                 case '1':
-                    // return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
-                    return self::model()->find("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document)); 
+                   $facturas= self::model()->findAll("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    return self::getExistDocCompany($model, $facturas);
                     break;
                 case '2':
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
@@ -409,6 +409,28 @@ class AccountingDocumentTemp extends CActiveRecord
                     break;
             }
         } 
+        /**
+         * metodo que determina si la factura enviada con el doc_number ha sido guardada, y en caso de que si, determina si fue emitida por la misma compáñia u otra...
+         * @param type $model
+         * @param type $facturas
+         * @return boolean
+         */
+        public static function getExistDocCompany($model,$facturas)
+        {                  
+            $return=NULL;
+            if($facturas==NULL){
+               $return= NULL; 
+            }else{
+                $company_to_save=Contrato::DatosContrato($model->id_carrier);
+                foreach ($facturas as $key => $factura) {
+                    $company_save=Contrato::DatosContrato($factura->id_carrier);
+                    if($company_to_save->id_company == $company_save->id_company){
+                        $return = TRUE;
+                    } 
+                }  
+            }
+            return $return;
+        }
         /**
          * busca los destinos supplier asignados al carrier
          */
@@ -479,6 +501,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
             if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
             if (isset($model->bank_fee))$params['amount_bank_fee'] = $model->bank_fee;
+            $params['company_name'] = Company::getName(Contrato::geIdCompany($model->id_carrier));
             $params['valid'] = $valid;
             return $params;
         }

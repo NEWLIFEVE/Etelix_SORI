@@ -1,6 +1,7 @@
 $(document).on('ready',function()
     {
         $SORI.AJAX.init();
+        $SORI.UI.init();
      /**
      *
      */
