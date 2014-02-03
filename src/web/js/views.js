@@ -205,7 +205,7 @@ $("#CarrierManagers_id_managers").change(function()
 });
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
-/////////////////////////////////////////////////////////////
+
 $SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
@@ -222,8 +222,7 @@ $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fac
             $("#Contrato_id_fact_period").val("");
             $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
         }       
-    }
-    else
+    }else
     {
         $SORI.UI.resuelveInputPeriodo($(this).val());
     }

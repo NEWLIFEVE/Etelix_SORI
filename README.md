@@ -3,6 +3,12 @@
 
 Sistema de Origen
 
+
+Relase 1.5.4
+-modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
+-reparacion de tabla de disputas en interfaz de documentos contables, ahora al modificar los minunos y tarifas actualiza de inmediato los montos y el valor de las disputa.
+-se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_charge" a accountingDocument y accountingDocumentTemp para lograrlo, todas lass operaciones funcionando correctamente.
+
 Relase 1.5.4
 -Reparacion de comportamiento en inputs dentro de condiciones comerciales.
 -cambio del select id_carrier por un input autocomplete en la misma interfaz.

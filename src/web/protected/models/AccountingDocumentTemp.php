@@ -28,6 +28,7 @@
  * @property integer $id_accounting_document
  * @property integer $id_destination
  * @property integer $id_destination_supplier
+ * @property integer $id_charge
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -62,14 +63,14 @@ class AccountingDocumentTemp extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, id_charge', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount, bank_fee, min_etx, min_carrier, rate_etx, rate_carrier,select_dest_supplier,carrier_groups', 'numerical'),
 			array('doc_number,input_dest_supplier', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, bank_fee, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, bank_fee, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, id_charge', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -123,6 +124,7 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_destination' => 'Destino Etelix',
 			'id_destination_supplier' => 'Destino Proveedor',
 			'bank_fee' => 'Monto Bank Fee',
+			'id_charge' => 'id_charge',
 		);
 	}
 
@@ -168,6 +170,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('id_accounting_document',$this->id_accounting_document);
 		$criteria->compare('$id_destination',$this->id_destination);
 		$criteria->compare('$id_destination_supplier',$this->id_destination_supplier);
+		$criteria->compare('$id_charge',$this->id_charge);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -209,7 +212,7 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function getid_bank_fee($id)
         {
             var_dump($id);
-           return self::model()->find("id_accounting_document =:idAcDoc",array(":idAcDoc"=>$id));
+           return self::model()->find("id_charge =:idAcDoc",array(":idAcDoc"=>$id));
         }
         /*
         * con el id de documento me trae el id de carrier
@@ -305,7 +308,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Cobro Temp');
 		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, d.id_accounting_document, t.name AS id_type_accounting_document,
-                            (select x.amount from accounting_document_temp x where x.id_accounting_document=d.id) as bank_fee, g.name as id_carrier, e.name AS id_currency
+                            (select x.amount from accounting_document_temp x where x.id_charge=d.id) as bank_fee, g.name as id_carrier, e.name AS id_currency
                               FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency,id_accounting_document
                                    FROM accounting_document_temp
                                    WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
@@ -550,6 +553,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->id_charge=NULL;
                     $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->minutes = Utility::ComaPorPunto($model->minutes);
                     $model->note=Utility::snull($model->note);
@@ -565,6 +569,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->rate_carrier=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->id_destination=NULL;
+                    $model->id_charge=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->amount = Utility::ComaPorPunto($model->amount);
@@ -591,6 +596,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->id_charge=NULL;
                     $model->amount=Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
@@ -618,6 +624,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
                     $model->confirm=1;
+                    $model->id_charge=NULL;
                     break;
                 case 5:
                     $model->issue_date=date("Y-m-d");
@@ -634,6 +641,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_charge=NULL;
                     break;
                 case 6:
                     $model->issue_date=date("Y-m-d");
@@ -651,6 +659,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
+                    $model->id_charge=NULL;
                     break;
                 case 7:
 //                    $model->issue_date=date("Y-m-d");
@@ -672,6 +681,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_charge=NULL;
                     break;
                 case 8:
 //                    $model->issue_date=date("Y-m-d");
@@ -693,6 +703,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_charge=NULL;
                     break;
             }
             return $model;
@@ -711,7 +722,7 @@ class AccountingDocumentTemp extends CActiveRecord
             $modelBF->id_carrier = $model->id_carrier;
             $modelBF->issue_date = $model->issue_date;
             $modelBF->valid_received_date = $model->issue_date;
-            $modelBF->id_accounting_document = $model->id;
+            $modelBF->id_charge = $model->id;
             $modelBF->amount = $model->bank_fee;
             $modelBF->id_currency = $model->id_currency;
             $modelBF->confirm = 1;
