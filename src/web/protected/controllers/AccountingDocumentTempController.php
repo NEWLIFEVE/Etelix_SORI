@@ -174,7 +174,6 @@ class AccountingDocumentTempController extends Controller
                      $modelBF = new AccountingDocument;
                      $modelBF->setAttributes($modelBFT->getAttributes());
                      $modelBF->id_charge=$modelAD->id;
-
                      if($modelBF->save()){
                          $this->loadModel($modelBFT->id)->delete();
                      } 

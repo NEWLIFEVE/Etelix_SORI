@@ -766,8 +766,8 @@ function roundNumber(number,decimals)
                             $('.hManagerA').html(""+obj.manager+" / " +obj.fechaManager+"");
                             $('.hCarrierA').html(""+obj.carrier+"");
                             
-                            $SORI.UI.resuelveInputContrato(obj.termino_pago_supplier);
-                            $SORI.UI.resuelveInputPeriodo(obj.fact_period); 
+                            $SORI.UI.resuelveTP(obj.termino_pago_supplier);
+                            $SORI.UI.resuelvePeriodo(obj.fact_period); 
                             $('.manageractual').show("slow");
                             $('.note').fadeIn("slow");
                             $('.pManager').slideDown("slow");
@@ -782,7 +782,7 @@ function roundNumber(number,decimals)
          * @param {type} tp
          * @returns {undefined}
          */
-        function resuelveInputContrato(tp)
+        function resuelveTP(tp)
         {     
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
@@ -807,7 +807,7 @@ function roundNumber(number,decimals)
          * @param {type} fact_period
          * @returns {undefined}
          */
-        function resuelveInputPeriodo(fact_period)
+        function resuelvePeriodo(fact_period)
         {    
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
@@ -1300,10 +1300,10 @@ function roundNumber(number,decimals)
                 msj_confirm:msj_confirm,
                 msj_change:msj_change,
                 resultadoContrato:resultadoContrato,
-                resuelveInputContrato:resuelveInputContrato,
+                resuelveTP:resuelveTP,
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
-                resuelveInputPeriodo:resuelveInputPeriodo
+                resuelvePeriodo:resuelvePeriodo
 	};
 })();
 
