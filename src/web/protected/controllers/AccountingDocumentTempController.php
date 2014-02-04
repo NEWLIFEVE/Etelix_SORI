@@ -144,24 +144,42 @@ class AccountingDocumentTempController extends Controller
                 $count = 0;
                 foreach ($modelLog as $key => $Log) {
                     $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
-                    if ($modelADT != null) {
+                    if ($modelADT != null && $modelADT->id_type_accounting_document != "14") {
                         $modelAD = new AccountingDocument;
                         $modelAD->setAttributes($modelADT->getAttributes());
                         if ($modelAD->save()) {
-                            if($modelAD->id_type_accounting_document=="1"||$modelAD->id_type_accounting_document=="2"){
-                              AccountingDocument::UpdateProv($modelAD);}
+                            AccountingDocument::UpdateProv($modelAD);
+                            $this->saveBankFeeFinal($modelADT,$modelAD);                            
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
                             Log::updateDocLog($Log, $modelAD->id);
-                            if($modelAD->id_type_accounting_document!="14"){
                             $count++;
-                            }
                         }
                     }
                 }
                 echo $count;
             }
+        }
+        /**
+         * 
+         * @param type $modelADT
+         * @param type $modelAD
+         */
+        public function saveBankFeeFinal($modelADT,$modelAD)
+        {
+             if($modelADT->id_type_accounting_document=="4" || $modelAD->id_type_accounting_document=="4"){
+               $modelBFT= AccountingDocumentTemp::getid_bank_fee($modelADT->id);
+                 if($modelBFT != NULL){
+                     $modelBF = new AccountingDocument;
+                     $modelBF->setAttributes($modelBFT->getAttributes());
+                     $modelBF->id_charge=$modelAD->id;
+
+                     if($modelBF->save()){
+                         $this->loadModel($modelBFT->id)->delete();
+                     } 
+                 }
+             }
         }
 	/**
          * Updates a particular model(modificado).

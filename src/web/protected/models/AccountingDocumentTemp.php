@@ -211,7 +211,6 @@ class AccountingDocumentTemp extends CActiveRecord
          */
         public static function getid_bank_fee($id)
         {
-            var_dump($id);
            return self::model()->find("id_charge =:idAcDoc",array(":idAcDoc"=>$id));
         }
         /*
