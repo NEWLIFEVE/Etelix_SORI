@@ -173,7 +173,7 @@ class AccountingDocumentTempController extends Controller
                  if($modelBFT != NULL){
                      $modelBF = new AccountingDocument;
                      $modelBF->setAttributes($modelBFT->getAttributes());
-                     $modelBF->id_charge=$modelAD->id;
+                     $modelBF->id_accounting_document=$modelAD->id;
                      if($modelBF->save()){
                          $this->loadModel($modelBFT->id)->delete();
                      } 

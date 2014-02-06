@@ -12,7 +12,7 @@ Realese 1.5.5
 Relase 1.5.4
 -modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
 -reparacion de tabla de disputas en interfaz de documentos contables, ahora al modificar los minunos y tarifas actualiza de inmediato los montos y el valor de las disputa.
--se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_charge" a accountingDocument y accountingDocumentTemp para lograrlo, 
+-se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_accounting_document_temp" a accountingDocument y accountingDocumentTemp para lograrlo, 
 -se agrego un nuevo metodo encargado de almacenar el bank fee definitivo, y se mejoro un poco la sintaxis. todas lass operaciones funcionando correctamente.
 -Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.
 -Se agrego input bank fee, donde se declara si eteliz asume bank fee o no, esta opcion sera aplicada en todos los carrier pertenecientes a un mismo grupo, si modifica otro carrier del mismo grupo, la condicion se volvera a modificar y cambiara para los demas carrier.
