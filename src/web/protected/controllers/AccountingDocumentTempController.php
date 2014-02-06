@@ -31,7 +31,7 @@ class AccountingDocumentTempController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec'),
+				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec','UpdateDisp'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -130,139 +130,6 @@ class AccountingDocumentTempController extends Controller
             }
         }
         /**
-        * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...
-        * @access public
-        **/
-        public function actionGuardarFac_EnvTemp() 
-        {
-              /*VALIDACION DE EXISTE*/
-//            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-//            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);               
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-
-                }
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo las facturas enviadas doc temp...
-        * @access public
-        **/
-        public function actionGuardarFac_RecTemp() 
-        {
-            /*VALIDACION DE EXISTE*/  
-//            $existeTemp= AccountingDocumentTemp::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-//            $existeFin= AccountingDocument::getExist($idCarrier, $numDocumento, $selecTipoDoc,$desdeFecha,$hastaFecha);  
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);     
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-             } 
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo los pagos doc temp...
-        * @access public
-        **/
-        public function actionGuardarPagoTemp() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);     
-            if ($model->save()) {
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo los cobros doc temp...
-        * @access public
-        **/
-        public function actionGuardarCobroTemp() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);           
-            if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Cobro Temp');
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo las disputas recibidas doc temp...
-        * @access public
-        **/
-        public function actionGuardarDisp_RecTemp() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
-            if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Disputa Recibida Temp');
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo las disputas recibidas doc temp...
-        * @access public
-        **/
-        public function actionGuardarDisp_EnvTemp() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
-           if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo las notas de credito enviada...
-        * @access public
-        **/
-        public function actionGuardarNotaC_Env() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
-           if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-        }
-        /**
-        * recibe los datos desde ajax y almacena solo las notas de credito recibidas...
-        * @access public
-        **/
-        public function actionGuardarNotaC_Rec() 
-        {
-            $model = new AccountingDocumentTemp;
-            $model->attributes=$_GET['AccountingDocumentTemp'];
-            $model =$model->setValues($model,$_GET['AccountingDocumentTemp']['id_type_accounting_document']);
-           if ($model->save()) {
-//                $idAction = LogAction::getLikeId('Crear Disputa Enviada Temp');
-                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-                Log::registrarLog($idAction, NULL, $model->id);
-                echo json_encode(AccountingDocumentTemp::getJSonParams($model));
-            }
-        }
-        /**
          * se encarga de guardar los documentos temporales en la tabla de documentos contables definitiva
          * ademas guarda en log, y elimina los documentos de la tabla temporal
          * solo copia los mismos parametros... con setatributes $modelADT
@@ -277,24 +144,41 @@ class AccountingDocumentTempController extends Controller
                 $count = 0;
                 foreach ($modelLog as $key => $Log) {
                     $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
-                    if ($modelADT != null) {
+                    if ($modelADT != null && $modelADT->id_type_accounting_document != "14") {
                         $modelAD = new AccountingDocument;
                         $modelAD->setAttributes($modelADT->getAttributes());
                         if ($modelAD->save()) {
-                            if($modelAD->id_type_accounting_document=="1"||$modelAD->id_type_accounting_document=="2"){
-                              AccountingDocument::UpdateProv($modelAD);}
+                            AccountingDocument::UpdateProv($modelAD);
+                            $this->saveBankFeeFinal($modelADT,$modelAD);                            
                             $modelADT->deleteByPk($Log->id_esp);
                             $idAction = LogAction::getLikeId('Crear Documento Contable Final');
                             Log::registrarLog($idAction, NULL, $modelAD->id);
                             Log::updateDocLog($Log, $modelAD->id);
-                            if($modelAD->id_type_accounting_document!="14"){
                             $count++;
-                            }
                         }
                     }
                 }
                 echo $count;
             }
+        }
+        /**
+         * 
+         * @param type $modelADT
+         * @param type $modelAD
+         */
+        public function saveBankFeeFinal($modelADT,$modelAD)
+        {
+             if($modelADT->id_type_accounting_document=="4" || $modelAD->id_type_accounting_document=="4"){
+               $modelBFT= AccountingDocumentTemp::getid_bank_fee($modelADT->id);
+                 if($modelBFT != NULL){
+                     $modelBF = new AccountingDocument;
+                     $modelBF->setAttributes($modelBFT->getAttributes());
+                     $modelBF->id_charge=$modelAD->id;
+                     if($modelBF->save()){
+                         $this->loadModel($modelBFT->id)->delete();
+                     } 
+                 }
+             }
         }
 	/**
          * Updates a particular model(modificado).
@@ -333,8 +217,17 @@ class AccountingDocumentTempController extends Controller
                 }
             }
             if($type_doc==4){                                                 
-                $bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
-                if($bank_fee!=NULL){
+                $this->updateBackFee($id);
+            }
+        }
+        /**
+         * modifica el banck fee apartir del monto banck fee en el cobro
+         * @param type $id
+         */
+        public function updateBackFee($id)
+        {
+           $bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+                if($bank_fee->id!=NULL){
                     $model=$this->loadModel($bank_fee->id);     
                     if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
                     if($model->save()){
@@ -343,7 +236,21 @@ class AccountingDocumentTempController extends Controller
                                 echo "Algo salio mal";
                     } 
                 }
-            }
+        }
+        /**
+         * modifica el monto disputa en disputas recibidas y enviadas
+         * @param type $id
+         */
+        public function ActionUpdateDisp($id)
+        {
+            $model=$this->loadModel($id); 
+             $model->amount=Utility::snull(Utility::ComaPorPunto($_POST['dispute'])); 
+            if($model->save()){
+                   echo " y id: ".$model->id;
+              }else{
+                   echo "Algo salio mal";
+              } 
+             
         }
 
         /**
@@ -361,7 +268,7 @@ class AccountingDocumentTempController extends Controller
 		$this->loadModel($id)->delete();
                 if($type_doc==4){                                                 
                     $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id);    
-                    if($id_bank_fee!=NULL)$this->loadModel($id_bank_fee)->delete();
+                    if($id_bank_fee->id!=NULL)$this->loadModel($id_bank_fee->id)->delete();
                 }
 	}
 

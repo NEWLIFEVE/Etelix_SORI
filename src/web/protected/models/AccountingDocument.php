@@ -28,6 +28,7 @@
  * @property integer $id_accounting_document
  * @property integer $id_destination
  * @property integer $id_destination_supplier
+ * @property integer $id_charge
  *
  * The followings are the available model relations:
  * @property Carrier $idCarrier
@@ -61,14 +62,14 @@ class AccountingDocument extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, dispute', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, dispute, id_charge', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount, min_etx, min_carrier, rate_etx, rate_carrier', 'numerical'),
 			array('doc_number', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour,dispute', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, dispute', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, dispute, id_charge', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -121,6 +122,7 @@ class AccountingDocument extends CActiveRecord
 			'id_accounting_document' => 'Documento Relacionado',
                         'id_destination' => 'Destino Etelix',
 			'id_destination_supplier' => 'Destino Proveedor',
+			'id_charge' => 'id_charge',
 		);
 	}
 
@@ -166,6 +168,7 @@ class AccountingDocument extends CActiveRecord
 		$criteria->compare('id_accounting_document',$this->id_accounting_document);
                 $criteria->compare('$id_destination',$this->id_destination);
 		$criteria->compare('$id_destination_supplier',$this->id_destination_supplier);
+		$criteria->compare('$id_charge',$this->id_charge);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -210,8 +213,8 @@ class AccountingDocument extends CActiveRecord
         { 
             switch ($model->id_type_accounting_document){
                 case '1':
-                    //return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
-                    return self::model()->find("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document)); 
+                    $facturas= self::model()->findAll("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    return AccountingDocumentTemp::getExistDocCompany($model, $facturas);
                     break;
                 case '2':
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
@@ -274,18 +277,25 @@ class AccountingDocument extends CActiveRecord
 
 		return $model;
 	}
+        /**
+         * 
+         * @param type $modelAD
+         * @return boolean
+         */
         public static function UpdateProv($modelAD)
         {
-            if($modelAD->id_type_accounting_document=="1")  $tipo_prov="12";
-            else  $tipo_prov="13";
-            
-                $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
-                if($modelProv!=NULL){ 
-                $modelProv->confirm="-1";
-		if($modelProv->save())  return true;
-		   else   return false;
-                }else{
-                    return false;
-                }
+            if($modelAD->id_type_accounting_document=="1"||$modelAD->id_type_accounting_document=="2"){
+                if($modelAD->id_type_accounting_document=="1")  $tipo_prov="12";
+                else  $tipo_prov="13";
+
+                    $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
+                    if($modelProv!=NULL){ 
+                    $modelProv->confirm="-1";
+                    if($modelProv->save())  return true;
+                       else   return false;
+                    }else{
+                        return false;
+                    }
+            }
         }
 }
