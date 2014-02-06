@@ -1,6 +1,7 @@
 $(document).on('ready',function()
     {
         $SORI.AJAX.init();
+        $SORI.UI.init();
      /**
      *
      */
@@ -208,22 +209,22 @@ $("#CarrierManagers_id_managers").change(function()
 $SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
-    if($(this).attr('id')=="Contrato_id_termino_pago" ||  $(this).attr('id')=="Contrato_id_termino_pago_supplier")
+    if($(this).attr('id')!="Contrato_id_fact_period")
     {       
         if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()=="")
         {
             $("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());
-            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+            $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
         }
-       
         if($(this).attr('id')=="Contrato_id_termino_pago_supplier")
         {
             $("#Contrato_id_fact_period").val("");
-            $SORI.UI.resuelveInputContrato($("#Contrato_id_termino_pago_supplier").val()); 
+            $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
         }       
+    }else
+    {
+        $SORI.UI.resuelvePeriodo($(this).val());
     }
-    else
-    {$SORI.UI.resuelveInputPeriodo($(this).val()); }
 });
 
 $('#botAsignarContrato').click('on',function(e)
@@ -666,15 +667,19 @@ $('#botConfirmarDatosContableFinal').click('on',function()
     });
     if(dato.length<=0)
     {
-        $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No ha seleccionado ninguna factura para confirmar</h3>","aguanta.png","1000","width:40px; height:90px;"); 
-    }else{
+        $SORI.UI.msj_cargando("","");
+        $SORI.UI.msj_change("<h3>No ha seleccionado ninguna factura para confirmar</h3>","aguanta.png","1000","width:40px; height:90px;"); 
+    }
+    else
+    {
         $SORI.UI.msj_confirm("<h4>Esta a punto de confirmar las siguientes facturas enviadas</h4>");  
         $('#confirma,#cancelar').on('click',function()
         {
             var tipo=$(this).attr('id');
             if(tipo=="confirma")
             {             
-                var array= $("input[type=checkbox]:checked").each(function(){
+                var array=$("input[type=checkbox]:checked").each(function()
+                {
                     var id=($(this).val()),
                     paraBorrar=$('#'+id);
                     
@@ -689,13 +694,17 @@ $('#botConfirmarDatosContableFinal').click('on',function()
                 });
                 var cuantos=array.length,
                 id=($("input[type=checkbox]:checked").val());
-                if (cuantos >0){
-                    if(id=='on'){
+                if(cuantos>0)
+                {
+                    if(id=='on')
+                    {
                         cuantos=array.length-1;
                     }
                     $SORI.UI.msj_change("<h4>Se confirmaron <b>"+cuantos+"</b> facturas enviadas</h4>","si.png","2000","width:95px; height:95px;");   
                 }
-            }else{
+            }
+            else
+            {
                 $(".cargando, .mensaje").fadeOut('slow'); 
             }
         });   
@@ -704,9 +713,9 @@ $('#botConfirmarDatosContableFinal').click('on',function()
 /**Vista Uploads*/
 $(function() 
 {
-    $( ".datepicker" ).datepicker();
-    $( ".datepicker" ).datepicker( "option", "dateFormat", "mm-dd-yy" );
-    $( ".datepicker" ).datepicker( "option", "showAnim", "drop" );
+    $(".datepicker").datepicker();
+    $(".datepicker").datepicker( "option", "dateFormat", "mm-dd-yy" );
+    $(".datepicker").datepicker( "option", "showAnim", "drop" );
 });
 $(function($)
 {

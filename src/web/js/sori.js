@@ -311,35 +311,13 @@ $SORI.UI=(function()
          */
         function _update_monto_Disp(obj)
         {
-//            alert('siiiiii :)');// pausado por ahora
-//
-//
-//            for (var i = 2, j = obj[0].childElementCount - 2; i <= j; i++)
-//            {
-//                if (i >= 3 && i <= 6)
-//                {
-//                    var input = document.createElement('input');
-//                    input.name = obj[0].children[i].id;
-//                    input.value = obj[0].children[i].innerHTML;
-//                    obj[0].children[i].innerHTML = "";
-//                    obj[0].children[i].appendChild(input);
-//                    input = null;
-//                }
-//            }
-//
-//
-//
-//            obj[0].children[7].innerHTML = ('aqui taaaa');
-//            obj[0].children[8].innerHTML = (obj[4] * obj[6]);
-//            obj[0].children[9].innerHTML = ((obj[3] * obj[5]) - (obj[4] * obj[6]));
-//            console.dir((obj[3] * obj[5]));
-//            console.dir((obj[4] * obj[6]));
-//            console.dir((obj[3] * obj[5]) - (obj[4] * obj[6]));
-//
-//
-//            obj = null;
-//            accion();
-      
+            for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
+		{
+                    obj[0].children[7].innerHTML = ((obj[0].children[3].innerHTML * obj[0].children[5].innerHTML).toFixed(2));
+                    obj[0].children[8].innerHTML = ((obj[0].children[4].innerHTML * obj[0].children[6].innerHTML).toFixed(2));
+                    obj[0].children[9].innerHTML = ((obj[0].children[8].innerHTML - obj[0].children[7].innerHTML).toFixed(2));
+		}
+                $SORI.AJAX.actualizar(obj[0].id , "1" , obj[0].children[9].innerHTML);
          }
         /**
          * escucha el click sobre la imagen delete y valida para eliminar el documento temporal
@@ -788,8 +766,8 @@ function roundNumber(number,decimals)
                             $('.hManagerA').html(""+obj.manager+" / " +obj.fechaManager+"");
                             $('.hCarrierA').html(""+obj.carrier+"");
                             
-                            $SORI.UI.resuelveInputContrato(obj.termino_pago_supplier);
-                            $SORI.UI.resuelveInputPeriodo(obj.fact_period); 
+                            $SORI.UI.resuelveTP(obj.termino_pago_supplier);
+                            $SORI.UI.resuelvePeriodo(obj.fact_period); 
                             $('.manageractual').show("slow");
                             $('.note').fadeIn("slow");
                             $('.pManager').slideDown("slow");
@@ -804,7 +782,7 @@ function roundNumber(number,decimals)
          * @param {type} tp
          * @returns {undefined}
          */
-        function resuelveInputContrato(tp)
+        function resuelveTP(tp)
         {     
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
@@ -829,7 +807,7 @@ function roundNumber(number,decimals)
          * @param {type} fact_period
          * @returns {undefined}
          */
-        function resuelveInputPeriodo(fact_period)
+        function resuelvePeriodo(fact_period)
         {    
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
@@ -948,7 +926,7 @@ function roundNumber(number,decimals)
              $('.cargando, .mensaje').remove();
              switch (obj.id_type_accounting_document){
                     case '1':
-                         var msj="<h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b></h4>";
+                         var msj="<h4 align='justify'>Ya existe una<b> Factura Enviada</b> con el N°. <b>"+obj.doc_number+"</b> emitida desde la compañia: <b>"+obj.company_name+"</b></h4>";
                         break
                     case '2':
                          var msj="<h4 align='justify'>La <b>Factura Recibida </b>que intenta guardar, ya se encuentra registrada con el carrier <b>"+obj.carrier+"</b>, en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b>, con el N°. <b>"+obj.doc_number+"</b></h4>";
@@ -1322,10 +1300,10 @@ function roundNumber(number,decimals)
                 msj_confirm:msj_confirm,
                 msj_change:msj_change,
                 resultadoContrato:resultadoContrato,
-                resuelveInputContrato:resuelveInputContrato,
+                resuelveTP:resuelveTP,
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
-                resuelveInputPeriodo:resuelveInputPeriodo
+                resuelvePeriodo:resuelvePeriodo
 	};
 })();
 
@@ -1357,25 +1335,25 @@ $SORI.AJAX=(function()
 		});
 		id=null;
 	}
-
 	/**
 	 * Metodo encargado de enviar la solicutid de actualizar por ajax de la fila indicada
 	 * @param id int id de la fila que se va actualizar
 	 * @param tope int es el tope de columna a la cual voy a leer, se pasa a getData
+	 * @param especial es usado solo para editar el monto de las disputas en disputas recibidas y enviadas (el uso de esta opcion dependera de tope, quien, si tope es diferente de 2)
 	 * @access public
 	 */
-	function actualizar(id,tope)
+	function actualizar(id,tope,especial)
 	{       
-            if(tope=='2'){
-                    var url = "update/"+id;
+            if(tope == "2"){
+                    var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
                 }else{
-                    var url = "../AccountingDocument/UpdateDisputa/"+id;
+                    var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                 }
 		$.ajax(
 		{
 			type:'POST',
 			url:url,
-			data:$SORI.UTILS.getData(id,tope),
+			data:urlData,
 			success:function(data)
 			{
 				console.log(data);

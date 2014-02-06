@@ -87,6 +87,7 @@ class BalanceController extends Controller
 		$model=new Balance;
 		$this->render('ventas',array('model'=>$model));
 	}
+
 	/**
 	 *
 	 */
@@ -114,6 +115,9 @@ class BalanceController extends Controller
 		$this->render('upload');               
 	}
 
+	/**
+	 *
+	 */
 	public function actionUploadtemp()
 	{
 		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
@@ -138,6 +142,9 @@ class BalanceController extends Controller
 		$this->render('uploadtemp');               
 	}
 
+	/**
+	 *
+	 */
 	public function actionCargatemp()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
@@ -155,9 +162,11 @@ class BalanceController extends Controller
         echo $return;// it's array
 	}
 
+	/**
+	 *
+	 */
 	public function actionGuardartemp()
 	{
-
 		//Delclarando variables utiles para el codigo
 		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
 		//html preparado para mostrar resultados
