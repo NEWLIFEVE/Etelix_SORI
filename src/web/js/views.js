@@ -477,10 +477,10 @@ $('#AccountingDocumentTemp_carrier_groups').change(function()
             data: 'id_group='+$(this).val(),
             success: function(data) 
             {
-               if($('#AccountingDocumentTemp_id_type_accounting_document').val()=="4" && data==1)
-                   $(".bank_fee").show("slow");
-                else 
-                   $(".bank_fee").hide("slow"); 
+               if($('#AccountingDocumentTemp_id_type_accounting_document').val()=="4" || $('#AccountingDocumentTemp_id_type_accounting_document').val()=="3"){
+               if(data==1)  $(".bank_fee").show("slow");
+                else        $(".bank_fee").hide("slow"); 
+               }
             }
     });
 });

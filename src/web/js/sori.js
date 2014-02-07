@@ -123,8 +123,8 @@ $SORI.UI=(function()
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -247,8 +247,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -333,7 +333,12 @@ $SORI.UI=(function()
                 if(tipo=="confirma")
                 {  
                    $('.cargando,.mensaje').fadeOut('slow'); 
+                   var head=$("#"+$fila[0].id).parent().parent();
                    $fila.remove();
+                   var trs=head.children().children();
+                   if(trs.length <= 1){
+                    head.remove();
+                   }
                    $SORI.AJAX.borrar($fila[0].id);
                 }else{
                   $('.cargando,.mensaje').fadeOut('slow'); 
@@ -362,7 +367,7 @@ $SORI.UI=(function()
 //                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
-                            _elimina_doc($fila);
+                                _elimina_doc($fila);
 			}
 //                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
@@ -411,6 +416,7 @@ $SORI.UI=(function()
 			if($(this).attr('name')=='edit_Pagos')
 			{
 				_editar_Pagos($fila);
+                                _readonly("amount_bank_fee","N/A");
 			}
 			if($(this).attr('name')=='save_Pagos')
 			{
@@ -882,7 +888,7 @@ function roundNumber(number,decimals)
                         label='.Label_F_Rec';
                         break
                     case '3':
-                        var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+group+issue_date+doc_number+amount+amount_bank_fee+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_Pagos",
                         label='.LabelPagos';
                         break
@@ -1175,13 +1181,13 @@ function roundNumber(number,decimals)
                     var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.GrupoDocument'];
                     $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                     $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
-                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_carrier_groups").val('');
                     $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                     break
                 case '4'://cobro
                     var mostrar =['.numDocument','.montoDoc','.Moneda','.validReceivedDate','.GrupoDocument'];
                     $SORI.UI.formChangeAccDoc(ocultar, mostrar);
-                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date, #AccountingDocumentTemp_carrier_groups").val('');
                     $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
                     $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                     break

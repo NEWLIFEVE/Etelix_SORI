@@ -168,12 +168,12 @@ class AccountingDocumentTempController extends Controller
          */
         public function saveBankFeeFinal($modelADT,$modelAD)
         {
-             if($modelADT->id_type_accounting_document=="4" || $modelAD->id_type_accounting_document=="4"){
+             if($modelADT->id_type_accounting_document=="3" && $modelAD->id_type_accounting_document=="3"||$modelAD->id_type_accounting_document=="4"&& $modelADT->id_type_accounting_document=="4"){
                $modelBFT= AccountingDocumentTemp::getid_bank_fee($modelADT->id);
                  if($modelBFT != NULL){
                      $modelBF = new AccountingDocument;
                      $modelBF->setAttributes($modelBFT->getAttributes());
-                     $modelBF->id_charge=$modelAD->id;
+                     $modelBF->id_accounting_document=$modelAD->id;
                      if($modelBF->save()){
                          $this->loadModel($modelBFT->id)->delete();
                      } 
@@ -216,7 +216,7 @@ class AccountingDocumentTempController extends Controller
                             echo "Algo salio mal";
                 }
             }
-            if($type_doc==4){                                                 
+            if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4){                                                
                 $this->updateBackFee($id);
             }
         }
@@ -252,7 +252,6 @@ class AccountingDocumentTempController extends Controller
               } 
              
         }
-
         /**
          * Deletes a particular model.
          * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -264,12 +263,13 @@ class AccountingDocumentTempController extends Controller
          */
 	public function actionBorrar($id)
 	{
-                $type_doc=AccountingDocumentTemp::getTypeDoc($id);               
-		$this->loadModel($id)->delete();
-                if($type_doc==4){                                                 
-                    $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id);    
-                    if($id_bank_fee->id!=NULL)$this->loadModel($id_bank_fee->id)->delete();
-                }
+            $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
+            if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4){                                                 
+                $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+                if($id_bank_fee->id!=NULL)$this->loadModel($id_bank_fee->id)->delete();
+            }
+            $this->loadModel($id)->delete();
+            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
 	}
 
 	/**

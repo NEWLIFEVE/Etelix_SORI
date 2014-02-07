@@ -424,6 +424,7 @@
                     <td> Fecha de Emisión </td>
                     <td> N°Documento </td>
                     <td> Cantidad </td>
+                    <td> Bank fee </td>
                     <td> Moneda </td>
                     <td> Acciones </td>
                 </tr>
@@ -432,11 +433,15 @@
                     {
                         foreach ($lista_Pagos as $key => $value)
                         { 
+                            if($value->bank_fee!="")$bank_fee=$value->bank_fee;
+                              else                  $bank_fee="N/A";
+                              
                             echo "<tr class='vistaTemp' id='".$value->id."'>
                                     <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
                                     <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
                                     <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
                                     <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                    <td id='AccountingDocumentTemp[amount_bank_fee]'>".$bank_fee."</td>
                                     <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
                                     <td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                   </tr>";  
