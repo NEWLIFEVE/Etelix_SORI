@@ -333,12 +333,13 @@ $SORI.UI=(function()
                 if(tipo=="confirma")
                 {  
                    $('.cargando,.mensaje').fadeOut('slow'); 
-                   var head=$("#"+$fila[0].id).parent().parent();
+                   var head=$("#"+$fila[0].id).parent().parent().parent();
                    $fila.remove();
-                   var trs=head.children().children();
-                   if(trs.length <= 1){
-                    head.remove();
-                   }
+                   var trs=head.children().children().children();
+                    if(trs.length <= 1){
+                     head.children().fadeOut(); head.children().fadeOut();
+                     console.log("oculto el head");
+                    }
                    $SORI.AJAX.borrar($fila[0].id);
                 }else{
                   $('.cargando,.mensaje').fadeOut('slow'); 
