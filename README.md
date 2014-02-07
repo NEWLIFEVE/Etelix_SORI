@@ -3,6 +3,9 @@
 
 Sistema de Origen
 
+Relase 1.5.4
+-Registro bank fee para pagos, mejoras en condiciones comerciales.
+-mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
 
 Relase 1.5.4
 -modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
