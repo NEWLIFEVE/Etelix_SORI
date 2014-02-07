@@ -123,8 +123,8 @@ $SORI.UI=(function()
 			obj[0].children[i].appendChild(input);
 			input=null;
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img name='save_Pagos' alt='save' src='/images/icon_check.png'><img name='cancel_Pagos' alt='cancel' src='/images/icon_arrow.png'>";
 		obj=null;
 		accion();
 	}
@@ -247,8 +247,8 @@ $SORI.UI=(function()
 			obj[0].children[i].children[0].remove();
 			obj[0].children[i].innerHTML=contenido[i];
 		}
-		obj[0].children[5].innerHTML="";
-		obj[0].children[5].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj[0].children[6].innerHTML="";
+		obj[0].children[6].innerHTML="<img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
 		obj=contenido=null;
 		accion();
 	}
@@ -333,7 +333,12 @@ $SORI.UI=(function()
                 if(tipo=="confirma")
                 {  
                    $('.cargando,.mensaje').fadeOut('slow'); 
+                   var head=$("#"+$fila[0].id).parent().parent();
                    $fila.remove();
+                   var trs=head.children().children();
+                   if(trs.length <= 1){
+                    head.remove();
+                   }
                    $SORI.AJAX.borrar($fila[0].id);
                 }else{
                   $('.cargando,.mensaje').fadeOut('slow'); 
@@ -362,7 +367,7 @@ $SORI.UI=(function()
 //                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
-                            _elimina_doc($fila);
+                                _elimina_doc($fila);
 			}
 //                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
@@ -411,6 +416,7 @@ $SORI.UI=(function()
 			if($(this).attr('name')=='edit_Pagos')
 			{
 				_editar_Pagos($fila);
+                                _readonly("amount_bank_fee","N/A");
 			}
 			if($(this).attr('name')=='save_Pagos')
 			{
@@ -753,7 +759,7 @@ function roundNumber(number,decimals)
                             $("#F_P_produccion_Oculto").val(obj.production_date);
                             $("#TerminoP_Oculto").val(obj.termino_pago);
                             $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
-                            $("#Contrato_id_fact_period_Oculto").val(obj.fact_period);
+                            $("#id_fact_period_Oculto").val(obj.fact_period);
                             $("#dia_ini_fact_Oculto").val(obj.dia_ini_fact);
                             $("#divide_fact_Oculto").val(obj.divide_fact);
                             $("#monetizable_Oculto").val(obj.monetizable);
@@ -882,7 +888,7 @@ function roundNumber(number,decimals)
                         label='.Label_F_Rec';
                         break
                     case '3':
-                        var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        var tabla = id+group+issue_date+doc_number+amount+amount_bank_fee+currency+"<td><img class='edit' name='edit_Pagos' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
                         clase=".lista_Pagos",
                         label='.LabelPagos';
                         break
@@ -991,55 +997,26 @@ function roundNumber(number,decimals)
             $(clase).css(attr,value);
         }
         /**
-        * esta funcion obligatoriamente se debe modular, pero por los momentos... :[
-        * @param {type} fact_period_NameO
-        * @param {type} fact_period_Name
-        * @param {type} dia_ini_fact_NameO
-        * @param {type} dia_ini_fact_Name
-        * @param {type} divide_fact_NameO
-        * @param {type} divide_fact_Name
-        * @param {type} TP_supplier_Oculto
-        * @param {type} termino_pago_supplier
-        * @param {type} diasDisputaOculto
-        * @param {type} dias_disputa
-        * @param {type} diasDisputaSolvedOculto
-        * @param {type} dias_disputa_solved
-        * @param {type} F_Firma_Contrato_Oculto
-        * @param {type} sign_date
-        * @param {type} F_P_produccion_Oculto
-        * @param {type} production_date
-        * @param {type} TPOculto
-        * @param {type} termino_pago
-        * @param {type} monetizableOculto
-        * @param {type} monetizable
-        * @param {type} creditoO
-        * @param {type} credito
-        * @param {type} compraO
-        * @param {type} compra
-        * @param {type} Contrato_upOculto
-        * @param {type} Contrato_up
-        * @param {type} Contrato_statusOculto
-        * @param {type} Contrato_status
-        * @returns {undefined} * 
-        */
-        function casosParaMsjConfirmContrato(cambio_bank_fee,bank_feeNameO,bank_feeName,fact_period_NameO,fact_period_Name,dia_ini_fact_NameO,dia_ini_fact_Name,divide_fact_NameO,divide_fact_Name,TP_supplier_Oculto,termino_pago_supplier,diasDisputaOculto,dias_disputa,diasDisputaSolvedOculto,dias_disputa_solved,F_Firma_Contrato_Oculto,sign_date,F_P_produccion_Oculto,production_date,TPOculto,termino_pago,monetizableOculto,monetizable,creditoO,credito,compraO,compra,Contrato_upOculto,Contrato_up,Contrato_statusOculto,Contrato_status)
+         * 
+         * @returns {undefined}
+         */
+        function coloursIfChange()
         {
-           if(TPOculto != termino_pago)                        $SORI.UI.changeCss($('.termino_pName'),'color','red');
-           if(TP_supplier_Oculto != termino_pago_supplier )    $SORI.UI.changeCss($('.termino_p_supp_Name'),'color','red');
-           if(fact_period_NameO != fact_period_Name )          $SORI.UI.changeCss($('.fact_period_Name'),'color','red');
-           if(dia_ini_fact_NameO != dia_ini_fact_Name )        $SORI.UI.changeCss($('.dia_ini_fact_Name'),'color','red');
-           if(divide_fact_NameO != divide_fact_Name )          $SORI.UI.changeCss($('.divide_fact_Name'),'color','red');
-           if(monetizableOculto != monetizable)                $SORI.UI.changeCss($('.monetizableName'),'color','red');
-           if(diasDisputaOculto != dias_disputa )              $SORI.UI.changeCss($('.dias_disputa'),'color','red');
-           if(diasDisputaSolvedOculto != dias_disputa_solved ) $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
-           if(F_Firma_Contrato_Oculto != sign_date)            $SORI.UI.changeCss($('.sign_date'),'color','red');
-           if(F_P_produccion_Oculto != production_date)        $SORI.UI.changeCss($('.production_date'),'color','red'); 
-           if(creditoO != credito)                             $SORI.UI.changeCss($('.credito'),'color','red');
-           if(compraO != compra)                               $SORI.UI.changeCss($('.compra'),'color','red');
-           if(Contrato_upOculto != Contrato_up)                $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
-           if(Contrato_statusOculto != Contrato_status)        $SORI.UI.changeCss($('.status'),'color','red');
-           if(bank_feeNameO != bank_feeName)                   $SORI.UI.changeCss($('.bank_feeName'),'color','red');
-           if(cambio_bank_fee!="")                             $SORI.UI.changeCss($('.mensaje'),'top','6%!important');
+           if($("#TerminoP_Oculto").val() != $("#Contrato_id_termino_pago").val() && $("#TerminoP_Oculto").val()!="")                           $SORI.UI.changeCss($('.termino_pName'),'color','red');
+           if($("#TerminoP_supplier_Oculto").val() != $("#Contrato_id_termino_pago_supplier").val() && $("#TerminoP_supplier_Oculto").val()!="")$SORI.UI.changeCss($('.termino_p_supp_Name'),'color','red');
+           if($("#id_fact_period_Oculto").val() != $("#Contrato_id_fact_period").val() && $("#id_fact_period_Oculto").val()!="")                $SORI.UI.changeCss($('.fact_period_Name'),'color','red');
+           if($("#dia_ini_fact_Oculto").val() != $("#dia_ini_fact").val() && $("#dia_ini_fact_Oculto").val()!="")                               $SORI.UI.changeCss($('.dia_ini_fact_Name'),'color','red');
+           if($("#divide_fact_Oculto").val() != $("#divide_fact").val() && $("#divide_fact_Oculto").val()!="")                                  $SORI.UI.changeCss($('.divide_fact_Name'),'color','red');
+           if($("#monetizable_Oculto").val() != $("#Contrato_id_monetizable").val() && $("#monetizable_Oculto").val()!="")                      $SORI.UI.changeCss($('.monetizableName'),'color','red');
+           if($("#dias_disputa_Oculto").val() != $("#Contrato_id_disputa").val() && $("#dias_disputa_Oculto").val()!="")                        $SORI.UI.changeCss($('.dias_disputa'),'color','red');
+           if($("#dias_disputa_solved_Oculto").val() != $("#Contrato_id_disputa_solved").val() && $("#dias_disputa_solved_Oculto").val()!="")   $SORI.UI.changeCss($('.dias_disputa_solved'),'color','red');
+           if($("#F_Firma_Contrato_Oculto").val() != $("#Contrato_sign_date").val() && $("#F_Firma_Contrato_Oculto").val()!="")                 $SORI.UI.changeCss($('.sign_date'),'color','red');
+           if($("#F_P_produccion_Oculto").val() != $("#Contrato_production_date").val() && $("#F_P_produccion_Oculto").val()!="")               $SORI.UI.changeCss($('.production_date'),'color','red'); 
+           if($("#credito_Oculto").val() != $("#Contrato_id_limite_credito").val() && $("#credito_Oculto").val()!="")                           $SORI.UI.changeCss($('.credito'),'color','red');
+           if($("#compra_Oculto").val() != $("#Contrato_id_limite_compra").val() && $("#compra_Oculto").val()!="")                              $SORI.UI.changeCss($('.compra'),'color','red');
+           if($("#Contrato_upOculto").val() != $("#Contrato_up").val() && $("#Contrato_upOculto").val()!="")                                    $SORI.UI.changeCss($('.Contrato_upC'),'color','red');
+           if($("#Contrato_statusOculto").val() != $("#Contrato_status").val()&&$("#Contrato_statusOculto").val()!="")                          $SORI.UI.changeCss($('.Contrato_StatusC'),'color','red');
+           if($("#bank_feeOculto").val() != $("#Contrato_bank_fee").val() && $("#bank_feeOculto").val()!="")                                    $SORI.UI.changeCss($('.bank_feeName'),'color','red');
         }
         /**
          * 
@@ -1204,13 +1181,13 @@ function roundNumber(number,decimals)
                     var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.GrupoDocument'];
                     $SORI.UI.formChangeAccDoc(ocultar, mostrar);
                     $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
-                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
+                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_carrier_groups").val('');
                     $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                     break
                 case '4'://cobro
                     var mostrar =['.numDocument','.montoDoc','.Moneda','.validReceivedDate','.GrupoDocument'];
                     $SORI.UI.formChangeAccDoc(ocultar, mostrar);
-                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_issue_date, #AccountingDocumentTemp_carrier_groups").val('');
                     $("#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier").val('');
                     $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
                     break
@@ -1264,9 +1241,12 @@ function roundNumber(number,decimals)
         function resultadoContrato(var_hide,var_show,if_result,else_result)
         {
             if(var_hide != var_show ){
-                if(var_hide==null||var_hide=="")return else_result;
-                  else       return if_result;
-            } else {
+                if(var_hide==null||var_hide==""){
+                    return else_result;
+                }else {
+                    return if_result;
+                }
+            }else{
                 return else_result; 
             }
         }
@@ -1294,7 +1274,7 @@ function roundNumber(number,decimals)
                 seleccionaCampos:seleccionaCampos,
                 elijeOpciones:elijeOpciones,
                 sesionCerrada:sesionCerrada,
-                casosParaMsjConfirmContrato:casosParaMsjConfirmContrato,
+                coloursIfChange:coloursIfChange,
                 roundNumber:roundNumber,
                 msj_cargando:msj_cargando,
                 msj_confirm:msj_confirm,

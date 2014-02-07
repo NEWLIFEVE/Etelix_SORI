@@ -202,7 +202,8 @@ class AccountingDocumentTemp extends CActiveRecord
         */
         public static function getTypeDoc($id)
         {
-           return self::model()->find("id =:id",array(":id"=>$id))->id_type_accounting_document;
+//           return self::model()->find("id =:id",array(":id"=>$id))->id_type_accounting_document;
+           return self::model()->find("id =:id",array(":id"=>$id));
         }
         /**
          * este metodo solo aplica a la hora de eliminar bank fee enlazados a los cobros
@@ -294,11 +295,12 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function listaPagos($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Pago Temp');
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document,(select x.amount from accounting_document_temp x where x.id_accounting_document_temp=d.id) as bank_fee, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, issue_date, from_date, to_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
-			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
+			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
+                     ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -313,6 +315,7 @@ class AccountingDocumentTemp extends CActiveRecord
                                    WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
                               WHERE d.id_type_accounting_document =4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
                             ORDER BY id DESC";
+
 		
 		$model=self::model()->findAllBySql($sql);
 
@@ -716,8 +719,11 @@ class AccountingDocumentTemp extends CActiveRecord
 //                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
 //                Log::registrarLog($idAction, NULL, $model->id);
 //            }
+            if($model->id_type_accounting_document==4)$type_bank_fee=14;
+            if($model->id_type_accounting_document==3)$type_bank_fee=15;
+            
             $modelBF = new AccountingDocumentTemp;
-            $modelBF->id_type_accounting_document = 14;
+            $modelBF->id_type_accounting_document = $type_bank_fee;
             $modelBF->id_carrier = $model->id_carrier;
             $modelBF->issue_date = $model->issue_date;
             $modelBF->valid_received_date = $model->issue_date;
