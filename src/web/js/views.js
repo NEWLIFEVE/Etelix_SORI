@@ -71,7 +71,7 @@ function valForm(objeto)
         }
         else
         {
-            var html="<p>Este este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
+            var html="<p>Este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
             var estilo={};
             objeto.interna="confirm";
             objeto.lightbox(html,estilo);
