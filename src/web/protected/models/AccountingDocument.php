@@ -210,8 +210,8 @@ class AccountingDocument extends CActiveRecord
         { 
             switch ($model->id_type_accounting_document){
                 case '1':
-                    //return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
-                    return self::model()->find("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document)); 
+                    $facturas= self::model()->findAll("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    return AccountingDocumentTemp::getExistDocCompany($model, $facturas);
                     break;
                 case '2':
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
@@ -274,18 +274,25 @@ class AccountingDocument extends CActiveRecord
 
 		return $model;
 	}
+        /**
+         * 
+         * @param type $modelAD
+         * @return boolean
+         */
         public static function UpdateProv($modelAD)
         {
-            if($modelAD->id_type_accounting_document=="1")  $tipo_prov="12";
-            else  $tipo_prov="13";
-            
-                $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
-                if($modelProv!=NULL){ 
-                $modelProv->confirm="-1";
-		if($modelProv->save())  return true;
-		   else   return false;
-                }else{
-                    return false;
-                }
+            if($modelAD->id_type_accounting_document=="1"||$modelAD->id_type_accounting_document=="2"){
+                if($modelAD->id_type_accounting_document=="1")  $tipo_prov="12";
+                else  $tipo_prov="13";
+
+                    $modelProv = AccountingDocument::model()->find("id_carrier=:idCarrier and from_date=:from_date and to_date=:to_date and id_type_accounting_document=:tipo_prov",array(":idCarrier"=>$modelAD->id_carrier,":from_date"=>$modelAD->from_date,":to_date"=>$modelAD->to_date,":tipo_prov"=>$tipo_prov));        
+                    if($modelProv!=NULL){ 
+                    $modelProv->confirm="-1";
+                    if($modelProv->save())  return true;
+                       else   return false;
+                    }else{
+                        return false;
+                    }
+            }
         }
 }

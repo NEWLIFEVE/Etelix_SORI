@@ -28,6 +28,7 @@
  * @property integer $id_accounting_document
  * @property integer $id_destination
  * @property integer $id_destination_supplier
+ * @property integer $id_accounting_document_temp
  * 
  * The followings are the available model relations:
  * @property TypeAccountingDocument $idTypeAccountingDocument
@@ -62,14 +63,14 @@ class AccountingDocumentTemp extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         array('id_type_accounting_document', 'required'),
-			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier', 'numerical', 'integerOnly'=>true),
+			array('id_type_accounting_document, id_carrier, id_currency, confirm, id_accounting_document, id_destination, id_destination_supplier, id_accounting_document_temp', 'numerical', 'integerOnly'=>true),
 			array('minutes, amount, bank_fee, min_etx, min_carrier, rate_etx, rate_carrier,select_dest_supplier,carrier_groups', 'numerical'),
 			array('doc_number,input_dest_supplier', 'length', 'max'=>50),
 			array('note', 'length', 'max'=>250),
 			array('issue_date, from_date, to_date, valid_received_date, sent_date, email_received_date, valid_received_hour, email_received_hour', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, bank_fee, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier', 'safe', 'on'=>'search'),
+			array('id, issue_date, from_date, to_date, valid_received_date, sent_date, doc_number, minutes, amount, bank_fee, note, id_type_accounting_document, id_carrier, email_received_date, valid_received_hour, email_received_hour, id_currency, confirm, min_etx, min_carrier, rate_etx, rate_carrier, id_accounting_document, id_destination, id_destination_supplier, id_accounting_document_temp', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,6 +86,7 @@ class AccountingDocumentTemp extends CActiveRecord
                         'idCarrier' => array(self::BELONGS_TO, 'Carrier', 'id_carrier'),
                         'idCurrency' => array(self::BELONGS_TO, 'Currency', 'id_currency'),
                         'idAccountingDocument' => array(self::BELONGS_TO, 'AccountingDocument', 'id_accounting_document'),
+                        'idCharge' => array(self::BELONGS_TO, 'AccountingDocumentTemp', 'id_accounting_document_temp'),
                         'idDestination' => array(self::BELONGS_TO, 'Destination', 'id_destination'),
                         'idDestinationSupplier' => array(self::BELONGS_TO, 'DestinationSupplier', 'id_destination_supplier'),
 			
@@ -123,6 +125,7 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_destination' => 'Destino Etelix',
 			'id_destination_supplier' => 'Destino Proveedor',
 			'bank_fee' => 'Monto Bank Fee',
+			'id_accounting_document_temp' => 'id_accounting_document_temp',
 		);
 	}
 
@@ -168,6 +171,7 @@ class AccountingDocumentTemp extends CActiveRecord
 		$criteria->compare('id_accounting_document',$this->id_accounting_document);
 		$criteria->compare('$id_destination',$this->id_destination);
 		$criteria->compare('$id_destination_supplier',$this->id_destination_supplier);
+		$criteria->compare('$id_accounting_document_temp',$this->id_accounting_document_temp);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -184,8 +188,7 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
-       
+  
 //        falta.....................
         public static function getListDocTemp()
         {
@@ -199,7 +202,8 @@ class AccountingDocumentTemp extends CActiveRecord
         */
         public static function getTypeDoc($id)
         {
-           return self::model()->find("id =:id",array(":id"=>$id))->id_type_accounting_document;
+//           return self::model()->find("id =:id",array(":id"=>$id))->id_type_accounting_document;
+           return self::model()->find("id =:id",array(":id"=>$id));
         }
         /**
          * este metodo solo aplica a la hora de eliminar bank fee enlazados a los cobros
@@ -208,8 +212,7 @@ class AccountingDocumentTemp extends CActiveRecord
          */
         public static function getid_bank_fee($id)
         {
-            var_dump($id);
-           return self::model()->find("id_accounting_document =:idAcDoc",array(":idAcDoc"=>$id));
+           return self::model()->find("id_accounting_document_temp =:idAcDoc",array(":idAcDoc"=>$id));
         }
         /*
         * con el id de documento me trae el id de carrier
@@ -292,11 +295,12 @@ class AccountingDocumentTemp extends CActiveRecord
         public static function listaPagos($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Pago Temp');
-		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
+		$sql="SELECT d.id, d.issue_date, d.from_date, d.to_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, t.name AS id_type_accounting_document,(select x.amount from accounting_document_temp x where x.id_accounting_document_temp=d.id) as bank_fee, g.name AS id_carrier, e.name AS id_currency
 			  FROM(SELECT id, issue_date, from_date, to_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency
 			  	   FROM accounting_document_temp
 			  	   WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
-			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id ORDER BY id DESC";
+			  WHERE d.id_type_accounting_document=3 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
+                     ORDER BY id DESC";
 		$model=self::model()->findAllBySql($sql);
 
 		return $model;
@@ -305,12 +309,13 @@ class AccountingDocumentTemp extends CActiveRecord
 	{
             $idAction = LogAction::getLikeId('Crear Cobro Temp');
 		$sql="SELECT d.id,  d.valid_received_date, d.sent_date, d.doc_number, d.minutes, d.amount, d.note, d.id_accounting_document, t.name AS id_type_accounting_document,
-                            (select x.amount from accounting_document_temp x where x.id_accounting_document=d.id) as bank_fee, g.name as id_carrier, e.name AS id_currency
+                            (select x.amount from accounting_document_temp x where x.id_accounting_document_temp=d.id) as bank_fee, g.name as id_carrier, e.name AS id_currency
                               FROM(SELECT id, valid_received_date, sent_date, doc_number, minutes, amount, note, id_type_accounting_document, id_carrier, id_currency,id_accounting_document
                                    FROM accounting_document_temp
                                    WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
                               WHERE d.id_type_accounting_document =4 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
                             ORDER BY id DESC";
+
 		
 		$model=self::model()->findAllBySql($sql);
 
@@ -377,8 +382,8 @@ class AccountingDocumentTemp extends CActiveRecord
         { 
             switch ($model->id_type_accounting_document){
                 case '1':
-                    // return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date)); 
-                    return self::model()->find("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document)); 
+                   $facturas= self::model()->findAll("doc_number=:doc_number and id_type_accounting_document=:tipo",array(":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document));
+                    return self::getExistDocCompany($model, $facturas);
                     break;
                 case '2':
                     return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and from_date=:from_date and to_date=:to_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":from_date"=>$model->from_date,":to_date"=>$model->to_date));
@@ -409,6 +414,28 @@ class AccountingDocumentTemp extends CActiveRecord
                     break;
             }
         } 
+        /**
+         * metodo que determina si la factura enviada con el doc_number ha sido guardada, y en caso de que si, determina si fue emitida por la misma compáñia u otra...
+         * @param type $model
+         * @param type $facturas
+         * @return boolean
+         */
+        public static function getExistDocCompany($model,$facturas)
+        {                  
+            $return=NULL;
+            if($facturas==NULL){
+               $return= NULL; 
+            }else{
+                $company_to_save=Contrato::DatosContrato($model->id_carrier);
+                foreach ($facturas as $key => $factura) {
+                    $company_save=Contrato::DatosContrato($factura->id_carrier);
+                    if($company_to_save->id_company == $company_save->id_company){
+                        $return = TRUE;
+                    } 
+                }  
+            }
+            return $return;
+        }
         /**
          * busca los destinos supplier asignados al carrier
          */
@@ -479,6 +506,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->id_destination))$params['destination'] =Destination::getName($model->id_destination);
             if (isset($model->id_currency))$params['currency'] =  Currency::getName($model->id_currency);
             if (isset($model->bank_fee))$params['amount_bank_fee'] = $model->bank_fee;
+            $params['company_name'] = Company::getName(Contrato::geIdCompany($model->id_carrier));
             $params['valid'] = $valid;
             return $params;
         }
@@ -527,6 +555,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->id_accounting_document_temp=NULL;
                     $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->minutes = Utility::ComaPorPunto($model->minutes);
                     $model->note=Utility::snull($model->note);
@@ -542,6 +571,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->rate_carrier=NULL;
                     $model->id_destination_supplier=NULL;
                     $model->id_destination=NULL;
+                    $model->id_accounting_document_temp=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->amount = Utility::ComaPorPunto($model->amount);
@@ -568,6 +598,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->id_destination=NULL;
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
+                    $model->id_accounting_document_temp=NULL;
                     $model->amount=Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
@@ -595,6 +626,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
                     $model->confirm=1;
+                    $model->id_accounting_document_temp=NULL;
                     break;
                 case 5:
                     $model->issue_date=date("Y-m-d");
@@ -611,6 +643,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_accounting_document_temp=NULL;
                     break;
                 case 6:
                     $model->issue_date=date("Y-m-d");
@@ -628,6 +661,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     $model->id_destination_supplier=DestinationSupplier::resolvedId($model->select_dest_supplier,$model->input_dest_supplier,$model->id_carrier);
+                    $model->id_accounting_document_temp=NULL;
                     break;
                 case 7:
 //                    $model->issue_date=date("Y-m-d");
@@ -649,6 +683,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_accounting_document_temp=NULL;
                     break;
                 case 8:
 //                    $model->issue_date=date("Y-m-d");
@@ -670,6 +705,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
+                    $model->id_accounting_document_temp=NULL;
                     break;
             }
             return $model;
@@ -683,12 +719,15 @@ class AccountingDocumentTemp extends CActiveRecord
 //                $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
 //                Log::registrarLog($idAction, NULL, $model->id);
 //            }
+            if($model->id_type_accounting_document==4)$type_bank_fee=14;
+            if($model->id_type_accounting_document==3)$type_bank_fee=15;
+            
             $modelBF = new AccountingDocumentTemp;
-            $modelBF->id_type_accounting_document = 14;
+            $modelBF->id_type_accounting_document = $type_bank_fee;
             $modelBF->id_carrier = $model->id_carrier;
             $modelBF->issue_date = $model->issue_date;
             $modelBF->valid_received_date = $model->issue_date;
-            $modelBF->id_accounting_document = $model->id;
+            $modelBF->id_accounting_document_temp = $model->id;
             $modelBF->amount = $model->bank_fee;
             $modelBF->id_currency = $model->id_currency;
             $modelBF->confirm = 1;

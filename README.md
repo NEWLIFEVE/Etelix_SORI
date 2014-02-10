@@ -3,22 +3,26 @@
 
 Sistema de Origen
 
+Relase 1.5.4
+-Registro bank fee para pagos, mejoras en condiciones comerciales.
+-mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
+
 Realese 1.5.5
 -Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier
 -Se agrego menu para tipo de usuario LEGAL
 
-Relase 1.5.4
--Reparacion de comportamiento en inputs dentro de condiciones comerciales.
--cambio del select id_carrier por un input autocomplete en la misma interfaz.
-
 
 Relase 1.5.4
-- Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.
-- Se agrego input bank fee, donde se declara si eteliz asume bank fee o no, esta opcion sera aplicada en todos los carrier pertenecientes a un mismo grupo, si modifica otro carrier del mismo grupo, la condicion se volvera a modificar y cambiara para los demas carrier.
-- Se modificaron los msjs en condiciones comerciales para que muestre una tabla mas organizada de las condiciones elegidas.
-- En documentos contables, al seleccionar cobros y un grupo, la aplicacion buscara si se asume el bank fee para el grupo elegido.
-- Al guardar cobros, el sistema automaticamente guardara otro documento contable paralelo con el monto bank fee introducido por el usuario.
-- Si se elimina el cobro, tambien se eliminara el bank fee asociado.
+-modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
+-reparacion de tabla de disputas en interfaz de documentos contables, ahora al modificar los minunos y tarifas actualiza de inmediato los montos y el valor de las disputa.
+-se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_accounting_document_temp" a accountingDocument y accountingDocumentTemp para lograrlo, 
+-se agrego un nuevo metodo encargado de almacenar el bank fee definitivo, y se mejoro un poco la sintaxis. todas lass operaciones funcionando correctamente.
+-Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.
+-Se agrego input bank fee, donde se declara si eteliz asume bank fee o no, esta opcion sera aplicada en todos los carrier pertenecientes a un mismo grupo, si modifica otro carrier del mismo grupo, la condicion se volvera a modificar y cambiara para los demas carrier.
+-Se modificaron los msjs en condiciones comerciales para que muestre una tabla mas organizada de las condiciones elegidas.
+-En documentos contables, al seleccionar cobros y un grupo, la aplicacion buscara si se asume el bank fee para el grupo elegido.
+-Al guardar cobros, el sistema automaticamente guardara otro documento contable paralelo con el monto bank fee introducido por el usuario.
+-Si se elimina el cobro, tambien se eliminara el bank fee asociado.
 
 Realese 1.5.3
 -Agregado Bank fee a COndiciones Ocmerciales

@@ -108,7 +108,7 @@ class TypeAccountingDocument extends CActiveRecord
 	 */
 	public static function getListTypeAccountingDocument()
     {
-        return CHtml::listData(TypeAccountingDocument::model()->findAllBySql("select id, name from type_accounting_document where id not in (9,10,11,12,13,14)"), 'id', 'name');
+        return CHtml::listData(TypeAccountingDocument::model()->findAllBySql("select id, name from type_accounting_document where id not in (9,10,11,12,13,14,15)"), 'id', 'name');
     }
 
     /**
