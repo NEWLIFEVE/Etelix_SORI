@@ -482,10 +482,27 @@ width: 20%;
     top: 36px;
     right: 0;
 }
-.cancelarDestProv
+.newGroup, .cancelarnewGroup
+{
+    color: rgba(111,204,187,1);
+    width: 5%;
+    font-weight: bold;
+    font-size: 27px;
+    position: static;
+    top: 6px;
+    right: 0;
+    margin-left: 532px;
+    margin-top: -6%;
+}
+.cancelarDestProv, .cancelarnewGroup
 {
     display:none;
 }
+#Carrier_groups
+{
+    text-transform:uppercase;
+}
+
 
 .DestinoProv{
     position: relative;

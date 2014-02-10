@@ -31,7 +31,14 @@
                     'prompt'=>'Seleccione'
                      )
                 ); ?>
+            <?php // echo $form->textField($model,'groups'); ?>
                 <?php echo $form->error($model,'id'); ?>
+<!--            <div class="newGroup">
+                    <label>+</label>
+            </div>
+            <div class="cancelarnewGroup">
+                    <label><</label>
+            </div>-->
 	</div>
 
         <div class="row divCarrier" id="carriers">

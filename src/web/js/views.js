@@ -116,24 +116,15 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
             data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
             success: function(data)
             {
-                var carriers=data.split("/"),
-                managerName=carriers[0].split(","),
-                asigname=carriers[2].split(","),
-                noasigname=carriers[1].split(",");
-                                  
-                if(asigname<="1" && noasigname<="1")
+                var obj=JSON.parse(data);
+               
+                if(obj.asigNames<="1" && obj.noasigNames<="1")
                 {
                     $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o desasignar</h3>","aguanta.png","1500","width:40px; height:90px;"); 
                 }
                 else
                 {
-                    if(asigname=="")  var asig="";
-                      else            var asig='Asignarle: ';
-                    
-                    if(noasigname=="")var desA="";
-                      else            var desA='Dsasignarle:';
-                    
-                    $SORI.UI.msj_confirm("Esta a punto de realizar los siguientes cambios en la Distribucion Comercial para el manager: <br><b>"+managerName+"</b></h4><p><h6>"+asig+"<p>"+asigname+"</h6><p><h6>"+desA+"<p>"+noasigname+"</h6>");
+                    $SORI.UI.msj_confirm("Esta a punto de realizar los siguientes cambios en la Distribucion Comercial para el manager: <br><b>"+obj.managerName+"</b></h4><p><h6>"+$SORI.UI.resultadoContrato(obj.asigNames,"","Asignarle: ","")+"<p>"+obj.asigNames+"</h6><p><h6>"+$SORI.UI.resultadoContrato(obj.noasigNames,"","Dsasignarle: ","")+"<p>"+obj.noasigNames+"</h6>");
                 }
                 $('#confirma,#cancelar').on('click', function()
                 {
@@ -146,17 +137,8 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
                             data: "asignados="+asignados+"&noasignados="+noasignados+"&manager="+manager,
                             success: function(data)
                             {
-                                var carriers=data.split("/"),
-                                managerName=carriers[0].split(","),
-                                asigname=carriers[2].split(","),
-                                noasigname=carriers[1].split(",");
-
-                                if(asigname=="")  var pudo="";
-                                  else            var pudo='Le fue asignado:';
-                                
-                                if(noasigname=="")var nopudo="";
-                                  else            var nopudo='Desasignado:';
-                                $SORI.UI.msj_change("<h5>Al manager <b>" + managerName + "</b><br>" + pudo + "<br><b>" + asigname + "</b></h5><p><h5>" + nopudo + "<br><b>" + noasigname + "</b></h5>","si.png","2000","width:95px; height:95px;"); 
+                                var obj=JSON.parse(data);
+                                $SORI.UI.msj_change("<h5>Al manager <b>" + obj.managerName + "</b><br>" + $SORI.UI.resultadoContrato(obj.asigNames,"","Le fue asignado: ","") + "<br><b>" + obj.asigNames + "</b></h5><p><h5>" + $SORI.UI.resultadoContrato(obj.noasigNames,"","Desasignado: ","")  + "<br><b>" + obj.noasigNames + "</b></h5>","si.png","2000","width:95px; height:95px;"); 
                             }
                         });
                     }
@@ -170,23 +152,28 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
     }
     $("#carriers select option").prop("selected",false);
 });
-          
-$("#options_right").on( "click",function asignadosAnoasignados()
+   /**
+    * asigna y desasigna
+    */       
+$("#options_right, #options_left").on( "click",function ()
 {
-    $('#select_left :selected').each(function(i,selected)
+ switch ($(this).attr('id'))
     {
-        $("#select_left option[value='"+$(selected).val()+"']").remove();
-        $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-    });
-});
-
-$("#options_left").on( "click",  function noasignadosAasignados()
-{
-    $('#select_right :selected').each(function(i,selected)
-    {
-        $("#select_right option[value='"+$(selected).val()+"']").remove();
-        $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-    });
+    case "options_right":
+        $('#select_left :selected').each(function(i,selected)
+        {
+            $("#select_left option[value='"+$(selected).val()+"']").remove();
+            $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+        });
+        break;
+    case "options_left":
+        $('#select_right :selected').each(function(i,selected)
+        {
+            $("#select_right option[value='"+$(selected).val()+"']").remove();
+            $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+        });
+        break;
+    }
 });
 /**
  * 
@@ -327,9 +314,7 @@ $('#botAsignarContrato').click('on',function(e)
         });
     }
 });
-
 //FIIN contrato, add and update
-
 /**
  * FIIN administra las zonas geograficas con los destinos externos e internos
  */
@@ -362,20 +347,15 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
             data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
             success: function(data)
             {
-                var obj = JSON.parse(data),
-                GeographicZoneName = (obj.GeographicZoneName), AsigNames = (obj.asigNames),  NoAsigNames = (obj.noasigNames);
-                if(AsigNames<1&&NoAsigNames<1)
+                var obj = JSON.parse(data);
+               
+                if(obj.asigNames<1 && obj.noasigNames<1)
                 {
                     $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay datos que cambiar</h3>","aguanta.png","1500","width:40px; height:90px;"); 
                 }
                 else
                 {
-                    if(AsigNames=="")   var asig="";
-                      else              var asig='Asignarle: ';
-                    if(NoAsigNames=="") var desA="";
-                      else              var desA = 'Dsasignarle:';
-                      
-                    $SORI.UI.msj_confirm("<h4>Esta a punto de actualizar "+tipoDestino+" la Zona Geográfica: <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4><p><h6><p>"+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6><p><p>"+NoAsigNames+"</h6>");
+                    $SORI.UI.msj_confirm("<h4>Esta a punto de actualizar "+tipoDestino+" la Zona Geográfica: <br><b> "+obj.GeographicZoneName+"</h4><h4></b>"+$SORI.UI.resultadoContrato(obj.asigNames,"","Asignarle: ","")+"</h4><p><h6><p>"+obj.asigNames+"</h6><p><br><h4>"+$SORI.UI.resultadoContrato(obj.noasigNames,"","Dsasignarle: ","")+"</h4><p><h6><p><p>"+obj.noasigNames+"</h6>");
                     $('#confirma,#cancelar').on('click',function()
                     {
                         var tipo=$(this).attr('id');
@@ -388,7 +368,7 @@ $(".botAsignarDestination").on( "click",function DestinosAsignadosNoasignados()
                                 data: "asignados="+asignados+"&noasignados="+noasignados+"&GeographicZone="+GeographicZone,
                                 success: function(data)
                                 {
-                                     $SORI.UI.msj_change("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: <br><b> "+GeographicZoneName+"</h4><h4></b>"+asig+"</h4>\n\<p> <h6><p>"+AsigNames+"</h6><p><br><h4>"+desA+"</h4><p><h6>"+NoAsigNames+"</h6>","si.png","3000","width:95px; height:95px;");      
+                                     $SORI.UI.msj_change("<h4>Se han actualizado los "+tipoDestino+" con la Zona Geográfica: <br><b> "+obj.GeographicZoneName+"</h4><h4></b>"+$SORI.UI.resultadoContrato(obj.asigNames,"","Asignarle: ","")+"</h4>\n\<p> <h6><p>"+obj.asigNames+"</h6><p><br><h4>"+$SORI.UI.resultadoContrato(obj.noasigNames,"","Dsasignarle: ","")+"</h4><p><h6>"+obj.noasigNames+"</h6>","si.png","3000","width:95px; height:95px;");      
                                 }
                             });
                         }
@@ -452,9 +432,8 @@ $('#GeographicZone_id').change(function()
 $('#AccountingDocumentTemp_id_type_accounting_document').change(function()
 {   
     $('#AccountingDocumentTemp_amount').removeAttr('readonly');
-    var tipoDocument= $('#AccountingDocumentTemp_id_type_accounting_document').val();
     $SORI.UI.changeCss('#AccountingDocumentTemp_id_accounting_document','color','#777');
-    $SORI.UI.elijeOpciones(tipoDocument);   
+    $SORI.UI.elijeOpciones($('#AccountingDocumentTemp_id_type_accounting_document').val());   
     $('div.instruccion').slideUp('fast');
     $('div.valoresDocumento').fadeIn('slow');
 });
@@ -485,17 +464,9 @@ $('#AccountingDocumentTemp_carrier_groups').change(function()
     });
 });
 
-$('div.hacerUnaNota').click('on',function()
+$('div.hacerUnaNota, div.quitaNota').click('on',function()
 {
-    $('div.hacerUnaNota').toggle('fast');
-    $('div.quitaNota').toggle('fast');
-    $('div.contratoFormTextArea').toggle('slow');
-});
-$('div.quitaNota').click('on',function()
-{
-    $('div.hacerUnaNota').toggle('slow');
-    $('div.quitaNota').toggle('slow');
-    $('div.contratoFormTextArea').toggle('slow');
+    $('div.hacerUnaNota, div.quitaNota, div.contratoFormTextArea').toggle('fast');
 });
 /*GUARDAR EN LISTA TEMPORAL*/
 $('#botAgregarDatosContable').click('on',function(e)
@@ -635,45 +606,41 @@ $(function($)
 //**
 //modulo de colores por zona geografica
 //*
-$('#GeographicZone_acciones').change(function()
+$('#GeographicZone_acciones, input#color_zona, select#GeographicZone_name_zona').change(function()
 {
-    var acciones=$('#GeographicZone_acciones').val();
-    if (acciones==1){
-        $('div.valoresDocumento').slideDown('slow');
-        $('input#GeographicZone_name_zona').slideDown('slow');
-        $('select#GeographicZone_name_zona').hide('slow');
-        $('.acciones').html('Acciones');
-    }
-    if (acciones==2){
-        $('div.valoresDocumento').slideDown('slow');
-        $('select#GeographicZone_name_zona').slideDown('slow');
-        $('input#GeographicZone_name_zona').hide('slow');
-        $('.acciones').html('Acciones');
-    } 
-});
-
-$('input#color_zona').change(function()
-{
-   $("#color_zona_hidden").val($(this).val());
-   $("#color_zona").css("background",$(this).val());
-});
-
-$('select#GeographicZone_name_zona').change(function()
-{
-    $.ajax({
-        type: "GET",
-        url: "buscaColor",
-        data: "&id_zonaSelect="+$( "select#GeographicZone_name_zona" ).val(),
-
-        success: function(data) 
+    switch ($(this).attr('id'))
         {
-            $( "input#color_zona_hidden" ).val( data );
-            var color=("#"+data+"");
-            $( "input#color_zona" ).css( "background-color",color ); 
-        }
-    });
-});
+        case "GeographicZone_acciones":
+            $('.acciones').html('Acciones');
+            if ($(this).val()==1){
+                $('div.valoresDocumento, input#GeographicZone_name_zona').slideDown('slow');
+                $('select#GeographicZone_name_zona').hide('slow');
+            }
+            if ($(this).val()==2){
+                $('div.valoresDocumento, select#GeographicZone_name_zona').slideDown('slow');
+                $('input#GeographicZone_name_zona').hide('slow');
+            } 
+            break;
+        case "color_zona":
+            $("#color_zona_hidden").val($(this).val());
+            $("#color_zona").css("background",$(this).val());
+            break;
+        case "GeographicZone_name_zona":
+            $.ajax({
+                type: "GET",
+                url: "buscaColor",
+                data: "&id_zonaSelect="+$( "select#GeographicZone_name_zona" ).val(),
 
+                success: function(data) 
+                {
+                    $( "input#color_zona_hidden" ).val( data );
+                    var color=("#"+data+"");
+                    $( "input#color_zona" ).css( "background-color",color ); 
+                }
+            });
+            break;
+        }
+});
 $('.botGuardarZonaColor').click('on',function(e)
 {
     e.preventDefault();
@@ -694,9 +661,7 @@ $('.botGuardarZonaColor').click('on',function(e)
                 {
                     console.log(data);
                     obj = JSON.parse(data);
-                    var name_zonaSave=obj.name_zonaG, 
-                    color_zonaSave=obj.color_zonaG;
-                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>La zona geografica <p><b>"+name_zonaSave+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+color_zonaSave+";width:25%;margin-left: 36%;'>"+color_zonaSave+"</div>","si.png","3000","width:95px; height:95px;"); 
+                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>La zona geografica <p><b>"+obj.name_zonaG+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+obj.color_zonaG+";width:25%;margin-left: 36%;'>"+obj.color_zonaG+"</div>","si.png","3000","width:95px; height:95px;"); 
                     $("select#GeographicZone_acciones,input#GeographicZone_name_zona,select#GeographicZone_name_zona,input#color_zona_hidden").val('');
                     $( "input#color_zona" ).css( "background-color","white" );
                 }
@@ -743,23 +708,15 @@ $(".AsignarCarrierGroup").on( "click",function(e)
             success: function(data)
             {
                 obj = JSON.parse(data);
-                var grupoName=obj.grupo, 
-                asigname=obj.asignados,
-                noasigname=obj.noasignados;
                       
-                if(asigname<="1" && noasigname<="1")
+                if(obj.asignados<="1" && obj.noasignados<="1")
                 {
                     $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o  desasignar</h3>","aguanta.png","2000","width:40px; height:90px;"); 
                     $("#carriers select option").prop("selected",false);
                 }
                 else
                 {
-                    if(asigname=="")   var asig="";
-                       else            var asig='Asignarle: ';
-                    if(noasigname=="") var desA="";
-                       else            var desA='Dsasignarle:';
-                    
-                    $SORI.UI.msj_confirm("<h4>Esta a punto de realizar los siguientes cambios en el grupo<br><b>"+grupoName+"</b></h4><p><h6>"+asig+"<p>"+asigname+"</h6><h6>"+desA+"<p>"+noasigname+"</h6>");  
+                    $SORI.UI.msj_confirm("<h4>Esta a punto de realizar los siguientes cambios en el grupo<br><b>"+obj.grupo+"</b></h4><p><h6>"+$SORI.UI.resultadoContrato(obj.asignados,"","Asignarle: ","")+"<p>"+obj.asignados+"</h6><h6>"+$SORI.UI.resultadoContrato(obj.noasignados,"","Dsasignarle: ","")+"<p>"+obj.noasignados+"</h6>");  
                     $('#confirma,#cancelar').on('click', function()
                     {
                         var tipo=$(this).attr('id');
@@ -771,15 +728,7 @@ $(".AsignarCarrierGroup").on( "click",function(e)
                                 data:   '&grupo='+grupo+'&asignados='+asignados+'&noasignados='+noasignados,
                                 success: function(data)
                                 {
-                                    obj = JSON.parse(data);
-                                    var grupoSave=obj.grupo;
-                                    if(asigname=="")  var pudo="Le fue";
-                                      else            var pudo='Le fue asignado:';
-                                    
-                                    if(noasigname=="")var nopudo="";
-                                      else            var nopudo='Desasignado:';
-                                    
-                                    $SORI.UI.msj_change("<h3>El grupo <b>" + grupoSave + "</b><p>Fue modificado con exito</h3><br><h5>" + pudo + "<br><b>" + asigname + "</b><p>" + nopudo + "<br><b>" + noasigname + "</b></h5>","si.png","4000","width:95px; height:95px;"); 
+                                    $SORI.UI.msj_change("<h2>El grupo <b>" + obj.grupo + "</b><br><br><p>Fue modificado con exito</h2>","si.png","4000","width:95px; height:95px;"); 
                                     $('#Carrier_id').val('');
                                     $("#carriers select option").prop("selected",false);
                                 }

@@ -19,7 +19,7 @@ class CarrierGroups extends CActiveRecord
 	{
 		return 'carrier_groups';
 	}
-
+        public $groups;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
