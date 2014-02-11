@@ -3,6 +3,10 @@
 
 Sistema de Origen
 
+-mejoras en javascript.
+-nueva opcion para agregar grupos en admin. groups
+
+
 Relase 1.5.4
 -Registro bank fee para pagos, mejoras en condiciones comerciales.
 -mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.

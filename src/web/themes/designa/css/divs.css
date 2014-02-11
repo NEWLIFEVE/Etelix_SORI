@@ -498,9 +498,10 @@ width: 20%;
 {
     display:none;
 }
-#Carrier_groups
+#Carrier_new_groups
 {
     text-transform:uppercase;
+    display: none;
 }
 
 

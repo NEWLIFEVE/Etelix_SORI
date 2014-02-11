@@ -15,6 +15,7 @@ $SORI.UI=(function()
 	{
 		accion();
 	}
+
 	/**
 	 * Metodo encargado de agregar campos para editar en la tabla
 	 * @access private
@@ -499,6 +500,7 @@ $SORI.UI=(function()
                 $('#AccountingDocumentTemp_input_dest_supplier').val('');
             });
         }
+
 	/**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
@@ -1297,6 +1299,19 @@ $SORI.AJAX=(function()
 	{
             _getNamesCarriers();
 	}
+        
+        function UpdateIdCarrier()
+        {
+            $.ajax({
+                    type: "GET",
+                    url: "../Carrier/UpdateIdCarrier",
+                    data: "Carrier_new_groups="+$("#Carrier_new_groups").val(),
+                    success: function(data)
+                    {
+                        if(data!=null)  $("#Carrier_id").append("<option value="+data+">"+$("#Carrier_new_groups").val().toUpperCase()+"</option>");
+                    }
+            });
+        }
 	/**
 	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
 	 * @param id int id de la fila que se va a eliminar
@@ -1365,7 +1380,8 @@ $SORI.AJAX=(function()
 	 * retorna los metodos publicos*/
 return{ init:init,
 	actualizar:actualizar,
-	borrar:borrar
+	borrar:borrar,
+        UpdateIdCarrier:UpdateIdCarrier
 	}
 })();
 $SORI.DATA={};

@@ -105,5 +105,8 @@ class CarrierGroups extends CActiveRecord
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->name;
         }
+        public static function getCarrierGroups($name){           
+            return self::model()->find("name=:name", array(':name'=>$name));
+        }
         
 }

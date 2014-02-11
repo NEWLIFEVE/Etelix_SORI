@@ -676,6 +676,29 @@ $('.botGuardarZonaColor').click('on',function(e)
 //modulo de grupo carriers
 //**
 
+$('div.newGroup, div.cancelarnewGroup').click('on',function()
+{
+     switch ($(this).attr('class'))
+        {
+        case "newGroup":
+            $(this).hide('fast');
+            $('div.cancelarnewGroup').show('fast');
+            $('#Carrier_id').hide('fast'); 
+            $('#Carrier_new_groups').show('fast');
+            $('#Carrier_id').val('');
+            $('#select_left').empty();
+            $('.group_title').html("NUEVO GRUPO");
+            break;
+        case "cancelarnewGroup":
+            $(this).hide('fast');
+            $('div.newGroup').show('fast');
+            $('#Carrier_id').show('fast'); 
+            $('#Carrier_new_groups').hide('fast');
+            $('#Carrier_new_groups').val('');
+            $('.group_title').html("ADMIN GRUPO");
+            break;
+        } 
+});
 $('#Carrier_id').change(function()
 {
     var grupo=$('#Carrier_id').val();
@@ -694,8 +717,7 @@ $(".AsignarCarrierGroup").on( "click",function(e)
 {
     e.preventDefault();
     $("#carriers select option").prop("selected",true);
-    var grupo=$('#Carrier_id').val(), asignados=$('#select_left').val(), noasignados=$('#select_right').val();
-    if(grupo<1)
+    if($('#Carrier_id').val()<1 && $("#Carrier_new_groups").val()=="")
     {
         $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No ha seleccionado ningun grupo</h3>","aguanta.png","1000","width:40px; height:90px;"); 
         $("#carriers select option").prop("selected",false);
@@ -704,11 +726,10 @@ $(".AsignarCarrierGroup").on( "click",function(e)
         $.ajax({
             type: "GET",
             url: "../Carrier/BuscaNombres",
-            data: "asignados="+asignados+"&noasignados="+noasignados+"&grupo="+grupo,
+            data: "asignados="+$('#select_left').val()+"&noasignados="+$('#select_right').val()+"&grupo="+$('#Carrier_id').val()+"&new_grupo="+$("#Carrier_new_groups").val(),
             success: function(data)
             {
                 obj = JSON.parse(data);
-                      
                 if(obj.asignados<="1" && obj.noasignados<="1")
                 {
                     $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o  desasignar</h3>","aguanta.png","2000","width:40px; height:90px;"); 
@@ -716,21 +737,22 @@ $(".AsignarCarrierGroup").on( "click",function(e)
                 }
                 else
                 {
-                    $SORI.UI.msj_confirm("<h4>Esta a punto de realizar los siguientes cambios en el grupo<br><b>"+obj.grupo+"</b></h4><p><h6>"+$SORI.UI.resultadoContrato(obj.asignados,"","Asignarle: ","")+"<p>"+obj.asignados+"</h6><h6>"+$SORI.UI.resultadoContrato(obj.noasignados,"","Dsasignarle: ","")+"<p>"+obj.noasignados+"</h6>");  
+                    $SORI.UI.msj_confirm(""+$SORI.UI.resultadoContrato($("#Carrier_new_groups").val(),"","<h4>Esta a punto de crear el nuevo grupo<br><b>"+obj.grupo+"</b></h4>", "<h4>Esta a punto de realizar los siguientes cambios en el grupo<br><b>"+obj.grupo+"</b></h4>")+"<p><h6>"+$SORI.UI.resultadoContrato(obj.asignados,"","Asignarle: ","")+"<p>"+obj.asignados+"</h6><h6>"+$SORI.UI.resultadoContrato(obj.noasignados,"","Dsasignarle: ","")+"<p>"+obj.noasignados+"</h6>");  
                     $('#confirma,#cancelar').on('click', function()
                     {
                         var tipo=$(this).attr('id');
-                        if(tipo=="confirma"&& grupo!="")
+                        if(tipo=="confirma")
                         {
                             $.ajax({
                                 type: "GET",
                                 url: "../Carrier/SaveCarrierGroup",
-                                data:   '&grupo='+grupo+'&asignados='+asignados+'&noasignados='+noasignados,
+                                data:   '&grupo='+$('#Carrier_id').val()+'&asignados='+$('#select_left').val()+'&noasignados='+$('#select_right').val()+"&new_grupo="+$("#Carrier_new_groups").val(),
                                 success: function(data)
                                 {
-                                    $SORI.UI.msj_change("<h2>El grupo <b>" + obj.grupo + "</b><br><br><p>Fue modificado con exito</h2>","si.png","4000","width:95px; height:95px;"); 
+                                    $SORI.UI.msj_change("<h2>El grupo <b>" + obj.grupo + "</b><br><br><p>Fue "+$SORI.UI.resultadoContrato($("#Carrier_new_groups").val(),"","Creado", "Modificado")+" con exito</h2>","si.png","4000","width:95px; height:95px;"); 
                                     $('#Carrier_id').val('');
                                     $("#carriers select option").prop("selected",false);
+                                    $SORI.AJAX.UpdateIdCarrier();
                                 }
                             });
                         }else{
