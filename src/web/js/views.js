@@ -251,7 +251,7 @@ $('#botAsignarContrato').click('on',function(e)
                                     </tr>\n\
                                     <tr class='tr_contrato'>\n\
                                       <td>"+$SORI.UI.resultadoContrato(obj.termino_pNameO,obj.termino_pName,"Terminos de pago client de: "+obj.termino_pNameO+" a ","Terminos de pago client: ")+" </td><td class='termino_pName td_basic_contr'>"+obj.termino_pName+"</td> \n\
-                                      <td>"+$SORI.UI.resultadoContrato($("#TerminoP_supplier_Oculto").val(),$("#Contrato_id_termino_pago_supplier").val(),"Terminos de pago prov de: "+obj.termino_p_supp_NameO+" a ","Terminos de pago prov: ")+" </td><td class='termino_p_supp_Name td_basic_contr'>"+obj.termino_p_supp_Name+"</td> \n\
+                                      <td>"+$SORI.UI.resultadoContrato(obj.termino_p_supp_NameO,obj.termino_p_supp_Name,"Terminos de pago prov de: "+obj.termino_p_supp_NameO+" a ","Terminos de pago prov: ")+" </td><td class='termino_p_supp_Name td_basic_contr'>"+obj.termino_p_supp_Name+"</td> \n\
                                     </tr>\n\
                                     <tr class='tr_contrato'>\n\
                                       <td>"+$SORI.UI.resultadoContrato(obj.fact_period_NameO,obj.fact_period_Name,"Tipo de Ciclo de Fact de: "+obj.fact_period_NameO+" a ","Tipo de Ciclo de Fact: ")+" </td><td class='fact_period_Name td_basic_contr'>"+$SORI.UI.defineNull(obj.fact_period_Name,'No aplica')+"</td> \n\

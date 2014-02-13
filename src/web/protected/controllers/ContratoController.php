@@ -178,7 +178,7 @@ class ContratoController extends Controller
             $model=new Contrato;
                 $carrier=$_GET['Contrato']['id_carrier'];
                 $divide_fact=$_GET['divide_fact'];
-                $fact_period=$_GET['id_fact_period_Oculto'];
+                $fact_period=$_GET['Contrato']['id_fact_period'];
                 $dia_ini_fact=$_GET['dia_ini_fact'];
                 $sign_date=  Utility::snull($_GET["Contrato"]['sign_date']);
                 $production_date=Utility::snull($_GET["Contrato"]['production_date']);
@@ -198,6 +198,11 @@ class ContratoController extends Controller
                 $modelAux=Contrato::model()->find('id_carrier=:carrier',array(':carrier'=>$carrier));
                 $modelCarrier=  Carrier::model()->find('id=:id_carrier',array(':id_carrier'=>$carrier));
                 $modelGroup= Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
+                
+                if($fact_period==null ||$fact_period==""){
+                    $fact_periodNA= FactPeriod::getModelName("No Aplica");
+                    $fact_period=$fact_periodNA->id;
+                } 
                 /*
                  * ESTE CAMBIO ES PROVISIONAL, MIENTRAS NO SE POSEA LA INFORMACION DE LAS FECHAS
                  *SE HIZO ESTE CAMBIO PARA EVITAR QUE EL CODIGO GENERE NUEVOS CONTRATOS A LA HORA DE MODIFICAR,

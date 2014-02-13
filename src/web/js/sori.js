@@ -797,16 +797,16 @@ function roundNumber(number,decimals)
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
             switch (tp)
             {
-                case "1": case "3": case "4": case "5":
+                case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":
+                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
-                case "2": case "9": case "10": case "11": case "13":
+                case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
                     $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
@@ -1419,7 +1419,6 @@ $SORI.UTILS=(function()
                 if($(this).attr('id')!== undefined){
                     $SORI.AJAX.actualizar($(this).attr('id'),'1');
                 }
-                
             });
         }
 
