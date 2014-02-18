@@ -5,7 +5,7 @@ Sistema de Origen
 
 -mejoras en javascript.
 -nueva opcion para agregar grupos en admin. groups
-
+-en condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
 
 Relase 1.5.4
 -Registro bank fee para pagos, mejoras en condiciones comerciales.
