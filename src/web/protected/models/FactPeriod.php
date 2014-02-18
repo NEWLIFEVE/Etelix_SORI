@@ -87,10 +87,13 @@ class FactPeriod extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-        public static function getListFact_Period(){      
-            return CHtml::listData(FactPeriod::model()->findAll(array('order'=>'id')),'id','name');
+        public static function getListFact_Period(){ 
+            return CHtml::listData(FactPeriod::model()->findAllBySql("select id, name from fact_period where id not in (5)"), 'id', 'name');
         }
         public static function getName($FactPeriod){           
             return self::model()->find("id=:id", array(':id'=>$FactPeriod))->name;
+        }
+        public static function getModelName($name){           
+            return self::model()->find("name=:name", array(':name'=>$name));
         }
 }

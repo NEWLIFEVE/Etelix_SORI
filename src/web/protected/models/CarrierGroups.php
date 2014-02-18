@@ -19,7 +19,7 @@ class CarrierGroups extends CActiveRecord
 	{
 		return 'carrier_groups';
 	}
-
+        public $groups;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -104,6 +104,9 @@ class CarrierGroups extends CActiveRecord
         
         public static function getName($id){           
             return self::model()->find("id=:id", array(':id'=>$id))->name;
+        }
+        public static function getCarrierGroups($name){           
+            return self::model()->find("name=:name", array(':name'=>$name));
         }
         
 }

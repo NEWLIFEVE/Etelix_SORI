@@ -3,6 +3,11 @@
 
 Sistema de Origen
 
+Release 1.5.7.1
+-mejoras en javascript.
+-nueva opcion para agregar grupos en admin. groups
+-en condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
+
 Relase 1.5.7
 -Registro bank fee para pagos, mejoras en condiciones comerciales.
 -mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.

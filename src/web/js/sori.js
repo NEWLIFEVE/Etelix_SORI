@@ -15,6 +15,7 @@ $SORI.UI=(function()
 	{
 		accion();
 	}
+
 	/**
 	 * Metodo encargado de agregar campos para editar en la tabla
 	 * @access private
@@ -499,6 +500,7 @@ $SORI.UI=(function()
                 $('#AccountingDocumentTemp_input_dest_supplier').val('');
             });
         }
+
 	/**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
@@ -795,16 +797,16 @@ function roundNumber(number,decimals)
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
             switch (tp)
             {
-                case "1": case "3": case "4": case "5":
+                case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":
+                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
-                case "2": case "9": case "10": case "11": case "13":
+                case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
                     $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
@@ -1297,6 +1299,19 @@ $SORI.AJAX=(function()
 	{
             _getNamesCarriers();
 	}
+        
+        function UpdateIdCarrier()
+        {
+            $.ajax({
+                    type: "GET",
+                    url: "../Carrier/UpdateIdCarrier",
+                    data: "Carrier_new_groups="+$("#Carrier_new_groups").val(),
+                    success: function(data)
+                    {
+                        if(data!=null)  $("#Carrier_id").append("<option value="+data+">"+$("#Carrier_new_groups").val().toUpperCase()+"</option>");
+                    }
+            });
+        }
 	/**
 	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
 	 * @param id int id de la fila que se va a eliminar
@@ -1365,7 +1380,8 @@ $SORI.AJAX=(function()
 	 * retorna los metodos publicos*/
 return{ init:init,
 	actualizar:actualizar,
-	borrar:borrar
+	borrar:borrar,
+        UpdateIdCarrier:UpdateIdCarrier
 	}
 })();
 $SORI.DATA={};
@@ -1403,7 +1419,6 @@ $SORI.UTILS=(function()
                 if($(this).attr('id')!== undefined){
                     $SORI.AJAX.actualizar($(this).attr('id'),'1');
                 }
-                
             });
         }
 

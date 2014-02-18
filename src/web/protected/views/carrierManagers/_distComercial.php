@@ -1,16 +1,6 @@
 <?php
 /* @var $this ManagersController */
 /* @var $model Managers */
-
-//$this->breadcrumbs=array(
-//	'CarrierManagers'=>array('index'),
-//	'Manage',
-//);
-
-//$this->menu=array(
-//	array('label'=>'List Managers', 'url'=>array('index')),
-//	array('label'=>'Create Managers', 'url'=>array('create')),
-//);
 ?>
 
 <h1>Distribucion Comercial</h1>

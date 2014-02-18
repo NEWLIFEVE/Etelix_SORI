@@ -8,13 +8,14 @@
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'carrier-form',
+        'htmlOptions'=>array('name'=>'carrier-form'),
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-<h1>NUEVO GRUPO</h1>
+<h1 class="group_title">ADMIN GRUPO</h1>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
@@ -22,16 +23,16 @@
 	<div class="row SelectGrupo">
 		<?php echo $form->labelEx($model,'id'); ?>
                 <?php echo $form->dropDownList($model,'id',CarrierGroups::getListGroups(),
-                    array(
-//                    'ajax'=>array(
-//                        'type'=>'POST',
-//                        'url'=>CController::createUrl('DynamicAsignados'),
-//                        'update'=>'#select_right',
-//                    ),
-                    'prompt'=>'Seleccione'
-                     )
+                    array( 'prompt'=>'Seleccione' )
                 ); ?>
+            <?php echo $form->textField($model,'new_groups'); ?>
                 <?php echo $form->error($model,'id'); ?>
+            <div class="newGroup">
+                    <label>+</label>
+            </div>
+            <div class="cancelarnewGroup">
+                    <label><</label>
+            </div>
 	</div>
 
         <div class="row divCarrier" id="carriers">

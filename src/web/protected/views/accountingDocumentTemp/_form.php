@@ -11,7 +11,7 @@
         <h3>Para comenzar, Seleccione un tipo de documento</h3>
     </div>
     <?php 
- echo CHtml::beginForm(Yii::app()->createUrl('AccountingDocumentTemp/enviarEmail/'),'post',array('name'=>'FormularioCorreo','id'=>'FormularioCorreo','style'=>'display:none'));
+  echo CHtml::beginForm(Yii::app()->createUrl('AccountingDocumentTemp/enviarEmail/'),'post',array('name'=>'FormularioCorreo','id'=>'FormularioCorreo','style'=>'display:none'));
   echo CHtml::textField('html','Hay Efectivo',array('id'=>'html','style'=>'display:none'));
   echo CHtml::textField('vista','create',array('id'=>'vista','style'=>'display:none'));
   echo CHtml::textField('asunto','Documentos Contables Temporales',array('id'=>'asunto','style'=>'display:none'));
