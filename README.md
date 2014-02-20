@@ -5,7 +5,7 @@ Sistema de Origen
 
 Release 1.5.7.1
 -mejoras en javascript.
--nueva opcion para agregar grupos en admin. groups
+-nueva opcion para agregar grupos en admin groups
 -en condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
 
 Relase 1.5.7
