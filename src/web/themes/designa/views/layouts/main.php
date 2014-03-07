@@ -32,8 +32,8 @@
 	<div class="container">
 		<header id="navtop">
 			<a href="/" class="logo fleft">
-				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.5.7.1">
-			</a>V 1.5.7.1
+				<img src="<?php echo Yii::app()->theme->baseUrl; ?>/img/logo.png" alt="SORI 1.5.7.2">
+			</a>V 1.5.7.2
 
 			<nav class="fright">
 				<?php

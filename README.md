@@ -2,6 +2,11 @@
 ===========
 
 Sistema de Origen
+1.5.7.2
+- Actualizando modelo de termino pago
+-Nueva funcion para convertir valores negativos en positivos
+-mejoras en interfaz de documentos contables, algunos detalles que estaban sueltos por ahi
+-ahora tanto las disputas como las notas de credito en absoluto se almacena y muestran en interfaz con un valor positivo
 
 Release 1.5.7.1
 -mejoras en javascript.
