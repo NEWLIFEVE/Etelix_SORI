@@ -3,8 +3,14 @@
 
 Sistema de Origen
 
+<<<<<<< HEAD
 Realese 1.5.6
 -Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
+=======
+Relase 1.5.4
+-Registro bank fee para pagos, mejoras en condiciones comerciales.
+-mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
+>>>>>>> 7a20cf0f0eefd1069a33c6d106076b9178ed8b53
 
 Realese 1.5.5
 -Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier

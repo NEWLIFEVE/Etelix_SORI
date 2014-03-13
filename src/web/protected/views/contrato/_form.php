@@ -193,7 +193,7 @@
                      <input type="hidden" name="TerminoP_Oculto"         id="TerminoP_Oculto"  value="">
                      <input type="hidden" name="TerminoP_supplier_Oculto"id="TerminoP_supplier_Oculto"  value="">
                      <input type="hidden" name="divide_fact_Oculto"      id="divide_fact_Oculto"  value="">
-                     <input type="hidden" name="Contrato_id_fact_period_Oculto"id="Contrato_id_fact_period_Oculto"  value="">
+                     <input type="hidden" name="id_fact_period_Oculto"   id="id_fact_period_Oculto"  value="">
                      <input type="hidden" name="dia_ini_fact_Oculto"     id="dia_ini_fact_Oculto"  value="">
                      <input type="hidden" name="F_Firma_Contrato_Oculto" id="F_Firma_Contrato_Oculto"  value="">
                      <input type="hidden" name="F_P_produccion_Oculto"   id="F_P_produccion_Oculto"  value="">
