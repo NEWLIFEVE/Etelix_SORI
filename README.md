@@ -2,6 +2,8 @@
 ===========
 
 Sistema de Origen
+-cambio en guardada de grupos e indicadores en interfaz.
+-cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 -Nueva funcion para convertir valores negativos en positivos
 -mejoras en interfaz de documentos contables, algunos detalles que estaban sueltos por ahi
 -ahora tanto las disputas como las notas de credito en absiluto se almacena y muestran en interfaz con un valor positivo
