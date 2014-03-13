@@ -199,7 +199,11 @@ class CarrierController extends Controller
 	 */
         public function actionSaveCarrierGroup()
 	{
-            $grupo= $this->defineGroup($_GET['grupo'],strtoupper($_GET['new_grupo']));
+            if($_GET['grupo']!=""||$_GET['grupo']!=null){
+                $grupo=$_GET['grupo'];
+             }else{
+                 $grupo= CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
+             }
             $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
             $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
             $asigSave="";
@@ -208,7 +212,7 @@ class CarrierController extends Controller
                 $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
                 $modelAsig->id_carrier_groups = $grupo;
                 if($modelAsig->save()){                  
-                    $asigSave.= $modelAsig->name.", ";   
+                    $asigSave= $modelAsig->name.", ";   
                 }               
             }
             foreach ($noasignados as $key => $value) {
@@ -216,11 +220,10 @@ class CarrierController extends Controller
                 $modelNoAsig->id_carrier_groups = NULL;
                 $modelNoAsig->group_leader = NULL;
                 if($modelNoAsig->save()){
-                $noasigSave.=$modelNoAsig->name.", ";
+                $noasigSave=$modelNoAsig->name.", ";
                 }
             }
             $buscaUno=Carrier::getSerchOne($grupo);            //busca si hay algun carrier con el id_carrier_group sea igual a $grupo y carrier_Leader sea igual a'1' 
-            
             if($buscaUno==NULL){
                 $grupoCarrier = Carrier::getID_G($grupo);      //* con la id de grupo, busca el id carrier donde el id_carrier_groups sea igual a $grupo
                 $model=$this->loadModel($grupoCarrier);        //* carga la fila donde el id sea igual a $grupoCarrier para actualizarlo y colocarle en
@@ -228,9 +231,7 @@ class CarrierController extends Controller
                 $model->group_leader = '1';
                 $model->save();
             }
-            $idCarrierName= CarrierGroups::getName($grupo);//* esto solo es para traer el nombre del grupo, que sera mostrado en el msj
-
-            $params['grupo']=$idCarrierName;    
+            $params['grupo']=CarrierGroups::getName($grupo);;    
             $params['asignados']=$asigSave;    
             $params['noasignados']=$noasigSave;    
                echo json_encode($params);
@@ -242,26 +243,28 @@ class CarrierController extends Controller
 	 */
          public function actionBuscaNombres()
 	{
-            $grupo= $this->defineGroup($_GET['grupo'],strtoupper($_GET['new_grupo']));
+             if($_GET['grupo']!=""||$_GET['grupo']!=null){
+                $grupo=$_GET['grupo'];
+             }else{
+                 $grupo= CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
+             }
             $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
             $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
 
             $asigNames="";
             $noasigNames="";
-            $grupoName="";
-            $grupoName.= CarrierGroups::getName($grupo);
             foreach ($asignados as $key => $value) {
                 $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
                 if ($modelAsig->id_carrier_groups != $grupo)
-                    $asigNames.= $modelAsig->name.", ";      
+                    $asigNames= $modelAsig->name.", ";      
             }
             foreach ($noasignados as $key => $value) {
                 $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
                 if ($modelNoAsig->id_carrier_groups != NULL)  
-                $noasigNames.=$modelNoAsig->name.", ";
+                $noasigNames=$modelNoAsig->name.", ";
             }
-
-                    $params['grupo']=$grupoName;    
+ 
+                    $params['grupo']=CarrierGroups::getName($grupo);;    
                     $params['asignados']=$asigNames;    
                     $params['noasignados']=$noasigNames;    
                        echo json_encode($params);
@@ -279,24 +282,7 @@ class CarrierController extends Controller
             }
             echo json_encode($array);
 	}
-        public function defineGroup($id_group, $new_group)
-        {     
-            if($id_group!=""||$id_group!=null){
-                return $id_group;
-            }else{       
-                if($new_group!=""||$new_group!=null){
-                    $exist_group= CarrierGroups::getCarrierGroups($new_group);
-                    if($exist_group!=null){
-                        return $exist_group->id;
-                    }else{
-                    $model=new CarrierGroups;
-                    $model->name=$new_group;
-                    if($model->save())
-                        return $model->id;
-                    }
-                }
-            }
-        }
+
         public function actionUpdateIdCarrier()
         {
             $model= CarrierGroups::getCarrierGroups(strtoupper($_GET['Carrier_new_groups']));

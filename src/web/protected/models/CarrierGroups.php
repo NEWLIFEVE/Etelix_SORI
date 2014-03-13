@@ -109,4 +109,27 @@ class CarrierGroups extends CActiveRecord
             return self::model()->find("name=:name", array(':name'=>$name));
         }
         
+        public static function GetIdGroup($new_group)
+        {   
+            if($new_group != null && $new_group != "")
+            {
+                    $sql="SELECT id FROM carrier_groups WHERE name='{$new_group}'";
+                    $model=self::model()->findBySql($sql);
+                    if($model == null)
+                    {
+                            $model=new CarrierGroups;
+                            $model->name=$new_group;
+                            if($model->save())
+                            {
+                                return $model->id;
+                            }
+                    }
+                    else
+                    {
+                            return $model->getAttribute('id');
+                    }
+            }
+        }
+        
+        
 }
