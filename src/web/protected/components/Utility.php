@@ -188,5 +188,17 @@ Class Utility
             $monto = str_replace(",",".",$monto);
         return $monto;
         }
+        /**
+         * convierte un valor negativo a positivo
+         * @param type $var
+         * @return type
+         */
+        public static function changePositive($var)
+        {
+            if ($var<0)
+                return $var*-1;
+            else
+                return $var;
+        }
 }
 ?>

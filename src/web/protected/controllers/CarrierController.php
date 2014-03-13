@@ -28,7 +28,7 @@ class CarrierController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','contrato','newGroupCarrier','saveCarrierGroup','buscaNombres','Nombres'),
+				'actions'=>array('index','view','contrato','newGroupCarrier','saveCarrierGroup','buscaNombres','Nombres','UpdateIdCarrier'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -199,7 +199,7 @@ class CarrierController extends Controller
 	 */
         public function actionSaveCarrierGroup()
 	{
-            $grupo=$_GET['grupo'];//el valor es un id de grupo
+            $grupo= $this->defineGroup($_GET['grupo'],strtoupper($_GET['new_grupo']));
             $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
             $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
             $asigSave="";
@@ -242,7 +242,7 @@ class CarrierController extends Controller
 	 */
          public function actionBuscaNombres()
 	{
-            $grupo=$_GET['grupo'];
+            $grupo= $this->defineGroup($_GET['grupo'],strtoupper($_GET['new_grupo']));
             $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
             $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
 
@@ -279,5 +279,31 @@ class CarrierController extends Controller
             }
             echo json_encode($array);
 	}
-        
+        public function defineGroup($id_group, $new_group)
+        {     
+            if($id_group!=""||$id_group!=null){
+                return $id_group;
+            }else{       
+                if($new_group!=""||$new_group!=null){
+                    $exist_group= CarrierGroups::getCarrierGroups($new_group);
+                    if($exist_group!=null){
+                        return $exist_group->id;
+                    }else{
+                    $model=new CarrierGroups;
+                    $model->name=$new_group;
+                    if($model->save())
+                        return $model->id;
+                    }
+                }
+            }
+        }
+        public function actionUpdateIdCarrier()
+        {
+            $model= CarrierGroups::getCarrierGroups(strtoupper($_GET['Carrier_new_groups']));
+            if($model!=null){
+                echo $model->id;
+            }else{
+                echo null;
+            }     
+        }
 }

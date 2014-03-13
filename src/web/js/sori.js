@@ -15,6 +15,7 @@ $SORI.UI=(function()
 	{
 		accion();
 	}
+
 	/**
 	 * Metodo encargado de agregar campos para editar en la tabla
 	 * @access private
@@ -499,6 +500,7 @@ $SORI.UI=(function()
                 $('#AccountingDocumentTemp_input_dest_supplier').val('');
             });
         }
+
 	/**
 	 * Metodo encargado de la actualizacion de las facturas en disputas y notas de credito
 	 * @access public
@@ -608,48 +610,45 @@ function roundNumber(number,decimals)
                     data: $('#accounting-document-temp-form').serialize(),
                     success: function(data)
                     {
-                       $('.listaDisputas').remove();
-                       if(data=="[]"){
-                          //no hay datos y asi no muestra nada
-    //                        $('.cargando,.mensaje').remove();
-    //                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
-                       }else{
-                        console.log(data);
-                        var obj = JSON.parse(data);
-                        $('.tabla_N_C').fadeIn("fast");
-                        for (var i = 0, j = obj.length; i < j; i++)
-                        {
-              
-                            var montoTotal = (obj[i].amount) + (obj[i].dispute);
-                            $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='" + obj[i].id + "'>\n\
-                                                                <td id='AccountingDocumentTemp[id_destination]'>" + obj[i].id_destination + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[min_etx]'>" + obj[i].min_etx + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[min_carrier]'>" + obj[i].min_carrier + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[rate_etx]'>" + obj[i].rate_etx + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[dispute]'>" + roundNumber((obj[i].amount_etx-obj[i].amount_carrier), 2) + "</td>\n\
-                                                                <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota"+i+"' class='montoNota'  value=" + roundNumber(obj[i].dispute,2) + "></td>\n\
-                                                            </tr>");
-                            $('.fechaIniFact,.fechaFinFact').fadeOut(10);
-                            $SORI.UI.changeCss('.numFactura','width','24%');
-                            $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc,.fechaDeEmision').fadeIn('fast');
-                            $('#AccountingDocumentTemp_amount').attr('readonly', true);
-                            $('#AccountingDocumentTemp_amount').val(montoTotal);
-//                            var idMonto = "#montoNota"+i;
-//                             $(idMonto).val(parseFloat($(idMonto).val()).toFixed(2));
-                            
-                            var acum = 0;
-                            $('input.montoNota').each(function() {
-                                acum = acum + parseFloat($(this).val());
-                                $('#AccountingDocumentTemp_amount').val(acum);
-                            });
-                            sumMontoNota();
-                            
-                        }
-                        $("#AccountingDocumentTemp_amount").val(roundNumber($("#AccountingDocumentTemp_amount").val(),2));
-                      } 
+                       if($('#AccountingDocumentTemp_id_accounting_document').val()!="5" && $('#AccountingDocumentTemp_id_accounting_document').val()!="6"){ 
+                        $('.listaDisputas').remove();
+                        if(data=="[]"){
+                           //no hay datos y asi no muestra nada
+     //                        $('.cargando,.mensaje').remove();
+     //                        var msj=$("<div class='cargando'></div><div class='mensaje'><h3>No hay disputas para esta factura</h3><br><img src='/images/aguanta.png'width='95px' height='95px'/></div>").hide();$("body").append(msj); msj.fadeIn('slow');setTimeout(function() { msj.fadeOut('slow'); }, 3000);
+                        }else{
+                         console.log(data);
+                         var obj = JSON.parse(data);
+                         $('.tabla_N_C').fadeIn("fast");
+                         for (var i = 0, j = obj.length; i < j; i++)
+                         {
+                             var montoTotal = (obj[i].amount) + (obj[i].dispute);
+                             $(".lista_Disp_NotaCEnv").append("<tr class='listaDisputas' id='" + obj[i].id + "'>\n\
+                                                                 <td id='AccountingDocumentTemp[id_destination]'>" + obj[i].id_destination + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[min_etx]'>" + obj[i].min_etx + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[min_carrier]'>" + obj[i].min_carrier + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[rate_etx]'>" + obj[i].rate_etx + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[dispute]'>" + roundNumber($SORI.UTILS.changePositive((obj[i].amount_etx-obj[i].amount_carrier)), 2) + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota"+i+"' class='montoNota'  value=" + roundNumber(obj[i].dispute,2) + "></td>\n\
+                                                             </tr>");
+                             $('.fechaIniFact,.fechaFinFact').fadeOut(10);
+                             $SORI.UI.changeCss('.numFactura','width','24%');
+                             $('.lista_Disp_NotaCEnv,.numDocument,.Label_Disp_NotaCEnv, .montoDoc,.fechaDeEmision').fadeIn('fast');
+                             $('#AccountingDocumentTemp_amount').attr('readonly', true);
+                             $('#AccountingDocumentTemp_amount').val(montoTotal);
+                             var acum = 0;
+                             $('input.montoNota').each(function() {
+                                 acum = acum + parseFloat($(this).val());
+                                 $('#AccountingDocumentTemp_amount').val(acum);
+                             });
+                             sumMontoNota();
+                         }
+                         $("#AccountingDocumentTemp_amount").val(roundNumber($("#AccountingDocumentTemp_amount").val(),2));
+                       } 
+                       } 
                     }
                 });
               }
@@ -795,16 +794,16 @@ function roundNumber(number,decimals)
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
             switch (tp)
             {
-                case "1": case "3": case "4": case "5":
+                case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":
+                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
-                case "2": case "9": case "10": case "11": case "13":
+                case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
                     $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
@@ -1066,11 +1065,11 @@ function roundNumber(number,decimals)
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_min_etx,#AccountingDocumentTemp_min_carrier,#AccountingDocumentTemp_rate_etx,#AccountingDocumentTemp_rate_carrier').serializeArray());
                 break 
             case '7'://notas de credito enviadas
-                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '8'://notas de credito recibidas
 
-                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             //esta parte aplica solo para contrato
             case 'tp_supplier':
@@ -1297,6 +1296,19 @@ $SORI.AJAX=(function()
 	{
             _getNamesCarriers();
 	}
+        
+        function UpdateIdCarrier()
+        {
+            $.ajax({
+                    type: "GET",
+                    url: "../Carrier/UpdateIdCarrier",
+                    data: "Carrier_new_groups="+$("#Carrier_new_groups").val(),
+                    success: function(data)
+                    {
+                        if(data!=null)  $("#Carrier_id").append("<option value="+data+">"+$("#Carrier_new_groups").val().toUpperCase()+"</option>");
+                    }
+            });
+        }
 	/**
 	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
 	 * @param id int id de la fila que se va a eliminar
@@ -1365,7 +1377,8 @@ $SORI.AJAX=(function()
 	 * retorna los metodos publicos*/
 return{ init:init,
 	actualizar:actualizar,
-	borrar:borrar
+	borrar:borrar,
+        UpdateIdCarrier:UpdateIdCarrier
 	}
 })();
 $SORI.DATA={};
@@ -1403,7 +1416,6 @@ $SORI.UTILS=(function()
                 if($(this).attr('id')!== undefined){
                     $SORI.AJAX.actualizar($(this).attr('id'),'1');
                 }
-                
             });
         }
 
@@ -1437,14 +1449,21 @@ $SORI.UTILS=(function()
             }
             return action;
         }
-
+        function changePositive(val)
+        {
+            if (val<0)
+                return val*-1;
+            else
+                return val;
+        }
 	/**
 	 * retorna los metodos y variables publicos
 	 */
 	return{
 		getData:getData,
 		getURL:getURL,
-		updateMontoAprobadoDisp:updateMontoAprobadoDisp
+		updateMontoAprobadoDisp:updateMontoAprobadoDisp,
+                changePositive:changePositive
 	}
 })();
 /**
