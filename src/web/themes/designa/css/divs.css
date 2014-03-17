@@ -405,6 +405,7 @@ width: 20%;
 {
     position:relative;
     margin-top: 50px;  
+    margin-bottom: 45px;
 }
 .lineabajo
 {
@@ -1030,4 +1031,12 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     border: 1px solid silver;
     margin-top: 0px;
     height: 32px;
+}
+.NoteGrupos 
+{
+    font-weight: 300;
+    color: rgba(111,204,187,1);
+    position: absolute;
+    margin-left: -4em;
+    display:none;
 }

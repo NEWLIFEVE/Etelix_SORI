@@ -688,6 +688,8 @@ $('div.newGroup, div.cancelarnewGroup').click('on',function()
             $('#Carrier_id').val('');
             $('#select_left').empty();
             $('.group_title').html("NUEVO GRUPO");
+            $('.labelGrupos').html("Nuevo Grupo");
+            $('.NoteGrupos').show("fast");
             break;
         case "cancelarnewGroup":
             $(this).hide('fast');
@@ -696,6 +698,8 @@ $('div.newGroup, div.cancelarnewGroup').click('on',function()
             $('#Carrier_new_groups').hide('fast');
             $('#Carrier_new_groups').val('');
             $('.group_title').html("ADMIN GRUPO");
+            $('.labelGrupos').html("Grupos");
+            $('.NoteGrupos').hide("fast");
             break;
         } 
 });
@@ -753,6 +757,7 @@ $(".AsignarCarrierGroup").on( "click",function(e)
                                     $('#Carrier_id').val('');
                                     $("#carriers select option").prop("selected",false);
                                     $SORI.AJAX.UpdateIdCarrier();
+//                                    if(obj.newGroup!=null)  $("#Carrier_id").append("<option value="+obj.newGroup+">"+$("#Carrier_new_groups").val().toUpperCase()+"</option>");
                                 }
                             });
                         }else{

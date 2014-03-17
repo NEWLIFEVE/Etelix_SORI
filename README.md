@@ -2,6 +2,10 @@
 ===========
 
 Sistema de Origen
+-cambio en guardada de grupos e indicadores en interfaz.
+-cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
+
+
 1.5.7.2
 - Actualizando modelo de termino pago
 -Nueva funcion para convertir valores negativos en positivos
