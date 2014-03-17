@@ -2,28 +2,36 @@
 ===========
 
 Sistema de Origen
+-cambio en guardada de grupos e indicadores en interfaz.
+-cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
+
+
+1.5.7.2
 - Actualizando modelo de termino pago
 -Nueva funcion para convertir valores negativos en positivos
 -mejoras en interfaz de documentos contables, algunos detalles que estaban sueltos por ahi
 -ahora tanto las disputas como las notas de credito en absoluto se almacena y muestran en interfaz con un valor positivo
 
+Release 1.5.7.1
 -mejoras en javascript.
--nueva opcion para agregar grupos en admin. groups
+-nueva opcion para agregar grupos en admin groups
 -en condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
 
-Relase 1.5.4
+Relase 1.5.7
 -Registro bank fee para pagos, mejoras en condiciones comerciales.
 -mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
+
+Realese 1.5.6
+-Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
 
 Realese 1.5.5
 -Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier
 -Se agrego menu para tipo de usuario LEGAL
 
-
 Relase 1.5.4
 -modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
 -reparacion de tabla de disputas en interfaz de documentos contables, ahora al modificar los minunos y tarifas actualiza de inmediato los montos y el valor de las disputa.
--se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_accounting_document_temp" a accountingDocument y accountingDocumentTemp para lograrlo, 
+-se reparo la administracion del monto banck fee, se agrego un nuevo atributo "id_charge" a accountingDocument y accountingDocumentTemp para lograrlo, 
 -se agrego un nuevo metodo encargado de almacenar el bank fee definitivo, y se mejoro un poco la sintaxis. todas lass operaciones funcionando correctamente.
 -Nuevos inputs en condiciones comerciales(termino pago supplier, Tipo de Ciclo de Fact, Divide Fact por Mes, Dia de Inicio de Ciclo). los dos ultimos  se mostraran u ocultaran dependiendo de las opciones elegidas en termino pago supplier y Tipo de Ciclo de Fact.
 -Se agrego input bank fee, donde se declara si eteliz asume bank fee o no, esta opcion sera aplicada en todos los carrier pertenecientes a un mismo grupo, si modifica otro carrier del mismo grupo, la condicion se volvera a modificar y cambiara para los demas carrier.

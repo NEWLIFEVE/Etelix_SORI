@@ -21,12 +21,13 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row SelectGrupo">
-		<?php echo $form->labelEx($model,'id'); ?>
+            <label class="labelGrupos">Grupos</label>
                 <?php echo $form->dropDownList($model,'id',CarrierGroups::getListGroups(),
                     array( 'prompt'=>'Seleccione' )
                 ); ?>
             <?php echo $form->textField($model,'new_groups'); ?>
-                <?php echo $form->error($model,'id'); ?>
+            <?php echo $form->error($model,'id'); ?>
+            <label class="NoteGrupos">Ingrese el nombre del nuevo grupo, asigne los carriers correspondientes y haga click en "Guardar Grupo".</label>
             <div class="newGroup">
                     <label>+</label>
             </div>
