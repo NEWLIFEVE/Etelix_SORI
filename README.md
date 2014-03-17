@@ -2,7 +2,7 @@
 ===========
 
 Sistema de Origen.
-
+Release 1.5.7.3
 	- Cambio en guardada de grupos e indicadores en interfaz.
 	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 	- Todos los montos introducidos a traves de la interfaz de documentos contables seran positivos.
