@@ -496,7 +496,7 @@ class AccountingDocumentTemp extends CActiveRecord
             if (isset($model->doc_number))$params['doc_number']=$model->doc_number;
             if (isset($model->id_accounting_document))$params['fact_number']=AccountingDocument::getDocNum($model->id_accounting_document);
             if (isset($model->minutes))$params['minutes'] =$model->minutes; 
-            if (isset($model->amount))$params['amount'] =Utility::changePositive($model->amount); 
+            if (isset($model->amount))$params['amount'] =$model->amount; 
             if (isset($model->note))$params['note'] =$model->note; 
             if (isset($model->min_etx))$params['min_etx'] =$model->min_etx; 
             if (isset($model->min_carrier))$params['min_carrier'] =$model->min_carrier;
@@ -639,7 +639,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->minutes=NULL;
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
-                    $model->amount=Utility::ComaPorPunto(Utility::changePositive(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier)));
+//                    $model->amount=Utility::ComaPorPunto(Utility::changePositive(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier)));
+                    $model->amount=Utility::ComaPorPunto(($model->rate_carrier * $model->min_carrier)-($model->rate_etx * $model->min_etx));
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -656,7 +657,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->minutes=NULL;
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
-                    $model->amount=Utility::ComaPorPunto(Utility::changePositive(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier)));
+//                    $model->amount=Utility::ComaPorPunto(Utility::changePositive(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier)));
+                    $model->amount=Utility::ComaPorPunto(($model->rate_carrier * $model->min_carrier)-($model->rate_etx * $model->min_etx));
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -679,7 +681,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->amount = Utility::ComaPorPunto(Utility::changePositive($model->amount));
+//                    $model->amount = Utility::ComaPorPunto(Utility::changePositive($model->amount));
+                    $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
@@ -701,7 +704,8 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->select_dest_supplier=NULL;
                     $model->input_dest_supplier=NULL;
                     $model->minutes=NULL;
-                    $model->amount = Utility::ComaPorPunto(Utility::changePositive($model->amount));
+//                    $model->amount = Utility::ComaPorPunto(Utility::changePositive($model->amount));
+                    $model->amount = Utility::ComaPorPunto($model->amount);
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);

@@ -203,7 +203,8 @@ class AccountingDocumentTempController extends Controller
                 if(isset($_POST['AccountingDocumentTemp']['valid_received_hour']))$model->valid_received_hour=Utility::snull($_POST['AccountingDocumentTemp']['valid_received_hour']); 
                 if(isset($_POST['AccountingDocumentTemp']['doc_number']))$model->doc_number=Utility::snull($_POST['AccountingDocumentTemp']['doc_number']); 
                 if(isset($_POST['AccountingDocumentTemp']['minutes']))$model->minutes=Utility::snull($_POST['AccountingDocumentTemp']['minutes']); 
-                if(isset($_POST['AccountingDocumentTemp']['amount']))$model->amount=Utility::snull(Utility::ComaPorPunto(Utility::changePositive($_POST['AccountingDocumentTemp']['amount']))); 
+//                if(isset($_POST['AccountingDocumentTemp']['amount']))$model->amount=Utility::snull(Utility::ComaPorPunto(Utility::changePositive($_POST['AccountingDocumentTemp']['amount']))); 
+                if(isset($_POST['AccountingDocumentTemp']['amount']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount'])); 
                 if(isset($_POST['AccountingDocumentTemp']['min_carrier']))$model->min_carrier=Utility::snull($_POST['AccountingDocumentTemp']['min_carrier']); 
                 if(isset($_POST['AccountingDocumentTemp']['rate_carrier']))$model->rate_carrier=Utility::snull($_POST['AccountingDocumentTemp']['rate_carrier']);
                 if(isset($_POST['AccountingDocumentTemp']['min_etx']))$model->min_etx=Utility::snull($_POST['AccountingDocumentTemp']['min_etx']);
@@ -244,7 +245,8 @@ class AccountingDocumentTempController extends Controller
         public function ActionUpdateDisp($id)
         {
             $model=$this->loadModel($id); 
-             $model->amount=Utility::snull(Utility::ComaPorPunto(Utility::changePositive($_POST['dispute']))); 
+             $model->amount=Utility::snull(Utility::ComaPorPunto($_POST['dispute'])); 
+//             $model->amount=Utility::snull(Utility::ComaPorPunto(Utility::changePositive($_POST['dispute']))); 
             if($model->save()){
                    echo " y id: ".$model->id;
               }else{
@@ -344,7 +346,6 @@ class AccountingDocumentTempController extends Controller
            }    
         echo json_encode($params);   
         }
-
         
         /**
          * esta funcion busca las disputas, 

@@ -2,6 +2,7 @@
 ===========
 
 Sistema de Origen
+-modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
 -cambio en guardada de grupos e indicadores en interfaz.
 -cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 
