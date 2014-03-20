@@ -65,6 +65,7 @@ return array(
                 ),
             ),
         'db'=>array(
+
             'connectionString'=>'pgsql:host='.$server_db.';port=5432;dbname='.$sori_db,
             'emulatePrepare'=>true,
             'username'=>$user_db,

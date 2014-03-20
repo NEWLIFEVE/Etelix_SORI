@@ -510,7 +510,8 @@ $SORI.UI=(function()
         {
             $(id).change(function()
             {
-                var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
+                var tipo_Ac_doc=$('#AccountingDocumentTemp_id_type_accounting_document').val(),
+                    CarrierDisp=$('#AccountingDocumentTemp_id_carrier').val(),
                 desdeDisp=$('#AccountingDocumentTemp_from_date').val(), hastaDisp=$('#AccountingDocumentTemp_to_date').val();
                 if(tipo_Ac_doc==5||tipo_Ac_doc==7)
                 {
@@ -536,6 +537,7 @@ $SORI.UI=(function()
                         }else{
                             obj = JSON.parse(data);
                             $("#AccountingDocumentTemp_id_accounting_document").html("<option>Seleccione</option>").css('color','#777');
+                            console.log(data);
                             for(var i=0, j=obj.length; i<j;i++)
                             {
                                 $("#AccountingDocumentTemp_id_accounting_document").append("<option value="+obj[i].id+">"+obj[i].factura+"</option>");  console.log(obj[i].id,obj[i].factura);$('.listaDisputas').remove();$('.tabla_N_C').hide('fast');
@@ -631,7 +633,7 @@ function roundNumber(number,decimals)
                                                                  <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
-                                                                 <td id='AccountingDocumentTemp[dispute]'>" + roundNumber($SORI.UTILS.changePositive((obj[i].amount_etx-obj[i].amount_carrier)), 2) + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[dispute]'>" + roundNumber((obj[i].amount_carrier-obj[i].amount_etx), 2) + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota"+i+"' class='montoNota'  value=" + roundNumber(obj[i].dispute,2) + "></td>\n\
                                                              </tr>");
                              $('.fechaIniFact,.fechaFinFact').fadeOut(10);
@@ -873,8 +875,16 @@ function roundNumber(number,decimals)
                 if(obj.rate_carrier !== undefined) var rate_carrier="<td id='AccountingDocumentTemp[rate_carrier]'>"+obj.rate_carrier+"</td>";
                 if(min_etx !== undefined && rate_etx !== undefined) var amount_etx="<td id='AccountingDocumentTemp[amount_etx]'>"+(obj.min_etx*obj.rate_etx).toFixed(2)+"</td>";
                 if(min_carrier !== undefined && rate_carrier !== undefined) var amount_carrier="<td id='AccountingDocumentTemp[amount_carrier]'>"+(obj.min_carrier*obj.rate_carrier).toFixed(2)+"</td>";
-                if(amount_etx !== undefined && amount_carrier !== undefined) var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_etx*obj.rate_etx)-(obj.min_carrier*obj.rate_carrier)).toFixed(2)+"</td>";
+                /*tema para disputas */
+                if(amount_etx !== undefined && amount_carrier !== undefined){ 
+                    if(obj.id_type_accounting_document=="6") 
+                        var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_carrier*obj.rate_carrier)-(obj.min_etx*obj.rate_etx)).toFixed(2)+"</td>";
+                    else if(obj.id_type_accounting_document=="5") 
+                        var dispute="<td id='AccountingDocumentTemp[amount_carrier]'>"+((obj.min_etx*obj.rate_etx)-(obj.min_carrier*obj.rate_carrier)).toFixed(2)+"</td>";
+                }
+                /**/
                 if(obj.amount_bank_fee !== undefined) var amount_bank_fee="<td id='AccountingDocumentTemp[amount_bank_fee]'>"+obj.amount_bank_fee+"</td>"; 
+               
                 console.dir(id+group+issue_date+doc_number+amount+currency);
                 switch (obj.id_type_accounting_document){
                     case '1':

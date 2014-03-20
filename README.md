@@ -1,7 +1,12 @@
 ﻿Etelix_SORI
 ===========
 
-Sistema de Origen.
+Sistema de Origen
+Release 1.5.7.4
+	- Modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
+	- Cambio en guardada de grupos e indicadores en interfaz.
+	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
+
 Release 1.5.7.3
 	- Cambio en guardada de grupos e indicadores en interfaz.
 	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
