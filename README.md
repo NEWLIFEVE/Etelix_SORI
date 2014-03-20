@@ -2,15 +2,25 @@
 ===========
 
 Sistema de Origen
+-cambio en guardada de grupos e indicadores en interfaz.
+-cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
+
+
+1.5.7.2
 - Actualizando modelo de termino pago
 -Nueva funcion para convertir valores negativos en positivos
 -mejoras en interfaz de documentos contables, algunos detalles que estaban sueltos por ahi
 -ahora tanto las disputas como las notas de credito en absoluto se almacena y muestran en interfaz con un valor positivo
 
+<<<<<<< HEAD
+=======
+Release 1.5.7.1
+>>>>>>> 8a540c5c0fc17fbb1f8076b9f7d47b852933b387
 -mejoras en javascript.
--nueva opcion para agregar grupos en admin. groups
+-nueva opcion para agregar grupos en admin groups
 -en condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Realese 1.5.6
 -Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
@@ -19,11 +29,18 @@ Relase 1.5.4
 -Registro bank fee para pagos, mejoras en condiciones comerciales.
 -mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
 >>>>>>> 7a20cf0f0eefd1069a33c6d106076b9178ed8b53
+=======
+Relase 1.5.7
+-Registro bank fee para pagos, mejoras en condiciones comerciales.
+-mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
+
+Realese 1.5.6
+-Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
+>>>>>>> 8a540c5c0fc17fbb1f8076b9f7d47b852933b387
 
 Realese 1.5.5
 -Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier
 -Se agrego menu para tipo de usuario LEGAL
-
 
 Relase 1.5.4
 -modificacion de validacion en facturas enviadas, ahora valida por doc nomber, carrier y compañia.
