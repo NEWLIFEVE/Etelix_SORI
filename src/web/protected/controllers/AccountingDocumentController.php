@@ -165,7 +165,8 @@ class AccountingDocumentController extends Controller
 	{
 //	          $id=  AccountingDocument::getConfirmID(0); 
                   $model=$this->loadModel($id);
-        	  $model->amount=Utility::changePositive($_POST['AccountingDocumentTemp']['amount_aproved']);
+//        	  $model->amount=Utility::changePositive($_POST['AccountingDocumentTemp']['amount_aproved']);
+        	  $model->amount=$_POST['AccountingDocumentTemp']['amount_aproved'];
                   $model->save();
 			if($model->save()){
                             echo 'guardo';
