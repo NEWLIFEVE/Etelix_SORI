@@ -234,16 +234,16 @@
             </div>
 
             <div class="contratoForm tabla_N_C">
-            <label class="label_Disp_NotaCEnv">Disputas recibidas:</label>
+            <label class="label_Disp_NotaCEnv">Disputas:</label>
             <table border="1" class="tablaVistDocTemporales lista_Disp_NotaCEnv">
                    <tr>
                       <td> Destino </td>
-                      <td> Min Etx </td>
-                      <td> Min Prov </td>
-                      <td> Tarifa Etx </td>
-                      <td> Tarifa Prov </td>
-                      <td> Monto Etx</td>
-                      <td> Monto Prov</td>
+                      <td> Min Etelix </td>
+                      <td> Min Carrier </td>
+                      <td> Tarifa Etelix </td>
+                      <td> Tarifa Carrier </td>
+                      <td> Monto Etelix</td>
+                      <td> Monto Carrier</td>
                       <td> Disputa</td>
                       <td> Monto de nota </td>
                    </tr>
@@ -461,12 +461,12 @@
                       <td> Carrier </td>
                       <td> Destino </td>
                       <td> Num. Factura </td>
-                      <td> Min Etx </td>
-                      <td> Min Prov </td>
-                      <td> Tarifa Etx </td>
-                      <td> Tarifa Prov </td>
-                      <td> Monto Etx</td>
-                      <td> Monto Prov</td>
+                      <td> Min Etelix </td>
+                      <td> Min Carrier </td>
+                      <td> Tarifa Etelix </td>
+                      <td> Tarifa Carrier </td>
+                      <td> Monto Etelix</td>
+                      <td> Monto Carrier</td>
                       <td> Disputa</td>
                       <td> Acciones </td>
                    </tr>
@@ -501,12 +501,12 @@
                       <td> Carrier </td>
                       <td> Destino Supp </td>
                       <td> Num. Factura </td>
-                      <td> Min Etx </td>
-                      <td> Min Prov </td>
-                      <td> Tarifa Etx </td>
-                      <td> Tarifa Prov </td>
-                      <td> Monto Etx</td>
-                      <td> Monto Prov</td>
+                      <td> Min Etelix </td>
+                      <td> Min Carrier </td>
+                      <td> Tarifa Etelix </td>
+                      <td> Tarifa Carrier </td>
+                      <td> Monto Etelix</td>
+                      <td> Monto Carrier</td>
                       <td> Disputa</td>
                       <td> Acciones </td>
                    </tr>
