@@ -117,13 +117,13 @@ class AccountingDocumentTemp extends CActiveRecord
 			'id_currency' => 'Moneda',
 			'confirm' => 'Confirmar',
                         'min_etx' => 'Minutos Etelix',
-			'min_carrier' => 'Minutos Proveedor',
+			'min_carrier' => 'Minutos Carrier',
 			'rate_etx' => 'Tarifa Etelix',
-			'rate_carrier' => 'Tarifa Proveedor',
+			'rate_carrier' => 'Tarifa Carrier',
 			'id_accounting_document' => 'Número de Factura',
                         'carrier_groups'=>'Grupo',
 			'id_destination' => 'Destino Etelix',
-			'id_destination_supplier' => 'Destino Proveedor',
+			'id_destination_supplier' => 'Destino Carrier',
 			'bank_fee' => 'Monto Bank Fee',
 			'id_accounting_document_temp' => 'id_accounting_document_temp',
 		);
@@ -658,7 +658,7 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->rate_etx=Utility::ComaPorPunto($model->rate_etx);;
                     $model->rate_carrier=Utility::ComaPorPunto($model->rate_carrier);;
 //                    $model->amount=Utility::ComaPorPunto(Utility::changePositive(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier)));
-                    $model->amount=Utility::ComaPorPunto(($model->rate_carrier * $model->min_carrier)-($model->rate_etx * $model->min_etx));
+                    $model->amount=Utility::ComaPorPunto(($model->rate_etx * $model->min_etx)-($model->rate_carrier * $model->min_carrier));
                     $model->note=Utility::snull($model->note);
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
