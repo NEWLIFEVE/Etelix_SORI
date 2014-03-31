@@ -307,19 +307,25 @@ $SORI.UI=(function()
 	}
         /**
          * 
-         * @param {type} obj
+         * @param {type} obj, type
          * @returns {undefined}
          */
-        function _update_monto_Disp(obj)
+        function _update_monto_Disp(obj,type)
         {
             for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
 		{
                     obj[0].children[7].innerHTML = ((obj[0].children[3].innerHTML * obj[0].children[5].innerHTML).toFixed(2));
                     obj[0].children[8].innerHTML = ((obj[0].children[4].innerHTML * obj[0].children[6].innerHTML).toFixed(2));
-                    obj[0].children[9].innerHTML = ((obj[0].children[8].innerHTML - obj[0].children[7].innerHTML).toFixed(2));
+                    if(type==1)
+                        obj[0].children[9].innerHTML = ((obj[0].children[8].innerHTML - obj[0].children[7].innerHTML).toFixed(2));
+                    else
+                        obj[0].children[9].innerHTML = ((obj[0].children[7].innerHTML - obj[0].children[8].innerHTML).toFixed(2));
 		}
                 $SORI.AJAX.actualizar(obj[0].id , "1" , obj[0].children[9].innerHTML);
          }
+         
+//         defineAmountDisp($('#AccountingDocumentTemp_id_accounting_document').val(), amount_carrier, amount_etx)
+         
         /**
          * escucha el click sobre la imagen delete y valida para eliminar el documento temporal
          * @param {type} $fila
@@ -438,7 +444,7 @@ $SORI.UI=(function()
 			{
 				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_DispRec($fila);
-				_update_monto_Disp($fila);
+				_update_monto_Disp($fila,1);
 			}
 			if($(this).attr('name')=='cancel_DispRec')
 			{
@@ -453,7 +459,7 @@ $SORI.UI=(function()
 			{
 				$SORI.AJAX.actualizar($fila[0].id,'2');
 				_revert_DispEnv($fila);
-				_update_monto_Disp($fila);
+				_update_monto_Disp($fila,2);
 			}
 			if($(this).attr('name')=='cancel_DispEnv')
 			{
@@ -633,7 +639,7 @@ function roundNumber(number,decimals)
                                                                  <td id='AccountingDocumentTemp[rate_carrier]'>" + obj[i].rate_carrier + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[amount_etx]'>" + obj[i].amount_etx + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[amount]'>" + obj[i].amount_carrier + "</td>\n\
-                                                                 <td id='AccountingDocumentTemp[dispute]'>" + roundNumber((obj[i].amount_carrier-obj[i].amount_etx), 2) + "</td>\n\
+                                                                 <td id='AccountingDocumentTemp[dispute]'>" + roundNumber($SORI.UI.defineAmountDisp(tipo, obj[i].amount_carrier,obj[i].amount_etx), 2) + "</td>\n\
                                                                  <td id='AccountingDocumentTemp[monto_nota]'><input name='AccountingDocumentTemp[amount_aproved]' id='montoNota"+i+"' class='montoNota'  value=" + roundNumber(obj[i].dispute,2) + "></td>\n\
                                                              </tr>");
                              $('.fechaIniFact,.fechaFinFact').fadeOut(10);
@@ -656,7 +662,14 @@ function roundNumber(number,decimals)
               }
           });
         }
-    
+        function defineAmountDisp(tipo, amount_carrier, amount_etx)
+        {
+            if (tipo === '7') {
+               return amount_carrier - amount_etx;
+            }else {
+               return amount_etx - amount_carrier;
+            }
+        }
         /**
          *
 	 */  
@@ -834,7 +847,7 @@ function roundNumber(number,decimals)
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
-                case "":
+                case "":case 5:
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
@@ -1293,7 +1306,8 @@ function roundNumber(number,decimals)
                 resuelveTP:resuelveTP,
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
-                resuelvePeriodo:resuelvePeriodo
+                resuelvePeriodo:resuelvePeriodo,
+                defineAmountDisp:defineAmountDisp
 	};
 })();
 

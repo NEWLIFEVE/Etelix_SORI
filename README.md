@@ -3,13 +3,10 @@
 
 
 Sistema de Origen
--modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
--cambio en guardada de grupos e indicadores en interfaz.
--cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
-
-Sistema de Origen.
-
-
+        - Reparacion de funcion encargada de guardar y modificar datos de condiciones comerciales, especificamente el segmento donde se trata el bank fee.
+	- Modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
+	- Cambio en guardada de grupos e indicadores en interfaz.
+	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 	- Cambio en guardada de grupos e indicadores en interfaz.
 	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 	- Todos los montos introducidos a traves de la interfaz de documentos contables seran positivos.
