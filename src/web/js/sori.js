@@ -847,7 +847,7 @@ function roundNumber(number,decimals)
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;
-                case "":
+                case "":case 5:
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $("#dia_ini_fact,#divide_fact").val("");
                     break;

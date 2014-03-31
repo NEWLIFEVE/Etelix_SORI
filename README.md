@@ -3,13 +3,13 @@
 
 Sistema de Origen
 
+Realese 1.5.7.5
+        - Modificacion en guardado de Condiciones Comerciales, problema con Bankfee null de carriers pertenecientes a un grupo, los cuales no tienen contrato.
+
 Release 1.5.7.4
 	- Modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
-	- Cambio en guardada de grupos e indicadores en interfaz.
-	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 
 Release 1.5.7.3
-	- Modificacion de scripts encargados de administrar las disputas y las notas de credito en documentos contables.
 	- Cambio en guardada de grupos e indicadores en interfaz.
 	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 	- Cambio en guardada de grupos e indicadores en interfaz.
@@ -21,17 +21,28 @@ Release 1.5.7.2
 	- Mejoras en interfaz de documentos contables, algunos detalles que estaban sueltos por ahi
 	- Ahora tanto las disputas como las notas de credito en absoluto se almacena y muestran en interfaz con un valor positivo
 
+
 Release 1.5.7.1
+
 	- Mejoras en javascript.
 	- Nueva opcion para agregar grupos en admin groups
 	- En condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
+
+Realese 1.5.6
+-Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
+
+Relase 1.5.4
+-Registro bank fee para pagos, mejoras en condiciones comerciales.
+-mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
 
 Relase 1.5.7
 	- Registro bank fee para pagos, mejoras en condiciones comerciales.
 	- Mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
 
 Realese 1.5.6
+
 	- Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
+
 
 Realese 1.5.5
 	- Se arreglo comportamiento en condiciones comerciales con los inputs de termino de pago supplier

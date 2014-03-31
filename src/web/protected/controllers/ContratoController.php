@@ -198,7 +198,6 @@ class ContratoController extends Controller
                 $modelAux=Contrato::model()->find('id_carrier=:carrier',array(':carrier'=>$carrier));
                 $modelCarrier=  Carrier::model()->find('id=:id_carrier',array(':id_carrier'=>$carrier));
                 $modelGroup= Carrier::model()->findAll('id_carrier_groups=:groups',array(':groups'=>$modelCarrier->id_carrier_groups));
-                
                 if($fact_period==null ||$fact_period==""){
                     $fact_periodNA= FactPeriod::getModelName("No Aplica");
                     $fact_period=$fact_periodNA->id;
@@ -235,10 +234,12 @@ class ContratoController extends Controller
                                  foreach ($modelGroup as $key => $group) 
                                  {
                                     $modelContBankFee= Contrato::model()->find('id_carrier=:carrier AND end_date IS NULL',array(':carrier'=>$group->id));
-                                    if ($bank_fee != $modelContBankFee->bank_fee){
-                                        $modelContBankFee->bank_fee=$bank_fee;  
-                                        $modelContBankFee->save();     
-                                    }  
+                                    if($modelContBankFee!=NULL ||$modelContBankFee!=FALSE){
+                                        if ($bank_fee != $modelContBankFee->bank_fee){
+                                            $modelContBankFee->bank_fee=$bank_fee;  
+                                            $modelContBankFee->save();     
+                                        } 
+                                    }
                                  }
                              }
                             /*TERMINO PAGO CLIENTE*/         
@@ -407,10 +408,12 @@ class ContratoController extends Controller
                                  foreach ($modelGroup as $key => $group) 
                                  {
                                     $modelContBankFee= Contrato::model()->find('id_carrier=:carrier AND end_date IS NULL',array(':carrier'=>$group->id));
-                                     if($modelContBankFee->id != $model->id_carrier){
-                                        $modelContBankFee->bank_fee=$bank_fee;  
-                                        $modelContBankFee->save(); 
-                                     }
+                                    if($modelContBankFee!=NULL ||$modelContBankFee!=FALSE){ 
+                                        if($modelContBankFee->id != $model->id_carrier){
+                                            $modelContBankFee->bank_fee=$bank_fee;  
+                                            $modelContBankFee->save(); 
+                                         }
+                                    }
                                  }
                             }
                             /*STATUS CARRIER*/
