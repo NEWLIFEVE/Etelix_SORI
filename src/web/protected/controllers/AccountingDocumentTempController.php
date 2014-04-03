@@ -268,10 +268,10 @@ class AccountingDocumentTempController extends Controller
             $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
             if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4){                                                 
                 $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
-                if($id_bank_fee->id!=NULL)$this->loadModel($id_bank_fee->id)->delete();
+                if($id_bank_fee!=NULL)$this->loadModel($id_bank_fee->id)->delete();
             }
             $this->loadModel($id)->delete();
-            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
+//            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
 	}
 
 	/**
