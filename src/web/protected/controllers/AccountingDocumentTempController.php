@@ -144,7 +144,7 @@ class AccountingDocumentTempController extends Controller
                 $count = 0;
                 foreach ($modelLog as $key => $Log) {
                     $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
-                    if ($modelADT != null && $modelADT->id_type_accounting_document != "14") {
+                    if ($modelADT != null && $modelADT->id_type_accounting_document != "14"&& $modelADT->id_type_accounting_document != "15") {
                         $modelAD = new AccountingDocument;
                         $modelAD->setAttributes($modelADT->getAttributes());
                         if ($modelAD->save()) {
