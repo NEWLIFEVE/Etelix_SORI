@@ -3,6 +3,8 @@
 
 Sistema de Origen
 
+	- Correción al guardar cobros, guardaba dos veces el bank fee.
+
 Realese 1.5.7.5
         - Modificacion en eliminado de Documentos Contables, al no tener bank fee.
         - Modificacion en guardado de Condiciones Comerciales, problema con Bankfee null de carriers pertenecientes a un grupo, los cuales no tienen contrato.
