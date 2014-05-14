@@ -22,7 +22,6 @@ $(document).on('ready',function()
             console.log(msj.acumulador);
             if(msj.acumulador>=2)
             {
-                
                 //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
                 $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
             }

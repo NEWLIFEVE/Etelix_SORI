@@ -73,7 +73,7 @@ class BalanceController extends Controller
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-    public function actionCompras()
+        public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -290,24 +290,24 @@ class BalanceController extends Controller
 		));
 	}
         
-    /**
-     *
-     */
-    public function actionCarga()
+        /**
+         *
+         */
+        public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
 
 		$folder='uploads/';// folder for uploaded files
-        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
-        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
-        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-        $result = $uploader->handleUpload($folder);
-        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
- 
-        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
-        $fileName=$result['filename'];//GETTING FILE NAME
- 
-        echo $return;// it's array
+                $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
+                $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
+                $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+                $result = $uploader->handleUpload($folder);
+                $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+
+                $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+                $fileName=$result['filename'];//GETTING FILE NAME
+
+                echo $return;// it's array
 	}
 
 	/**
