@@ -1,6 +1,6 @@
 <?php
 
-class ContratoTerminoPagoController extends Controller
+class ContratoTerminoPagoSupplierController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class ContratoTerminoPagoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','PaymentTermHistory','DeleteCTP'),
+				'actions'=>array('index','view','PaymentTermHistory','DeleteCTPS'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -62,14 +62,14 @@ class ContratoTerminoPagoController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new ContratoTerminoPago;
+		$model=new ContratoTerminoPagoSupplier;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['ContratoTerminoPago']))
+		if(isset($_POST['ContratoTerminoPagoSupplier']))
 		{
-			$model->attributes=$_POST['ContratoTerminoPago'];
+			$model->attributes=$_POST['ContratoTerminoPagoSupplier'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -86,17 +86,19 @@ class ContratoTerminoPagoController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-            var_dump($id);
             $model=$this->loadModel($id);     
             if(isset($_POST['Contrato']))
             {
-                if(isset($_POST['Contrato']['id_termino_pago']))$model->id_termino_pago=Utility::snull(TerminoPago::getId($_POST['Contrato']['id_termino_pago'])->id); 
+                if(isset($_POST['Contrato']['id_termino_pago_supplier']))$model->id_termino_pago_supplier=Utility::snull(TerminoPago::getId($_POST['Contrato']['id_termino_pago_supplier'])->id); 
                 if(isset($_POST['Contrato']['start_date']))$model->start_date=Utility::snull($_POST['Contrato']['start_date']); 
                 if(isset($_POST['Contrato']['end_date']))$model->end_date=Utility::snull($_POST['Contrato']['end_date']); 
-
+                if(isset($_POST['Contrato']['id_fact_period']))$model->id_fact_period=Utility::snull(FactPeriod::getData($_POST['Contrato']['id_fact_period'])->id); 
+                if(isset($_POST['divide_fact'])) $model->month_break=$this->monthBreak ($_POST['divide_fact']);
+                if(isset($_POST['dia_ini_fact']))  $model->first_day=$this->firstDay($_POST['dia_ini_fact']);
+                
                 if($model->save())
                 {
-                    Log::registrarLog(LogAction::getId('Modificar Historial TerminoPago'),NULL, $id);
+                    Log::registrarLog(LogAction::getId('Modificar Historial TerminoPago Supplier'),NULL, $id);
                     echo "Actualizado id: ".$model->id;
                 }
                 else
@@ -105,7 +107,48 @@ class ContratoTerminoPagoController extends Controller
                 }
             }
 	}
-
+        /**
+         * 
+         * @param type $string
+         * @return int|null
+         */
+        public function monthBreak($string)
+        {
+            switch ($string) {
+                case "Si": return 1;
+                    break;
+                case "No": return 0;
+                    break;
+                default: return NULL;
+                    break;
+            }
+        }
+        /**
+         * 
+         * @param type $string
+         * @return int|null
+         */
+        public function firstDay($string)
+        {
+                switch ($string) {
+                case "Lunes": return 1;
+                    break;
+                case "Martes": return 2;
+                    break;
+                case "Miercoles": return 3;
+                    break;
+                case "Jueves": return 4;
+                    break;
+                case "Viernes": return 5;
+                    break;
+                case "Sabado": return 6;
+                    break;
+                case "Domingo": return 7;
+                    break;
+                default: return null;
+                    break;
+            }
+        }
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -120,12 +163,13 @@ class ContratoTerminoPagoController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
+
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ContratoTerminoPago');
+		$dataProvider=new CActiveDataProvider('ContratoTerminoPagoSupplier');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -136,10 +180,10 @@ class ContratoTerminoPagoController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new ContratoTerminoPago('search');
+		$model=new ContratoTerminoPagoSupplier('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ContratoTerminoPago']))
-			$model->attributes=$_GET['ContratoTerminoPago'];
+		if(isset($_GET['ContratoTerminoPagoSupplier']))
+			$model->attributes=$_GET['ContratoTerminoPagoSupplier'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -150,12 +194,12 @@ class ContratoTerminoPagoController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return ContratoTerminoPago the loaded model
+	 * @return ContratoTerminoPagoSupplier the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=ContratoTerminoPago::model()->findByPk($id);
+		$model=ContratoTerminoPagoSupplier::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -163,11 +207,11 @@ class ContratoTerminoPagoController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param ContratoTerminoPago $model the model to be validated
+	 * @param ContratoTerminoPagoSupplier $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='contrato-termino-pago-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='contrato-termino-pago-supplier-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
@@ -178,42 +222,49 @@ class ContratoTerminoPagoController extends Controller
             $modelContrat = Contrato::DatosContrato($_GET["Contrato"]["id_carrier"]);
             if($modelContrat!=null)
             {
-                $modelpaymentTerm= ContratoTerminoPago::paymentTermHistory($_GET["Contrato"]["id_carrier"]);
+                $modelpaymentTerm= ContratoTerminoPagoSupplier::paymentTermHistory($_GET["Contrato"]["id_carrier"]);
                 if($modelpaymentTerm!=null)
                 {
-                    $body="<h3>Historial de termino Pago Cliente</h3>
+                    $body="<h3>Historial de termino Pago Proveedor</h3>
                            <table border='1' class='paymentTermnTable'>
                             <tr>
-                                <td> Termino Pago Cliente </td>
+                                <td> Termino Pago Proveedor </td>
                                 <td> Fecha de Inicio </td>
                                 <td> Fecha Fin </td>
+                                <td> Tipo de Ciclo de Facturacion </td>
+                                <td> Divide Facturas por Mes</td>
+                                <td> Dia de Inicio de Ciclo </td>
                                 <td> Acciones </td>
                             </tr>";
                     foreach ($modelpaymentTerm as $key => $value)
                     { 
-                        $body.= "<tr class='vistaTemp' id='".$value->id_ctp."'>
-                                <td id='Contrato[id_termino_pago]'>".$value->tp_name."</td>
+                        $body.= "<tr class='vistaTemp' id='".$value->id_ctps."'>
+                                <td id='Contrato[id_termino_pago_supplier]'>".$value->tp_name."</td>
                                 <td id='Contrato[start_date]'>".$value->start_date."</td>
                                 <td id='Contrato[end_date]'>".$value->end_date."</td>
+                                <td id='Contrato[id_fact_period]'>".$value->fact_period."</td>
+                                <td id='divide_fact'>".$value->month_break."</td>
+                                <td id='dia_ini_fact'>".$value->first_day."</td>
                                 <td><img class='edit' name='editTP' alt='editar' src='/images/icon_lapiz.png'><img name='deleteTP' alt='borrar' src='/images/icon_x.gif'></td>
                               </tr>";  
                     }
 
                      $body.="</table>";
                 }else{
-                    $body="<h2>No hay Historial de termino pago modificado como clientes</h2>";
+                    $body="<h2>No hay Historial de termino pago modificado como proveedores</h2>";
                 }
             }else{
-                $body="<font style='color:rgba(111,204,187,1);'>Seleccione el termino pago como cliente</font>";
+                $body="<font style='color:rgba(111,204,187,1);'>Seleccione el termino pago como proveedor</font>";
             }
             echo $body;
         }
-        public function actionDeleteCTP($id)
+        public function actionDeleteCTPS($id)
 	{
             $model=$this->loadModel($id);
             if($model->delete())
                 echo "Delete ".$id;
             else
                 echo "Fail ;(";
+
 	}
 }

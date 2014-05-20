@@ -100,9 +100,13 @@ class TerminoPago extends CActiveRecord
 	/**
 	 *
 	 */
-	public static function getName($termino_pago)
-	{
-		return self::model()->find("id=:id", array(':id'=>$termino_pago))->name;
+    public static function getName($termino_pago)
+    {
+            return self::model()->find("id=:id", array(':id'=>$termino_pago))->name;
+    }
+    public static function getId($name)
+    {
+            return self::model()->find("name=:name", array(':name'=>$name));
     }
 
     /**
@@ -110,6 +114,10 @@ class TerminoPago extends CActiveRecord
      */
     public static function getListTermPago()
     {
-    	return CHtml::listData(self::model()->findAll(),'id','name');
+            return CHtml::listData(self::model()->findAll(),'id','name');
+    }
+    public static function listTermPago()
+    {
+            return self::model()->findAll();
     }
 }

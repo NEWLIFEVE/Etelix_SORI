@@ -45,6 +45,108 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
+	function _editarTP(obj, type)
+	{
+                var topCols=3; if(type==true) topCols=6;
+		for (var i=0; i< obj[0].childElementCount-1; i++)
+		{
+			var select=document.createElement('select');  select.name=obj[0].children[i].id; select.value=obj[0].children[i].innerHTML; /*select.id=obj[0].children[i].id;*/
+			var input=document.createElement('input');  input.name=obj[0].children[i].id;  input.value=obj[0].children[i].innerHTML;
+                        var option=document.createElement("option"); option.value = "No Aplica"; option.text = option.value;
+   
+                        if(i==0 || i==3 || i==4 || i==5)
+			{
+                                if(i==0)  var parent="div.paymentTermnCustomer";
+                                if(i==3)  var parent="div.periodo_fact";
+                                if(i==4)  var parent="div.divide_fact";
+                                if(i==5)  var parent="div.dia_ini_fact";
+                                select.innerHTML=($(parent).children()[1].outerHTML);/*obtengo el html del select correspondiente*/
+                                if(i!=0) select.add(option);                         /*agrego option 'No Aplica para los select fact period, month breack y first day'*/
+                                for(var n=0; n<select.childElementCount;n++)
+                                {
+                                    select.children[n].value=select.children[n].innerHTML;
+                                }
+                                select.value=obj[0].children[i].innerHTML;
+                                obj[0].children[i].innerHTML="";
+                                obj[0].children[i].appendChild(select); 
+                                if(i==3) for (var x=0, j=5;x<=j;x++)obj[0].children[3].children[0].children[x].style.display="block"; 
+                        }
+			if(i>=1 && i<=2)
+			{
+                            $(input).datepicker({ dateFormat: "yy-mm-dd"});
+                            obj[0].children[i].innerHTML="";
+                            obj[0].children[i].appendChild(input);
+			}
+                        $(input).css("height","inherit").css("width", "90%"); $(select).css("height","inherit").css("width", "90%").css("padding", "initial");
+			select=input=null;
+		}
+		obj[0].children[topCols].innerHTML="";
+		obj[0].children[topCols].innerHTML="<img name='saveTP' alt='save' src='/images/icon_check.png'><img name='cancelTP' alt='cancel' src='/images/icon_arrow.png'>";
+		if(type==true)_adminObjTP(obj);
+                obj=null;
+		accion();
+	}
+        function _adminObjTP(obj)
+        {
+            $(obj[0].children[0].children[0]).on('change',function()
+            {
+                switch (obj[0].children[0].children[0].value){
+                    case "Sin estatus":case "30/30":case "30/15": case "30/7": case "P-Mensuales":
+                        obj[0].children[3].children[0].value="No Aplica";
+                        obj[0].children[4].children[0].value="No Aplica";
+                        obj[0].children[5].children[0].value="No Aplica";
+                        break;
+                    case "15/15":case "15/7":case "15/5": case "P-Quincenales":
+                        obj[0].children[3].children[0].children[5].style.display="none"; 
+                        obj[0].children[3].children[0].children[1].style.display="none"; 
+                        obj[0].children[3].children[0].children[2].style.display="none"; 
+                        obj[0].children[3].children[0].children[3].style.display="block"; 
+                        obj[0].children[3].children[0].children[4].style.display="block"; 
+                        obj[0].children[3].children[0].value="Seleccione";
+                        obj[0].children[4].children[0].value="No Aplica";
+                        obj[0].children[5].children[0].value="No Aplica";
+                        break;
+                    default:
+                        obj[0].children[3].children[0].children[5].style.display="none"; 
+                        obj[0].children[3].children[0].children[1].style.display="block"; 
+                        obj[0].children[3].children[0].children[2].style.display="block"; 
+                        obj[0].children[3].children[0].children[3].style.display="none"; 
+                        obj[0].children[3].children[0].children[4].style.display="none"; 
+                        obj[0].children[3].children[0].value="Seleccione";
+                        obj[0].children[4].children[0].value="No Aplica";
+                        obj[0].children[5].children[0].value="No Aplica";
+                        break;
+                }
+            });
+            $(obj[0].children[3].children[0]).on('change',function()
+            {
+                switch (obj[0].children[3].children[0].value){
+                    case "Dia Semana(L/M/M/J/V/S/D)":
+                        obj[0].children[4].children[0].value=" Seleccione ";
+                        obj[0].children[5].children[0].value=" Seleccione ";
+                        break;
+                    default:
+                        obj[0].children[4].children[0].value="No Aplica";
+                        obj[0].children[5].children[0].value="No Aplica";
+                        break;
+                }
+            });
+        }
+        function _revert_TP(obj, type)
+	{
+                var topCols=3; if(type==true) topCols=6;
+		var contenido=new Array();
+		for (var i=0, j=obj[0].childElementCount + -1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[topCols].innerHTML="";
+		obj[0].children[topCols].innerHTML="<img class='edit' name='editTP' alt='editar' src='/images/icon_lapiz.png'><img name='deleteTP' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
 	function _editar_Fac_Rec(obj)
 	{
 		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
@@ -327,13 +429,19 @@ $SORI.UI=(function()
 //         defineAmountDisp($('#AccountingDocumentTemp_id_accounting_document').val(), amount_carrier, amount_etx)
          
         /**
-         * escucha el click sobre la imagen delete y valida para eliminar el documento temporal
-         * @param {type} $fila
-         * @returns {undefined}
-         */
-	function _elimina_doc($fila)
+        * escucha el click sobre la imagen delete y valida para eliminar el documento temporal
+        * @param {type} $fila
+        * @param {type} extra
+        * @returns {undefined}          */
+	function _elimina_doc($fila, extra)
 	{  
-            $('.cargando,.mensaje').remove(); $SORI.UI.msj_confirm("<h3>Esta a punto de eliminar el documento contable seleccionado</h3>");  
+            $('.cargando,.mensaje').remove();
+            
+            if(extra===true || extra===false)
+              $SORI.UI.msj_confirm("<h3>Esta a punto de eliminar el historial termino pago seleccionado</h3>"); 
+            else
+              $SORI.UI.msj_confirm("<h3>Esta a punto de eliminar el documento contable seleccionado</h3>");  
+          
             $('#confirma,#cancelar').on('click',function()
             {
                 var tipo=$(this).attr('id');
@@ -347,7 +455,7 @@ $SORI.UI=(function()
                      head.children().fadeOut(); head.children().fadeOut();
                      console.log("oculto el head");
                     }
-                   $SORI.AJAX.borrar($fila[0].id);
+                   $SORI.AJAX.borrar($fila[0].id, extra);
                 }else{
                   $('.cargando,.mensaje').fadeOut('slow'); 
                 }
@@ -369,13 +477,16 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='edit'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Nota_cred'],img[name='edit_Pagos'], img[name='edit_Cobros'], img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_DispEnv'], img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Nota_cred'],img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv'], img[name='cancel_Nota_cred']") .on('click',function()
+		$("img[name='editTP'],img[name='saveTP'],img[name='cancelTP'],img[name='deleteTP'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Nota_cred'],img[name='edit_Pagos'], img[name='edit_Cobros'], \n\
+                   img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_DispEnv'],\n\
+                   img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Nota_cred'],img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], \n\
+                   img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv'], img[name='cancel_Nota_cred']") .on('click',function()
 		{
 			$fila=$(this).parent().parent();
 //                        GENERAL
 			if($(this).attr('name')=="delete")
 			{
-                                _elimina_doc($fila);
+                                _elimina_doc($fila, null);
 			}
 //                        FACTURAS RECIBIDAS
 			if($(this).attr('name')=='edit_Fac_Rec')
@@ -479,8 +590,25 @@ $SORI.UI=(function()
 			{
 				_revert_Nota_cred($fila);
 			}
+ //                       TERMINOS PAGOS
+                        switch ($(this).attr('name')) {
+                            case "editTP":  case "saveTP":  case "cancelTP": case "deleteTP": 
+                                var type=false; if($(".formPaymentTermnsSupplier").css("display")!="none") type=true;
+                                    console.log(type);
+                                switch ($(this).attr('name')) {
+                                    case "editTP":   _editarTP($fila, type);
+                                        break; 
+                                    case "saveTP":   $SORI.AJAX.actualizar($fila[0].id, type); _revert_TP($fila,type); 
+                                        break; 
+                                    case "cancelTP": _revert_TP($fila,type);
+                                        break; 
+                                    case "deleteTP": _elimina_doc($fila, type);
+                                        break;
+                                }
+                            break;
+                    }
 		});
-		$fila=null;
+		$fila=type=null;
 	}
 
         /**
@@ -725,8 +853,8 @@ function roundNumber(number,decimals)
 	{
             $('#'+id).change(function()
             {       
-                    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
-                    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier").val('');
+                    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_start_date_TP_customer,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
+                    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier, #Contrato_start_date_TP_supplier, #start_date_TP_cus_Oculto, #start_date_TP_sup_Oculto").val('');
                     $(".hManagerA,.hCarrierA").empty();
                     $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     $(".formularioContrato").fadeOut("fast");
@@ -756,7 +884,9 @@ function roundNumber(number,decimals)
                             $("#Contrato_sign_date").val(obj.sign_date);
                             $("#Contrato_production_date").val(obj.production_date);
                             $("#Contrato_id_termino_pago").val(obj.termino_pago);
+                            $("#Contrato_start_date_TP_customer").val(obj.start_date_TP_customer);
                             $("#Contrato_id_termino_pago_supplier").val(obj.termino_pago_supplier);
+                            $("#Contrato_start_date_TP_supplier").val(obj.start_date_TP_supplier);
                             $("#Contrato_id_fact_period").val(obj.fact_period);
                             $("#dia_ini_fact").val(obj.dia_ini_fact);
                             $("#divide_fact").val(obj.divide_fact);
@@ -773,7 +903,10 @@ function roundNumber(number,decimals)
                             $("#F_Firma_Contrato_Oculto").val(obj.sign_date);
                             $("#F_P_produccion_Oculto").val(obj.production_date);
                             $("#TerminoP_Oculto").val(obj.termino_pago);
+//                            $("#start_date_TP_cus_Oculto").val(obj.start_date_TP_customer);
+                            $("#TerminoPViews").val($("#Contrato_id_termino_pago  option:selected").html());
                             $("#TerminoP_supplier_Oculto").val(obj.termino_pago_supplier);
+//                            $("#start_date_TP_cus_Oculto").val(obj.start_date_TP_supplier);
                             $("#id_fact_period_Oculto").val(obj.fact_period);
                             $("#dia_ini_fact_Oculto").val(obj.dia_ini_fact);
                             $("#divide_fact_Oculto").val(obj.divide_fact);
@@ -804,7 +937,8 @@ function roundNumber(number,decimals)
          * @returns {undefined}
          */
         function resuelveTP(tp)
-        {     
+        {   
+            $("#TerminoPViewsS").val($("#Contrato_id_termino_pago_supplier  option:selected").html());
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
             switch (tp)
@@ -1336,21 +1470,31 @@ $SORI.AJAX=(function()
 	/**
 	 * Metodo encargado de enviar solicitud de eliminar por ajax la fila
 	 * @param id int id de la fila que se va a eliminar
-	 * @access public
-	 */
-	function borrar(id)
+         * @param {type} id
+         * @param {type} extra
+         * @returns {undefined} 
+        */
+	function borrar(id, extra)
 	{
+                switch (extra) {
+                    case true:  var url = "/ContratoTerminoPagoSupplier/DeleteCTPS/"+id;console.log(extra);
+                        break;
+                    case false: var url = "/ContratoTerminoPago/DeleteCTP/"+id;console.log(extra);
+                        break;
+                    case null:  var url = "/AccountingDocumentTemp/borrar/"+id;console.log(extra);
+                        break;
+                }
 		$.ajax(
 		{
 			type:'GET',
-			url:'borrar/'+id,
+			url:url,
 			data:'',
 			success:function(data)
 			{
 				console.log("eliminado");
 			}
 		});
-		id=null;
+		id=extra=null;
 	}
 	/**
 	 * Metodo encargado de enviar la solicutid de actualizar por ajax de la fila indicada
@@ -1361,11 +1505,18 @@ $SORI.AJAX=(function()
 	 */
 	function actualizar(id,tope,especial)
 	{       
-            if(tope == "2"){
-                    var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
-                }else{
-                    var url = "UpdateDisp/"+id, urlData="dispute="+especial;
-                }
+            switch (tope) {
+                case "2":  var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
+                    break;
+                case "1":  var url = "UpdateDisp/"+id, urlData="dispute="+especial;
+                    break;
+                case true: var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                    break;
+                case false:var url = "/ContratoTerminoPago/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                    break;
+                default:   console.log("algo salio mal");console.log(tope);
+                    break;
+            }
 		$.ajax(
 		{
 			type:'POST',
@@ -1374,7 +1525,7 @@ $SORI.AJAX=(function()
 			success:function(data)
 			{
 				console.log(data);
-				console.log('actualizo');
+//				console.log('actualizo');
 			}
 		});
 		id=null;
@@ -1397,12 +1548,53 @@ $SORI.AJAX=(function()
             }
             });
 	}
+        
+        function send(type,action,form, extra)
+        {
+            $.ajax({
+                 type: type,
+                 url: action,
+                 data: form,
+                 success: function(data)
+                 {  
+                     if(extra===true || extra===false){
+                        if(extra===true)   
+                            $(".adminCTPS").html(data);
+                        else
+                             $(".adminCTP").html(data);
+                        $SORI.UI.init();
+                     }else{
+                         console.log(data);
+                     }
+                 }
+            });
+        }
+        function getTerminoPago(obj)
+        {
+            $.ajax({url:"../TerminoPago/Names",success:function(datos)
+            {
+                    $SORI.DATA.list=JSON.parse(datos);
+                    $SORI.DATA.names=Array();
+                    for(var i=0, j=$SORI.DATA.list.length-1; i<=j; i++)
+                    {
+                            $SORI.DATA.names[i]=$SORI.DATA.list[i].name;
+                    };
+                    console.log(obj);
+                    if($(""+obj+"").autocomplete({source:$SORI.DATA.names}))
+                        console.log("ahi le asigno el autocomplete");
+                    if($(""+obj+"").addClass("ui-autocomplete-input"))
+                        console.log("ahi le asigno la clase ui-autocomplete-input");
+            }
+            });
+        }
 	/**
 	 * retorna los metodos publicos*/
 return{ init:init,
 	actualizar:actualizar,
 	borrar:borrar,
-        UpdateIdCarrier:UpdateIdCarrier
+        UpdateIdCarrier:UpdateIdCarrier,
+        send:send,
+        getTerminoPago:getTerminoPago
 	}
 })();
 $SORI.DATA={};

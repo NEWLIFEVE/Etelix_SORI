@@ -681,3 +681,44 @@ div#archivo ul li
 {
 	width: 30%;
 }
+
+
+
+::selection {
+background: silver;
+color: #fff;
+text-shadow: none;
+}
+::selection:hover {
+background: rgba(111,204,187,1);
+color: #fff;
+text-shadow: none;
+}
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-thumb {
+background: rgba(111,204,187,1);
+height: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: rgba(16, 139, 117, 1);
+height: 50px;
+}
+::-webkit-scrollbar-button {
+background: silver;
+height: 23px;
+}
+::-webkit-scrollbar-button:hover {
+background: rgba(16, 139, 117, 1);
+height: 23px;
+}
+::-webkit-scrollbar-track {
+background-color: rgba(70, 162, 145, 1);
+}
+::-webkit-scrollbar-track-piece {
+background-color: rgba(111,204,187,1);
+}
+::-webkit-scrollbar-track-piece:hover {
+background-color: rgba(160, 218, 207, 1);
+}

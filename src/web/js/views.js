@@ -195,22 +195,61 @@ $("#CarrierManagers_id_managers").change(function()
 $SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
+    $("#TerminoPViews").val($("#Contrato_id_termino_pago  option:selected").html());
     if($(this).attr('id')!="Contrato_id_fact_period")
     {       
         if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()=="")
         {
             $("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());
             $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
+            $(".startDateTpSupp").hide("fast");$("#Contrato_start_date_TP_supplier").val("");
+        }
+        if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_customer").val()!="")
+        {
+            $(".startDateTpCust").hide("fast");$("#Contrato_start_date_TP_customer").val("");
         }
         if($(this).attr('id')=="Contrato_id_termino_pago_supplier")
         {
             $("#Contrato_id_fact_period").val("");
             $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
+            $(".startDateTpSupp").hide("fast");$("#Contrato_start_date_TP_supplier").val("");
         }       
     }else
     {
         $SORI.UI.resuelvePeriodo($(this).val());
     }
+});
+
+$("input#Contrato_start_date_TP_customer, input#Contrato_start_date_TP_supplier").focusout(function() 
+{  
+     switch ($(this).attr("id")){
+       case "Contrato_start_date_TP_customer":
+            setTimeout(function() { $SORI.AJAX.send("GET","/Contrato/UpdateStartDateCTP",$("#contrato-form").serialize(), "date"); }, 2000);
+           break;
+       case "Contrato_start_date_TP_supplier":
+            setTimeout(function() { $SORI.AJAX.send("GET","/Contrato/UpdateStartDateCTPS",$("#contrato-form").serialize(), "date"); }, 2000);
+           break;
+     }
+});
+
+$('#paymentTermnS, #paymentTermnC').on("click", function()
+{
+      $(".emergingBackground").remove();
+      var msj=$("<div class='emergingBackground'></div>").hide(); 
+      $("body").append(msj);
+      msj.slideDown('slow');
+      if($(this).attr("id")=="paymentTermnC"){
+          $(".formPaymentTermnsCustomer").slideDown("slow");
+          $SORI.AJAX.send("GET","/ContratoTerminoPago/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), false); 
+          if($("#Contrato_start_date_TP_customer").val()=="")$(".startDateTpCust").hide("fast");
+          else  $(".startDateTpCust").show("fast"); 
+      }else{
+          $(".formPaymentTermnsSupplier").slideDown("slow");
+          $SORI.AJAX.send("GET","/ContratoTerminoPagoSupplier/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), true); 
+          if($("#Contrato_start_date_TP_supplier").val()=="")$(".startDateTpSupp").hide("fast");
+          else $(".startDateTpSupp").show("fast");
+      }
+      $(".emergingBackground").click(function(){  $(".formPaymentTermnsSupplier, .formPaymentTermnsCustomer,.emergingBackground").fadeOut("slow");});
 });
 
 $('#botAsignarContrato').click('on',function(e)

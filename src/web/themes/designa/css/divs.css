@@ -165,7 +165,8 @@
     top: 0px;
     width: 100%;
     content:"";
-    opacity: .7; 
+    opacity: .5; 
+    z-index: 4;
 }
 .mensaje
 {
@@ -183,6 +184,19 @@
     width:490px;
     margin-left:30%;
     line-height: normal;
+    z-index: 5;
+}
+.emergingBackground
+{
+    background-color: black;
+    height: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0px;
+    width: 100%;
+    content:"";
+    opacity: .5; 
+    cursor: url('../img/exit.cur'), url('img/exit.cur'), pointer;
 }
 .table_contrato
 {
@@ -556,6 +570,7 @@ width: 20%;
     color: white;
 }
 /*****FACTURAS ENVIADAS********/
+
 .lista_FacEnv{
     background: rgba(111,204,187,1);
     border-bottom-color: rgba(111,204,187,1);
@@ -1039,4 +1054,65 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     position: absolute;
     margin-left: -4em;
     display:none;
+}
+
+.formPaymentTermnsSupplier, .formPaymentTermnsCustomer
+{
+    background: white;
+    width: 1045px;
+    height: 374px;
+    position: fixed;
+    margin: -41% -1%;
+    padding: 3% 3%;
+    border: solid threedshadow;
+    /*border-radius: 8px;*/
+    overflow-y: scroll;
+    z-index: 3;
+    display: none;
+}
+.adminPaymentTermnsSupplier, .adminPaymentTermnsCustomer
+{
+    position: absolute;
+    width: 1042px;
+}
+
+#buttonPaymentTermn
+{
+    width: 23.9%;
+    font-weight: 700;
+    margin: 2% 0%;
+}
+.adminCTPS, .adminCTP
+{
+    margin: 3% 0%;
+}
+h2.admTp 
+{
+    border-bottom: rgba(111,204,187,1) 2px solid;
+    padding: 1%;
+}
+.paymentTermnSupp,.periodo_fact,.divide_fact,.dia_ini_fact,.dia_ini_fact, .startDateTpSupp
+{
+    width: 206px;
+}
+
+.paymentTermnTable 
+{
+    margin-top: 2%;
+    margin-left:1%;
+    right:auto;
+    color: white;
+    border: none;
+    text-align:center;
+    width: 1025px;
+    border-bottom-color: rgba(111,204,187,1);
+    background: rgba(111,204,187,1);
+}
+.paymentTermnTable td {
+    width: 6em;
+    height: 25px;
+}
+.paymentTermnTable tr:hover {
+    background: rgba(111,204,187,1);
+    color: white;
 }

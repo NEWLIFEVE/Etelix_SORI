@@ -28,7 +28,7 @@ class TerminoPagoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','Names'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,5 +169,18 @@ class TerminoPagoController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        public function actionNames()
+	{
+            $model=TerminoPago::listTermPago();
+            $array=array();
+            $pos=0;
+            foreach ($model as $key => $value)
+            {
+                    $array[$pos]['id']=$value->id;
+                    $array[$pos]['name']=$value->name;
+                    $pos=$pos+1;
+            }
+            echo json_encode($array);
 	}
 }

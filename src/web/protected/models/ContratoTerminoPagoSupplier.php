@@ -20,6 +20,11 @@
  */
 class ContratoTerminoPagoSupplier extends CActiveRecord
 {
+        public $id_ctps;
+        public $tp_name;
+        public $id_fisrt_day;
+        public $fact_period;
+        public $id_month_break;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -120,4 +125,32 @@ class ContratoTerminoPagoSupplier extends CActiveRecord
                 return '';
             }
         }
+        public static function paymentTermHistory($idCarrier)
+	{
+		$sql="
+
+   SELECT  
+	ctps.id AS id_ctps, ctps.id_termino_pago_supplier, ctps.start_date, ctps.end_date, tp.name AS tp_name,con.id AS id_contrato,
+	ctps.id_fact_period,(CASE (select name from fact_period where id=ctps.id_fact_period) WHEN NULL THEN 'No Aplica' WHEN '' THEN 'No Aplica' ELSE (select name from fact_period where id=ctps.id_fact_period) END)AS fact_period,
+	ctps.month_break AS id_month_break, 
+	(CASE ctps.month_break  WHEN 1 THEN 'Si' WHEN 0 THEN 'No' ELSE 'No Aplica'END)AS month_break,
+	ctps.first_day AS id_fisrt_day,
+	(CASE ctps.first_day WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes' WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes' WHEN 6 THEN 'Sabado' WHEN 7 THEN 'Domingo' ELSE 'No Aplica' END)AS first_day,
+	c.name AS carrier
+     FROM 
+	carrier c, 
+	contrato con, 
+	contrato_termino_pago_supplier ctps,
+	termino_pago tp
+    WHERE 
+	  c.id=con.id_carrier
+      AND con.id=ctps.id_contrato
+      AND ctps.id_termino_pago_supplier=tp.id
+      AND ctps.end_date IS NOT NULL
+                      AND c.id={$idCarrier}
+                    ORDER BY end_date DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
 }
