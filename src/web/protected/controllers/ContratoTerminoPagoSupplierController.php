@@ -261,10 +261,11 @@ class ContratoTerminoPagoSupplierController extends Controller
         public function actionDeleteCTPS($id)
 	{
             $model=$this->loadModel($id);
-            if($model->delete())
+            if($model->delete()){
+                Log::registrarLog(LogAction::getId('Eliminar Historial TerminoPago Supplier'),NULL, $id);
                 echo "Delete ".$id;
-            else
+            }else{
                 echo "Fail ;(";
-
+            }
 	}
 }

@@ -851,17 +851,12 @@ function roundNumber(number,decimals)
 	 */ 
 	function formChange(id)
 	{
-            $('#'+id).change(function()
-            {       
-                    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_start_date_TP_customer,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
-                    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier, #Contrato_start_date_TP_supplier, #start_date_TP_cus_Oculto, #start_date_TP_sup_Oculto").val('');
-                    $(".hManagerA,.hCarrierA").empty();
-                    $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
-                    $(".formularioContrato").fadeOut("fast");
+//            $('#'+id).change(function()
+//            {     
                     $.ajax({
                         type: "GET",
                         url: "DynamicDatosContrato",
-                        data: "idCarrier="+$(this).val(),
+                        data: "idCarrier="+$(id).val(),
                         success: function(data)
                         {   
                             obj=JSON.parse(data);
@@ -929,7 +924,7 @@ function roundNumber(number,decimals)
                             $('.CarrierActual').slideDown("slow");
                         }
                     });
-            });
+//            });
 	}
         /**
          * 

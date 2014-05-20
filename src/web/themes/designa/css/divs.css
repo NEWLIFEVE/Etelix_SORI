@@ -1116,3 +1116,8 @@ h2.admTp
     background: rgba(111,204,187,1);
     color: white;
 }
+.notePaymentTermnSupp, .notePaymentTermnCus
+{
+    display:none;
+    color: rgba(111,204,187,1);
+}

@@ -191,8 +191,15 @@ $("#CarrierManagers_id_managers").change(function()
 });
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
-
-$SORI.UI.formChange('Contrato_id_carrier');
+$('#Contrato_id_carrier').change(function()
+{ 
+    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_start_date_TP_customer,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
+    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier, #Contrato_start_date_TP_supplier, #start_date_TP_cus_Oculto, #start_date_TP_sup_Oculto").val('');
+    $(".hManagerA,.hCarrierA").empty();
+    $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+    $(".formularioContrato").fadeOut("fast");
+    $SORI.UI.formChange('#Contrato_id_carrier');
+});
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
     $("#TerminoPViews").val($("#Contrato_id_termino_pago  option:selected").html());
@@ -332,7 +339,8 @@ $('#botAsignarContrato').click('on',function(e)
                             url: "Contrato",
                             data: str,
                             success: function(data) 
-                            {   
+                            {  
+                                $SORI.UI.formChange('#Contrato_id_carrier');
                                 console.log(data);$('.mensaje').css('width','490px').css('margin-left','30%');
                                 if($("#Contrato_end_date").val()!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+$("#Contrato_end_date").val()+"</h6>","si.png","1000","width:90px; height:90px;");
                                   else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");
