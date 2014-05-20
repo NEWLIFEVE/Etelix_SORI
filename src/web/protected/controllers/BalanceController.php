@@ -8,7 +8,8 @@ class BalanceController extends Controller
 	public $lector;
 	private $nombre;
 	public $valida;
-
+    public $error=0;
+    public $errorComment;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -94,16 +95,18 @@ class BalanceController extends Controller
 	 */
 	public function actionUpload()
 	{
-		
 		//capturo el nombre del usuario logueado
         $user_carpeta_temp=Yii::app()->user->getState('username').'';
         
 		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
 //		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		$ruta=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
+        if(file_exists($ruta)){
+		
+        }else{
+        $ruta=Yii::getPathOfAlias('webroot')."/uploads/";
+        }
       
-		
-		
 		if(is_dir($ruta))
 		{
 			$archivos=@scandir($ruta);
@@ -121,8 +124,13 @@ class BalanceController extends Controller
 					}
 				}
 			}
+		
+			$ruta2=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
+			if($ruta==$ruta2){
 			 //al borrar todos loos archivos de la carpeta procedo a borrar la carpeta
-			 rmdir(Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."");
+             rmdir(Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/");
+			}
+       
 		}
 		$this->render('upload');               
 	}
@@ -409,6 +417,9 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardar()
 	{
+		$date=date('Y-m-d');
+		$yesterday=strtotime('-1 day',strtotime($date));
+		$yesterday=date('Y-m-d',$yesterday);
 		//capturo el nombre del usuario logueado
 		$user_carpeta_temp=Yii::app()->user->getState('username').'';
 		 
@@ -423,37 +434,48 @@ class BalanceController extends Controller
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
-			//Verifico la opcion del usuario a travÃ©s del post
-			//si la opcion es dÃ­a
+			//Verifico la opcion del usuario a traves del post
+			//si la opcion es dia
 			if($_POST['tipo']=="dia")
 			{
 				//instancio el componente para validar
-				$this->valida=new ValidacionesArchCapt;
+				$this->valida=new ValidationsArchCapt; 
+				$this->lector=new Reader;
 				
+				//Nombres opcionales para los archivos diarios
+				$diarios=array(
+					'Carga Ruta Internal'=>'Ruta Internal Diario',
+					'Carga Ruta External'=>'Ruta External Diario'
+					);
+					//Primero: verifico que archivos estÃ¡n
+				$existentes=$this->valida->getNombreArchivos($path,$diarios,array('xls','XLS'));
 				//Si la primera condicion se cumple, no deberian haber errores
 				if($this->valida->error==0)
 				{
 					foreach($existentes as $key => $diario)
 					{
-						/**** validaciones ****/
-						$this->valida->validar($path,$diario);
-						
-						/* guardo en el componente reader*/
-						if($this->valida->error==0)
-						{
-							//Guardo en base de datos
-							if($this->valida->diario())
+						//validaciones 
+						if($this->valida->validar($path,$diario,$existentes,$yesterday))
+					    {
+						   /* guardo en el componente reader*/
+							if($this->valida->error==0)
 							{
-								//Si lo guarda grabo en log
-								Log::registrarLog(LogAction::getId($this->valida->log));
+								//Guardo en base de datos
+								if($this->lector->diario($path.$diario,$yesterday))
+								{
+									//Si lo guarda grabo en log
+									Log::registrarLog(LogAction::getId($this->valida->log));
+								}
 							}
 						}
-						
-						if($this->valida->error>0)
+					 }
+					   //vañlidar error cero si viene del lector o vañlida
+					    if(($this->lector->error>0)||($this->valida->error!=0))
 						{
+							$fallas.=$this->lector->errorComment;
 							$fallas.=$this->valida->errorComment;
 						}
-						if($this->valida->error==0)
+						if(($this->lector->error==0)&&($this->valida->error==0))
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
@@ -461,16 +483,13 @@ class BalanceController extends Controller
 						$this->valida->errorComment=NULL;
 					}
 				}
-				if($this->valida->error>0)
+				if(($this->lector->error>0)||($this->valida->error!=0))
 				{
-					$fallas.=$this->valida->errorComment;
+					$fallas.=$this->lector->errorComment;
+				    $fallas.=$this->valida->errorComment;
 				}
 			}
-		}
-		rmdir(Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."");
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
 	}
-	
-	
 }
