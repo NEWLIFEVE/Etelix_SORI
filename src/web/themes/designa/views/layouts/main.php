@@ -16,6 +16,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/style.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/divs.css">
+	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/responsive.css">
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/datepicker.css">
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <link href="<?php echo Yii::app()->baseUrl; ?>/images/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114" />
