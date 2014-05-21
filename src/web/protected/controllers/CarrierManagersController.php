@@ -41,6 +41,10 @@ class CarrierManagersController extends Controller
                                 'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
                                 'users'=>array_merge(Users::usersByType(4)),
                         ),
+                        array(  'allow', // Vistas para Finanzas
+                                'actions'=>array('index','view','create','admin','update','DynamicAsignados', 'DynamicNoAsignados','UpdateDistComercial','DistComercial','BuscaNombres'),
+                                'users'=>array_merge(Users::usersByType(6)),
+                        ),
 		
 
 			array('deny',  // deny all users
