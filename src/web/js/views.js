@@ -156,22 +156,22 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
     */       
 $("#options_right, #options_left").on( "click",function ()
 {
- switch ($(this).attr('id'))
+    switch ($(this).attr('id'))
     {
-    case "options_right":
-        $('#select_left :selected').each(function(i,selected)
-        {
-            $("#select_left option[value='"+$(selected).val()+"']").remove();
-            $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-        });
-        break;
-    case "options_left":
-        $('#select_right :selected').each(function(i,selected)
-        {
-            $("#select_right option[value='"+$(selected).val()+"']").remove();
-            $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-        });
-        break;
+        case "options_right":
+            $('#select_left :selected').each(function(i,selected)
+            {
+                $("#select_left option[value='"+$(selected).val()+"']").remove();
+                $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+            });
+            break;
+        case "options_left":
+            $('#select_right :selected').each(function(i,selected)
+            {
+                $("#select_right option[value='"+$(selected).val()+"']").remove();
+                $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+            });
+            break;
     }
 });
 /**
@@ -200,6 +200,7 @@ $('#Contrato_id_carrier').change(function()
     $(".formularioContrato").fadeOut("fast");
     $SORI.UI.formChange('#Contrato_id_carrier');
 });
+
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
     $("#TerminoPViews").val($("#Contrato_id_termino_pago  option:selected").html());
