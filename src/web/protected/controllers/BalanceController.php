@@ -297,17 +297,25 @@ class BalanceController extends Controller
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
 
-		$folder='uploads/';// folder for uploaded files
-                $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
-                $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
-                $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-                $result = $uploader->handleUpload($folder);
-                $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
-
-                $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
-                $fileName=$result['filename'];//GETTING FILE NAME
-
-                echo $return;// it's array
+        $user_carpeta_temp=Yii::app()->user->getState('username').'/';
+		//creo el directorio dependiendo del usuario logueado
+        mkdir("uploads/".$user_carpeta_temp."", 0775);
+		$folder='uploads/'.$user_carpeta_temp.'';// folder for uploaded files
+//		print_r($folder);
+//		exit();
+		//borro directorio creado
+//		rmdir("uploads/".$user_carpeta_temp."");
+//		exit();
+        $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
+        $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
+        $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+        $result = $uploader->handleUpload($folder);
+        $return = htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+ 
+        $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
+        $fileName=$result['filename'];//GETTING FILE NAME
+ 
+        echo $return;// it's array
 	}
 
 	/**
@@ -384,7 +392,16 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardar()
 	{
-		$path=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		 $user_carpeta_temp=Yii::app()->user->getState('username').'/';
+		$path=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR.$user_carpeta_temp;
+		
+		
+		//creo el directorio dependiendo del usuario logueado
+//        mkdir("uploads/".$user_carpeta_temp."", 0775);
+//		$folder='uploads/'.$user_carpeta_temp.'';// folder for uploaded files
+
+		
+		
 		$date=date('Y-m-d');
 		$yesterday=strtotime('-1 day',strtotime($date));
 		$yesterday=date('Y-m-d',$yesterday);
@@ -471,6 +488,7 @@ class BalanceController extends Controller
 				{
 					$fallas.=$this->lector->errorComment;
 				}
+			rmdir("uploads/".$user_carpeta_temp."");
 			}
 			//Si la opcion es hora
 			elseif($_POST['tipo']=="hora")
@@ -547,6 +565,8 @@ class BalanceController extends Controller
 							}
 							break;
 					}
+					//borro la carpeta creada
+					rmdir("uploads/".$user_carpeta_temp."");
 				}
 				else
 				{
@@ -555,6 +575,7 @@ class BalanceController extends Controller
 						$fallas="No hay archivos en el servidor";
 					}
 				}
+				rmdir("uploads/".$user_carpeta_temp."");
 			}
 			//Si la opcion es rerate
 			elseif($_POST['tipo']=="rerate")
@@ -833,6 +854,7 @@ class BalanceController extends Controller
 				}
 			}
 		}
+		rmdir("uploads/".$user_carpeta_temp."");
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
 	}

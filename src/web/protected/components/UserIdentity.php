@@ -25,6 +25,7 @@ class UserIdentity extends CUserIdentity
 			$user=Users::model()->findByAttributes(array('email'=>$this->username));
 		} else {
 			$user=Users::model()->findByAttributes(array('username'=>$this->username));
+			$this->setState('username',$user->username);
 		}
 		if($user===null){
 			if (strpos($this->username,"@")) {
@@ -46,6 +47,7 @@ class UserIdentity extends CUserIdentity
 			$this->_type=$user->id_type_of_user;
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
+			$this->setState('username',$user->username);
 		}
 		return $this->errorCode;
 	}
