@@ -1,4 +1,4 @@
-
+src/web/protected/config/*
 src/web/protected/runtime/*
 src/web/assets/*
 

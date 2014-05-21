@@ -3,6 +3,9 @@
 
 Sistema de Origen
 
+Release 1.5.7.6
+        - Corrección de metodo encargado de guadar documentos contables final donde dejaba guardar dos banck fee, esto se debia a que solo estaba seteado para los cobros y no para pagos. 
+
 Realese 1.5.7.5
         - Modificacion en eliminado de Documentos Contables, al no tener bank fee.
         - Modificacion en guardado de Condiciones Comerciales, problema con Bankfee null de carriers pertenecientes a un grupo, los cuales no tienen contrato.
@@ -14,7 +17,7 @@ Release 1.5.7.3
 	- Cambio en guardada de grupos e indicadores en interfaz.
 	- Cambio en el objeto "secuences" para la tabla carrier_groups en base de datos para que permita guardar grupos nuevos, ya que antes duplicaba el id y provocaba un error.
 	- Cambio en guardada de grupos e indicadores en interfaz.
-        - Todos los montos introducidos a traves de la interfaz de documentos contables seran positivos.
+    - Todos los montos introducidos a traves de la interfaz de documentos contables seran positivos.
 
 Release 1.5.7.2
 	- Actualizando modelo de termino pago
@@ -30,11 +33,11 @@ Release 1.5.7.1
 	- En condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
 
 Realese 1.5.6
--Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
+	- Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
 
 Relase 1.5.4
--Registro bank fee para pagos, mejoras en condiciones comerciales.
--mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
+	- Registro bank fee para pagos, mejoras en condiciones comerciales.
+	- Mejoras minimas en interfaz de documentos contables, ahora al borrar todos los documentos de una de las tablas, ejm:pagos, cobros, etc, se eliminara no solo la fila, sino el head.
 
 Relase 1.5.7
 	- Registro bank fee para pagos, mejoras en condiciones comerciales.
