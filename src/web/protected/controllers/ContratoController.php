@@ -28,7 +28,7 @@ class ContratoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','DynamicDatosContrato','Contrato','ContratoConfirma','Comprueba_BankFee'),
+				'actions'=>array('index','view','DynamicDatosContrato','Contrato','ContratoConfirma','Comprueba_BankFee','UpdateStartDateCTP','UpdateStartDateCTPS'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -130,10 +130,10 @@ class ContratoController extends Controller
             case 5:
             return "Viernes";
                 break;
-            case 5:
+            case 6:
             return "Sabado";
                 break;
-            case 5:
+            case 7:
             return "Domingo";
                 break;
             default:
@@ -172,7 +172,40 @@ class ContratoController extends Controller
                  } 
         }
     }
-        
+        public function actionUpdateStartDateCTP()
+        {
+            $start_date_termino_pago=$_GET["Contrato"]['start_date_TP_customer'];
+            $modelContrat = Contrato::DatosContrato($_GET["Contrato"]["id_carrier"]);
+            if($modelContrat!=null)
+            {
+                $modelCTP=ContratoTerminoPago::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelContrat->id)); 
+                if($modelCTP!=NULL){
+                            $modelCTP->start_date=  Utility::snull($start_date_termino_pago);
+                            if($modelCTP->save()){Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTP->id);
+                                echo $modelCTP->start_date;
+                        }
+                }else{
+                    echo"fail";
+                }
+            }
+        }
+        public function actionUpdateStartDateCTPS()
+        {
+            $start_date_termino_pago_supplier=$_GET["Contrato"]['start_date_TP_supplier'];
+            $modelContrat = Contrato::DatosContrato($_GET["Contrato"]["id_carrier"]);
+            if($modelContrat!=null)
+            {
+                $modelCTPS=  ContratoTerminoPagoSupplier::model()->find('id_contrato=:contrato and end_date IS NULL',array(':contrato'=>$modelContrat->id)); 
+                if($modelCTPS!=NULL){
+                            $modelCTPS->start_date= Utility::snull($start_date_termino_pago_supplier);
+                            if($modelCTPS->save()){Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPS->id);
+                                echo $modelCTPS->start_date;
+                            }
+                }else{
+                    echo"fail";
+                }
+            }
+        }
 	public function actionContrato()
 	{
             $model=new Contrato;
@@ -185,7 +218,9 @@ class ContratoController extends Controller
                 $end_date=Utility::snull($_GET["Contrato"]['end_date']);
                 $company=$_GET["Contrato"]['id_company'];
                 $termino_pago=$_GET["Contrato"]['id_termino_pago'];
+//                $start_date_termino_pago=$_GET["Contrato"]['start_date_TP_customer'];
                 $termino_pago_supplier=$_GET["Contrato"]['id_termino_pago_supplier'];
+//                $start_date_termino_pago_supplier=$_GET["Contrato"]['start_date_TP_supplier'];
                 $monetizable=$_GET["Contrato"]['id_monetizable'];
                 $dias_disputa=$_GET["Contrato"]['id_disputa'];
                 $dias_disputa_solved=$_GET["Contrato"]['id_disputa_solved'];
@@ -253,6 +288,11 @@ class ContratoController extends Controller
                                     $modelCTPNEW->start_date=date('Y-m-d');
                                     $modelCTPNEW->id_termino_pago =$termino_pago;
                                     if($modelCTPNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTPNEW->id);
+//                                }else{
+//                                    if($modelCTP->start_date != $start_date_termino_pago && $start_date_termino_pago!=NULL){
+//                                        $modelCTP->start_date=  Utility::snull($start_date_termino_pago);
+//                                        if($modelCTP->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago'),NULL, $modelCTP->id);
+//                                    }
                                 }
                             }else{
                                     $modelCTPNEW = new ContratoTerminoPago;
@@ -279,6 +319,8 @@ class ContratoController extends Controller
                                     if($modelCTPSNEW->save())Log::registrarLog(LogAction::getId('Modificar TerminoPago Supplier'),NULL, $modelCTPSNEW->id);
 
                                 }else{
+//                                    if($modelCTPsupplier->start_date != $start_date_termino_pago_supplier && $start_date_termino_pago_supplier!=NULL)
+//                                        $modelCTPsupplier->start_date=  Utility::snull($start_date_termino_pago_supplier);
                                     $modelCTPsupplier->month_break =Utility::snull($divide_fact);
                                     $modelCTPsupplier->first_day =Utility::snull($dia_ini_fact);
                                     $modelCTPsupplier->id_fact_period =Utility::snull($fact_period);
@@ -589,7 +631,9 @@ class ContratoController extends Controller
                 $params['sign_date']=$model->sign_date;
                 $params['production_date']=$model->production_date;
                 $params['termino_pago']=ContratoTerminoPago::getTpId($model->id);
+                $params['start_date_TP_customer']= Utility::snull(ContratoTerminoPago::getModel($model->id)->start_date);
                 $params['termino_pago_supplier']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"id_termino_pago_supplier");
+                $params['start_date_TP_supplier']=  Utility::snull(ContratoTerminoPagoSupplier::getTpId_Element($model->id,"start_date"));
                 $params['fact_period']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"id_fact_period");
                 $params['divide_fact']= ContratoTerminoPagoSupplier::getTpId_Element($model->id,"month_break");
                 $params['dia_ini_fact']=ContratoTerminoPagoSupplier::getTpId_Element($model->id,"first_day");
@@ -609,7 +653,9 @@ class ContratoController extends Controller
                 $params['sign_date']='';
                 $params['production_date']='';
                 $params['termino_pago']='';
+                $params['start_date_TP_customer']='';
                 $params['termino_pago_supplier']='';
+                $params['start_date_TP_supplier']='';
                 $params['fact_period']='';
                 $params['divide_fact']='';
                 $params['dia_ini_fact']='';

@@ -7,12 +7,12 @@ echo CHtml::beginForm('/balance/guardar','post',array('name'=>'monto'));
     <li><input type="radio" name="tipo" value="dia"/>Por Día</li>
     <li><input type="radio" name="tipo" value="hora" />Por Hora</li>
     <li><input type="radio" name="tipo" value="rerate" />Re-Rate</li>
-    <li>user: <?php //cho Yii::app()->username->getState('username');
+    <!--<li>user: <?php //cho Yii::app()->username->getState('username');
     
-    echo "<br>".Yii::app()->user->getState('username');
+   // echo "<br>".Yii::app()->user->getState('username');
 
   
-  ?></li>
+  ?></li>-->
   </ul>
 </div>
 <?php

@@ -89,51 +89,99 @@
                     <?php echo $form->error($model, 'end_date'); ?>
 
                 </div>
-                <div class="contratoForm">
-                     <?php echo $form->labelEx($model,'id_termino_pago'); ?>
-                     <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
-                     array('prompt'=>'Seleccione')
-                     ); ?> 
-                     <?php echo $form->error($model,'id_termino_pago'); ?>
+                
+                
+                <div class="formPaymentTermnsCustomer">
+                    <div class="adminPaymentTermnsCustomer">
+                        <h2 class='admTp'>Admin. Termino Pago Clientes</h2>
+                        <div class="contratoForm paymentTermnCustomer">
+                             <?php echo $form->labelEx($model,'id_termino_pago'); ?>
+                             <?php echo $form->dropDownList($model,'id_termino_pago',TerminoPago::getListTermPago(),
+                             array('prompt'=>'Seleccione')
+                             ); ?> 
+                             <?php echo $form->error($model,'id_termino_pago'); ?>
+                        </div>
+                        
+                        <div class="contratoForm startDateTpCust">
+                            <?php echo $form->labelEx($model, 'start_date_TP_customer'); ?>
+                            <?php
+                            $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                                'model' => $model,
+                                'attribute' => 'start_date_TP_customer',
+                                'options' => array('dateFormat' => 'yy-mm-dd'),
+                                'htmlOptions' => array(
+                                    'dateFormat' => 'yy-mm-dd',
+                                    'size' => '10', // textField size
+                                    'maxlength' => '10', // textField maxlength
+                                    )));
+                            ?>
+                            <?php echo $form->error($model, 'start_date_TP_customer'); ?>
+                        </div>
+                        
+                        <div class='adminCTP'></div>
+                    </div>
                 </div>
                 
-                <div class="contratoForm">
-                    <?php echo $form->labelEx($model,'id_termino_pago_supplier'); ?>
-                     <?php echo $form->dropDownList($model,'id_termino_pago_supplier',TerminoPago::getListTermPago(),
-                     array('prompt'=>'Seleccione')
-                     ); ?> 
-                     <?php echo $form->error($model,'id_termino_pago_supplier'); ?>
-                </div>
-                
-                <div class="contratoForm periodo_fact">
-                    <label>Tipo de Ciclo de Fact</label>
-                     <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
-                     array('prompt'=>'Seleccione')
-                     ); ?> 
-                     <?php echo $form->error($model,'id_fact_period'); ?>
-                </div>
-                
-                <div class="contratoForm divide_fact">
-                    <label>Divide Fact por Mes</label>
-                    <select name="divide_fact" id="divide_fact">
-                        <option value=""> Seleccione </option>
-                        <option value="1"> Si </option>
-                        <option value="0"> No </option>
-                    </select>
-                </div>
-                
-                <div class="contratoForm dia_ini_fact">
-                    <label>Dia de Inicio de Ciclo</label>
-                    <select name="dia_ini_fact" id="dia_ini_fact">
-                        <option value=""> Seleccione </option>
-                        <option value="1"> Lunes </option>
-                        <option value="2"> Martes </option>
-                        <option value="3"> Miercoles </option>
-                        <option value="4"> Jueves </option>
-                        <option value="5"> Viernes </option>
-                        <option value="6"> Sabado </option>
-                        <option value="7"> Domingo </option>
-                    </select>
+                <div class="formPaymentTermnsSupplier">
+                    <div class="adminPaymentTermnsSupplier">
+                        <h2 class='admTp'>Admin. Termino Pago Proveedor</h2>
+                        <div class="contratoForm paymentTermnSupp">
+                            <?php echo $form->labelEx($model,'id_termino_pago_supplier'); ?>
+                             <?php echo $form->dropDownList($model,'id_termino_pago_supplier',TerminoPago::getListTermPago(),
+                             array('prompt'=>'Seleccione')
+                             ); ?> 
+                             <?php echo $form->error($model,'id_termino_pago_supplier'); ?>
+                        </div>
+                       
+                        <div class="contratoForm periodo_fact">
+                            <label>Tipo de Ciclo de Fact</label>
+                             <?php echo $form->dropDownList($model,'id_fact_period',  FactPeriod::getListFact_Period(),
+                             array('prompt'=>'Seleccione')
+                             ); ?> 
+                             <?php echo $form->error($model,'id_fact_period'); ?>
+                        </div>
+
+                        <div class="contratoForm divide_fact">
+                            <label>Divide Fact por Mes</label>
+                            <select name="divide_fact" id="divide_fact">
+                                <option value=""> Seleccione </option>
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
+                        <div class="contratoForm dia_ini_fact">
+                            <label>Dia de Inicio de Ciclo</label>
+                            <select name="dia_ini_fact" id="dia_ini_fact">
+                                <option value=""> Seleccione </option>
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miercoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sabado</option>
+                                <option value="7">Domingo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="contratoForm startDateTpSupp">
+                            <?php echo $form->labelEx($model, 'start_date_TP_supplier'); ?>
+                            <?php
+                            $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                                'model' => $model,
+                                'attribute' => 'start_date_TP_supplier',
+                                'options' => array('dateFormat' => 'yy-mm-dd'),
+                                'htmlOptions' => array(
+                                    'dateFormat' => 'yy-mm-dd',
+                                    'size' => '10', // textField size
+                                    'maxlength' => '10', // textField maxlength
+                                    )));
+                            ?>
+                            <?php echo $form->error($model, 'start_date_TP_supplier'); ?>
+                        </div>
+                        
+                        <div class='adminCTPS'></div>
+                    </div>
                 </div>
                 
                 <div class="contratoForm">
@@ -185,13 +233,24 @@
                     <?php echo $form->dropDownList($model, 'bank_fee',array( 0=>"No", 1=>"Si"),array('prompt'=>'Seleccione')); ?> 
                     <?php echo $form->error($model, 'bank_fee'); ?>
                 </div>
+                <div id="paymentTermnC" class="contratoForm paymentTermn">
+                    <label>Termino Pago Cliente</label>
+                    <input type="text" name="TerminoPViews" id="TerminoPViews" value=""  disabled>
+                </div>
+                <div id="paymentTermnS" class="contratoForm ">
+                    <label>Termino Pago Proveedor</label>
+                    <input type='text' name="TerminoPViewsS" id="TerminoPViewsS" value=""  disabled/>
+                </div>
+                
                      <input type="hidden" name="dias_disputa_Oculto"     id="dias_disputa_Oculto"  value="">
                      <input type="hidden" name="dias_disputa_solved_Oculto"id="dias_disputa_solved_Oculto"  value="">
                      <input type="hidden" name="credito_Oculto"          id="credito_Oculto"  value="">
                      <input type="hidden" name="compra_Oculto"           id="compra_Oculto"  value="">
                      <input type="hidden" name="monetizable_Oculto"      id="monetizable_Oculto"  value="">
                      <input type="hidden" name="TerminoP_Oculto"         id="TerminoP_Oculto"  value="">
+                     <input type="hidden" name="start_date_TP_cus_Oculto"id="start_date_TP_cus_Oculto"  value="">
                      <input type="hidden" name="TerminoP_supplier_Oculto"id="TerminoP_supplier_Oculto"  value="">
+                     <input type="hidden" name="start_date_TP_sup_Oculto"id="start_date_TP_sup_Oculto"  value="">
                      <input type="hidden" name="divide_fact_Oculto"      id="divide_fact_Oculto"  value="">
                      <input type="hidden" name="id_fact_period_Oculto"   id="id_fact_period_Oculto"  value="">
                      <input type="hidden" name="dia_ini_fact_Oculto"     id="dia_ini_fact_Oculto"  value="">

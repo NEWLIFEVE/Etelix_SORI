@@ -96,4 +96,8 @@ class FactPeriod extends CActiveRecord
         public static function getModelName($name){           
             return self::model()->find("name=:name", array(':name'=>$name));
         }
+        public static function getData($name)
+        {
+            return self::model()->find("name=:name", array(':name'=>$name));
+        }
 }

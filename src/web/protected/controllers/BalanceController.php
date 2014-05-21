@@ -77,7 +77,7 @@ class BalanceController extends Controller
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-    public function actionCompras()
+        public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -294,12 +294,13 @@ class BalanceController extends Controller
 		));
 	}
         
-    /**
-     *
-     */
-    public function actionCarga()
+        /**
+         *
+         */
+        public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
+
         $user_carpeta_temp=Yii::app()->user->getState('username').'/';
 		//creo el directorio dependiendo del usuario logueado
         mkdir("uploads/".$user_carpeta_temp."", 0775);

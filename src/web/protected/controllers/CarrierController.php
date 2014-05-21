@@ -256,12 +256,12 @@ class CarrierController extends Controller
             foreach ($asignados as $key => $value) {
                 $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
                 if ($modelAsig->id_carrier_groups != $grupo)
-                    $asigNames= $modelAsig->name.", ";      
+                    $asigNames.= $modelAsig->name.", ";      
             }
             foreach ($noasignados as $key => $value) {
                 $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
                 if ($modelNoAsig->id_carrier_groups != NULL)  
-                $noasigNames=$modelNoAsig->name.", ";
+                $noasigNames.=$modelNoAsig->name.", ";
             }
  
                     $params['grupo']=CarrierGroups::getName($grupo);;    

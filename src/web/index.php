@@ -25,3 +25,4 @@ $gii=require(dirname(__FILE__).'/protected/config/gii.php');
 $config=CMap::mergeArray($main,$db,$gii);
 
 Yii::createWebApplication($config)->run();
+

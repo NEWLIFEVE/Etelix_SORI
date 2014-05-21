@@ -36,6 +36,8 @@ class Contrato extends CActiveRecord
     public $id_disputa_solved;
     public $status;
     public $id_fact_period;
+    public $start_date_TP_supplier;
+    public $start_date_TP_customer;
 	public function tableName()
 	{
 		return 'contrato';
@@ -98,6 +100,8 @@ class Contrato extends CActiveRecord
                         'up' => 'Unidad de Produccion',
                         'id_fact_period' => 'Periódo de Facturación',
                         'bank_fee' => 'Se Asume Bank Fee',
+                        'start_date_TP_supplier' => 'Fecha Inicio Term. Pago',
+                        'start_date_TP_customer' => 'Fecha Inicio Term. Pago',
 		);
 	}
 

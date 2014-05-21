@@ -22,7 +22,6 @@ $(document).on('ready',function()
             console.log(msj.acumulador);
             if(msj.acumulador>=2)
             {
-                
                 //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
                 $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
             }
@@ -157,22 +156,22 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
     */       
 $("#options_right, #options_left").on( "click",function ()
 {
- switch ($(this).attr('id'))
+    switch ($(this).attr('id'))
     {
-    case "options_right":
-        $('#select_left :selected').each(function(i,selected)
-        {
-            $("#select_left option[value='"+$(selected).val()+"']").remove();
-            $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-        });
-        break;
-    case "options_left":
-        $('#select_right :selected').each(function(i,selected)
-        {
-            $("#select_right option[value='"+$(selected).val()+"']").remove();
-            $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
-        });
-        break;
+        case "options_right":
+            $('#select_left :selected').each(function(i,selected)
+            {
+                $("#select_left option[value='"+$(selected).val()+"']").remove();
+                $('#select_right').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+            });
+            break;
+        case "options_left":
+            $('#select_right :selected').each(function(i,selected)
+            {
+                $("#select_right option[value='"+$(selected).val()+"']").remove();
+                $('#select_left').append("<option value='"+$(selected).val()+"'>"+$(selected).text()+"</option>");
+            });
+            break;
     }
 });
 /**
@@ -192,26 +191,73 @@ $("#CarrierManagers_id_managers").change(function()
 });
 //fin de cambio en dist comercial
 //INICIO DE CONTRATO//////////////
+$('#Contrato_id_carrier').change(function()
+{ 
+    $("#Contrato_id_company,#Contrato_sign_date,#Contrato_production_date,#Contrato_id_termino_pago,#Contrato_start_date_TP_customer,#Contrato_id_monetizable,#Contrato_up,#Contrato_status,#Contrato_bank_fee").val('');
+    $("#Contrato_id_disputa,#F_Firma_Contrato_Oculto,#F_P_produccion_Oculto,#TerminoP_Oculto,#dias_disputa_Oculto,#dia_ini_fact,#divide_fact,#Contrato_id_fact_period,#Contrato_idTerminoPagoSupplier, #Contrato_start_date_TP_supplier, #start_date_TP_cus_Oculto, #start_date_TP_sup_Oculto").val('');
+    $(".hManagerA,.hCarrierA").empty();
+    $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+    $(".formularioContrato").fadeOut("fast");
+    $SORI.UI.formChange('#Contrato_id_carrier');
+});
 
-$SORI.UI.formChange('Contrato_id_carrier');
 $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fact_period").change(function()
 {
+    $("#TerminoPViews").val($("#Contrato_id_termino_pago  option:selected").html());
     if($(this).attr('id')!="Contrato_id_fact_period")
     {       
         if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_supplier").val()=="")
         {
             $("#Contrato_id_termino_pago_supplier").val($("#Contrato_id_termino_pago").val());
             $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
+            $(".startDateTpSupp").hide("fast");$("#Contrato_start_date_TP_supplier").val("");
+        }
+        if($(this).attr('id')=="Contrato_id_termino_pago" && $("#Contrato_id_termino_pago_customer").val()!="")
+        {
+            $(".startDateTpCust").hide("fast");$("#Contrato_start_date_TP_customer").val("");
         }
         if($(this).attr('id')=="Contrato_id_termino_pago_supplier")
         {
             $("#Contrato_id_fact_period").val("");
             $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
+            $(".startDateTpSupp").hide("fast");$("#Contrato_start_date_TP_supplier").val("");
         }       
     }else
     {
         $SORI.UI.resuelvePeriodo($(this).val());
     }
+});
+
+$("input#Contrato_start_date_TP_customer, input#Contrato_start_date_TP_supplier").focusout(function() 
+{  
+     switch ($(this).attr("id")){
+       case "Contrato_start_date_TP_customer":
+            setTimeout(function() { $SORI.AJAX.send("GET","/Contrato/UpdateStartDateCTP",$("#contrato-form").serialize(), "date"); }, 2000);
+           break;
+       case "Contrato_start_date_TP_supplier":
+            setTimeout(function() { $SORI.AJAX.send("GET","/Contrato/UpdateStartDateCTPS",$("#contrato-form").serialize(), "date"); }, 2000);
+           break;
+     }
+});
+
+$('#paymentTermnS, #paymentTermnC').on("click", function()
+{
+      $(".emergingBackground").remove();
+      var msj=$("<div class='emergingBackground'></div>").hide(); 
+      $("body").append(msj);
+      msj.slideDown('slow');
+      if($(this).attr("id")=="paymentTermnC"){
+          $(".formPaymentTermnsCustomer").slideDown("slow");
+          $SORI.AJAX.send("GET","/ContratoTerminoPago/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), false); 
+          if($("#Contrato_start_date_TP_customer").val()=="")$(".startDateTpCust").hide("fast");
+          else  $(".startDateTpCust").show("fast"); 
+      }else{
+          $(".formPaymentTermnsSupplier").slideDown("slow");
+          $SORI.AJAX.send("GET","/ContratoTerminoPagoSupplier/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), true); 
+          if($("#Contrato_start_date_TP_supplier").val()=="")$(".startDateTpSupp").hide("fast");
+          else $(".startDateTpSupp").show("fast");
+      }
+      $(".emergingBackground").click(function(){  $(".formPaymentTermnsSupplier, .formPaymentTermnsCustomer,.emergingBackground").fadeOut("slow");});
 });
 
 $('#botAsignarContrato').click('on',function(e)
@@ -294,7 +340,8 @@ $('#botAsignarContrato').click('on',function(e)
                             url: "Contrato",
                             data: str,
                             success: function(data) 
-                            {   
+                            {  
+                                $SORI.UI.formChange('#Contrato_id_carrier');
                                 console.log(data);$('.mensaje').css('width','490px').css('margin-left','30%');
                                 if($("#Contrato_end_date").val()!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+$("#Contrato_end_date").val()+"</h6>","si.png","1000","width:90px; height:90px;");
                                   else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");

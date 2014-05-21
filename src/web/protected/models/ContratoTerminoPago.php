@@ -16,6 +16,8 @@
  */
 class ContratoTerminoPago extends CActiveRecord
 {
+        public $id_ctp;
+        public $tp_name;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -117,5 +119,23 @@ class ContratoTerminoPago extends CActiveRecord
                 return '';
             }
         }
+        public static function getModel($contrato)
+        {
+            return self::model()->find("id_contrato=:contrato and end_date IS NULL", array(':contrato'=>$contrato));
+        }
+        public static function paymentTermHistory($idCarrier)
+	{
+		$sql="SELECT ctp.id AS id_ctp, ctp.id_termino_pago AS id_termino_pago, ctp.start_date, ctp.end_date, tp.name AS tp_name, c.name AS carrier, con.id AS id_contrato
+                      FROM  carrier c,   contrato con,  contrato_termino_pago ctp,  termino_pago tp
+                      WHERE c.id=con.id_carrier
+                        and con.id=ctp.id_contrato
+                        and ctp.id_termino_pago=tp.id
+                        and c.id={$idCarrier}
+                        and ctp.end_date IS NOT NULL
+                      ORDER BY end_date DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
        
 }
