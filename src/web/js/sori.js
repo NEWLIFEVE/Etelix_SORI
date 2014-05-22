@@ -524,7 +524,7 @@ $SORI.UI=(function()
 			}
                         if($(this).attr('name')=='save_Cobros')
 			{
-				$SORI.AJAX.actualizar($fila[0].id,'2');
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_Cobros($fila);
 			}
                         if($(this).attr('name')=='cancel_Cobros')
@@ -539,7 +539,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_Pagos')
 			{
-				$SORI.AJAX.actualizar($fila[0].id,'2');
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_Pagos($fila);
 			}
 			if($(this).attr('name')=='cancel_Pagos')
@@ -553,7 +553,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_DispRec')
 			{
-				$SORI.AJAX.actualizar($fila[0].id,'2');
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_DispRec($fila);
 				_update_monto_Disp($fila,1);
 			}
@@ -568,7 +568,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_DispEnv')
 			{
-				$SORI.AJAX.actualizar($fila[0].id,'2');
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_DispEnv($fila);
 				_update_monto_Disp($fila,2);
 			}
@@ -583,7 +583,7 @@ $SORI.UI=(function()
 			}
 			if($(this).attr('name')=='save_Nota_cred')
 			{
-				$SORI.AJAX.actualizar($fila[0].id,'2');
+				$SORI.AJAX.actualizar($fila[0].id,2);
 				_revert_Nota_cred($fila);
 			}
 			if($(this).attr('name')=='cancel_Nota_cred')
@@ -1501,15 +1501,20 @@ $SORI.AJAX=(function()
 	function actualizar(id,tope,especial)
 	{       
             switch (tope) {
-                case "2":  var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
+                case 2:
+                    var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
                     break;
-                case "1":  var url = "UpdateDisp/"+id, urlData="dispute="+especial;
+                case 1:case "1":  
+                    var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                     break;
-                case true: var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                case true:        
+                    var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
-                case false:var url = "/ContratoTerminoPago/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                case false:       
+                    var url = "/ContratoTerminoPago/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
-                default:   console.log("algo salio mal");console.log(tope);
+                default:          
+                    console.log("algo salio mal");console.log(tope);
                     break;
             }
 		$.ajax(
