@@ -98,10 +98,15 @@ class BalanceController extends Controller
 	public function actionUpload()
 	{
 		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
-		$ruta=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
+		$ruta=Yii::getPathOfAlias('webroot.uploads.'.Yii::app()->user->username).DIRECTORY_SEPARATOR;
+		$archivos=0;
 		if(is_dir($ruta))
 		{
 			$archivos=@scandir($ruta);
+		}
+		else
+		{
+			mkdir("uploads/".Yii::app()->user->username."/", 0775, true);
 		}
 		if(count($archivos)>1)
 		{
@@ -303,7 +308,7 @@ class BalanceController extends Controller
 
         $user_carpeta_temp=Yii::app()->user->getState('username').'/';
 		//creo el directorio dependiendo del usuario logueado
-        mkdir("uploads/".$user_carpeta_temp."", 0775);
+        mkdir("uploads/".$user_carpeta_temp."", 0775, true);
 		$folder='uploads/'.$user_carpeta_temp.'';// folder for uploaded files
 //		print_r($folder);
 //		exit();
