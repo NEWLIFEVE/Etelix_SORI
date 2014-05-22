@@ -32,7 +32,7 @@ class Reader
     * @param string $ruta: ruta absoluta de archivo que va a ser leido
     * @return boolean
     */
-    public function diario($ruta,$fecha_diario)
+    public function diario($ruta,$fecha_diario,$nombre)
     {
     	$this->valida=new ValidationsArchCapt;
     	$values='';
@@ -55,6 +55,7 @@ class Reader
                         }
                         else
                         {
+                        	  $this->valida->define($nombre);
                             if($this->valida->tipo=="external")
                             {
                                 //Obtengo el id de destino externo
@@ -63,7 +64,7 @@ class Reader
                                 $id_destination_int=$valores['id_destination_int'];
                                 $id_destination=$valores['id_destination'];
                             }
-                            else
+                            elseif($this->valida->tipo=="internal")
                             {
                                 //obtengo el id del destino interno
                                 $valores['id_destination_int']=DestinationInt::getId(utf8_encode($this->valida->excel->sheets[0]['cells'][$i][$j]));
@@ -220,18 +221,18 @@ class Reader
         
     	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
     	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
-    	$string_data_preliminar=$this->valida->load_arch_temp($fecha_diario,$id_destination,$id_destination_int);
-        
+    	 $string_data_preliminar=$this->valida->load_arch_temp($fecha_diario,$id_destination,$id_destination_int);
+
 			$sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
 			$command = Yii::app()->db->createCommand($sql);
 			    
 			if($command->execute())
 	        {
 	            $this->valida->error=self::ERROR_NONE;
-	            // mando el array ya formado para eliminar la data almacenada
+	            // si el string viene vacio no elmino nada, es la primera carga de interna o externa 
 	            if($string_data_preliminar!="")
 	            {
-	             $this->valida->delete_arch_temp($string_data_preliminar);
+	             $this->valida->delete_arch_temp($string_data_preliminar,$id_destination,$id_destination_int);
 				}
     	        return true;
 	        }

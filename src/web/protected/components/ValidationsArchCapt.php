@@ -55,18 +55,18 @@ class ValidationsArchCapt
 			$this->error=4;
 			$this->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
 		}
-		if(Log::existe(LogAction::getLikeId('Carga Ruta External Preliminar')))
-		{
-			Balance::model()->deleteAll('date_balance=:date AND id_destination_int IS NULL', array(':date'=>$yesterday));
-		}
-		if(Log::existe(LogAction::getLikeId('Carga Ruta Internal Preliminar')))
-		{
-			Balance::model()->deleteAll('date_balance=:date AND id_destination IS NULL', array(':date'=>$yesterday));
-		}
+//		if(Log::existe(LogAction::getLikeId('Carga Ruta External Preliminar')))
+//		{
+//			Balance::model()->deleteAll('date_balance=:date AND id_destination_int IS NULL', array(':date'=>$yesterday));
+//		}
+//		if(Log::existe(LogAction::getLikeId('Carga Ruta Internal Preliminar')))
+//		{
+//			Balance::model()->deleteAll('date_balance=:date AND id_destination IS NULL', array(':date'=>$yesterday));
+//		}
 		
         $this->setName($diario);
 		//Defino variables internas
-		$this->define($diario);
+//		$this->define($diario);
 		//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
 		$this->logDiario($diario);
 		if($this->error==0)
@@ -189,6 +189,7 @@ class ValidationsArchCapt
     {
         //importo la extension
         Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        
         //oculto errores
         error_reporting(E_ALL ^ E_NOTICE);
 
@@ -291,50 +292,39 @@ class ValidationsArchCapt
 	}
 	
 	//   funcion que crea un string con los datos preliminar
-	public static function load_arch_temp($fecha,$id_destination,$id_destination_int)
+	public function load_arch_temp($fecha,$id_destination,$id_destination_int)
     {
-       $connection=Yii::app()->db;
-       //verifico si hay algun registro prelminar del dia guardado 
-       //falta identificar si es inter o exter para no borrar esos registros
-       $sql1="select count(id) as count_records from balance where date_balance='".$fecha."'";
-       $command=$connection->createCommand($sql1);
-	   $res=$command->queryRow();					
-	   $count_records=0;
-	   if($res){
-		   $count_records=$res['count_records'];
-	   }		
-		
-	   if($count_records>0)
+	   if($id_destination=='NULL'){ // ES interno 
+	     $name_destination='id_destination';
+	    }elseif($id_destination_int=='NULL'){ //es externo 
+    	 $name_destination='id_destination_int';
+	   }
+	   $total=0;
+	   $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
+	   if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
 	   {
-	   	   if($id_destination==NULL){ // ES interno de acuerdo a lo que voy a guardar
-	    	  $sql="select id,id_destination,id_destination_int from balance where id_destination is NULL and date_balance='".$fecha."'";
-		   }elseif($id_destination_int==NULL){ //es externo de acuerdo a lo que voy a guardar
-    	     $sql="select id,id_destination,id_destination_int from balance where id_destination_int is NULL anddate_balance='".$fecha."'";
-		   }
-	   	   //string para guardar los id (datos preliminar) antes de borrarlos
-	     
-	       $command=$connection->createCommand($sql);
-	       $results=$command->queryAll();
-	       $i=0; 
-	       foreach($results as $x=>$row) 
-			{
-			  $values.=" id=".$row['id']." ";
-			  if($i<$count_records-1)
-			  {
-			   $values.=" or";
-			  }
-			  $i++;
-			 }
-		 
+	     $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));
+         $v=array();
+		 $values="";
+	  	 foreach($results as $x=>$row) {
+		 $v[]=$row->id;
+			}
+		 $values=implode(",", $v);  //convierto el array en un string con los id separados por (,)
+		
+         if($values==""){
+     	  $values="";
+         }
+		}else{
+			$values="";
 		}
-        return  $values;
+		return  $values;
 	}
 	
 	//funcion que borra el string generado con los datos preliminar
-    public static function delete_arch_temp($string_data_preliminar)
+    public function delete_arch_temp($string_data_preliminar,$id_destination,$id_destination_int)
     {
-    	// busco si estan cargados los internos o externos  para borrarlo
-        $sql="DELETE FROM balance where ".$cadena." ";
+    	// borro los registros con el string formado anteriormente
+		$sql="DELETE FROM balance where id IN (".$string_data_preliminar.")";
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute()){
 		   $this->error=self::ERROR_NONE;

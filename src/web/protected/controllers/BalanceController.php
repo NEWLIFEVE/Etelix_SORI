@@ -325,7 +325,7 @@ class BalanceController extends Controller
          //no la crea solo sube el siguiente archivo a la misma carpeta
         }else{
 		 //creo el directorio dependiendo del usuario logueado, sino existe la carpeta
-         mkdir("uploads/".$user_carpeta_temp."", 0777);
+         mkdir("uploads/".$user_carpeta_temp."", 0775);
         }
         //concateno la carpeta temp para la carga
 		$folder='uploads/'.$user_carpeta_temp.'/';// folder for uploaded files
@@ -461,7 +461,7 @@ class BalanceController extends Controller
 							if($this->valida->error==0)
 							{
 								//Guardo en base de datos
-								if($this->lector->diario($path.$diario,$yesterday))
+								if($this->lector->diario($path.$diario,$yesterday,$diario))
 								{
 									//Si lo guarda grabo en log
 									Log::registrarLog(LogAction::getId($this->valida->log));
