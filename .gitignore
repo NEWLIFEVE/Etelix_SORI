@@ -23,3 +23,8 @@ Desktop.ini
 $RECYCLE.BIN/
 
 src/web/uploads/*.xls
+
+#Eclipse
+.buildpath
+.project
+.settings/*
