@@ -255,7 +255,7 @@ class AccountingDocumentTempController extends Controller
     public function updateBackFee($id)
     {
         $bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
-        if($bank_fee->id!=NULL)
+        if($bank_fee!=NULL)
         {
             $model=$this->loadModel($bank_fee->id);     
             if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
@@ -302,6 +302,7 @@ class AccountingDocumentTempController extends Controller
     public function actionBorrar($id)
     {
         $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
+        $id_bank_fee=NULL;
         if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
         {                                                 
             $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 

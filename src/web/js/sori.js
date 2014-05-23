@@ -1501,15 +1501,20 @@ $SORI.AJAX=(function()
 	function actualizar(id,tope,especial)
 	{       
             switch (tope) {
-                case "2":  var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
+                case "2": case 2: 
+                    var url = "update/"+id, urlData=$SORI.UTILS.getData(id,tope);
                     break;
-                case "1":  var url = "UpdateDisp/"+id, urlData="dispute="+especial;
+                case "1":  
+                    var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                     break;
-                case true: var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                case true: 
+                    var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
-                case false:var url = "/ContratoTerminoPago/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
+                case false:
+                    var url = "/ContratoTerminoPago/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
-                default:   console.log("algo salio mal");console.log(tope);
+                default:   
+                    console.log("algo salio mal");console.log(tope);
                     break;
             }
 		$.ajax(
