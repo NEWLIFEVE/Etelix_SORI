@@ -184,6 +184,15 @@ class SiteController extends Controller
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
+        /* PROVISIONING */
+        if ($tipoUsuario == 6) {
+            return array(
+                            array('label'=>'Home', 'url'=>array('/site/index')),
+                            array('label'=>'Cargar Archivos Captura', 'url'=>array('/balance/upload')),
+                            array('label'=>'Dist. Comercial', 'url'=>array('/carrierManagers/distComercial')),
+                            array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+                        );
+        }
         }
         
         

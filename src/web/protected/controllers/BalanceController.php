@@ -45,6 +45,10 @@ class BalanceController extends Controller
 				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
 				'users'=>array_merge(Users::usersByType(3)),
 				),
+			array('allow', // Vistas para Operaciones
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
+				'users'=>array_merge(Users::usersByType(6)),
+				),
 			array('allow', // Vistas para Finanzas
 				'actions'=>array(''),
 				'users'=>array_merge(Users::usersByType(4)),
