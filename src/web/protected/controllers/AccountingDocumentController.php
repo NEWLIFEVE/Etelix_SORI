@@ -181,33 +181,33 @@ class AccountingDocumentController extends Controller
          */
         public function actionUpdate($id)
         {
-                $model=$this->loadModel($id);
+            $model=$this->loadModel($id);
 
-                if(isset($_POST['AccountingDocument']))
-                {
-                    
-                        $model->attributes=$_POST['AccountingDocument'];
+            if(isset($_POST['AccountingDocument']))
+            {
+
+                    $model->attributes=$_POST['AccountingDocument'];
 //                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
 //                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-                              
-                $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
-                $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
-                $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
-                $model->email_received_date=Utility::snull($_POST['AccountingDocument']['email_received_date']);
-                $model->valid_received_date=Utility::snull($_POST['AccountingDocument']['valid_received_date']);
-                $model->email_received_hour=Utility::snull($_POST['AccountingDocument']['email_received_hour']);
-                $model->valid_received_hour=Utility::snull($_POST['AccountingDocument']['valid_received_hour']);
-                $model->sent_date=Utility::snull($_POST['AccountingDocument']['sent_date']);
-                $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
-                $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
-                $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
-                 $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
+
+            $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
+            $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
+            $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
+            $model->email_received_date=Utility::snull($_POST['AccountingDocument']['email_received_date']);
+            $model->valid_received_date=Utility::snull($_POST['AccountingDocument']['valid_received_date']);
+            $model->email_received_hour=Utility::snull($_POST['AccountingDocument']['email_received_hour']);
+            $model->valid_received_hour=Utility::snull($_POST['AccountingDocument']['valid_received_hour']);
+            $model->sent_date=Utility::snull($_POST['AccountingDocument']['sent_date']);
+            $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
+            $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
+            $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
+             $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
 -               $model->id_currency=$id_currency;
-                        if($model->save())
-                                return "Actualizado id: ".$model->id;
-                        else
-                                return "Algo salio mal";
-                }
+                    if($model->save())
+                            return "Actualizado id: ".$model->id;
+                    else
+                            return "Algo salio mal";
+            }
         }
          /**
          * eliminar a particular model.

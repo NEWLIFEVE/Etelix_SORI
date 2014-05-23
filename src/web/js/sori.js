@@ -1116,7 +1116,7 @@ function roundNumber(number,decimals)
          */
          function sesionCerrada()
          {
-             $SORI.UI.msj_cargando("<h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div>","");
+             $SORI.UI.msj_cargando("<h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div>","white.png");
              $('.relogin').click('on',function() { $(".cargando,.mensaje").fadeOut('slow'); }); 
          }
         /**
@@ -1277,7 +1277,8 @@ function roundNumber(number,decimals)
         
         function msj_cargando(cuerpo_msj,imagen)
         {
-            if(imagen!=null||imagen!="")var imagen_url="<img src='/images/"+imagen+"'>";else imagen_url="";
+            imagen_url="";
+            if(imagen!=null||imagen!="")var imagen_url="<img src='/images/"+imagen+"'>";;
             $(".cargando, .mensaje").remove();
             var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p><br>"+imagen_url+"</div>").hide(); 
             $("body").append(msj); msj.fadeIn('slow');
