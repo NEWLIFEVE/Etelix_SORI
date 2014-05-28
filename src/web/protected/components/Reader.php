@@ -12,62 +12,63 @@ class Reader
     public $valida;
     public $error=0;
     public $errorComment;
-    //errores de log
-    const ERROR_SAVE_LOG=6;
-    //errores guardando en base de datos
-    const ERROR_SAVE_DB=5;
-    //el archivo no esta en el servidor
-    const ERROR_FILE=4;
-    //la fecha del archivo es incorrecta
-    const ERROR_DATE=3;
-    //Ya esta registrado en el log
-    const ERROR_EXISTS=2;
-    // Error de estructura del archivo
-    const ERROR_ESTRUC=1;
-    //No hay errores
-    const ERROR_NONE=0;
+    
+    /**
+     * Agrega al objeto del reader el archivo excel que se va a grabar
+     * @param $ruta string ubicacion del archivo
+     */
+    function __construct($ruta)
+    {
+       //importo la extension
+    	Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        //oculto errores
+        error_reporting(E_ALL ^ E_NOTICE);
+		$this->excel = new Spreadsheet_Excel_Reader();
+        //uso esta codificacion ya que dio problemas usando utf-8 directamente
+        $this->excel->setOutputEncoding('ISO-8859-1');
+        $this->excel->read($ruta);
+    	
+    }
 
     /**
     * Funcion de carga de archivos diarios
     * @param string $ruta: ruta absoluta de archivo que va a ser leido
     * @return boolean
     */
-    public function diario($ruta,$fecha_diario,$nombre)
+    public static function diario($ruta,$fecha_diario,$nombre,$archivo)
     {
-    	$this->valida=new ValidationsArchCapt;
     	$values='';
-        //aumento el tiempo maximo de ejecucion
-        ini_set('max_execution_time', 1200);
-        $this->valida->carga($ruta);
-        
-        for($i=5;$i<=$this->valida->excel->sheets[0]['numRows'];$i++)
+    	$var=array();
+	    ini_set('max_execution_time', 1200);
+
+		for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
         {
-            $valores=array();
-            for($j=1;$j<=$this->valida->excel->sheets[0]['numCols'];$j++)
+			$valores=array();
+            for($j=1;$j<=$archivo->excel->sheets[0]['numCols'];$j++)
             {
                 switch($j)
                 {
                     case 1:
-                        if($this->valida->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total es que ya se termino el archivo
                             break 3;
                         }
                         else
                         {
-                        	  $this->valida->define($nombre);
-                            if($this->valida->tipo=="external")
+                        	if(ValidationsArchCapt::define($nombre)=="external")
                             {
-                                //Obtengo el id de destino externo
-                                $valores['id_destination']=Destination::getId(utf8_encode($this->valida->excel->sheets[0]['cells'][$i][$j]));
+                            	//Obtengo el id de destino externo
+                                $valores['id_destination']=Destination::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                                 $valores['id_destination_int']='NULL';
                                 $id_destination_int=$valores['id_destination_int'];
                                 $id_destination=$valores['id_destination'];
+                                
                             }
-                            elseif($this->valida->tipo=="internal")
+                            else
                             {
-                                //obtengo el id del destino interno
-                                $valores['id_destination_int']=DestinationInt::getId(utf8_encode($this->valida->excel->sheets[0]['cells'][$i][$j]));
+                            	//obtengo el id del destino interno
+                                $valores['id_destination_int']=DestinationInt::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                                 $valores['id_destination']='NULL';
                                 $id_destination_int=$valores['id_destination_int'];
                                 $id_destination=$valores['id_destination'];
@@ -75,110 +76,110 @@ class Reader
                         }
                         break;
                     case 2:
-                        if($this->valida->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total no lo guardo en base de datos
                             break 2;
                         }
                         else
                         {
-                            $valores['id_carrier_customer']=Carrier::getId(utf8_encode($this->valida->excel->sheets[0]['cells'][$i][$j]));
+                            $valores['id_carrier_customer']=Carrier::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                         }
                         break;
                     case 3:
-                        if($this->valida->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //Si es total no lo guardo en base de datos
                             break 2;
                         }
                         else
                         {
-                            $valores['id_carrier_supplier']=Carrier::getId(utf8_encode($this->valida->excel->sheets[0]['cells'][$i][$j]));
+                            $valores['id_carrier_supplier']=Carrier::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                         }
                         break;
                     case 4:
                         //minutos
-                        $valores['minutes']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['minutes']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 5:
                         //ACD
-                        $valores['acd']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['acd']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 6:
                         //ASR
-                        $valores['asr']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['asr']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 7:
                         //Margin %
-                        $valores['margin_percentage']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['margin_percentage']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 8:
                         //Margin per Min
-                        $valores['margin_per_minute']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['margin_per_minute']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 9:
                         //Cost per Min
-                        $valores['cost_per_minute']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['cost_per_minute']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 10:
                         //Revenue per Min
-                        $valores['revenue_per_minute']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['revenue_per_minute']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 11:
                         //PDD
-                        $valores['pdd']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['pdd']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 12:
                         //Imcomplete Calls
-                        $valores['incomplete_calls']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['incomplete_calls']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 13:
                         //Imcomplete Calls Ner
-                        $valores['incomplete_calls_ner']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['incomplete_calls_ner']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 14:
                         //Complete Calls Ner
-                        $valores['complete_calls_ner']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['complete_calls_ner']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 15:
                         //Complete Calls
-                        $valores['complete_calls']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['complete_calls']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 16:
                         //Calls Attempts
-                        $valores['calls_attempts']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['calls_attempts']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 17:
                         //Duration Real
-                        $valores['duration_real']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['duration_real']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 18:
                         //Duration Cost
-                        $valores['duration_cost']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['duration_cost']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 19:
                         //NER02 Efficient
-                        $valores['ner02_efficient']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['ner02_efficient']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 20:
                         //NER02 Seizure
-                        $valores['ner02_seizure']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['ner02_seizure']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 21:
                         //PDDCalls
-                        $valores['pdd_calls']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['pdd_calls']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 22:
                         //Revenue
-                        $valores['revenue']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['revenue']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 23:
                         //Cost
-                        $valores['cost']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['cost']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 24:
                         //Margin
-                        $valores['margin']=Utility::notNull($this->valida->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        $valores['margin']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
                     	$values.="(";
@@ -213,35 +214,20 @@ class Reader
                         break;
                 }
             }//fin de for de $j
-            if($i<$this->valida->excel->sheets[0]['numRows'])
+            if($i<$archivo->excel->sheets[0]['numRows'])
             {
                 $values.=",";
             }
         }//fin de for de $i
-        
-    	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
-    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
-    	 $string_data_preliminar=$this->valida->load_arch_temp($fecha_diario,$id_destination,$id_destination_int);
-
-			$sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
-			$command = Yii::app()->db->createCommand($sql);
-			    
-			if($command->execute())
-	        {
-	            $this->valida->error=self::ERROR_NONE;
-	            // si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-	            if($string_data_preliminar!="")
-	            {
-	             $this->valida->delete_arch_temp($string_data_preliminar,$id_destination,$id_destination_int);
-				}
-    	        return true;
-	        }
-	        else
-	        {
-	            $this->valida->error=self::ERROR_SAVE_DB;
-	            return false;
-	        }
-    }
+        if( $values!=""){
+          $var['values']=$values;
+          $var['id_destination']=$id_destination;
+          $var['id_destination_int']=$id_destination_int;
+        }else{
+        	$var="";
+        }
+       return $var;
+	}
 
     /**
     * Funcion de carga de archivos hora

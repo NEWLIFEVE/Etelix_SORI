@@ -429,7 +429,6 @@ class BalanceController extends Controller
 		$user_carpeta_temp=Yii::app()->user->getState('username').'';
 		 
 		$path=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
-		//$path=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
@@ -443,55 +442,70 @@ class BalanceController extends Controller
 			//si la opcion es dia
 			if($_POST['tipo']=="dia")
 			{
-				//instancio el componente para validar
-				$this->valida=new ValidationsArchCapt; 
-				$this->lector=new Reader;
-				
 				//Nombres opcionales para los archivos diarios
 				$diarios=array(
 					'Carga Ruta Internal'=>'Ruta Internal Diario',
 					'Carga Ruta External'=>'Ruta External Diario'
 					);
-					//Primero: verifico que archivos estÃ¡n
-				$existentes=$this->valida->getNombreArchivos($path,$diarios,array('xls','XLS'));
+				//Primero: verifico que archivos estÃ¡n
+				$existentes=ValidationsArchCapt::getNombreArchivos($path,$diarios,array('xls','XLS'));
 				//Si la primera condicion se cumple, no deberian haber errores
-				if($this->valida->error==0)
+				if($this->error==ValidationsArchCapt::ERROR_NONE)
 				{
 					foreach($existentes as $key => $diario)
 					{
+						//cargo el archivo en memoria
+						$ruta=$path.$diario;
+						$archivo=new Reader($ruta);
+						
 						//validaciones 
-						if($this->valida->validar($path,$diario,$existentes,$yesterday))
+						if(ValidationsArchCapt::validar($path,$diario,$existentes,$yesterday,$archivo))
 					    {
 						   /* guardo en el componente reader*/
-							if($this->valida->error==0)
+							if($this->error==ValidationsArchCapt::ERROR_NONE)
 							{
 								//Guardo en base de datos
-								if($this->lector->diario($path.$diario,$yesterday,$diario))
+                                $var=array();
+                                // genero un array con los datos del excel para giardarlo en BD y saber si es interno o externo
+								$var=Reader::diario($ruta, $yesterday, $diario, $archivo);
+								if($var!="")
 								{
-									//Si lo guarda grabo en log
-									Log::registrarLog(LogAction::getId($this->valida->log));
-								}
+								 //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+							     $stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday, $var);
+							     
+							     //Si se genero el string nuevo, guardo el log
+							     if (ValidationsArchCapt::logDiario($diario))
+							     {
+							        Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDiario($diario)));
+							    
+							       //guardo en BD el string con los nuevos datos del excel
+							      if(ValidationsArchCapt::saveDataArch($var)) 
+							       {
+							     	//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+							        //si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+						            if($stringDataPreliminary!="")
+						            {
+									 // mando el string preliminar para elimnar la data
+						             ValidationsArchCapt::deleteArchTemp($stringDataPreliminary);
+						            }
+								   }
+							      }
+							    }
 							}
 						}
 					 }
-					   //vañlidar error cero si viene del lector o vañlida
-					    if(($this->lector->error>0)||($this->valida->error!=0))
+					   //validar error cero si viene del lector o valida
+					    if($this->error!=ValidationsArchCapt::$error)
 						{
-							$fallas.=$this->lector->errorComment;
-							$fallas.=$this->valida->errorComment;
+							$fallas.=ValidationsArchCapt::$errorComment;
 						}
-						if(($this->lector->error==0)&&($this->valida->error==0))
+						if($this->error==ValidationsArchCapt::$error)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
 						}
-						$this->valida->error=0;
-						$this->valida->errorComment=NULL;
+						$this->error=ValidationsArchCapt::ERROR_NONE;
+						$this->errorComment=NULL;
 					}
-				}
-				if(($this->lector->error>0)||($this->valida->error!=0))
-				{
-					$fallas.=$this->lector->errorComment;
-				    $fallas.=$this->valida->errorComment;
 				}
 			}
 		$resultado.=$exitos."</br>".$fallas."</div>";

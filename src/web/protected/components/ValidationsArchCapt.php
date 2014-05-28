@@ -10,8 +10,8 @@ class ValidationsArchCapt
 {
     public $model;
     public $vencom;
-    public $error=0;
-    public $errorComment;
+    public static $error=0;
+    public static $errorComment;
     public $horas;
     public $tipo;
     public $log;
@@ -39,53 +39,43 @@ class ValidationsArchCapt
     //No hay errores
     const ERROR_NONE=0;
     
-   
-
     /**
-     *
+     * 
+     * funcion que realiza las validaciones antes de insertar los nuevos datos del excel
+     * @param unknown_type $path
+     * @param unknown_type $diario
+     * @param unknown_type $existentes
+     * @param unknown_type $yesterday
      */
-    
-    public function validar($path,$diario,$existentes,$yesterday) 
+    public static function validar($path,$diario,$existentes,$yesterday,$archivo) 
     {
-    	//Primero: verifico que archivos están
-        //$existentes=$this->getNombreArchivos($path,$diarios,array('xls','XLS'));
-		
+    	//Primero: verifico que archivos estan
 		if(count($existentes)<=0)
 		{
-			$this->error=4;
-			$this->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
+			self::$error=self::ERROR_FILE;
+			self::$errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
 		}
-//		if(Log::existe(LogAction::getLikeId('Carga Ruta External Preliminar')))
-//		{
-//			Balance::model()->deleteAll('date_balance=:date AND id_destination_int IS NULL', array(':date'=>$yesterday));
-//		}
-//		if(Log::existe(LogAction::getLikeId('Carga Ruta Internal Preliminar')))
-//		{
-//			Balance::model()->deleteAll('date_balance=:date AND id_destination IS NULL', array(':date'=>$yesterday));
-//		}
-		
-        $this->setName($diario);
-		//Defino variables internas
-//		$this->define($diario);
 		//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
-		$this->logDiario($diario);
-		if($this->error==0)
-		{
-			//cargo el archivo en memoria
-			$this->carga($path.$diario);
-			//Tercero: verifico la fecha que sea correcta
-			$this->validarFecha($yesterday);
-		}
-		if($this->error==0)
-		{
-			//Cuarto: valido el orden de las columnas
-			$this->validarColumnas($this->lista($diario));
-		}
+		self::logDiario($diario);
 		
-		if($this->error==0){
-			return true;
+		if(self::validarFecha($yesterday,$path,$diario,$archivo))
+		{
+			//Tercero: verifico la fecha que sea correcta
+   			if(self::validarColumnas(self::lista($diario),$path,$diario,$archivo))
+   			{
+   				if(self::$error==self::ERROR_NONE){
+					return true;
+				}else{
+					return false;
+				}
+   			}else{
+				self::$error=self::ERROR_ESTRUC;
+                return false;
+				}
 		}else{
-			return false;
+			self::$error=self::ERROR_DATE;
+			self::$errorComment="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
+  		    return false;
 		}
 	 }
  /**
@@ -95,9 +85,9 @@ class ValidationsArchCapt
     * @param $listaExtensiones array lista de extensiones que pueden tener los archivos
     * @return $confirmados array lista de archivos que hay dentro del directorio consultado que coinciden con la lista dada
     */
-    public function getNombreArchivos($directorio,$listaArchivos,$listaExtensiones)
+    public static function getNombreArchivos($directorio,$listaArchivos,$listaExtensiones)
     {
-        $confirmados=array();
+    	$confirmados=array();
         if($directorio==null)
         {
             return false;
@@ -123,24 +113,27 @@ class ValidationsArchCapt
         }
     }
     
-    protected  function setName($nombre)
+   public static function setName($nombre)
     {
-        $this->nombreArchivo=$nombre;
+     return   $nombreArchivo=$nombre;
     }
     /**
     * Encargada de definir atributos para proceder a la lectura del archivo
     */
-    public function define($nombre)
+    public static function define($nombre)
     {
+    	
         if(stripos($nombre,"internal"))
         {
-            $this->tipo="internal";
-            $this->destino="id_destination_int";
+            $tipo="internal";
+            $destino="id_destination_int";
+            return $tipo;
         }
         else
         {
-            $this->tipo="external";
-            $this->destino="id_destination";
+            $tipo="external";
+            $destino="id_destination";
+            return $tipo;
         }
     }
 	/**
@@ -149,9 +142,9 @@ class ValidationsArchCapt
      * @param $key string con el nombre del archivo que se quiere verificar
      * @return boolean
      */
-    public function logDiario($key)
+    public static function logDiario($key)
     {
-        if(stripos($key,"internal"))
+    	if(stripos($key,"internal"))
         {
             $key='Internal';
         }
@@ -159,82 +152,71 @@ class ValidationsArchCapt
         {
             $key='External';
         }
+
         if(Log::existe(LogAction::getLikeId('%'.$key.'%Preliminar%')))
         {
             if(Log::existe(LogAction::getLikeId('%'.$key.'%Definitivo%')))
             {
-                $this->error=self::ERROR_EXISTS;
-                $this->errorComment="<h5 class='nocargados'> El archivo '".$key."' ya esta almacenado </h5> <br/> ";
-                return true;
+            	self::$error=self::ERROR_EXISTS;
+                self::$errorComment="<h5 class='nocargados'> El archivo '".$key."' ya esta almacenado </h5> <br/> ";
+                return false;
             }
             else
             {
-                $this->error=self::ERROR_NONE;
-                $this->log="Carga Ruta ".$key." Definitivo";
-                return false;
+            	self::$error=self::ERROR_NONE;
+                $log="Carga Ruta ".$key." Definitivo";
+                return $log;
             }
         }
         else
         {
-            $this->error=self::ERROR_NONE;
-            $this->log="Carga Ruta ".$key." Preliminar";
-            return false;
+        	self::$error=self::ERROR_NONE;
+            $log="Carga Ruta ".$key." Preliminar";
+            return $log;
         }
     }
-     /**
-     * Agrega al objeto del reader el archivo excel que se va a grabar
-     * @param $ruta string ubicacion del archivo
-     */
-    public function carga($ruta)
-    {
-        //importo la extension
-        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
-        
-        //oculto errores
-        error_reporting(E_ALL ^ E_NOTICE);
 
-        $this->excel = new Spreadsheet_Excel_Reader();
-        //uso esta codificacion ya que dio problemas usando utf-8 directamente
-        $this->excel->setOutputEncoding('ISO-8859-1');
-        $this->excel->read($ruta);
-    }
- /**
-    *
-    */
-    public function validarFecha($fecha)
+    /**
+     * 
+     * valida la fecha del archivo
+     * @param $fecha
+     * @param $directorio
+     */
+    public static function validarFecha($fecha,$path,$diario,$archivo)
     {
-        $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
-        $this->fecha=$fecha;
-        $fecha=strtotime($fecha);
+      	$date_balance=strtotime(Utility::formatDate($archivo->excel->sheets[0]['cells'][1][4]));
+		$fecha=strtotime($fecha);
+
         if($fecha==$date_balance)
         {
-            $this->error=self::ERROR_NONE;
+            self::$error=self::ERROR_NONE;
             return true;
         }
         else
         {
-            $this->error=self::ERROR_DATE;
-            $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
-            return false;
+            self:: $error=self::ERROR_DATE;
+			self::$errorComment="<h5 class='nocargados'> El archivo '".$diario."' tiene una fecha incorrecta </h5> <br/> ";
+  		    return false;
         }
     }
  /**
     * Funcion a la que se le pasa una lista donde el orden incluido debe ser cumplido por el archivo que se esta evaluando
     * @param array $lista lista de elementos que debe cumplir las columnas
     */
-    public function validarColumnas($lista)
+    public static function validarColumnas($lista,$path,$diario,$archivo)
     {
-        foreach ($lista as $key => $campo)
+    	foreach ($lista as $key => $campo)
         {
+        	
             $pos=$key+1;
-            if($campo!=$this->excel->sheets[0]['cells'][2][$pos])
+            if($campo!=$archivo->excel->sheets[0]['cells'][2][$pos])
             {
-                $this->error=self::ERROR_ESTRUC;
-                $this->errorComment.="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene la columna ".$this->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
+            	self::$error=self::ERROR_ESTRUC;
+                self::$errorComment.="<h5 class='nocargados'> El archivo '".$diario."' tiene la columna ".$archivo->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
                 return false;
             }
         }
-        $this->error=self::ERROR_NONE;
+        self::$error=self::ERROR_NONE;
         return true;
     }
     
@@ -266,7 +248,7 @@ class ValidationsArchCapt
 	* @param $archivo string nombre del archivo que se va a consultar
 	* @return $lista[] array lista de nombres de columnas
 	*/ 
-	protected function lista($archivo)
+	 public static function lista($archivo)
 	{
 		$primero="Ruta ";
         $segundo="External ";
@@ -291,9 +273,18 @@ class ValidationsArchCapt
         return $lista[$nombre];
 	}
 	
-	//   funcion que crea un string con los datos preliminar
-	public function load_arch_temp($fecha,$id_destination,$id_destination_int)
+	 /**
+	  *    funcion que crea un string con los datos preliminar
+	  * @param fecha $fecha
+	  * @param array $var
+	  * @return string 
+	  */
+	public static function loadArchTemp($fecha,$var)
     {
+    	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
+    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
+       $id_destination=$var['id_destination'];
+       $id_destination_int=$var['id_destination_int'];
 	   if($id_destination=='NULL'){ // ES interno 
 	     $name_destination='id_destination';
 	    }elseif($id_destination_int=='NULL'){ //es externo 
@@ -320,14 +311,40 @@ class ValidationsArchCapt
 		return  $values;
 	}
 	
-	//funcion que borra el string generado con los datos preliminar
-    public function delete_arch_temp($string_data_preliminar,$id_destination,$id_destination_int)
+	/**
+	 * guarda la data nueva del archivo
+	 * Enter description here ...
+	 * @param array $var 
+	 */
+	 public static function saveDataArch($var)
+	 {
+	 	$values=$var['values'];
+	 	$sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
+			$command = Yii::app()->db->createCommand($sql);
+			    
+			if($command->execute())
+	        {
+	            self::$error=self::ERROR_NONE;
+	            return true;
+	        }
+	        else
+	        {
+	            self::$error=self::ERROR_SAVE_DB;
+	            return false;
+	        }
+	 }
+	
+	/**
+	 * funcion que borra el string generado con los datos preliminar
+	 * @param string $stringDataPreliminary
+	 */
+    public static function deleteArchTemp($stringDataPreliminary)
     {
     	// borro los registros con el string formado anteriormente
-		$sql="DELETE FROM balance where id IN (".$string_data_preliminar.")";
+		$sql="DELETE FROM balance where id IN (".$stringDataPreliminary.")";
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute()){
-		   $this->error=self::ERROR_NONE;
+		   self::$error=self::ERROR_NONE;
 		}
     }
     
