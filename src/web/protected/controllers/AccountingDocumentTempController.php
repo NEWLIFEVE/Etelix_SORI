@@ -306,20 +306,26 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionBorrar($id)
     {
-        $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
-        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
-        {                                                 
-            $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+        if(!Yii::app()->user->isGuest)
+        {
+            $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
+            if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
+            {                                                 
+                $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
 
-            if($id_bank_fee!==NULL)
-                $this->loadModel($id_bank_fee->id)->delete();
+                if($id_bank_fee!==NULL)
+                    $this->loadModel($id_bank_fee->id)->delete();
+            }
+            $this->loadModel($id)->delete();
+            //esto se usa para ver si elimino los documentos
+            if($id_bank_fee!==NULL)         
+                var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
+            else
+                var_dump("elimino el documento: ".$id." y bank fee: NULL");
+            echo true;
+        }else{
+            echo null;
         }
-        $this->loadModel($id)->delete();
-        //esto se usa para ver si elimino los documentos
-        if($id_bank_fee!==NULL)         
-            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
-        else
-            var_dump("elimino el documento: ".$id." y bank fee: NULL");
     }
 
 	/**

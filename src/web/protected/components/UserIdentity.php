@@ -9,6 +9,8 @@ class UserIdentity extends CUserIdentity
 {
 	private $_id;
 	private $_type;
+        const ERROR_USERNAME_INVALID=1;
+	const ERROR_PASSWORD_INVALID=2;
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_INACTIV=4;
 	/**
@@ -22,10 +24,9 @@ class UserIdentity extends CUserIdentity
 	public function authenticate()
 	{
 		if (strpos($this->username,"@")) {
-			$user=Users::model()->findByAttributes(array('email'=>$this->username));
+			$user=  Users::model()->findByAttributes(array('email'=>$this->username));
 		} else {
 			$user=Users::model()->findByAttributes(array('username'=>$this->username));
-			$this->setState('username',$user->username);
 		}
 		if($user===null){
 			if (strpos($this->username,"@")) {

@@ -171,7 +171,8 @@ label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font
 	-moz-transition: 0.1s linear all;
 	-ms-transition: 0.1s linear all;
 	-o-transition: 0.1s linear all;
-	transition: 0.1s linear all; }
+	transition: 0.1s linear all;
+        margin: 0% 0% 1% 0%;}
 .button:hover, input[type="submit"]:hover, button:hover, .toggle-title:hover {
 	color: #333;
 	text-decoration: none;
