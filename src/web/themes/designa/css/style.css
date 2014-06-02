@@ -132,7 +132,7 @@ select {height: auto;}
 :-moz-placeholder {color: #BBB;}
 :-ms-input-placeholder {color: #BBB;}
 /* validate.js */
-label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font-style: italic; }
+label.error { color: #8a1f11; font-weight: bold; font-style: italic; }
 
 
 

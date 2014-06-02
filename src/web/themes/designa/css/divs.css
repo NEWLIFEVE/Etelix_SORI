@@ -70,7 +70,7 @@
     padding: 5em 5em;
     text-align: center;
 }
-.error
+div.error
 {
     background:#FBE3E4;
     border-radius:10px;
@@ -80,6 +80,26 @@
     margin: 10% auto;
     padding: 5em 5em;
     text-align: center;
+}
+input.error
+{
+    background:#FBE3E4;
+    /*border-radius:10px;*/
+    border:3px #FBC2C4 solid;
+    color:#8a1f11;
+    display: inline-block;
+    /*margin: 10% auto;
+    padding: 5em 5em;*/
+    text-align: center;
+}
+input.error:focus
+{
+    border-radius:10px;
+    border:6px #FBC2C4 solid
+}
+div.errorMessage
+{
+     color:#8a1f11;
 }
 .confirm
 {
