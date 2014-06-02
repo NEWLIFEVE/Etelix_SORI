@@ -116,8 +116,8 @@ $("#botAsignar").on("click",function asignadosAnoasignados()
             success: function(data)
             {
                 var obj=JSON.parse(data);
-               
-                if(obj.asigNames<="1" && obj.noasigNames<="1")
+                console.log(obj.asigNames.length);
+                if(obj.asigNames.length=="0" && obj.noasigNames.length=="0")
                 {
                     $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No hay carriers preselccionados <br> para asignar o desasignar</h3>","aguanta.png","1500","width:40px; height:90px;"); 
                 }

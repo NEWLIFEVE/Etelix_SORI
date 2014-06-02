@@ -3,6 +3,9 @@
 
 Sistema de Origen
 
+
+Release 1.5.8.1
+- Fix para dist comercial
 Release 1.5.8
     - Mejora en css, se agrego una nueva hoja de estilos para organizar todos los responsive.
     - Detalles solucionados en condiciones comerciales: se estabilizo el comportamiento del input start date termino pago contenido dentro de los fancybox, ahora se actualiza al momento de guardar los cambios, se cambio el cursor de exit, se agrego guardada de logs al momento d eliminar historial de termino pago.
