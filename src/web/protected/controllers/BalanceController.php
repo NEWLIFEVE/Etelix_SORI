@@ -317,11 +317,10 @@ class BalanceController extends Controller
         /**
          *
          */
-        public function actionCarga()
+    public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
 
-		
 		//capturo el nombre del usuario logueado
         $user_carpeta_temp=Yii::app()->user->getState('username').'/';
         $ruta='uploads/'.$user_carpeta_temp.'/';
@@ -344,7 +343,7 @@ class BalanceController extends Controller
  
         $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
         $fileName=$result['filename'];//GETTING FILE NAME
- 
+
         echo $return;// it's array
 	}
 
@@ -438,77 +437,130 @@ class BalanceController extends Controller
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
-			//Verifico la opcion del usuario a traves del post
-			//si la opcion es dia
-			if($_POST['tipo']=="dia")
-			{
-				//Nombres opcionales para los archivos diarios
-				$diarios=array(
-					'Carga Ruta Internal'=>'Ruta Internal Diario',
-					'Carga Ruta External'=>'Ruta External Diario'
-					);
-				//Primero: verifico que archivos están
-				$existentes=ValidationsArchCapt::getNombreArchivos($path,$diarios,array('xls','XLS'));
-				//Si la primera condicion se cumple, no deberian haber errores
-				if($this->error==ValidationsArchCapt::ERROR_NONE)
-				{
-					foreach($existentes as $key => $diario)
-					{
-						//cargo el archivo en memoria
-						$ruta=$path.$diario;
-						$archivo=new Reader($ruta);
-						
-						//validaciones 
-						if(ValidationsArchCapt::validar($path,$diario,$existentes,$yesterday,$archivo))
-					    {
-						   /* guardo en el componente reader*/
-							if($this->error==ValidationsArchCapt::ERROR_NONE)
-							{
-								//Guardo en base de datos
-                                $var=array();
-                                // genero un array con los datos del excel para giardarlo en BD y saber si es interno o externo
-								$var=Reader::diario($ruta, $yesterday, $diario, $archivo);
-								if($var!="")
-								{
-								 //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-							     $stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday, $var);
-							     
-							     //Si se genero el string nuevo, guardo el log
-							     if (ValidationsArchCapt::logDiario($diario))
-							     {
-							        Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDiario($diario)));
-							    
-							       //guardo en BD el string con los nuevos datos del excel
-							      if(ValidationsArchCapt::saveDataArch($var)) 
-							       {
-							     	//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
-							        //si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-						            if($stringDataPreliminary!="")
-						            {
-									 // mando el string preliminar para elimnar la data
-						             ValidationsArchCapt::deleteArchTemp($stringDataPreliminary);
-						            }
-								   }
-							      }
-							    }
-							}
-						}
-					 }
-					   //validar error cero si viene del lector o valida
-					    if($this->error!=ValidationsArchCapt::$error)
-						{
-							$fallas.=ValidationsArchCapt::$errorComment;
-						}
-						if($this->error==ValidationsArchCapt::$error)
-						{
-							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
-						}
-						$this->error=ValidationsArchCapt::ERROR_NONE;
-						$this->errorComment=NULL;
-					}
-				}
+         $tipo=$_POST['tipo'];
+			
+         if($tipo=='dia')
+         {
+			//Nombres opcionales para los archivos diarios
+			$namesArch=array(
+						'Carga Ruta Internal'=>'Ruta Internal Diario',
+						'Carga Ruta External'=>'Ruta External Diario'
+					    );
+		 }elseif($tipo=='hora')
+		  {
+			//Nombres opcionales para los archivos horas
+ 		    $namesArch=array(
+						'Carga Ruta Internal 4GMT'=>'Ruta Internal 4Hrs',
+					    'Carga Ruta Internal 8GMT'=>'Ruta Internal 8Hrs',
+						'Carga Ruta Internal 12GMT'=>'Ruta Internal 12Hrs',
+						'Carga Ruta Internal 16GMT'=>'Ruta Internal 16Hrs',
+						'Carga Ruta Internal 20GMT'=>'Ruta Internal 20Hrs',
+						'Carga Ruta Internal 24GMT'=>'Ruta Internal 24Hrs',
+						'Carga Ruta External 4GMT'=>'Ruta External 4Hrs',
+						'Carga Ruta External 8GMT'=>'Ruta External 8Hrs',
+						'Carga Ruta External 12GMT'=>'Ruta External 12Hrs',
+						'Carga Ruta External 16GMT'=>'Ruta External 16Hrs',
+						'Carga Ruta External 20GMT'=>'Ruta External 20Hrs',
+						'Carga Ruta External 24GMT'=>'Ruta External 24Hrs'
+						);
 			}
+		  //Primero: verifico que archivos estan
+		  $existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
+		  //Si la primera condicion se cumple, no deberian haber errores
+		  if($this->error==ValidationsArchCapt::ERROR_NONE)
+		  {
+			foreach($existentes as $key => $nombre)
+		    {
+			 //cargo el archivo en memoria
+			 $ruta=$path.$nombre;
+			 $archivo=new Reader($ruta);
+
+			   //validaciones 
+			   if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
+			   {
+			     if($this->error==ValidationsArchCapt::ERROR_NONE)
+				 {
+				   $var=array();
+                   if($tipo=='dia')
+				   {
+                     // genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+					 $var=Reader::diario($yesterday, $nombre, $archivo);
+				   }elseif($tipo=='hora')
+					{
+					 //genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
+					 $var=Reader::hora($archivo);
+				    }
+				   if($var!="") 
+				   {
+
+				   
+	                 //Si se genero el string nuevo, guardo el log
+				     if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+				     { 
+				       
+				         //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+					     $stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo);
+					     if(($stringDataPreliminary!="")&&($tipo=='hora'))
+					     {
+							// mando el string de horas que vienen en el excel para borrar las viejas
+						   ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+					     }
+					  
+					   //guardo en BD el string con los nuevos datos del excel diario u Hora
+					   if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+					   {
+					   	
+					   
+					     if($tipo=='dia')
+				 	     {
+						    Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
+					     }elseif ($tipo=='hora')
+					      {
+					        $numero = explode("Hrs", $nombre);
+		     				$numero = explode(" ", $numero[0]);
+		   					$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
+		   					$nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
+						    Log::registrarLog(LogAction::getId($nombre));
+					   
+					      }
+					     //si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+					     //si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+					     if(($stringDataPreliminary!="")&&($tipo=='dia'))
+					     {
+						   // mando el string preliminar para eliminar la data de diario
+						   ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+					     }
+					   }
+				     }
+				    }
+				  }
+			    }
+		    }
+		  if($this->error!=ValidationsArchCapt::$error)
+		  {
+		   $fallas.=ValidationsArchCapt::$errorComment;
+		  }
+		  if($this->error==ValidationsArchCapt::$error)
+		  {
+		  	 if($tipo=='dia')
+			{
+			  $exitos.="<h5 class='cargados'> El arhivo '".$nombre."' se guardo con exito </h5> <br/>";	 	     	
+			}
+		  	elseif ($tipo=='hora'){
+		  	  $exitos.="<h5 class='cargados'> El arhivo '".$nombre2."' se guardo con exito </h5> <br/>";
+		  	}
+		   
+		   
+		  }
+		 
+		$this->error=ValidationsArchCapt::ERROR_NONE;
+		$this->errorComment=NULL;
+	    }
+	   /********* resultado de la carga*************/
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
-	}
+       /********* resultado de la carga*************/
+    }
+		
+	}//fin actionGuardar
 }

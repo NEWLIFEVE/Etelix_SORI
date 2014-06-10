@@ -183,11 +183,15 @@ class Log extends CActiveRecord
 	*/
 	public static function existe($id)
 	{
+		
 		$model=self::model()->find('id_log_action=:id AND date=:fecha AND hour<=:hora', array(':id'=>$id, ':fecha'=>date("Y-m-d"), ':hora'=>date("H:i:s")));
-		if($model!=null)
+		
+		if($model!=null){
 			return true;
-		else
+		}
+		else{
 			return false;
+		}
 	}
 
 	/*
@@ -282,6 +286,96 @@ class Log extends CActiveRecord
 		{
 			$nocargados.="<li class='nocargados'>Ruta Internal</li>";
 		}
+		
+		$cargados.="</ul>";
+		$nocargados.="</ul>";
+		return $cargados.$nocargados;
+	}
+	
+	public static function loghours()
+	{
+		$cargados="<h3>ESTATUS CARGA</h3>
+  <p>Archivos Cargados:</p><ul>";
+  $nocargados="</ul>
+  <p>Archivos Faltantes:</p>
+  <ul>";
+//		if(self::existe(9))
+//		{
+	if(self::existe(9))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 4Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 4Hrs</li>";
+			}
+	if(self::existe(13))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 8Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 8Hrs</li>";
+			}
+	if(self::existe(17))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 12Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 12Hrs</li>";
+			}
+	if(self::existe(21))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 16Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 16Hrs</li>";
+			}
+	if(self::existe(25))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 20Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 20Hrs</li>";
+			}
+	if(self::existe(59))
+			{
+				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal 24Hrs</li>";
+			}
+			else
+			{
+				
+				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal 24Hrs</li>";
+			}
+//		}
+//		else
+//		{
+//			$nocargados.="<li class='nocargados'>Ruta External</li>";
+//		}
+//		if(self::existe(2))
+//		{
+//			if(self::existe(4))
+//			{
+//				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal Definitivo</li>";
+//			}
+//			else
+//			{
+//				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta Internal Preliminar</li>";
+//				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal Definitivo</li>";
+//			}
+//		}
+//		else
+//		{
+//			$nocargados.="<li class='nocargados'>Ruta Internal</li>";
+//		}
 		
 		$cargados.="</ul>";
 		$nocargados.="</ul>";

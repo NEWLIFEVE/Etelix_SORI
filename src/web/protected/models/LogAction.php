@@ -99,13 +99,16 @@ class LogAction extends CActiveRecord
 	*/
 	public static function getId($nombre)
 	{
+		
 		$model=self::model()->find('name=:nombre',array('nombre'=>$nombre));
 		if($model!=null)
 		{
+			
 			return $model->id;
 		}
 		else
 		{
+			
 			return false;
 		}
 	}
@@ -114,15 +117,19 @@ class LogAction extends CActiveRecord
 	*/
 	public static function getLikeId($nombre)
 	{
+		
+
 		$model=self::model()->find('name like :nombre',array(':nombre'=>$nombre));
 		if($model!=null)
 		{
 			return $model->id;
+			
 		}
 		else
-		{
+		{ 
 			return false;
 		}
+		 exit();
 	}
 	/**
 	* Funcion que devuelve el nombre del id consultado

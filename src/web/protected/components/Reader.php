@@ -10,8 +10,11 @@ class Reader
 {
     public $excel;
     public $valida;
-    public $error=0;
-    public $errorComment;
+    public static $error=0; 
+    public static $fallas=0; 
+    public static $actualizados=0; 
+    public static $nuevos=0; 
+    public static $errorComment;
     
     /**
      * Agrega al objeto del reader el archivo excel que se va a grabar
@@ -35,7 +38,7 @@ class Reader
     * @param string $ruta: ruta absoluta de archivo que va a ser leido
     * @return boolean
     */
-    public static function diario($ruta,$fecha_diario,$nombre,$archivo)
+    public static function diario($fecha_diario,$nombre,$archivo)
     {
     	$values='';
     	$var=array();
@@ -216,8 +219,8 @@ class Reader
             }//fin de for de $j
             if($i<$archivo->excel->sheets[0]['numRows'])
             {
-                $values.=",";
-            }
+            	$values.=",";
+             }
         }//fin de for de $i
         if( $values!=""){
           $var['values']=$values;
@@ -226,332 +229,270 @@ class Reader
         }else{
         	$var="";
         }
-       return $var;
+        return $var;
 	}
 
     /**
     * Funcion de carga de archivos hora
-    * @param string $ruta: ruta absoluta del archivo que va a ser leido
-    * @return boolean
+      * @return boolean
     */
-//    public function hora($ruta)
-//    {
-//        //importo la extension
-//        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
-//        error_reporting(E_ALL ^ E_NOTICE);
-//        /**
-//        * Verifico si el archivo existe en el servidor
-//        */
-//        if(file_exists($ruta))
-//        {
-//            $data = new Spreadsheet_Excel_Reader();
-//            /**
-//            * se pasa primero a la codificacion de ISO-8859-1 porque ya que dio problemas usando utf-8 directamente
-//            * pero al pasar los datos del nombre del carrier al modelo se convierten a utf-8
-//            */
-//            $data->setOutputEncoding('ISO-8859-1');
-//            $data->read($ruta);
-//        }
-//        else
-//        {
-//            $this->error=self::ERROR_FILE;
-//            return false;
-//        }
-//        /**
-//        * Verifico que la fecha del archivo sea correcta
-//        */
-//        $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
-//        $fecha=date('Y-m-d');
-//        if($fecha!=$date_balance_time)
-//        {
-//            $this->error=self::ERROR_DATE;
-//            return false;
-//        }
-//        /**
-//        * Valido que no este en el log
-//        */
-//        $numRows=$data->sheets[0]['numRows'];
-//        $numRows=$numRows-1;
-//        $this->horas=$data->sheets[0]['cells'][$numRows][1];
-//        for($i=$this->horas; $i <= 23 ; $i++)
-//        { 
-//            if(Log::existe(LogAction::getId("Carga Ruta Internal ".$i."GMT")))
-//            {
-//                $this->error=self::ERROR_EXISTS;
-//                return false;
-//            }
-//        }
-//        /**
-//        * Valido la estructura de horas
-//        */
+    public static function hora ($archivo)
+    {
+    	 
+  		 /**
+        * Valido la estructura de horas
+        */
+    	//hora por mla cual inicia el archivo
+    	   $actual=$archivo->excel->sheets[0]['cells'][5][1];
 //        $actual=0;
-//        $contador=0;
-//        for ($i=5; $i<$data->sheets[0]['numRows']; $i++)
-//        { 
-//            if($data->sheets[0]['cells'][$i][1]!="Total" && $data->sheets[0]['cells'][$i][1]!="Date" && $data->sheets[0]['cells'][$i][1]!="Hour")
-//            {
-//                //Verifico que sean secuenciales las horas
-//                if($actual <= $data->sheets[0]['cells'][$i][1])
-//                {
-//                    if($actual==$data->sheets[0]['cells'][$i][1])
-//                    {
-//                        $contador=$contador+1;
-//                    }
-//                    elseif($actual==$data->sheets[0]['cells'][$i][1]-1)
-//                    {
-//                        if($contador<=1)
-//                        {
-//                            $this->error=self::ERROR_ESTRUC;
-//                            return false;
-//                        }
-//                        else
-//                        {
-//                            $contador=0;
-//                            $actual=$data->sheets[0]['cells'][$i][1];
-//                        }
-//                    }
-//                    else
-//                    {
-//                        $this->error=self::ERROR_ESTRUC;
-//                        return false; 
-//                    }
-//                }
-//            }
-//        }
-//        //Cuantos segundos
-//        $regAprox=1500*$data->sheets[0]['cells'][$numRows][1];
-//        $segundos=$regAprox/2.8;
-//        $segundos=substr($segundos,0,4);
-//        //Aumento el tiempo de ejecucion
-//        ini_set('max_execution_time', $segundos);
-//        /**
-//        * Comienzo a leer el archivo
-//        */
-//        for($i=5;$i<$data->sheets[0]['numRows'];$i++)
-//        {
-//            for($j=1;$j<=$data->sheets[0]['numCols'];$j++)
-//            {
-//                switch($j)
-//                {
-//                    case 1:
-//                        //Obtengo la hora del registro
-//                        if($data->sheets[0]['cells'][$i][$j]=='Total')
-//                        {
-//                            //si es total es que se termino el archivo
-//                            break 3;
-//                        }
-//                        else
-//                        {
-//                            $time=$data->sheets[0]['cells'][$i][$j];
-//                        }
-//                        break;
-//                    case 2:
-//                        //Obtengo el nombre del destino
-//                        if($data->sheets[0]['cells'][$i][$j]=='Total')
-//                        {
-//                            //si es total no lo voy a guardar en base de datos
-//                            break 2;
-//                        }
-//                        else
-//                        {
-//                            $name_destination=utf8_encode($data->sheets[0]['cells'][$i][$j]);
-//                        }
-//                        break;
-//                    case 3:
-//                        //Obtengo el nombre del customer
-//                        if($data->sheets[0]['cells'][$i][$j]=='Total')
-//                        {
-//                            //si es total no lo voy a guardar en base de datos
-//                            break 2;
-//                        }
-//                        else
-//                        {
-//                            //Aqui encodeo el nombre del carrier a utf-8
-//                            $name_customer=utf8_encode($data->sheets[0]['cells'][$i][$j]);
-//                        }
-//                        break;
-//                    case 4:
-//                        if($data->sheets[0]['cells'][$i][$j]=='Total')
-//                        {
-//                            //si es total no lo voy guardar en base de datos
-//                            break 2;
-//                        }
-//                        else
-//                        {
-//                            $name_supplier=utf8_encode($data->sheets[0]['cells'][$i][$j]);
-//                        }
-//                        break;
-//                    case 5;
-//                        //minutos
-//                        $minutes=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                    case 6;
-//                        //ACD
-//                        $acd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 7;
-//                        //ASR
-//                        $asr=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 8;
-//                        //Margin %
-//                        $margin_percentage=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 9;
-//                        //Margin per Min
-//                        $margin_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 10;
-//                        //Cost per Min
-//                        $cost_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 11;
-//                        //Revenue per Min
-//                        $revenue_per_minute=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 12;
-//                        //PDD
-//                        $pdd=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 13;
-//                        //Imcomplete Calls
-//                        $incomplete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 14;
-//                        //Imcomplete Calls Ner
-//                        $incomplete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 15;
-//                        //Complete Calls Ner
-//                        $complete_calls_ner=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 16;
-//                        //Complete Calls
-//                        $complete_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 17;
-//                        //Calls Attempts
-//                        $calls_attempts=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 18;
-//                        //Duration Real
-//                        $duration_real=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 19;
-//                        //Duration Cost
-//                        $duration_cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 20;
-//                        //NER02 Efficient
-//                        $ner02_efficient=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 21;
-//                        //NER02 Seizure
-//                        $ner02_seizure=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 22;
-//                        //PDDCalls
-//                        $pdd_calls=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 23;
-//                        //Revenue
-//                        $revenue=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 24;
-//                        //Cost
-//                        $cost=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    case 25;
-//                        //Margin
-//                        $margin=Utility::notNull($data->sheets[0]['cellsInfo'][$i][$j]['raw']);
-//                        break;
-//                    default:
-//                        /**
-//                        * luego de tener la fila completa la grabo en base de datos
-//                        */
-//                        //primero reviso si existe en base de datos
-//                        $model=BalanceTime::model()->find('time=:time AND date_balance_time=:date AND name_customer=:customer AND name_supplier=:supplier AND name_destination=:destination',array(':time'=>$time,':date'=>$date_balance_time,':customer'=>$name_customer, ':supplier'=>$name_supplier, ':destination'=>$name_destination));
-//                        if($model!=null)
-//                        {
-//                            $model->minutes=$minutes;
-//                            $model->acd=$acd;
-//                            $model->asr=$asr;
-//                            $model->margin_percentage=$margin_percentage;
-//                            $model->margin_per_minute=$margin_per_minute;
-//                            $model->cost_per_minute=$cost_per_minute;
-//                            $model->revenue_per_minute=$revenue_per_minute;
-//                            $model->pdd=$pdd;
-//                            $model->incomplete_calls=$incomplete_calls;
-//                            $model->incomplete_calls_ner=$incomplete_calls_ner;
-//                            $model->complete_calls_ner=$complete_calls_ner;
-//                            $model->complete_calls=$complete_calls;
-//                            $model->calls_attempts=$calls_attempts;
-//                            $model->duration_real=$duration_real;
-//                            $model->duration_cost=$duration_cost;
-//                            $model->ner02_efficient=$ner02_efficient;
-//                            $model->ner02_seizure=$ner02_seizure;
-//                            $model->pdd_calls=$pdd_calls;
-//                            $model->revenue=$revenue;
-//                            $model->cost=$cost;
-//                            $model->margin=$margin;
-//                            $model->date_change=date("Y-m-d");
-//                            $model->time_change=date("H:i:s");
-//                            if($model->save())
-//                            {
-//                                $this->actualizados=$this->actualizados+1;
-//                                $model->unsetAttributes();
-//                            }
-//                            else
-//                            {
-//                                $this->fallas=$this->fallas+1;
-//                            }
-//                        }
-//                        else
-//                        {
-//                            $model=new BalanceTime;
-//                            $model->date_balance_time=$date_balance_time;
-//                            $model->time=$time;
-//                            $model->minutes=$minutes;
-//                            $model->acd=$acd;
-//                            $model->asr=$asr;
-//                            $model->margin_percentage=$margin_percentage;
-//                            $model->margin_per_minute=$margin_per_minute;
-//                            $model->cost_per_minute=$cost_per_minute;
-//                            $model->revenue_per_minute=$revenue_per_minute;
-//                            $model->pdd=$pdd;
-//                            $model->incomplete_calls=$incomplete_calls;
-//                            $model->incomplete_calls_ner=$incomplete_calls_ner;
-//                            $model->complete_calls_ner=$complete_calls_ner;
-//                            $model->complete_calls=$complete_calls;
-//                            $model->calls_attempts=$calls_attempts;
-//                            $model->duration_real=$duration_real;
-//                            $model->duration_cost=$duration_cost;
-//                            $model->ner02_efficient=$ner02_efficient;
-//                            $model->ner02_seizure=$ner02_seizure;
-//                            $model->pdd_calls=$pdd_calls;
-//                            $model->revenue=$revenue;
-//                            $model->cost=$cost;
-//                            $model->margin=$margin;
-//                            $model->date_change=date("Y-m-d");
-//                            $model->time_change=date("H:i:s");
-//                            $model->name_supplier=$name_supplier;
-//                            $model->name_customer=$name_customer;
-//                            $model->name_destination=$name_destination;
-//                            if($model->save())
-//                            {
-//                                $this->nuevos=$this->nuevos+1;
-//                                $model->unsetAttributes();
-//                            }
-//                            else
-//                            {
-//                                $this->fallas=$this->fallas+1;
-//                            }
-//                        }
-//                }
-//            }
-//        }
-//        $this->error=self::ERROR_NONE;
-//        return true;
-//    }
+        $contador=0;
+         //Cuantos segundos
+        $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
+        $segundos=$regAprox/2.8;
+        $segundos=substr($segundos,0,4);
+        //Aumento el tiempo de ejecucion
+        ini_set('max_execution_time', $segundos);
+        for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
+        { 
+            if($archivo->excel->sheets[0]['cells'][$i][1]!="Total" && $archivo->excel->sheets[0]['cells'][$i][1]!="Date" && $archivo->excel->sheets[0]['cells'][$i][1]!="Hour")
+            {
+                //Verifico que sean secuenciales las horas
+                if($actual <= $archivo->excel->sheets[0]['cells'][$i][1])
+                {
+                    if($actual==$archivo->excel->sheets[0]['cells'][$i][1])
+                    {
+                        $contador=$contador+1;
+                    }
+                    elseif($actual==$archivo->excel->sheets[0]['cells'][$i][1]-1)
+                    {
+                        if($contador<=1)
+                        {
+                            self::$error=ValidationsArchCapt::ERROR_ESTRUC;
+                            return false;
+                        }
+                        else
+                        {
+                            $contador=0;
+                            $actual=$archivo->excel->sheets[0]['cells'][$i][1];
+                        }
+                    }
+                    else
+                    {
+                         self::$error=ValidationsArchCapt::ERROR_ESTRUC;
+                         return false; 
+                    }
+                }
+            }
+        }
+         
+        //Cuantos segundos
+        $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
+        $segundos=$regAprox/2.8;
+        $segundos=substr($segundos,0,4);
+        //Aumento el tiempo de ejecucion
+        ini_set('max_execution_time', $segundos);
+//        ini_set("memory_limit","128M");
+
+        
+      /**
+        * Verifico que la fecha del archivo sea correcta
+        */
+        $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
+        /**
+        * Comienzo a leer el archivo
+        */
+        $valuesNew='';
+    	$var=array();
+        for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
+        {
+            for($j=1;$j<=$archivo->excel->sheets[0]['numCols'];$j++)
+            {
+                switch($j)
+                {
+                    case 1:
+                        //Obtengo la hora del registro
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total es que se termino el archivo
+                            break 3;
+                        }
+                        else
+                        {
+                            $time=$archivo->excel->sheets[0]['cells'][$i][$j];
+                        }
+                        break;
+                    case 2:
+                        //Obtengo el nombre del destino
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total no lo voy a guardar en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $name_destination=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                        }
+                        break;
+                    case 3:
+                        //Obtengo el nombre del customer
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total no lo voy a guardar en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            //Aqui encodeo el nombre del carrier a utf-8
+                            $name_customer=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                        }
+                        break;
+                    case 4:
+                        if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
+                        {
+                            //si es total no lo voy guardar en base de datos
+                            break 2;
+                        }
+                        else
+                        {
+                            $name_supplier=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                        }
+                        break;
+                    case 5;
+                        //minutos
+                        $minutes=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                    case 6;
+                        //ACD 
+                        $acd=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 7;
+                        //ASR
+                        $asr=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 8;
+                        //Margin %
+                        $margin_percentage=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 9;
+                        //Margin per Min
+                        $margin_per_minute=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 10;
+                        //Cost per Min
+                        $cost_per_minute=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 11;
+                        //Revenue per Min
+                        $revenue_per_minute=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 12;
+                        //PDD
+                        $pdd=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 13;
+                        //Imcomplete Calls
+                        $incomplete_calls=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 14;
+                        //Imcomplete Calls Ner
+                        $incomplete_calls_ner=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 15;
+                        //Complete Calls Ner
+                        $complete_calls_ner=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 16;
+                        //Complete Calls
+                        $complete_calls=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 17;
+                        //Calls Attempts
+                        $calls_attempts=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 18;
+                        //Duration Real
+                        $duration_real=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 19;
+                        //Duration Cost
+                        $duration_cost=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 20;
+                        //NER02 Efficient
+                        $ner02_efficient=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 21;
+                        //NER02 Seizure
+                        $ner02_seizure=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 22;
+                        //PDDCalls
+                        $pdd_calls=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 23;
+                        //Revenue
+                        $revenue=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 24;
+                        //Cost
+                        $cost=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                    case 25;
+                        //Margin
+                        $margin=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
+                        break;
+                     case 26;
+                   			$valuesNew.="(";
+                            $valuesNew.="'".$date_balance_time."',";
+                            $valuesNew.=$time.",";
+                            $valuesNew.=$minutes.",";
+                            $valuesNew.=$acd.",";
+                            $valuesNew.=$asr.",";
+                            $valuesNew.=$margin_percentage.",";
+                            $valuesNew.=$margin_per_minute.",";
+                            $valuesNew.=$cost_per_minute.",";
+                            $valuesNew.=$revenue_per_minute.",";
+                            $valuesNew.=$pdd.",";
+                            $valuesNew.=$incomplete_calls.",";
+                            $valuesNew.=$incomplete_calls_ner.",";
+                            $valuesNew.=$complete_calls_ner.",";
+                            $valuesNew.=$complete_calls.",";
+                            $valuesNew.=$calls_attempts.",";
+                            $valuesNew.=$duration_real.",";
+                            $valuesNew.=$duration_cost.",";
+                            $valuesNew.=$ner02_efficient.",";
+                            $valuesNew.=$ner02_seizure.",";
+                            $valuesNew.=$pdd_calls.",";
+                            $valuesNew.=$revenue.",";
+                            $valuesNew.=$cost.",";
+                            $valuesNew.=$margin.",";
+                            $valuesNew.="'".date("Y-m-d")."',";
+                            $valuesNew.="'".date("H:i:s")."',";
+                            $valuesNew.="'".$name_supplier."',";
+                            $valuesNew.="'".$name_customer."',";
+                            $valuesNew.="'".$name_destination."')";
+                             break;
+                   
+		            
+                 }
+        
+           
+          }
+          if($i<$archivo->excel->sheets[0]['numRows']-1)
+		   {
+		     $valuesNew.=",";
+	       }  
+	 
+ 
+        }
+      if( $valuesNew!=""){
+          $var['regHora']=$valuesNew;
+           
+        }else{
+          $var="";
+        
+        }
+        return $var;
+    }
 
     /*
     * Funcion de carga de archivos de rerate
@@ -751,7 +692,7 @@ class Reader
     /**
     * Esta funcion se encarga de definir que nombre darle al archivo al momento de guardarlo en el servidor
     */
-    public static function nombre($nombre)
+    public function nombre($nombre)
     {
         $primero="Ruta ";
         $segundo="External ";
@@ -759,16 +700,29 @@ class Reader
         if(stripos($nombre,"internal"))
         {
             $segundo="Internal ";
+             $nuevoNombre=$primero.$segundo.$tercero;
+        }
+        if(stripos($nombre,"external"))
+        {
+            $segundo="External ";
+             $nuevoNombre=$primero.$segundo.$tercero;
         }
         if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
         {
             $tercero="RR";
+             $nuevoNombre=$primero.$segundo.$tercero;
         }
         if(stripos($nombre,'GMT'))
         {
             $tercero="Hora";
+            $nuevoNombre=$primero.$segundo.$tercero;
         }
-        $nuevoNombre=$primero.$segundo.$tercero;
+        if(stripos($nombre,"Hrs"))
+        {
+            $nuevoNombre=$nombre;
+        }
+        
+//        $nuevoNombre=$primero.$segundo.$tercero;
         return $nuevoNombre;     
     }
 }
