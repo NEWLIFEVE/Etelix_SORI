@@ -1028,7 +1028,6 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     margin: -41% -1%;
     padding: 3% 3%;
     border: solid threedshadow;
-    /*border-radius: 8px;*/
     overflow-y: scroll;
     z-index: 3;
     display: none;
