@@ -36,19 +36,19 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
-				'actions'=>array('index','guardar','upload','carga'),
+				'actions'=>array('index','guardar','upload','carga','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(2)),
 				),
 			array('allow', // Vistas para Operaciones
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(3)),
 				),
 			array('allow', // Vistas para Operaciones
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(6)),
 				),
 			array('allow', // Vistas para Finanzas
@@ -466,11 +466,15 @@ class BalanceController extends Controller
 			}
 		  //Primero: verifico que archivos estan
 		  $existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
+		  $countExistentes=0;
 		  //Si la primera condicion se cumple, no deberian haber errores
 		  if($this->error==ValidationsArchCapt::ERROR_NONE)
 		  {
+		  	 $nombres=array();
+			 $nombreArc="";
 			foreach($existentes as $key => $nombre)
 		    {
+		     $countExistentes=$countExistentes+1;	
 			 //cargo el archivo en memoria
 			 $ruta=$path.$nombre;
 			 $archivo=new Reader($ruta);
@@ -514,7 +518,7 @@ class BalanceController extends Controller
 					     if($tipo=='dia')
 				 	     {
 						    Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
-					     }elseif ($tipo=='hora')
+					     }elseif($tipo=='hora')
 					      {
 					        $numero = explode("Hrs", $nombre);
 		     				$numero = explode(" ", $numero[0]);
@@ -535,19 +539,43 @@ class BalanceController extends Controller
 				    }
 				  }
 			    }
+			    
+			    if($tipo=='dia')
+			    {
+			      $nombres[]=$nombre;
+			      $nombreArc=implode(",",  $nombres); 
+			    }elseif($tipo=='hora'){
+			    	
+			      $nombres[]=$nombre2;
+			      $nombreArc=implode(" , ",  $nombres); 
+			    }
+			    
+			    
 		    }
+		   
 		  if($this->error!=ValidationsArchCapt::$error)
 		  {
 		   $fallas.=ValidationsArchCapt::$errorComment;
 		  }
 		  if($this->error==ValidationsArchCapt::$error)
 		  {
-		  	 if($tipo=='dia')
+		    if($tipo=='dia')
 			{
-			  $exitos.="<h5 class='cargados'> El arhivo '".$nombre."' se guardo con exito </h5> <br/>";	 	     	
+				if($countExistentes==1){
+					 $exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
+				}elseif($countExistentes>=1){
+					 $exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+				}
+			 	     	
 			}
-		  	elseif ($tipo=='hora'){
-		  	  $exitos.="<h5 class='cargados'> El arhivo '".$nombre2."' se guardo con exito </h5> <br/>";
+		  	elseif($tipo=='hora'){
+		  		
+		  		if($countExistentes==1){	
+		  	  		$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";
+		  	    }elseif($countExistentes>=1){
+					$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+				}
+		  	  
 		  	}
 		   
 		   
@@ -563,4 +591,24 @@ class BalanceController extends Controller
     }
 		
 	}//fin actionGuardar
+	
+  	public function actionDisableddaily()
+	{
+		  $fecha = $_POST['fecha'];
+	      $resultado=array();
+			$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
+			if($model>=4)
+			{
+				//ya se cargaron los 4 archivos diarios
+				$resultado['error'] = "si";
+			}
+			else
+			{
+				$resultado['error'] = "no";
+			}
+
+		  echo json_encode($resultado);
+
+		
+	}
 }

@@ -12,28 +12,42 @@ $(document).on('ready',function()
 	*/
         $('input[value="dia"]').on('click',function()
         {
-            //Cuento cuantos archivos ya se han cargado
-            msj.contar('li[name="diario"]');
+        	var control=0;
             $("div.diario").fadeIn("slow").css({
                 'display':'block'
             });
             $("div.horas").fadeOut("slow");
             $("div.rerate").fadeOut("slow");
-            console.log(msj.acumulador);
-            if(msj.acumulador>=2)
-            {
-                //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
-                $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
-            }
-            else
-            {
-                $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-            }
+
+          //valida qsi estan cargados todos los diarios
+        	var f = new Date();
+        	fecha=( f.getFullYear()+ "-" + (f.getMonth() +1) + "-" +f.getDate() );
+        	$.ajax({
+                type: "POST",
+                url: "/balance/disableddaily",
+                data: ({fecha:fecha}),
+                success: function(data)
+                {
+                    var obj=JSON.parse(data);
+                  
+                    if(obj.error=="si")
+                    {
+                    	control=1;
+					    var html="<p>Ya se cargaron todos los archivos diarios</p>";
+			            var estilo={};
+			            msj.interna="error";
+			            msj.lightbox(html,estilo,2000);
+			            $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
+			        }
+                }
+            });
+
+
         });
         //Muestra mensaje con el nombre de los archivos por hora guardados en el dia
         $('input[value="hora"]').on('click',function()
         {
-            $("div.horas").fadeIn("slow").css({
+        	$("div.horas").fadeIn("slow").css({
                 'display':'block'
             });
             $("div.diario").fadeOut("slow");
@@ -60,6 +74,7 @@ function valForm(objeto)
 {
     $('input[name="grabar"],input[name="grabartemp"]').on('click',function(e)
     {
+    	
         e.preventDefault();
         if($("input:checked").val()==undefined)
         {
@@ -70,7 +85,7 @@ function valForm(objeto)
         }
         else
         {
-            var html="<p>Este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
+        	var html="<p>Este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
             var estilo={};
             objeto.interna="confirm";
             objeto.lightbox(html,estilo);
@@ -90,6 +105,7 @@ function valForm(objeto)
                     objeto.elimina();
                 }
             });
+            
         }
     });
 }
