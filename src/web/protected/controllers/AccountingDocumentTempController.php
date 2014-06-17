@@ -152,32 +152,37 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionGuardarListaFinal()
     {
-        $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-        $idUsers = Yii::app()->user->id;
-        $modelLog = Log::model()->findAll('id_log_action=:idAction AND id_users=:idUsers', array(":idAction" => $idAction, ":idUsers" => $idUsers));
-        if($modelLog != null)
+        if(!Yii::app()->user->isGuest)
         {
-            $count = 0;
-            foreach($modelLog as $key => $Log)
+            $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+            $idUsers = Yii::app()->user->id;
+            $modelLog = Log::model()->findAll('id_log_action=:idAction AND id_users=:idUsers', array(":idAction" => $idAction, ":idUsers" => $idUsers));
+            if($modelLog != null)
             {
-                $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
-                if($modelADT != null && $modelADT->id_type_accounting_document != "14"&& $modelADT->id_type_accounting_document != "15")
+                $count = 0;
+                foreach($modelLog as $key => $Log)
                 {
-                    $modelAD = new AccountingDocument;
-                    $modelAD->setAttributes($modelADT->getAttributes());
-                    if($modelAD->save())
+                    $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
+                    if($modelADT != null && $modelADT->id_type_accounting_document != "14"&& $modelADT->id_type_accounting_document != "15")
                     {
-                        AccountingDocument::UpdateProv($modelAD);
-                        $this->saveBankFeeFinal($modelADT,$modelAD);                            
-                        $modelADT->deleteByPk($Log->id_esp);
-                        $idAction = LogAction::getLikeId('Crear Documento Contable Final');
-                        Log::registrarLog($idAction, NULL, $modelAD->id);
-                        Log::updateDocLog($Log, $modelAD->id);
-                        $count++;
+                        $modelAD = new AccountingDocument;
+                        $modelAD->setAttributes($modelADT->getAttributes());
+                        if($modelAD->save())
+                        {
+                            AccountingDocument::UpdateProv($modelAD);
+                            $this->saveBankFeeFinal($modelADT,$modelAD);                            
+                            $modelADT->deleteByPk($Log->id_esp);
+                            $idAction = LogAction::getLikeId('Crear Documento Contable Final');
+                            Log::registrarLog($idAction, NULL, $modelAD->id);
+                            Log::updateDocLog($Log, $modelAD->id);
+                            $count++;
+                        }
                     }
                 }
+                echo $count;
             }
-            echo $count;
+        }else{
+            echo null;
         }
     }
 
@@ -301,20 +306,26 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionBorrar($id)
     {
-        $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
-        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
-        {                                                 
-            $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+        if(!Yii::app()->user->isGuest)
+        {
+            $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
+            if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
+            {                                                 
+                $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
 
-            if($id_bank_fee!==NULL)
-                $this->loadModel($id_bank_fee->id)->delete();
+                if($id_bank_fee!==NULL)
+                    $this->loadModel($id_bank_fee->id)->delete();
+            }
+            $this->loadModel($id)->delete();
+            //esto se usa para ver si elimino los documentos
+            if($id_bank_fee!==NULL)         
+                var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
+            else
+                var_dump("elimino el documento: ".$id." y bank fee: NULL");
+            echo true;
+        }else{
+            echo null;
         }
-        $this->loadModel($id)->delete();
-        //esto se usa para ver si elimino los documentos
-        if($id_bank_fee!==NULL)         
-            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
-        else
-            var_dump("elimino el documento: ".$id." y bank fee: NULL");
     }
 
 	/**

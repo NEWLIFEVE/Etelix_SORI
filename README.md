@@ -2,6 +2,7 @@
 ===========
 
 Sistema de Origen
+        - Correccion de error en guardada de condiciones comerciales, ademas del comportamiento de ciertos casos del select periodo defacturacion para el termino pago 7/7.
         - Modificacion del action BuscaNombres en carrierControler, no se estaban concatenando los nombres de los carriers al momento de asignarlos o desasignarlos al grupo.
         - Mejora en css, se agrego una nueva hoja de estilos para organizar todos los responsive.
         - Detalles solucionados en condiciones comerciales: se estabilizo el comportamiento del input start date termino pago contenido dentro de los fancybox, ahora se actualiza al momento de guardar los cambios, se cambio el cursor de exit, se agrego guardada de logs al momento d eliminar historial de termino pago.

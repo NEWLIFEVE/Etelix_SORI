@@ -936,19 +936,20 @@ function roundNumber(number,decimals)
             $("#TerminoPViewsS").val($("#Contrato_id_termino_pago_supplier  option:selected").html());
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
+             $("#Contrato_id_fact_period option[value='5']").hide("fast");
             switch (tp)
             {
                 case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
+                case "6": case "7": case "8":case "12": case 6: case 7: case 8:case 12:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
                 case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
-                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+                    $("#Contrato_id_fact_period").val("5"); $("#dia_ini_fact,#divide_fact").val("");$(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
         }
@@ -1116,7 +1117,7 @@ function roundNumber(number,decimals)
          */
          function sesionCerrada()
          {
-             $SORI.UI.msj_cargando("<h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div>","");
+             $SORI.UI.msj_cargando("<h2>Su sesión ha expirado</h2>por favor presione aceptar y vuelva a ingresar<p><div class='cerradalasesion'><a class='relogin' href='/site/logout'>Aceptar</a></div>","white.png");
              $('.relogin').click('on',function() { $(".cargando,.mensaje").fadeOut('slow'); }); 
          }
         /**
@@ -1277,7 +1278,8 @@ function roundNumber(number,decimals)
         
         function msj_cargando(cuerpo_msj,imagen)
         {
-            if(imagen!=null||imagen!="")var imagen_url="<img src='/images/"+imagen+"'>";else imagen_url="";
+            imagen_url="";
+            if(imagen!=null||imagen!="")var imagen_url="<img src='/images/"+imagen+"'>";;
             $(".cargando, .mensaje").remove();
             var msj=$("<div class='cargando'></div><div class='mensaje'>"+cuerpo_msj+"<p><br>"+imagen_url+"</div>").hide(); 
             $("body").append(msj); msj.fadeIn('slow');
