@@ -36,19 +36,19 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
-				'actions'=>array('index','guardar','upload','carga'),
+				'actions'=>array('index','guardar','upload','carga','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(2)),
 				),
 			array('allow', // Vistas para Operaciones
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(3)),
 				),
 			array('allow', // Vistas para Operaciones
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('index','view','admin','delete','create','update','ventas','compras', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(6)),
 				),
 			array('allow', // Vistas para Finanzas
@@ -315,11 +315,10 @@ class BalanceController extends Controller
         /**
          *
          */
-        public function actionCarga()
+    public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
 
-		
 		//capturo el nombre del usuario logueado
         $user_carpeta_temp=Yii::app()->user->getState('username').'/';
         $ruta='uploads/'.$user_carpeta_temp.'/';
@@ -342,7 +341,7 @@ class BalanceController extends Controller
  
         $fileSize=filesize($folder.$result['filename']);//GETTING FILE SIZE
         $fileName=$result['filename'];//GETTING FILE NAME
- 
+
         echo $return;// it's array
 	}
 
@@ -427,7 +426,6 @@ class BalanceController extends Controller
 		$user_carpeta_temp=Yii::app()->user->getState('username').'';
 		 
 		$path=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
-		//$path=Yii::getPathOfAlias('webroot.uploads').DIRECTORY_SEPARATOR;
 		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
@@ -437,62 +435,178 @@ class BalanceController extends Controller
         //Verfico si el arreglo post esta seteado
 		if(isset($_POST['tipo']))
 		{
-			//Verifico la opcion del usuario a traves del post
-			//si la opcion es dia
-			if($_POST['tipo']=="dia")
-			{
-				//instancio el componente para validar
-				$this->valida=new ValidationsArchCapt; 
-				$this->lector=new Reader;
-				
-				//Nombres opcionales para los archivos diarios
-				$diarios=array(
-					'Carga Ruta Internal'=>'Ruta Internal Diario',
-					'Carga Ruta External'=>'Ruta External Diario'
-					);
-					//Primero: verifico que archivos estÃ¡n
-				$existentes=$this->valida->getNombreArchivos($path,$diarios,array('xls','XLS'));
-				//Si la primera condicion se cumple, no deberian haber errores
-				if($this->valida->error==0)
-				{
-					foreach($existentes as $key => $diario)
-					{
-						//validaciones 
-						if($this->valida->validar($path,$diario,$existentes,$yesterday))
-					    {
-						   /* guardo en el componente reader*/
-							if($this->valida->error==0)
-							{
-								//Guardo en base de datos
-								if($this->lector->diario($path.$diario,$yesterday,$diario))
-								{
-									//Si lo guarda grabo en log
-									Log::registrarLog(LogAction::getId($this->valida->log));
-								}
-							}
-						}
-					 }
-					   //vañlidar error cero si viene del lector o vañlida
-					    if(($this->lector->error>0)||($this->valida->error!=0))
-						{
-							$fallas.=$this->lector->errorComment;
-							$fallas.=$this->valida->errorComment;
-						}
-						if(($this->lector->error==0)&&($this->valida->error==0))
-						{
-							$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
-						}
-						$this->valida->error=0;
-						$this->valida->errorComment=NULL;
-					}
-				}
-				if(($this->lector->error>0)||($this->valida->error!=0))
-				{
-					$fallas.=$this->lector->errorComment;
-				    $fallas.=$this->valida->errorComment;
-				}
+         $tipo=$_POST['tipo'];
+			
+         if($tipo=='dia')
+         {
+			//Nombres opcionales para los archivos diarios
+			$namesArch=array(
+						'Carga Ruta Internal'=>'Ruta Internal Diario',
+						'Carga Ruta External'=>'Ruta External Diario'
+					    );
+		 }elseif($tipo=='hora')
+		  {
+			//Nombres opcionales para los archivos horas
+ 		    $namesArch=array(
+						'Carga Ruta Internal 4GMT'=>'Ruta Internal 4Hrs',
+					    'Carga Ruta Internal 8GMT'=>'Ruta Internal 8Hrs',
+						'Carga Ruta Internal 12GMT'=>'Ruta Internal 12Hrs',
+						'Carga Ruta Internal 16GMT'=>'Ruta Internal 16Hrs',
+						'Carga Ruta Internal 20GMT'=>'Ruta Internal 20Hrs',
+						'Carga Ruta Internal 24GMT'=>'Ruta Internal 24Hrs',
+						'Carga Ruta External 4GMT'=>'Ruta External 4Hrs',
+						'Carga Ruta External 8GMT'=>'Ruta External 8Hrs',
+						'Carga Ruta External 12GMT'=>'Ruta External 12Hrs',
+						'Carga Ruta External 16GMT'=>'Ruta External 16Hrs',
+						'Carga Ruta External 20GMT'=>'Ruta External 20Hrs',
+						'Carga Ruta External 24GMT'=>'Ruta External 24Hrs'
+						);
 			}
+		  //Primero: verifico que archivos estan
+		  $existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
+		  $countExistentes=0;
+		  //Si la primera condicion se cumple, no deberian haber errores
+		  if($this->error==ValidationsArchCapt::ERROR_NONE)
+		  {
+		  	 $nombres=array();
+			 $nombreArc="";
+			foreach($existentes as $key => $nombre)
+		    {
+		     $countExistentes=$countExistentes+1;	
+			 //cargo el archivo en memoria
+			 $ruta=$path.$nombre;
+			 $archivo=new Reader($ruta);
+
+			   //validaciones 
+			   if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
+			   {
+			     if($this->error==ValidationsArchCapt::ERROR_NONE)
+				 {
+				   $var=array();
+                   if($tipo=='dia')
+				   {
+                     // genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+					 $var=Reader::diario($yesterday, $nombre, $archivo);
+				   }elseif($tipo=='hora')
+					{
+					 //genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
+					 $var=Reader::hora($archivo);
+				    }
+				   if($var!="") 
+				   {
+
+				   
+	                 //Si se genero el string nuevo, guardo el log
+				     if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+				     { 
+				       
+				         //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+					     $stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo);
+					     if(($stringDataPreliminary!="")&&($tipo=='hora'))
+					     {
+							// mando el string de horas que vienen en el excel para borrar las viejas
+						   ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+					     }
+					  
+					   //guardo en BD el string con los nuevos datos del excel diario u Hora
+					   if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+					   {
+					   	
+					   
+					     if($tipo=='dia')
+				 	     {
+						    Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
+					     }elseif($tipo=='hora')
+					      {
+					        $numero = explode("Hrs", $nombre);
+		     				$numero = explode(" ", $numero[0]);
+		   					$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
+		   					$nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
+						    Log::registrarLog(LogAction::getId($nombre));
+					   
+					      }
+					     //si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+					     //si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+					     if(($stringDataPreliminary!="")&&($tipo=='dia'))
+					     {
+						   // mando el string preliminar para eliminar la data de diario
+						   ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+					     }
+					   }
+				     }
+				    }
+				  }
+			    }
+			    
+			    if($tipo=='dia')
+			    {
+			      $nombres[]=$nombre;
+			      $nombreArc=implode(",",  $nombres); 
+			    }elseif($tipo=='hora'){
+			    	
+			      $nombres[]=$nombre2;
+			      $nombreArc=implode(" , ",  $nombres); 
+			    }
+			    
+			    
+		    }
+		   
+		  if($this->error!=ValidationsArchCapt::$error)
+		  {
+		   $fallas.=ValidationsArchCapt::$errorComment;
+		  }
+		  if($this->error==ValidationsArchCapt::$error)
+		  {
+		    if($tipo=='dia')
+			{
+				if($countExistentes==1){
+					 $exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
+				}elseif($countExistentes>=1){
+					 $exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+				}
+			 	     	
+			}
+		  	elseif($tipo=='hora'){
+		  		
+		  		if($countExistentes==1){	
+		  	  		$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";
+		  	    }elseif($countExistentes>=1){
+					$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+				}
+		  	  
+		  	}
+		   
+		   
+		  }
+		 
+		$this->error=ValidationsArchCapt::ERROR_NONE;
+		$this->errorComment=NULL;
+	    }
+	   /********* resultado de la carga*************/
 		$resultado.=$exitos."</br>".$fallas."</div>";
        	$this->render('guardar',array('data'=>$resultado));
+       /********* resultado de la carga*************/
+    }
+		
+	}//fin actionGuardar
+	
+  	public function actionDisableddaily()
+	{
+		  $fecha = $_POST['fecha'];
+	      $resultado=array();
+			$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
+			if($model>=4)
+			{
+				//ya se cargaron los 4 archivos diarios
+				$resultado['error'] = "si";
+			}
+			else
+			{
+				$resultado['error'] = "no";
+			}
+
+		  echo json_encode($resultado);
+
+		
 	}
 }
