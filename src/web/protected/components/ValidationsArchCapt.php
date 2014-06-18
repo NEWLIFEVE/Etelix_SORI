@@ -52,14 +52,15 @@ class ValidationsArchCapt
     	//Primero: verifico que archivos estan
 		if(count($existentes)<=0)
 		{
-			
 			self::$error=self::ERROR_FILE;
-			if($tipo=='dia'){
+			if($tipo=='dia')
+            {
 				self::$errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";	
-			}elseif($tipo=='hora'){
+			}
+            elseif($tipo=='hora')
+            {
 				self::$errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de horas,<br> verifique que el nombre de los archivos sea Ruta Internal cant_horas y Ruta External cant_horas.<h5>";
 			}
-			
 		}
 		
 		//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
@@ -67,26 +68,33 @@ class ValidationsArchCapt
 		
 		if(self::validarFecha($yesterday,$path,$nombre,$archivo,$tipo))
 		{
-			
 			//Tercero: verifico la fecha que sea correcta
    			if(self::validarColumnas(self::lista($nombre,$tipo),$path,$nombre,$archivo,$tipo))
    			{
-   				if(self::$error==self::ERROR_NONE){
+   				if(self::$error==self::ERROR_NONE)
+                {
 					return true;
-				}else{
+				}
+                else
+                {
 					return false;
 				}
-   			}else{
+   			}
+            else
+            {
 				self::$error=self::ERROR_ESTRUC;
                 return false;
-				}
-		}else{
+			}
+		}
+        else
+        {
 			self::$error=self::ERROR_DATE;
 			self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' tiene una fecha incorrecta </h5> <br/> ";
   		    return false;
 		}
-	 }
- /**
+    }
+
+    /**
     * Encargado de traer los nombres de los archivos que coinciden con la lista dada
     * @param $directorio string ruta al directorio que se va a revisar
     * @param $listaArchivos array lista de archivos que se van a buscar en el directorio
@@ -110,9 +118,7 @@ class ValidationsArchCapt
                 	foreach($listaExtensiones as $keyEx => $extension)
                     {
                         $temp=$nombreLista.".".$extension;
-                       
-                        
-                        
+                                               
                         if($temp == $archivo)
                         { 
                             $confirmados[$keyAr]=$temp;
@@ -120,15 +126,18 @@ class ValidationsArchCapt
                     }
                 }
             }
-         
             return $confirmados;
         }
     }
-    
-   public static function setName($nombre)
+
+    /**
+     *
+     */
+    public static function setName($nombre)
     {
-     return   $nombreArchivo=$nombre;
+        return   $nombreArchivo=$nombre;
     }
+
     /**
     * Encargada de definir atributos para proceder a la lectura del archivo
     */
@@ -148,6 +157,7 @@ class ValidationsArchCapt
             return $tipo;
         }
     }
+
 	/**
      * Valida que el archivo que se esta leyendo no este en log,
      * si existe deveulve verdadero de lo contrario falso y asigna el valor del log
@@ -288,12 +298,7 @@ class ValidationsArchCapt
              		  return false;		
 					}
 				}
-		    
-				    
-				
-
-	             	
-    		}
+		    }
 		    
           	if(Log::existe(LogAction::getId($nombre)))
           	{
@@ -307,11 +312,9 @@ class ValidationsArchCapt
 	         	$log="Carga ".$key." Definitivo";
 	         	return $log;
 	      	}
-  		
     	}
     }
     
-
     /**
      * 
      * valida la fecha del archivo
@@ -324,41 +327,42 @@ class ValidationsArchCapt
     	{
 	    	$date_balance=strtotime(Utility::formatDate($archivo->excel->sheets[0]['cells'][1][4]));
 			$fecha=strtotime($fecha);
-    	}elseif($tipo=='hora'){
+    	}
+        elseif($tipo=='hora')
+        {
     		$date=date('Y-m-d'); //hora es dia actual
     		$date_balance=strtotime(Utility::formatDate($archivo->excel->sheets[0]['cells'][1][5]));
 			$fecha=strtotime($date);
     	}
-	        if($fecha==$date_balance)
-	        {
-	            self::$error=self::ERROR_NONE;
-	            return true;
-	            
-	           
-	        }
-	        else
-	        {
-	            self:: $error=self::ERROR_DATE;
-				self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' tiene una fecha incorrecta </h5> <br/> ";
-				return false;
-	        }
+        if($fecha==$date_balance)
+        {
+            self::$error=self::ERROR_NONE;
+            return true;
+        }
+        else
+        {
+            self:: $error=self::ERROR_DATE;
+			self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' tiene una fecha incorrecta </h5> <br/> ";
+			return false;
+        }
     }
- /**
+
+    /**
     * Funcion a la que se le pasa una lista donde el orden incluido debe ser cumplido por el archivo que se esta evaluando
     * @param array $lista lista de elementos que debe cumplir las columnas
     */
     public static function validarColumnas($lista,$path,$nombre,$archivo,$tipo)
     {
-    	 foreach ($lista as $key => $campo)
-	        {
-	        	$pos=$key+1;
-	            if($campo!=$archivo->excel->sheets[0]['cells'][2][$pos])
-	            {
-	            	self::$error=self::ERROR_ESTRUC;
-	                self::$errorComment.="<h5 class='nocargados'> El archivo '".$nombre."' tiene la columna ".$archivo->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
-	                return false;
-	            }
-	        }
+    	foreach ($lista as $key => $campo)
+        {
+        	$pos=$key+1;
+            if($campo!=$archivo->excel->sheets[0]['cells'][2][$pos])
+            {
+            	self::$error=self::ERROR_ESTRUC;
+                self::$errorComment.="<h5 class='nocargados'> El archivo '".$nombre."' tiene la columna ".$archivo->excel->sheets[0]['cells'][2][$pos]." en lugar de ".$campo."</h5> <br/>";
+                return false;
+            }
+        }
 	  
         self::$error=self::ERROR_NONE;
         return true;
@@ -387,6 +391,7 @@ class ValidationsArchCapt
         $nuevoNombre=$primero.$segundo.$tercero;
         return $nuevoNombre;     
     }
+
     /**
 	* Retorna un arreglo con los nombres de las columnas que deberian tener los archivos
 	* @param $archivo string nombre del archivo que se va a consultar
@@ -394,7 +399,6 @@ class ValidationsArchCapt
 	*/ 
 	 public static function lista($archivo,$tipo)
 	{
-		
 		if($tipo=='dia')
 		{
 			$primero="Ruta ";
@@ -417,7 +421,8 @@ class ValidationsArchCapt
 	        	'Ruta Internal Diario'=>array('Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
 	        	'Ruta External Diario'=>array('Ext. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
 	        	);
-		}elseif($tipo=='hora')
+		}
+        elseif($tipo=='hora')
 		{	
 		
         	$primero="Ruta ";
@@ -446,53 +451,58 @@ class ValidationsArchCapt
         	'Ruta External 16Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	'Ruta External 20Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	'Ruta External 24Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        
-        	
         	);
 		}
         return $lista[$nombre];
 	}
 	
-	 /**
-	  *    funcion que crea un string con los datos preliminar
-	  * @param fecha $fecha
-	  * @param array $var
-	  * @return string 
-	  */
+     /**
+      * funcion que crea un string con los datos preliminar
+      * @param fecha $fecha
+      * @param array $var
+      * @return string 
+      */
 	public static function loadArchTemp($fecha,$var,$tipo,$archivo)
     {
     	if($tipo=='dia')
     	{
 	    	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
 	    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
-	       $id_destination=$var['id_destination'];
-	       $id_destination_int=$var['id_destination_int'];
-		   if($id_destination=='NULL'){ // ES interno 
-		     $name_destination='id_destination';
-		    }elseif($id_destination_int=='NULL'){ //es externo 
-	    	 $name_destination='id_destination_int';
-		   }
-		   $total=0;
-		   $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
-		   if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
-		   {
-		     $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));
-	         $v=array();
-			 $values="";
-		  	 foreach($results as $x=>$row) {
-			 $v[]=$row->id;
+            $id_destination=$var['id_destination'];
+            $id_destination_int=$var['id_destination_int'];
+            if($id_destination=='NULL')
+            { // ES interno 
+                $name_destination='id_destination';
+		    }
+            elseif($id_destination_int=='NULL')
+            { //es externo 
+                $name_destination='id_destination_int';
+            }
+            $total=0;
+            $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
+            if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
+            {
+                $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));
+                $v=array();
+                $values="";
+                foreach($results as $x=>$row)
+                {
+                    $v[]=$row->id;
 				}
-			 $values=implode(",", $v);  //convierto el array en un string con los id separados por (,)
+                $values=implode(",", $v);  //convierto el array en un string con los id separados por (,)
 			
-	         if($values==""){
-	     	  $values="";
-	         }
-			}else{
+                if($values=="")
+                {
+                    $values="";
+                }
+			}
+            else
+            {
 				$values="";
 			}
-			return  $values;
-			
-      	}elseif($tipo=='hora')
+			return $values;	
+      	}
+        elseif($tipo=='hora')
     	{
 		     	
 		    //hora inicial para buscar y borrar para luego agregar las actualizadas
@@ -507,19 +517,23 @@ class ValidationsArchCapt
 		    	$results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora ',array(':fecha'=>$date, ':hora'=>$horas));
 		        $v=array();
 				$values="";
-			  	foreach($results as $x=>$row) {
-				$v[]=$row->id;
+			  	foreach($results as $x=>$row)
+                {
+				    $v[]=$row->id;
 				}
 
 				$values=implode(",", $v);  //convierto el array en un string con los id separados por (,)
-				if($values==""){
-		     	  $values="";
-		         }
-				}else{
-					$values="";
-				}
-				return  $values;
-		    }
+				if($values=="")
+                {
+                    $values="";
+                }
+			}
+            else
+            {
+                $values="";
+			}
+			return  $values;
+		}
  	}
 	
 	/**
@@ -527,19 +541,17 @@ class ValidationsArchCapt
 	 * Enter description here ...
 	 * @param array $var 
 	 */
-	 public static function saveDataArchDayHours($var,$tipo)
-	 {
-	 	
+    public static function saveDataArchDayHours($var,$tipo)
+    {	 	
 	 	if($tipo=='dia')
 		{
-		  $values=$var['values'];
-		  $sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
-
-		}elseif($tipo=='hora')
+            $values=$var['values'];
+            $sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
+		}
+        elseif($tipo=='hora')
 		{ 
-		  $values=$var['regHora'];
-		  $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,name_supplier,name_customer,name_destination) VALUES ".$values;
-
+            $values=$var['regHora'];
+            $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,name_supplier,name_customer,name_destination) VALUES ".$values;
 		}
 	 	$command = Yii::app()->db->createCommand($sql);
 			    
@@ -553,7 +565,7 @@ class ValidationsArchCapt
             self::$error=self::ERROR_SAVE_DB;
             return false;
         }
-	  }
+	}
 	
 	/**
 	 * funcion que borra el string generado con los datos preliminar
@@ -565,7 +577,8 @@ class ValidationsArchCapt
 		{
 	    	// borro los registros con el string formado anteriormente
 			$sql="DELETE FROM balance where id IN (".$stringDataPreliminary.")";
-		}elseif($tipo=='hora')
+		}
+        elseif($tipo=='hora')
 		{
 			// borro los registros con el string formado anteriormente
 			$sql="DELETE FROM balance_time where id IN (".$stringDataPreliminary.")";
@@ -573,11 +586,8 @@ class ValidationsArchCapt
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute())
 		{
-		 self::$error=self::ERROR_NONE;
+            self::$error=self::ERROR_NONE;
 		}
-	}
-    
-   
-    
+	} 
 }
 ?>
