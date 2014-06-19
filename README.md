@@ -14,7 +14,7 @@ Release 1.5.8
 
 Release 1.5.7.6
 
-    - Corrección de metodo encargado de guadar documentos contables final donde dejaba guardar dos banck fee, esto se debia a que solo estaba seteado para los cobros y no para pagos. 
+- Corrección de metodo encargado de guadar documentos contables final donde dejaba guardar dos banck fee, esto se debia a que solo estaba seteado para los cobros y no para pagos. 
 
 Realese 1.5.7.5
     - Modificacion en eliminado de Documentos Contables, al no tener bank fee.
