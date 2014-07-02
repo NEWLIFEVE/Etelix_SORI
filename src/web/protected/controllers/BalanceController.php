@@ -171,6 +171,8 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardartemp()
 	{
+		ini_set('max_execution_time', 2000);
+        ini_set('memory_limit', -1);
 		//Delclarando variables utiles para el codigo
 		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
 		//html preparado para mostrar resultados
