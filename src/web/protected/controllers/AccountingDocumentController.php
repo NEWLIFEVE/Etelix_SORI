@@ -244,7 +244,7 @@ class AccountingDocumentController extends Controller
 	}
         public function actionGetDispute()
 	{
-                if($_GET["AccountingDocument"]["from_date"]!="" && $_GET["AccountingDocument"]["to_date"]!="" || $_GET["AccountingDocument"]["from_date"]!="" || $_GET["AccountingDocument"]["to_date"]!=""){
+                if($_GET["AccountingDocument"]["from_date"]!="" || $_GET["AccountingDocument"]["to_date"]!=""){
                     $fromDate=$_GET["AccountingDocument"]["from_date"];
                     $toDate=$_GET["AccountingDocument"]["to_date"];
                 }else{
@@ -253,7 +253,7 @@ class AccountingDocumentController extends Controller
                 }
                 $modelDispute=  AccountingDocument::getDispute($_GET["AccountingDocument"]["id_carrier"],$fromDate,$toDate);
                 if($modelDispute!=NULL){
-                    $bodyDisputes= "<h3>Disputas sin notas de credito asociadas a: ".Carrier::getName($_GET['AccountingDocument']['id_carrier'])."</h3>";
+                    $bodyDisputes= "<h3>Disputas sin notas de credito asociadas a: <font style='color:rgba(111,204,187,1);'>".Carrier::getName($_GET['AccountingDocument']['id_carrier'])."</font></h3>";
                     $bodyDisputes.="<table border='1' class='tablaVistDocTemporales lista_Disp_NotaCEnv'>
                                         <tr>
                                            <td> Tipo de Disputa </td>

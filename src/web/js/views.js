@@ -861,6 +861,7 @@ $("#AccountingDocument_id_carrier").change(function()
     console.log($(this).parent().parent().attr("id"));
     switch ($(this).attr("id")) {
         case "AccountingDocument_id_carrier":
+            $("img#filterForPeriod").css("display","none");
             $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");$("div.filterForPeriod").hide("slow");
             $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
             break;
