@@ -69,9 +69,7 @@
             </div>
             <img id="updateGetDispute" src='/images/update.png' title="Buscar por periodo y actualizar">
         </div>
-        <div id="adminDispute">
-            
-        </div>
+        <div id="adminDispute"> </div>
 
 <?php $this->endWidget(); ?>
 

@@ -871,12 +871,14 @@ $("#AccountingDocument_id_carrier").change(function()
 
 $("img#filterForPeriod,img#updateGetDispute").click(function()
 {
-    switch ($(this).attr("id")) {
+    switch ($(this).attr("id")) 
+    {
         case "filterForPeriod":
             if($("div.filterForPeriod").css("display")=="none"){
                 $("div.filterForPeriod").show("slow");$("img#filterForPeriod").css("background","rgba(226, 168, 140, 1");
             }else{
-                $("div.filterForPeriod").hide("slow");$("img#filterForPeriod").css("background","rgba(111,204,187,1");
+                $("div.filterForPeriod").hide("slow");
+                $("img#filterForPeriod").css("background","rgba(111,204,187,1");
                 $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");
                 $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
                 }
