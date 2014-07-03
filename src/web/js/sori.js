@@ -1408,6 +1408,15 @@ function roundNumber(number,decimals)
             if(variable=="" || variable==null) return resultado;
               else return variable;
         }
+        function updateStatusDispute()
+        {
+            $("select#statusDispute").change(function()
+            {
+               console.log($(this).parent().parent().attr("id"));
+               console.log($(this).val());
+               $SORI.AJAX.actualizar( $(this).parent().parent().attr("id"),"3",$(this).val() );
+            });
+        }
 	/**
 	 * Retorna los mestodos publicos
 	 */
@@ -1437,7 +1446,8 @@ function roundNumber(number,decimals)
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
                 resuelvePeriodo:resuelvePeriodo,
-                defineAmountDisp:defineAmountDisp
+                defineAmountDisp:defineAmountDisp,
+                updateStatusDispute:updateStatusDispute
 	};
 })();
 
@@ -1508,6 +1518,9 @@ $SORI.AJAX=(function()
                 case "1":  
                     var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                     break;
+                case "3":  
+                    var url = "UpdateStatusDisputa/"+id, urlData="statusDispute="+especial;
+                    break;
                 case true: 
                     var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
@@ -1565,6 +1578,12 @@ $SORI.AJAX=(function()
                              $(".adminCTP").html(data);
                         $SORI.UI.init();
                      }else{
+                         if(data!=0){
+                             $("img#filterForPeriod").show("slow");$("div#adminDispute").html(data).fadeIn("slow");
+                             $SORI.UI.updateStatusDispute();
+                         }else{
+                             $("img#filterForPeriod").css("display","none");$("div#adminDispute").html("No hay disputas sin notas de credito para este carrier").fadeIn("slow");
+                         }
                          console.log(data);
                      }
                  }

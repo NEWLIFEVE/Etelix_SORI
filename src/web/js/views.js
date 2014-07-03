@@ -855,3 +855,37 @@ function marcar(source)
         }
     }
 };
+
+$("#AccountingDocument_id_carrier").change(function()
+{
+    console.log($(this).parent().parent().attr("id"));
+    switch ($(this).attr("id")) {
+        case "AccountingDocument_id_carrier":
+            $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");$("div.filterForPeriod").hide("slow");
+            $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+            break;
+    }
+    
+});
+
+$("img#filterForPeriod,img#updateGetDispute").click(function()
+{
+    switch ($(this).attr("id")) {
+        case "filterForPeriod":
+            if($("div.filterForPeriod").css("display")=="none"){
+                $("div.filterForPeriod").show("slow");$("img#filterForPeriod").css("background","rgba(226, 168, 140, 1");
+            }else{
+                $("div.filterForPeriod").hide("slow");$("img#filterForPeriod").css("background","rgba(111,204,187,1");
+                $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");
+                $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+                }
+            break;
+        case "updateGetDispute":
+            if($("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val()==""){
+                $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar las dos fechas que conforman el periodo</h3>","aguanta.png","2000","width:40px; height:90px;"); 
+            }else{
+                $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+            }
+            break;
+    }
+});

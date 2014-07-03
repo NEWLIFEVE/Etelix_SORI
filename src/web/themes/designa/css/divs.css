@@ -1083,3 +1083,48 @@ h2.admTp
     display:none;
     color: rgba(111,204,187,1);
 }
+div.saveDataDispute
+{
+    margin: 4% auto;
+    text-align: center;
+    display:none;
+}
+div#adminDispute
+{
+    margin: 4% auto;
+    text-align: center;
+    display:none;
+}
+select#statusDispute
+{
+    padding: 0;
+    width: 95px!important;
+}
+img#filterForPeriod
+{
+    background:rgba(111,204,187,1);
+    width: 38px;
+    display: inherit;
+    margin: 1%;
+    display:none;
+}
+
+img#updateGetDispute
+{
+    width: 30px;
+    background:rgba(111,204,187,1);
+    border-radius: 10px;
+}
+
+img#filterForPeriod:hover,img#updateGetDispute:hover
+{
+    background:rgba(10, 112, 94, 1);
+}
+div.filterForPeriod
+{
+    display:none;
+}
+div#statusDispute
+{
+    display:none;
+}

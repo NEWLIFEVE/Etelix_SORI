@@ -52,6 +52,7 @@ class AccountingDocument extends CActiveRecord
         public $amount_etx;
         public $amount_carrier;
         public $dispute;
+        public $type_dispute;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -298,4 +299,24 @@ class AccountingDocument extends CActiveRecord
                     }
             }
         }
+        
+        public static function getDispute($idCarrier, $fromDate, $toDate)
+	{
+            if($fromDate==NULL && $toDate==NULL)
+                $period="";
+            else
+                $period="AND ac.from_date='{$fromDate}' AND ac.to_date='{$toDate}'";
+                
+            $sql="SELECT ac.id, c.name AS carrier, tcd.name AS type_dispute,ac.amount AS amount, acf.doc_number AS doc_number,ac.from_date, ac.to_date, ac.id_accounting_document, ac.min_etx, ac.min_carrier, ac.rate_etx, ac.rate_carrier, ac.confirm
+                  FROM carrier c, accounting_document ac, accounting_document acf, type_accounting_document tcd
+                    WHERE ac.id_type_accounting_document IN(5,6 )
+                    AND c.id=3
+                    AND ac.id_accounting_document NOT IN (SELECT id_accounting_document FROM accounting_document WHERE id_type_accounting_document IN (7,8) AND id_accounting_document IS NOT NULL )
+                    AND ac.id_carrier={$idCarrier}
+                    AND ac.id_accounting_document=acf.id
+                    AND tcd.id=ac.id_type_accounting_document
+                    {$period}
+                    ORDER BY carrier, type_dispute, ac.from_date";
+            return self::model()->findAllBySql($sql);
+	}
 }
