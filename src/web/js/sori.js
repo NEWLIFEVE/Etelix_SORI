@@ -1582,7 +1582,7 @@ $SORI.AJAX=(function()
                              $("img#filterForPeriod").show("slow");$("div#adminDispute").html(data).fadeIn("slow");
                              $SORI.UI.updateStatusDispute();
                          }else{
-                             $("img#filterForPeriod").css("display","none");$("div#adminDispute").html("No hay disputas sin notas de credito para este carrier").fadeIn("slow");
+                             $("img#filterForPeriod").css("display","none");$("div#adminDispute").html("<p style='color:rgb(245, 105, 109);'>No hay disputas sin notas de credito para este carrier</p>").fadeIn("slow");
                          }
                          console.log(data);
                      }
