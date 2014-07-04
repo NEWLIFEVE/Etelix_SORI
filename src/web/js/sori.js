@@ -1414,6 +1414,10 @@ function roundNumber(number,decimals)
             {
                console.log($(this).parent().parent().attr("id"));
                console.log($(this).val());
+               if($(this).val()!='1')
+                   $(this).css("background","rgb(226, 168, 140)");
+               else
+                   $(this).css("background","rgba(111,204,187,1)");
                $SORI.AJAX.actualizar( $(this).parent().parent().attr("id"),"3",$(this).val() );
             });
         }

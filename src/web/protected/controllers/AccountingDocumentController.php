@@ -280,7 +280,7 @@ class AccountingDocumentController extends Controller
                                            <td> ".Utility::format_decimal($dispute->min_carrier)." </td>
                                            <td> {$dispute->rate_etx} </td>
                                            <td> {$dispute->rate_carrier} </td>
-                                           <td> <select id='statusDispute' name='statusDispute'>".$this->defineConfirmDispute($dispute->confirm)."</select></td>
+                                           <td> ".$this->defineConfirmDispute($dispute->confirm)."</td>
                                         </tr>";                        
                     }
                     $bodyDisputes.="</table>";
@@ -297,9 +297,9 @@ class AccountingDocumentController extends Controller
         public function defineConfirmDispute($confirm)
         {
             if($confirm==1)
-                return "<option value='{$confirm}'> Procede </option> <option value='-1'> No Procede </option>";
+                return "<select id='statusDispute' name='statusDispute' style='background:rgba(111,204,187,1);'><option value='{$confirm}'> Procede </option> <option value='-1'> No Procede </option></select>";
             else    
-                return "<option value='{$confirm}'> No Procede </option> <option value='1'> Procede </option>";
+                return "<select id='statusDispute' name='statusDispute' style='background:rgb(226, 168, 140);'><option value='{$confirm}'> No Procede </option> <option value='1'> Procede </option></select>";
         }
         /**
          * 
