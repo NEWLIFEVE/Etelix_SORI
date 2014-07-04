@@ -34,7 +34,9 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete'),
+				'actions'=>array('uploadtemp',
+					'cargatemp',
+					'guardartemp','index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
