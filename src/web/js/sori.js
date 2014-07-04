@@ -69,7 +69,7 @@ $SORI.UI=(function()
                                 select.value=obj[0].children[i].innerHTML;
                                 obj[0].children[i].innerHTML="";
                                 obj[0].children[i].appendChild(select); 
-                                if(i==3) for (var x=0, j=5;x<=j;x++)obj[0].children[3].children[0].children[x].style.display="block"; 
+                                if(i==3) for (var x=0, j=4;x<=j;x++)obj[0].children[3].children[0].children[x].style.display="block"; 
                         }
 			if(i>=1 && i<=2)
 			{
@@ -936,19 +936,20 @@ function roundNumber(number,decimals)
             $("#TerminoPViewsS").val($("#Contrato_id_termino_pago_supplier  option:selected").html());
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
+             $("#Contrato_id_fact_period option[value='5']").hide("fast");
             switch (tp)
             {
                 case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
+                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 12:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
                 case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
-                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+                    $("#dia_ini_fact,#divide_fact").val(""); $("#Contrato_id_fact_period").val("5"); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
         }
@@ -1407,6 +1408,19 @@ function roundNumber(number,decimals)
             if(variable=="" || variable==null) return resultado;
               else return variable;
         }
+        function updateStatusDispute()
+        {
+            $("select#statusDispute").change(function()
+            {
+               console.log($(this).parent().parent().attr("id"));
+               console.log($(this).val());
+               if($(this).val()!='1')
+                   $(this).css("background","rgb(226, 168, 140)");
+               else
+                   $(this).css("background","rgba(111,204,187,1)");
+               $SORI.AJAX.actualizar( $(this).parent().parent().attr("id"),"3",$(this).val() );
+            });
+        }
 	/**
 	 * Retorna los mestodos publicos
 	 */
@@ -1436,7 +1450,8 @@ function roundNumber(number,decimals)
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
                 resuelvePeriodo:resuelvePeriodo,
-                defineAmountDisp:defineAmountDisp
+                defineAmountDisp:defineAmountDisp,
+                updateStatusDispute:updateStatusDispute
 	};
 })();
 
@@ -1507,6 +1522,9 @@ $SORI.AJAX=(function()
                 case "1":  
                     var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                     break;
+                case "3":  
+                    var url = "UpdateStatusDisputa/"+id, urlData="statusDispute="+especial;
+                    break;
                 case true: 
                     var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
@@ -1564,6 +1582,14 @@ $SORI.AJAX=(function()
                              $(".adminCTP").html(data);
                         $SORI.UI.init();
                      }else{
+                         if(data!=0){
+                             $("img#filterForPeriod").show("slow");$("div#adminDispute").html(data).fadeIn("slow");
+                             $SORI.UI.updateStatusDispute();
+                         }else{
+                             if($("div#filterForPeriod").css("display")=="none")
+                                 $("img#filterForPeriod").css("display","none");
+                             $("div#adminDispute").html("<p style='color:rgb(245, 105, 109);'>No hay disputas sin notas de credito para este carrier</p>").fadeIn("slow");
+                         }
                          console.log(data);
                      }
                  }

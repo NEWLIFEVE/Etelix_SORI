@@ -144,6 +144,7 @@ class SiteController extends Controller
 //                            array('label'=>'Zonas Geográficas', 'url'=>array('/GeographicZone/CreateZoneColor')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
                             array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
+                            array('label'=>'Administrar Disputas', 'url'=>array('/AccountingDocument/adminDispute')),
                             array('label'=>'Log', 'url'=>array('/log/admin')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
@@ -173,6 +174,7 @@ class SiteController extends Controller
                             array('label'=>'Condiciones Comerciales', 'url'=>array('/contrato/create')),
                             array('label'=>'Documentos Contables', 'url'=>array('/AccountingDocumentTemp/create')),
                             array('label'=>'Confirmar Facturas Enviadas', 'url'=>array('/AccountingDocument/create')),
+                            array('label'=>'Administrar Disputas', 'url'=>array('/AccountingDocument/adminDispute')),
                             array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                         );
         }
