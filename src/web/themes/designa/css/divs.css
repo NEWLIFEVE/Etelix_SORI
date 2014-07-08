@@ -81,6 +81,7 @@ div.error
     padding: 5em 5em;
     text-align: center;
 }
+
 input.error
 {
     background:#FBE3E4;
@@ -100,6 +101,7 @@ input.error:focus
 div.errorMessage
 {
      color:#8a1f11;
+
 }
 .confirm
 {
@@ -487,6 +489,7 @@ width: 20%;
 #botAsignar,#botAsignarContrato,#botAgregarDatosContable ,#botAgregarDatosContableFinal, #botConfirmarDatosContableFinal
 {
     margin-left: 20%;width: 24%;
+    margin-bottom: 1%;
 }
 
 
@@ -683,6 +686,34 @@ width: 20%;
     background: silver;
     color: white;
 }
+/****DEPOSITOS DE SEGURIDAD PAGOS****/
+.lista_dep_seg_pago{
+    background: rgba(177, 146, 129, 1);
+    border-bottom-color: rgba(177, 146, 129, 1); 
+}
+.lista_dep_seg_pago td{
+    width: 8em;
+    height: 25px;
+}
+.lista_dep_seg_pago tr:hover{
+    background: rgba(177, 146, 129, 1);
+    color: white;   
+}
+/****DEPOSITOS DE SEGURIDAD COBROS****/
+.lista_dep_seg_cobro{
+    background: #9AB9A8;
+    border-bottom-color: #9AB9A8; 
+}
+.lista_dep_seg_cobro td{
+    width: 8em;
+    height: 25px;
+}
+.lista_dep_seg_cobro tr:hover{
+    background: #9AB9A8;
+    color: white;   
+}
+
+
 
 .tablaVistDocTemporales tr td input
 {
@@ -1025,7 +1056,6 @@ input#GeographicZone_name_zona, select#GeographicZone_name_zona
     margin: -41% -1%;
     padding: 3% 3%;
     border: solid threedshadow;
-    /*border-radius: 8px;*/
     overflow-y: scroll;
     z-index: 3;
     display: none;
@@ -1080,4 +1110,47 @@ h2.admTp
 {
     display:none;
     color: rgba(111,204,187,1);
+}
+div.saveDataDispute
+{
+    margin: 4% auto;
+    text-align: center;
+    display:none;
+}
+div#adminDispute
+{
+    margin: 4% auto;
+    text-align: center;
+    display:none;
+}
+select#statusDispute
+{
+    padding: 0;
+    width: 95px!important;
+    color:white!important;
+}
+img#filterForPeriod
+{
+    background:rgba(111,204,187,1);
+    width: 38px;
+    display: inherit;
+    margin: 1%;
+    display:none;
+}
+
+img#updateGetDispute
+{
+    width: 30px;
+    background:rgba(111,204,187,1);
+    border-radius: 10px;
+}
+
+img#filterForPeriod:hover,img#updateGetDispute:hover
+{
+    background:rgba(10, 112, 94, 1);
+}
+
+div#statusDispute,div.filterForPeriod
+{
+    display:none;
 }

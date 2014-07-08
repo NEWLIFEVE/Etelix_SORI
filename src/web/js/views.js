@@ -559,7 +559,7 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                 url: "guardarListaFinal",
                 success: function(data) 
                 {  
-                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.botonesParaExportar').fadeOut('fast');
+                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.LabelDepSegPago,.LabelDepSegCobro,.botonesParaExportar').fadeOut('fast');
                     $('.vistaTemp').remove();
                     $SORI.UI.msj_change("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4>","si.png","1000","width:95px; height:95px;"); 
                 }  
@@ -855,3 +855,40 @@ function marcar(source)
         }
     }
 };
+
+$("#AccountingDocument_id_carrier").change(function()
+{
+    console.log($(this).parent().parent().attr("id"));
+    switch ($(this).attr("id")) {
+        case "AccountingDocument_id_carrier":
+            $("img#filterForPeriod").css("display","none");
+            $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");$("div.filterForPeriod").hide("slow");
+            $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+            break;
+    }
+    
+});
+
+$("img#filterForPeriod,img#updateGetDispute").click(function()
+{
+    switch ($(this).attr("id")) 
+    {
+        case "filterForPeriod":
+            if($("div.filterForPeriod").css("display")=="none"){
+                $("div.filterForPeriod").show("slow");$("img#filterForPeriod").css("background","rgba(226, 168, 140, 1");
+            }else{
+                $("div.filterForPeriod").hide("slow");
+                $("img#filterForPeriod").css("background","rgba(111,204,187,1");
+                $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");
+                $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+                }
+            break;
+        case "updateGetDispute":
+            if($("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val()==""){
+                $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar las dos fechas que conforman el periodo</h3>","aguanta.png","2000","width:40px; height:90px;"); 
+            }else{
+                $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
+            }
+            break;
+    }
+});

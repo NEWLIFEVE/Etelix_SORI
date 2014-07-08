@@ -69,7 +69,7 @@ $SORI.UI=(function()
                                 select.value=obj[0].children[i].innerHTML;
                                 obj[0].children[i].innerHTML="";
                                 obj[0].children[i].appendChild(select); 
-                                if(i==3) for (var x=0, j=5;x<=j;x++)obj[0].children[3].children[0].children[x].style.display="block"; 
+                                if(i==3) for (var x=0, j=4;x<=j;x++)obj[0].children[3].children[0].children[x].style.display="block"; 
                         }
 			if(i>=1 && i<=2)
 			{
@@ -231,6 +231,7 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
+	
 	function _editar_DispRec(obj)
 	{
 		for (var i=2, j=obj[0].childElementCount-2;i<=j;i++)
@@ -293,7 +294,47 @@ $SORI.UI=(function()
 		obj=null;
 		accion();
 	}
-
+        function _editar_dep_seg_pago(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=1)
+			{
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
+			}
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_dep_seg_pago' alt='save' src='/images/icon_check.png'><img name='cancel_dep_seg_pago' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
+        function _editar_dep_seg_cobro(obj)
+	{
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			var input=document.createElement('input');
+			input.name=obj[0].children[i].id;
+			input.value=obj[0].children[i].innerHTML;
+			if(i>=1 && i<=1)
+			{
+				$(input).datepicker({ dateFormat: "yy-mm-dd", maxDate: "-0D"});
+			}
+			obj[0].children[i].innerHTML="";
+			obj[0].children[i].appendChild(input);
+			input=null;
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img name='save_dep_seg_cobro' alt='save' src='/images/icon_check.png'><img name='cancel_dep_seg_cobro' alt='cancel' src='/images/icon_arrow.png'>";
+		obj=null;
+		accion();
+	}
+        
 	/**
 	 * Metodo encargado de regresar la fila a su estado normal si estuvo en estado de edicion
 	 * @access private
@@ -407,6 +448,34 @@ $SORI.UI=(function()
 		obj=contenido=null;
 		accion();
 	}
+        function _revert_dep_seg_pago(obj)
+	{
+		var contenido=new Array();
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_dep_seg_pago' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
+        function _revert_dep_seg_cobro(obj)
+	{
+		var contenido=new Array();
+		for (var i=1, j=obj[0].childElementCount-1;i<=j;i++)
+		{
+			contenido[i]=obj[0].children[i].children[0].value;
+			obj[0].children[i].children[0].remove();
+			obj[0].children[i].innerHTML=contenido[i];
+		}
+		obj[0].children[5].innerHTML="";
+		obj[0].children[5].innerHTML="<img class='edit' name='edit_dep_seg_cobro' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'>";
+		obj=contenido=null;
+		accion();
+	}
         /**
          * 
          * @param {type} obj, type
@@ -477,10 +546,11 @@ $SORI.UI=(function()
 	function accion()
 	{
 		var $fila;
-		$("img[name='editTP'],img[name='saveTP'],img[name='cancelTP'],img[name='deleteTP'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Nota_cred'],img[name='edit_Pagos'], img[name='edit_Cobros'], \n\
+		$("img[name='editTP'],img[name='saveTP'],img[name='cancelTP'],img[name='deleteTP'],img[name='edit_DispRec'],img[name='edit_DispEnv'], img[name='edit_Nota_cred'],img[name='edit_Pagos'], img[name='edit_Cobros']\n\
                    img[name='edit_Fac_Env'], img[name='edit_Fac_Rec'], img[name='delete'], img[name='save_Pagos'], img[name='save_DispRec'], img[name='save_DispEnv'],\n\
                    img[name='save_Cobros'], img[name='save_Fac_Env'], img[name='save_Nota_cred'],img[name='save_Fac_Rec'], img[name='cancel_Fac_Rec'], img[name='cancel_Fac_Env'], \n\
-                   img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv'], img[name='cancel_Nota_cred']") .on('click',function()
+                   img[name='cancel_Pagos'], img[name='cancel_Cobros'], img[name='cancel_DispRec'], img[name='cancel_DispEnv'], img[name='cancel_Nota_cred'], img[name='edit_dep_seg_pago'], img[name='save_dep_seg_pago'], img[name='cancel_dep_seg_pago'],\n\
+                   img[name='edit_dep_seg_cobro'], img[name='save_dep_seg_cobro'], img[name='cancel_dep_seg_cobro']") .on('click',function()
 		{
 			$fila=$(this).parent().parent();
 //                        GENERAL
@@ -590,6 +660,38 @@ $SORI.UI=(function()
 			{
 				_revert_Nota_cred($fila);
 			}
+                        
+//                        DEPOSITOS DE SEGURIDAD PAGO
+			if($(this).attr('name')=='edit_dep_seg_pago')
+			{
+				_editar_dep_seg_pago($fila);
+			}
+			if($(this).attr('name')=='save_dep_seg_pago')
+			{
+				$SORI.AJAX.actualizar($fila[0].id,'2');
+				_revert_dep_seg($fila);
+			}
+			if($(this).attr('name')=='cancel_dep_seg_pago')
+			{
+				_revert_dep_seg_pago($fila);
+			}
+                        
+                        
+//                        DEPOSITOS DE SEGURIDAD PAGO
+			if($(this).attr('name')=='edit_dep_seg_cobro')
+			{
+				_editar_dep_seg_cobro($fila);
+			}
+			if($(this).attr('name')=='save_dep_seg_cobro')
+			{
+				$SORI.AJAX.actualizar($fila[0].id,'2');
+				_revert_dep_seg_cobro($fila);
+			}
+			if($(this).attr('name')=='cancel_dep_seg_cobro')
+			{
+				_revert_dep_seg_cobro($fila);
+			}
+                        
  //                       TERMINOS PAGOS
                         switch ($(this).attr('name')) {
                             case "editTP":  case "saveTP":  case "cancelTP": case "deleteTP": 
@@ -936,19 +1038,20 @@ function roundNumber(number,decimals)
             $("#TerminoPViewsS").val($("#Contrato_id_termino_pago_supplier  option:selected").html());
             var periodo_semanal=["#Contrato_id_fact_period option[value='1']","#Contrato_id_fact_period option[value='2']"],
              periodo_quincenal = ["#Contrato_id_fact_period option[value='3']","#Contrato_id_fact_period option[value='4']"];
+             $("#Contrato_id_fact_period option[value='5']").hide("fast");
             switch (tp)
             {
                 case "1": case "3": case "4": case "5":case 1: case 3: case 4: case 5:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $SORI.UI.formChangeAccDoc(periodo_quincenal, periodo_semanal);
                     break;
-                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 9:
+                case "6": case "7": case "8": case "12":case 6: case 7: case 8: case 12:
                    $(".periodo_fact").css("display","inline-block").hide().show("slow");
                    $(".dia_ini_fact,.divide_fact").hide("slow");
                    $SORI.UI.formChangeAccDoc(periodo_semanal, periodo_quincenal);
                     break;
                 case "2": case "9": case "10": case "11": case "13":case 2: case 9: case 10: case 11: case 13:
-                    $("#dia_ini_fact,#divide_fact,#Contrato_id_fact_period").val(""); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
+                    $("#dia_ini_fact,#divide_fact").val(""); $("#Contrato_id_fact_period").val("5"); $(".divide_fact,.periodo_fact,.dia_ini_fact").hide("slow");
                     break;
             } 
         }
@@ -1069,6 +1172,16 @@ function roundNumber(number,decimals)
                         clase=".lista_NotCredRec",
                         label='.Label_NotCredRec';
                         break
+                    case '16':
+                        var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_dep_seg_pago' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_dep_seg_pago",
+                        label='.LabelDepSegPago';
+                        break    
+                    case '17':
+                        var tabla = id+group+issue_date+doc_number+amount+currency+"<td><img class='edit' name='edit_dep_seg_cobro' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td></tr>",
+                        clase=".lista_dep_seg_cobro",
+                        label='.LabelDepSegCobro';
+                        break    
                 }
                 $(clase).find("tr:first").after(tabla);
                 $(clase).fadeIn('slow');
@@ -1107,6 +1220,9 @@ function roundNumber(number,decimals)
                     case '8':
                         var msj="<h4 align='justify'>La <b>Disputa Recibida</b> que intenta guardar, ya se encuentra registrada con el destino <b>"+obj.destinationSupp+"</b>, con fecha de recepción en el periódo <b>"+obj.from_date+" / "+obj.to_date+"</b> , bajo el N° de factura. <b>"+obj.fact_number+"</b> y N°. de documento  <b>"+obj.doc_number+"</b></h4>";
                         break
+                    case '16': case '17':
+                         var msj="<h4 align='justify'>El <b>Deposito de Seguridad</b> que intenta guardar, ya se encuentra registrado con el grupo <b>"+obj.group+"</b>, con fecha de emisión <b>"+obj.issue_date+"</b> y bajo el N°. <b>"+obj.doc_number+"</b></h4>";
+                        break
              }
               $SORI.UI.msj_cargando("","");$SORI.UI.msj_change(msj,"aguanta.png","2000","width:40px; height:90px;"); 
          }
@@ -1125,7 +1241,7 @@ function roundNumber(number,decimals)
          */
         function emptyFields(){
             $("#AccountingDocumentTemp_note, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
-                if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'){
+                if (obj.id_type_accounting_document=='3'||obj.id_type_accounting_document=='4'||obj.id_type_accounting_document=='16'){
                      $("#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_valid_received_date,#AccountingDocumentTemp_bank_fee").val('');
                 } 
                 if (obj.id_type_accounting_document=='5'||obj.id_type_accounting_document=='6'){
@@ -1220,8 +1336,10 @@ function roundNumber(number,decimals)
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             case '8'://notas de credito recibidas
-
                 var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_id_accounting_document,#AccountingDocumentTemp_doc_number,#AccountingDocumentTemp_amount').serializeArray());
+                break 
+            case '16':case '17'://Depositos de seguridad
+                var respuesta=$SORI.UI.validaCampos($('#AccountingDocumentTemp_carrier_groups,#AccountingDocumentTemp_issue_date,#AccountingDocumentTemp_amount').serializeArray());
                 break 
             //esta parte aplica solo para contrato
             case 'tp_supplier':
@@ -1380,6 +1498,13 @@ function roundNumber(number,decimals)
                     $SORI.UI.sumMontoNota();
                     $SORI.UI.buscaDisputa(tipoDocument);
                     break
+                case '16':case '17'://Deposito de Seguridad
+                    var mostrar =['.numDocument','.montoDoc','.Moneda','.fechaDeEmision','.GrupoDocument'];
+                    $SORI.UI.formChangeAccDoc(ocultar, mostrar);
+                    $("#AccountingDocumentTemp_email_received_date,#AccountingDocumentTemp_email_received_hour,#AccountingDocumentTemp_id_carrier,#AccountingDocumentTemp_issue_date").val('');
+                    $("#AccountingDocumentTemp_from_date,#AccountingDocumentTemp_to_date,#AccountingDocumentTemp_doc_number, #AccountingDocumentTemp_id_destination_supplier, #AccountingDocumentTemp_carrier_groups").val('');
+                    $("#AccountingDocumentTemp_minutes, #AccountingDocumentTemp_min_carrier, #AccountingDocumentTemp_amount, #AccountingDocumentTemp_rate_carrier, #AccountingDocumentTemp_id_destination").val('');
+                    break
             }
         }
         /**
@@ -1406,6 +1531,19 @@ function roundNumber(number,decimals)
         {
             if(variable=="" || variable==null) return resultado;
               else return variable;
+        }
+        function updateStatusDispute()
+        {
+            $("select#statusDispute").change(function()
+            {
+               console.log($(this).parent().parent().attr("id"));
+               console.log($(this).val());
+               if($(this).val()!='1')
+                   $(this).css("background","rgb(226, 168, 140)");
+               else
+                   $(this).css("background","rgba(111,204,187,1)");
+               $SORI.AJAX.actualizar( $(this).parent().parent().attr("id"),"3",$(this).val() );
+            });
         }
 	/**
 	 * Retorna los mestodos publicos
@@ -1436,7 +1574,8 @@ function roundNumber(number,decimals)
                 validaContratoTpSemanal:validaContratoTpSemanal,
                 defineNull:defineNull,
                 resuelvePeriodo:resuelvePeriodo,
-                defineAmountDisp:defineAmountDisp
+                defineAmountDisp:defineAmountDisp,
+                updateStatusDispute:updateStatusDispute
 	};
 })();
 
@@ -1507,6 +1646,9 @@ $SORI.AJAX=(function()
                 case "1":  
                     var url = "UpdateDisp/"+id, urlData="dispute="+especial;
                     break;
+                case "3":  
+                    var url = "UpdateStatusDisputa/"+id, urlData="statusDispute="+especial;
+                    break;
                 case true: 
                     var url = "/ContratoTerminoPagoSupplier/Update/"+id, urlData=$SORI.UTILS.getData(id,3);
                     break;
@@ -1564,6 +1706,14 @@ $SORI.AJAX=(function()
                              $(".adminCTP").html(data);
                         $SORI.UI.init();
                      }else{
+                         if(data!=0){
+                             $("img#filterForPeriod").show("slow");$("div#adminDispute").html(data).fadeIn("slow");
+                             $SORI.UI.updateStatusDispute();
+                         }else{
+                             if($("div#filterForPeriod").css("display")=="none")
+                                 $("img#filterForPeriod").css("display","none");
+                             $("div#adminDispute").html("<p style='color:rgb(245, 105, 109);'>No hay disputas sin notas de credito para este carrier</p>").fadeIn("slow");
+                         }
                          console.log(data);
                      }
                  }
