@@ -241,6 +241,9 @@ class AccountingDocument extends CActiveRecord
                     return self::model()->findBySql("Select * from accounting_document where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
 //                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
                     break;
+                case '16':case '17':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and issue_date=:issue_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":issue_date"=>$model->issue_date));
+                    break;
             }
         } 
         

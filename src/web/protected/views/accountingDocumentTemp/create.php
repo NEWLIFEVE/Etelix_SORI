@@ -25,5 +25,7 @@
                                 'lista_DispRec'=>$lista_DispRec,
                                 'lista_DispEnv'=>$lista_DispEnv,
                                 'lista_NotCredEnv'=>$lista_NotCredEnv,
-                                'lista_NotCredRec'=>$lista_NotCredRec)
+                                'lista_NotCredRec'=>$lista_NotCredRec,
+                                'lista_dep_seg_pago'=>$lista_dep_seg_pago,
+                                'lista_dep_seg_cobro'=>$lista_dep_seg_cobro)
         ); ?>
