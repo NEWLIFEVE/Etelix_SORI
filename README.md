@@ -3,6 +3,7 @@
 
 Sistema de Origen
 
+- Agregados nuevos documentos contables en interfaz de documentos contables, (depositos de seguridad pagos y depositos de seguridad cobros).
 ##Release 1.6
 - Fix en validacion de login
 - Fix en condiciones comerciales para casos 30/7
