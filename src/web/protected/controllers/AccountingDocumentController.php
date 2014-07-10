@@ -1,5 +1,7 @@
 <?php
-
+/**
+ *
+ */
 class AccountingDocumentController extends Controller
 {
 	/**
@@ -28,7 +30,7 @@ class AccountingDocumentController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','Confirmar','Borrar','buscadatos','UpdateDisputa'),
+				'actions'=>array('index','view','Confirmar','Borrar','buscadatos','UpdateDisputa','AdminDispute','GetDispute','UpdateStatusDisputa'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -55,7 +57,7 @@ class AccountingDocumentController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
-
+	
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -63,11 +65,7 @@ class AccountingDocumentController extends Controller
 	public function actionCreate()
 	{
 		$model=new AccountingDocument;
-                $lista=AccountingDocument::listaFacturasEnviadas();
-//                $lista=AccountingDocument::listaFacturasEnviadas(Yii::app()->user->id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $lista=AccountingDocument::listaFacturasEnviadas();
 
 		if(isset($_POST['AccountingDocument']))
 		{
@@ -150,88 +148,180 @@ class AccountingDocumentController extends Controller
 	}
         
 	/**
+	 *
 	 */
 	public function actionConfirmar($id)
 	{
-//	          $id=  AccountingDocument::getConfirmID(0); 
-                  $model=$this->loadModel($id);
-        	  $model->confirm=1;
-                  $model->save();
-			if($model->save()){
-                            echo 'guardo';
-                        }
+		$model=$this->loadModel($id);
+        $model->confirm=1;
+        $model->save();
+		if($model->save())
+		{
+			echo 'guardo';
+        }
 	}
+
+	/**
+	 *
+	 */
 	public function actionUpdateDisputa($id)
 	{
-//	          $id=  AccountingDocument::getConfirmID(0); 
-                  $model=$this->loadModel($id);
-//        	  $model->amount=Utility::changePositive($_POST['AccountingDocumentTemp']['amount_aproved']);
-        	  $model->amount=$_POST['AccountingDocumentTemp']['amount_aproved'];
-                  $model->save();
-			if($model->save()){
-                            echo 'guardo';
-                        }
-	}
-        
-        /**
-         * Updates a particular model.
-         * If update is successful, the browser will be redirected to the 'view' page.
-         * @access public
-         * @param integer $id the ID of the model to be updated
-         */
-        public function actionUpdate($id)
-        {
-            $model=$this->loadModel($id);
-
-            if(isset($_POST['AccountingDocument']))
-            {
-
-                    $model->attributes=$_POST['AccountingDocument'];
-//                        $model->id_type_accounting_document=TypeAccountingDocument::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-//                        $model->id_carrier=Carrier::getId($_POST['AccountingDocumentTemp']['id_type_accounting_document']);
-
-            $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
-            $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
-            $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
-            $model->email_received_date=Utility::snull($_POST['AccountingDocument']['email_received_date']);
-            $model->valid_received_date=Utility::snull($_POST['AccountingDocument']['valid_received_date']);
-            $model->email_received_hour=Utility::snull($_POST['AccountingDocument']['email_received_hour']);
-            $model->valid_received_hour=Utility::snull($_POST['AccountingDocument']['valid_received_hour']);
-            $model->sent_date=Utility::snull($_POST['AccountingDocument']['sent_date']);
-            $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
-            $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
-            $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
-             $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
--               $model->id_currency=$id_currency;
-                    if($model->save())
-                            return "Actualizado id: ".$model->id;
-                    else
-                            return "Algo salio mal";
-            }
+        $model=$this->loadModel($id);
+        $model->amount=$_POST['AccountingDocumentTemp']['amount_aproved'];
+        $model->save();
+		if($model->save())
+		{
+            echo 'guardo';
         }
-         /**
-         * eliminar a particular model.
-         * If update is successful, the browser will be redirected to the 'view' page.
-         * @access public
-         * @param integer $id the ID of the model to be delete
-         */
-        public function actionBorrar($id)
+	}
+
+	/**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @access public
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id)
+    {
+    	$model=$this->loadModel($id);
+
+        if(isset($_POST['AccountingDocument']))
+        {
+		    $model->attributes=$_POST['AccountingDocument'];      
+		    $model->issue_date=Utility::snull($_POST['AccountingDocument']['issue_date']);
+		    $model->from_date=Utility::snull($_POST['AccountingDocument']['from_date']);
+		    $model->to_date=Utility::snull($_POST['AccountingDocument']['to_date']);
+		    $model->email_received_date=Utility::snull($_POST['AccountingDocument']['email_received_date']);
+		    $model->valid_received_date=Utility::snull($_POST['AccountingDocument']['valid_received_date']);
+		    $model->email_received_hour=Utility::snull($_POST['AccountingDocument']['email_received_hour']);
+		    $model->valid_received_hour=Utility::snull($_POST['AccountingDocument']['valid_received_hour']);
+		    $model->sent_date=Utility::snull($_POST['AccountingDocument']['sent_date']);
+		    $model->doc_number=Utility::snull($_POST['AccountingDocument']['doc_number']);
+		    $model->minutes=Utility::snull($_POST['AccountingDocument']['minutes']);
+		    $model->amount=Utility::snull($_POST['AccountingDocument']['amount']);
+		    $id_currency=Currency::getID($_POST['AccountingDocument']['id_currency']);
+		    $model->id_currency=$id_currency;
+		    if($model->save())
+		    	return "Actualizado id: ".$model->id;
+		    else
+		        return "Algo salio mal";
+        }
+    }
+
+    /**
+     * eliminar a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @access public
+     * @param integer $id the ID of the model to be delete
+     */
+    public function actionBorrar($id)
 	{
 		$this->loadModel($id)->delete();
 	}
-         /**
-         *busca los numeros de documentos con el id provenientes de la vista de confirmar
-         */
-        public function actionbuscadatos()
+
+	/**
+     * busca los numeros de documentos con el id provenientes de la vista de confirmar
+     */
+	public function actionbuscadatos()
+    {
+    	$id = explode(',', $_GET['datos']);
+        $numDocument='';
+        foreach($id as $key => $value)
         {
-               $id = explode(',', $_GET['datos']);
-               $numDocument='';
-                foreach($id as $key => $value)
-                {
-                    $numDocument.=  AccountingDocument::getDocNum($id);
-//                    $params['numDocument'] = $numDocument;
-                }
-               echo 'numero de factura:'.$numDocument.'<p>';
-//                echo json_encode($params);
+            $numDocument.=  AccountingDocument::getDocNum($id);
         }
+        echo 'numero de factura:'.$numDocument.'<p>';
+    }
+
+    /**
+     * 
+     */
+    public function actionAdminDispute()
+	{
+        $model=new AccountingDocument;
+		$this->render('adminDispute',array('model'=>$model));
+	}
+
+	/**
+	 *
+	 */
+	public function actionGetDispute()
+	{
+        if($_GET["AccountingDocument"]["from_date"]!="" || $_GET["AccountingDocument"]["to_date"]!="")
+        {
+        	$fromDate=$_GET["AccountingDocument"]["from_date"];
+            $toDate=$_GET["AccountingDocument"]["to_date"];
+        }
+        else
+        {
+        	$fromDate=NULL;
+        	$toDate=NULL;
+        }
+        $modelDispute=  AccountingDocument::getDispute($_GET["AccountingDocument"]["id_carrier"],$fromDate,$toDate);
+        if($modelDispute!=NULL)
+        {
+        	$bodyDisputes= "<h3>Disputas sin notas de credito asociadas a: <font style='color:rgba(111,204,187,1);'>".Carrier::getName($_GET['AccountingDocument']['id_carrier'])."</font></h3>";
+            $bodyDisputes.="<table border='1' class='tablaVistDocTemporales lista_Disp_NotaCEnv'>
+                                <tr>
+                                    <td> Tipo de Disputa </td>
+                                    <td> Monto </td>
+                                    <td> fecha inicio </td>
+                                    <td> fecha fin </td>
+                                    <td> N° de factura </td>
+                                    <td> Min. Etx </td>
+                                    <td> Min. Carrier </td>
+                                    <td> Tarifa Etx </td>
+                                    <td> Tarifa Carrier </td>
+                                    <td> status </td>
+                                </tr>";
+            foreach($modelDispute as $key => $dispute)
+            {
+            	$bodyDisputes.="<tr class='vistaTemp' id='{$dispute->id}'>
+                                	<td> {$dispute->type_dispute} </td>
+                                    <td> ".Utility::format_decimal($dispute->amount)." </td>
+                                    <td> {$dispute->from_date} </td>
+                                    <td> {$dispute->to_date} </td>
+                                    <td> {$dispute->doc_number} </td>
+                                    <td> ".Utility::format_decimal($dispute->min_etx)." </td>
+                                    <td> ".Utility::format_decimal($dispute->min_carrier)." </td>
+                                    <td> {$dispute->rate_etx} </td>
+                                    <td> {$dispute->rate_carrier} </td>
+                                    <td> ".$this->defineConfirmDispute($dispute->confirm)."</td>
+                                </tr>";
+            }
+            $bodyDisputes.="</table>";
+            echo $bodyDisputes;
+        }
+        else
+        {
+        	echo 0;
+        }
+    }
+
+    /**
+     * 
+     * @param type $confirm
+     * @return type
+     */
+    public function defineConfirmDispute($confirm)
+    {
+        if($confirm==1)
+            return "<select id='statusDispute' name='statusDispute' style='background:rgba(111,204,187,1);'><option value='{$confirm}'> Procede </option> <option value='-1'> No Procede </option></select>";
+        else    
+            return "<select id='statusDispute' name='statusDispute' style='background:rgb(226, 168, 140);'><option value='{$confirm}'> No Procede </option> <option value='1'> Procede </option></select>";
+    }
+
+    /**
+     * 
+     * @param type $id
+     */
+    public function actionUpdateStatusDisputa($id)
+	{
+        $model=$this->loadModel($id);
+        $model->confirm=$_POST['statusDispute'];
+        $model->save();
+        if($model->save()){
+            echo 'guardo';
+        }
+	}
 }

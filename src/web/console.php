@@ -2,12 +2,9 @@
 //Definimos nuestro servidor de produccion
 define('SERVER_NAME_PROD','s1248-101');
 //Definimos el directorio de desarrollo
-define('DIRECTORY_NAME_PRE_PROD','dev_sine');
+define('DIRECTORY_NAME_PRE_PROD','dev_sori');
 //Obtenemos el nombre del servidor actual
 $server=gethostname();
-// change the following paths if necessary
-$yii=dirname(__FILE__).'/../../../yii/framework/yii.php';
-
 if($server==SERVER_NAME_PROD)
 {
 	$server=dirname(__FILE__);

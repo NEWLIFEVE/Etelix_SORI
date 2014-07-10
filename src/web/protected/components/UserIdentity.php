@@ -1,5 +1,4 @@
 <?php
-
 /**
  * UserIdentity represents the data needed to identity a user.
  * It contains the authentication method that checks if the provided
@@ -9,7 +8,7 @@ class UserIdentity extends CUserIdentity
 {
 	private $_id;
 	private $_type;
-        const ERROR_USERNAME_INVALID=1;
+    const ERROR_USERNAME_INVALID=1;
 	const ERROR_PASSWORD_INVALID=2;
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_INACTIV=4;
@@ -23,15 +22,22 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		if (strpos($this->username,"@")) {
-			$user=  Users::model()->findByAttributes(array('email'=>$this->username));
-		} else {
+		if(strpos($this->username,"@"))
+		{
+			$user=Users::model()->findByAttributes(array('email'=>$this->username));
+		}
+		else
+		{
 			$user=Users::model()->findByAttributes(array('username'=>$this->username));
 		}
-		if($user===null){
-			if (strpos($this->username,"@")) {
+		if($user===null)
+		{
+			if(strpos($this->username,"@"))
+			{
 				$this->errorCode=self::ERROR_EMAIL_INVALID;
-			} else {
+			}
+			else
+			{
 				$this->errorCode=self::ERROR_USERNAME_INVALID;
 			}
 		}
@@ -39,7 +45,8 @@ class UserIdentity extends CUserIdentity
 		{
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		}
-		else if($user->status!==true){
+		else if($user->status!==true)
+		{
 			$this->errorCode=self::ERROR_STATUS_INACTIV;
 		}
 		else 
@@ -54,15 +61,16 @@ class UserIdentity extends CUserIdentity
 	}
 
 	/**
-    * @return integer el ID del usuario autenticado
-    */
+     * @return integer el ID del usuario autenticado
+     */
 	public function getId()
 	{
 		return $this->_id;
 	}
+
 	/**
-	*
-	*/
+	 *
+	 */
 	public function getType()
 	{
 		return $this->_type;

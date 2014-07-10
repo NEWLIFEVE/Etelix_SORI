@@ -1,5 +1,4 @@
 <?php
-
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
@@ -49,17 +48,21 @@ class LoginForm extends CFormModel
 		if(!$this->hasErrors())
 		{
 			$this->_identity=new UserIdentity($this->username,$this->password);
-			if($this->_identity->authenticate()){
-				if(!$this->_identity->errorCode==1){
+			if($this->_identity->authenticate())
+			{
+				if(!$this->_identity->errorCode==1)
+				{
 					$this->addError('username',"Usuario Invalido");
 				}
-				else if($this->_identity->errorCode==2){
+				else if($this->_identity->errorCode==2)
+				{
 					$this->addError('password',"Password invalido");
 				}
-				else if($this->_identity->errorCode==3){
+				else if($this->_identity->errorCode==3)
+				{
 					$this->addError('username',"Email Invalido");
 				}
-                        }
+			}
 		}
 	}
 

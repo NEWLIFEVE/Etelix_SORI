@@ -293,12 +293,12 @@
     <?php $this->endWidget(); ?>
     <div class="VistDocTemporales">
         <br>
-        <div class="botonesParaExportar" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
+        <div class="botonesParaExportar" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null||$lista_dep_seg_pago!=null||$lista_dep_seg_cobro!=null){echo "style='display:block;'";}?>>
            <div class="botonImprimir contratoForm"><img src='/images/print-icon.png'/></div>
            <div class="botonCorreo contratoForm"><img src='/images/mail.png'/></div> 
         </div>
         
-        <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null){echo "style='display:block;'";}?>>
+        <div id="botAgregarDatosContableFinal" class="row buttons" <?php if($lista_FacEnv!=null||$lista_FacRec!=null||$lista_Pagos!=null||$lista_Cobros!=null||$lista_NotCredEnv!=null||$lista_NotCredRec!=null||$lista_DispRec!=null||$lista_DispEnv!=null||$lista_dep_seg_pago!=null||$lista_dep_seg_cobro!=null){echo "style='display:block;'";}?>>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardado Definitivo' : 'Save'); ?>
         </div>
         
@@ -588,6 +588,66 @@
                                        <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>    
                                        <td><img class='edit' name='edit_Nota_cred' alt='editar' src='/images/icon_lapiz.png'><img class='delete' name='delete' alt='borrar' src='/images/icon_x.gif'></td>
                                      </tr>";     
+                           }
+                       }
+                       ?>
+            </table>
+         </div>
+         <br>
+         <div>
+            <label class="LabelDepSegPago" <?php if($lista_dep_seg_pago==null){echo "style='display:none;'";}?>>Depositos de Seguridad Pago:</label>
+            <table border="1" class="tablaVistDocTemporales lista_dep_seg_pago" <?php if($lista_dep_seg_pago==null){echo "style='display:none;'";}?>>
+                   <tr>
+                       <td> Grupo </td>
+                       <td> Fecha de Emisión </td>
+                       <td> N°Documento </td>
+                       <td> Cantidad </td>
+                       <td> Moneda </td>
+                       <td> Acciones </td>
+                   </tr>
+                   <?php
+                       if($lista_dep_seg_pago!=null)
+                       {
+                           foreach ($lista_dep_seg_pago as $key => $value)
+                           { 
+                               echo "<tr class='vistaTemp' id='".$value->id."'>
+                                       <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                       <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                       <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                       <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                       <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                       <td><img class='edit' name='edit_dep_seg_pago' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                     </tr>";  
+                           }
+                       }
+                       ?>
+            </table>
+         </div>
+         <br>
+         <div>
+            <label class="LabelDepSegCobro" <?php if($lista_dep_seg_cobro==null){echo "style='display:none;'";}?>>Depositos de Seguridad Cobro:</label>
+            <table border="1" class="tablaVistDocTemporales lista_dep_seg_cobro" <?php if($lista_dep_seg_cobro==null){echo "style='display:none;'";}?>>
+                   <tr>
+                       <td> Grupo </td>
+                       <td> Fecha de Emisión </td>
+                       <td> N°Documento </td>
+                       <td> Cantidad </td>
+                       <td> Moneda </td>
+                       <td> Acciones </td>
+                   </tr>
+                   <?php
+                       if($lista_dep_seg_cobro!=null)
+                       {
+                           foreach ($lista_dep_seg_cobro as $key => $value)
+                           { 
+                               echo "<tr class='vistaTemp' id='".$value->id."'>
+                                       <td id='AccountingDocumentTemp[id_carrier]'>".$value->id_carrier."</td>
+                                       <td id='AccountingDocumentTemp[issue_date]'>".$value->issue_date."</td>
+                                       <td id='AccountingDocumentTemp[doc_number]'>".$value->doc_number."</td>
+                                       <td id='AccountingDocumentTemp[amount]'>".$value->amount."</td>
+                                       <td id='AccountingDocumentTemp[id_currency]'>".$value->id_currency."</td>
+                                       <td><img class='edit' name='edit_dep_seg_cobro' alt='editar' src='/images/icon_lapiz.png'><img name='delete' alt='borrar' src='/images/icon_x.gif'></td>
+                                     </tr>";  
                            }
                        }
                        ?>
