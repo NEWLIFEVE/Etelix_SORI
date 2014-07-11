@@ -305,6 +305,7 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
+        
         public static function listaCobros($usuario)
 	{
             $idAction = LogAction::getLikeId('Crear Cobro Temp');
@@ -368,6 +369,32 @@ class AccountingDocumentTemp extends CActiveRecord
 
 		return $model;
 	}
+        public static function listaDepSegPago($usuario)
+	{
+            $idAction = LogAction::getLikeId('Crear Deposito de Seguridad Temp');
+		$sql="SELECT d.id, d.issue_date, d.doc_number, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
+                      FROM(SELECT id, issue_date, doc_number, amount, note, id_type_accounting_document, id_carrier, id_currency
+                                 FROM accounting_document_temp
+                                 WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+                      WHERE d.id_type_accounting_document=16 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
+                      ORDER BY id DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
+        public static function listaDepSegCobro($usuario)
+	{
+            $idAction = LogAction::getLikeId('Crear Deposito de Seguridad Temp');
+		$sql="SELECT d.id, d.issue_date, d.doc_number, d.amount, d.note, t.name AS id_type_accounting_document, g.name AS id_carrier, e.name AS id_currency
+                      FROM(SELECT id, issue_date, doc_number, amount, note, id_type_accounting_document, id_carrier, id_currency
+                                 FROM accounting_document_temp
+                                 WHERE id IN (SELECT id_esp FROM log WHERE id_users={$usuario} AND id_log_action=43))d, type_accounting_document t, carrier c, currency e, carrier_groups g
+                      WHERE d.id_type_accounting_document=17 AND t.id = d.id_type_accounting_document AND c.id=d.id_carrier AND e.id=d.id_currency AND c.id_carrier_groups=g.id 
+                      ORDER BY id DESC";
+		$model=self::model()->findAllBySql($sql);
+
+		return $model;
+	}
         /**
          * comprueba que no existan facturas en a_d_temp....
          * @param type $idCarrier
@@ -411,6 +438,9 @@ class AccountingDocumentTemp extends CActiveRecord
                 case '8':
                     return self::model()->findBySql("Select * from accounting_document_temp where id_type_accounting_document={$model->id_type_accounting_document} and id_accounting_document={$model->id_accounting_document} and doc_number='$model->doc_number'");
 //                    return self::model()->find("id_type_accounting_document=:tipo and id_accounting_document=:fact_number and doc_number=:doc_number",array(":=tipo"=>$model->id_type_accounting_document,":=fact_number"=>$model->id_accounting_document,":=doc_number"=>$model->doc_number));
+                    break;
+                case '16':case '17':
+                    return self::model()->find("id_carrier=:idCarrier and doc_number=:doc_number and id_type_accounting_document=:tipo and issue_date=:issue_date",array(":idCarrier"=>$model->id_carrier,":doc_number"=>$model->doc_number,":tipo"=>$model->id_type_accounting_document,":issue_date"=>$model->issue_date));
                     break;
             }
         } 
@@ -710,6 +740,30 @@ class AccountingDocumentTemp extends CActiveRecord
                     $model->confirm=1;
                     $model->id_currency=AccountingDocument::getBuscaMoneda($model->id_accounting_document);
                     $model->id_accounting_document_temp=NULL;
+                    break;
+                case 16:case 17:
+                    $model->from_date=NULL;
+                    $model->to_date=NULL;
+                    $model->email_received_date=NULL;
+                    $model->valid_received_date=NULL;
+                    $model->email_received_hour=NULL;
+                    $model->valid_received_hour=NULL;
+                    $model->sent_date=$model->issue_date;
+                    $model->id_accounting_document=NULL;
+                    $model->minutes=NULL;
+                    $model->min_etx=NULL;
+                    $model->min_carrier=NULL;
+                    $model->rate_etx=NULL;
+                    $model->rate_carrier=NULL;
+                    $model->id_destination_supplier=NULL;
+                    $model->id_destination=NULL;
+                    $model->select_dest_supplier=NULL;
+                    $model->input_dest_supplier=NULL;
+                    $model->id_accounting_document_temp=NULL;
+                    $model->amount=Utility::ComaPorPunto($model->amount);
+                    $model->note=Utility::snull($model->note);
+                    $model->id_carrier=Carrier::getCarrierLeader($model->carrier_groups);
+                    $model->confirm=1;
                     break;
             }
             return $model;

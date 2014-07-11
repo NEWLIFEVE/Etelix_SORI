@@ -78,6 +78,8 @@ class AccountingDocumentTempController extends Controller
 		$lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
 		$lista_NotCredEnv=AccountingDocumentTemp::lista_NotCredEnv(Yii::app()->user->id);
 		$lista_NotCredRec=AccountingDocumentTemp::lista_NotCredRec(Yii::app()->user->id);
+		$lista_dep_seg_pago=AccountingDocumentTemp::listaDepSegPago(Yii::app()->user->id);
+		$lista_dep_seg_cobro=AccountingDocumentTemp::listaDepSegCobro(Yii::app()->user->id);
 		
 
 		// Uncomment the following line if AJAX validation is needed
@@ -99,7 +101,9 @@ class AccountingDocumentTempController extends Controller
             'lista_DispRec'=>$lista_DispRec,
             'lista_DispEnv'=>$lista_DispEnv,
             'lista_NotCredEnv'=>$lista_NotCredEnv,
-            'lista_NotCredRec'=>$lista_NotCredRec
+            'lista_NotCredRec'=>$lista_NotCredRec,
+            'lista_dep_seg_pago'=>$lista_dep_seg_pago,
+            'lista_dep_seg_cobro'=>$lista_dep_seg_cobro
 		));
 	}
 

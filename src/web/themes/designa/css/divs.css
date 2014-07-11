@@ -686,6 +686,34 @@ width: 20%;
     background: silver;
     color: white;
 }
+/****DEPOSITOS DE SEGURIDAD PAGOS****/
+.lista_dep_seg_pago{
+    background: rgba(177, 146, 129, 1);
+    border-bottom-color: rgba(177, 146, 129, 1); 
+}
+.lista_dep_seg_pago td{
+    width: 8em;
+    height: 25px;
+}
+.lista_dep_seg_pago tr:hover{
+    background: rgba(177, 146, 129, 1);
+    color: white;   
+}
+/****DEPOSITOS DE SEGURIDAD COBROS****/
+.lista_dep_seg_cobro{
+    background: #9AB9A8;
+    border-bottom-color: #9AB9A8; 
+}
+.lista_dep_seg_cobro td{
+    width: 8em;
+    height: 25px;
+}
+.lista_dep_seg_cobro tr:hover{
+    background: #9AB9A8;
+    color: white;   
+}
+
+
 
 .tablaVistDocTemporales tr td input
 {
