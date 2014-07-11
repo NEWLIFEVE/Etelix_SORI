@@ -102,7 +102,6 @@ class LogController extends Controller
 			'model'=>$model,
 		));
 	}
-
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

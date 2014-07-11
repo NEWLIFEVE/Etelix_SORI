@@ -47,7 +47,6 @@ array(
         {
           echo "<li class='cargados'>".LogAction::getName($i)."</li>";
           $existe=true;
-        }
       }
       if(!$existe)
       {

@@ -236,7 +236,7 @@ class Reader
     * Funcion de carga de archivos hora
       * @return boolean
     */
-    public static function hora ($archivo)
+    public static function hora($archivo)
     {
     	 
   		 /**
@@ -244,6 +244,7 @@ class Reader
         */
     	//hora por mla cual inicia el archivo
     	   $actual=$archivo->excel->sheets[0]['cells'][5][1];
+
 //        $actual=0;
         $contador=0;
          //Cuantos segundos

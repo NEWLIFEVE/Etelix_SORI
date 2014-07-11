@@ -103,7 +103,6 @@ class Log extends CActiveRecord
                     'sort'=>array('defaultOrder'=>'date DESC, hour DESC'),
 		));
 	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -114,7 +113,6 @@ class Log extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
 	/**
 	* Encargada de registrar el evento pasado como id
 	*/
@@ -184,12 +182,27 @@ class Log extends CActiveRecord
 	*/
 	public static function existe($id,$date=null,$hour=null)
 	{
+		//echo "ID PARAMETRO: ".$id;
 		if($date==null) $date=date("Y-m-d");
 		if($hour==null) $hour=date("H:i:s");
+
 		$model=self::model()->find('id_log_action=:id AND date=:fecha AND hour<=:hora', array(':id'=>$id, ':fecha'=>$date, ':hora'=>$hour));
 		
 		if($model!=null){
 			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public static function name($id)
+	{
+		if($date==null) $date=date("Y-m-d");
+		if($hour==null) $hour=date("H:i:s");
+		$model=self::model()->find('id_log_action=:id AND date=:fecha AND hour<=:hora', array(':id'=>$id, ':fecha'=>$date, ':hora'=>$hour));
+		if($model!=null){
+			return $model;
 		}
 		else{
 			return false;
@@ -363,5 +376,8 @@ class Log extends CActiveRecord
 		return $cargados.$nocargados;
 	}
    
+
+
+
 
 }

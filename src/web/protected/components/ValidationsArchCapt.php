@@ -177,7 +177,6 @@ class ValidationsArchCapt
 	        {
 	            $key='External';
 	        }
-	
 	        if(Log::existe(LogAction::getLikeId('%'.$key.'%Preliminar%')))
 	        {
 	            if(Log::existe(LogAction::getLikeId('%'.$key.'%Definitivo%')))
@@ -204,17 +203,132 @@ class ValidationsArchCapt
     	{
     		$numero = explode("Hrs", $key);
 		    $numero = explode(" ", $numero[0]);
-		    //nombre deñ archivo para buscar su id 
+		    //nombre del archivo para buscar su id 
 		    $nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
 		    //nombre a mostrar en pantalla
 		    $nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
 		    //nombre archivo faltante anterior
 		    $horas=(int)$numero[2]-4;
 		    $nombre3="Ruta ".$numero[1]." ".$horas."Hrs";
-
  			$date=date('Y-m-d');
 
 		    $idActual= LogAction::getId($nombre);
+
+            if($idActual==LogAction::getId('Carga Ruta Internal 4GMT'))
+            {
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 4GMT')))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 8GMT')) 
+            {
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 8GMT'))==true))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 4GMT')))
+                {
+                   return true;
+                }
+                else
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' no se puede cargar porque <br>";
+                    self::$errorComment.="aun no se ha cargado el archivo '".$nombre3."'</h5> <br/> ";
+                    return false;      
+                }
+            }
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 12GMT')) 
+            {
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 12GMT'))==true))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 8GMT')))
+                {
+                   return true;
+                }
+                else
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' no se puede cargar porque <br>";
+                    self::$errorComment.="aun no se ha cargado el archivo '".$nombre3."'</h5> <br/> ";
+                    return false;      
+                }
+            }
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 16GMT')) 
+            {
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 16GMT'))==true))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 12GMT')))
+                {
+                   return true;
+                }
+                else
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' no se puede cargar porque <br>";
+                    self::$errorComment.="aun no se ha cargado el archivo '".$nombre3."'</h5> <br/> ";
+                    return false;      
+                }
+            }
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 20GMT')) 
+            {
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 20GMT'))==true))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 16GMT')))
+                {
+                   return true;
+                }
+                else
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' no se puede cargar porque <br>";
+                    self::$errorComment.="aun no se ha cargado el archivo '".$nombre3."'</h5> <br/> ";
+                    return false;      
+                }
+            }
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 24GMT')) 
+            {
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 24GMT'))==true))
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
+                    return false; 
+                }
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 20GMT')))
+                {
+                   return true;
+                }
+                else
+                {
+                    self::$error=self::ERROR_EXISTS;
+                    self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' no se puede cargar porque <br>";
+                    self::$errorComment.="aun no se ha cargado el archivo '".$nombre3."'</h5> <br/> ";
+                    return false;      
+                }
+            }
+             
+            /*
             if($idActual==Log::existe(LogAction::getId('Carga Ruta Internal 4GMT')))
             {
                 self::$error=self::ERROR_EXISTS;
@@ -294,7 +408,9 @@ class ValidationsArchCapt
                     return false;     
                 }
             }
+    */
     	}
+        return true;
     }
     
     /**
@@ -373,7 +489,6 @@ class ValidationsArchCapt
         $nuevoNombre=$primero.$segundo.$tercero;
         return $nuevoNombre;     
     }
-
     /**
 	* Retorna un arreglo con los nombres de las columnas que deberian tener los archivos
 	* @param $archivo string nombre del archivo que se va a consultar

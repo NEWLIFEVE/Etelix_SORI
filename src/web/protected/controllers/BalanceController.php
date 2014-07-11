@@ -422,6 +422,7 @@ class BalanceController extends Controller
 		$date=date('Y-m-d');
 		$yesterday=strtotime('-1 day',strtotime($date));
 		$yesterday=date('Y-m-d',$yesterday);
+
 		//capturo el nombre del usuario logueado
 		$user_carpeta_temp=Yii::app()->user->getState('username').'';
 		 
@@ -493,6 +494,7 @@ class BalanceController extends Controller
 							{
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
 						 		$var=Reader::hora($archivo);
+
 					    	}
 					   		if($var!="") 
 					   		{
@@ -501,6 +503,7 @@ class BalanceController extends Controller
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
 						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo);
+
 						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
 						     		{
 										// mando el string de horas que vienen en el excel para borrar las viejas
@@ -581,7 +584,7 @@ class BalanceController extends Controller
 			}
 		   	/********* resultado de la carga*************/
 			$resultado.=$exitos."</br>".$fallas."</div>";
-		   	$this->render('guardar',array('data'=>$resultado));
+		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
 		   	/********* resultado de la carga*************/
 		}	
 	}//fin actionGuardar
