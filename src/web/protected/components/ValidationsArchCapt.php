@@ -644,7 +644,7 @@ class ValidationsArchCapt
 		{
             $values=$var['values'];
             $sql="INSERT INTO balance(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;
-		}
+        }
         elseif($tipo=='hora')
 		{ 
             $values=$var['regHora'];
@@ -654,6 +654,7 @@ class ValidationsArchCapt
 			    
 		if($command->execute())
         {
+            echo "guarde";
             self::$error=self::ERROR_NONE;
             return true;
         }
@@ -670,6 +671,7 @@ class ValidationsArchCapt
 	 */
     public static function deleteArchTempDayHours($stringDataPreliminary,$tipo)
     {
+
     	if($tipo=='dia')
 		{
 	    	// borro los registros con el string formado anteriormente
@@ -683,6 +685,7 @@ class ValidationsArchCapt
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute())
 		{
+            echo "borre";
             self::$error=self::ERROR_NONE;
 		}
 	} 
