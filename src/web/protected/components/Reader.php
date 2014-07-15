@@ -30,7 +30,6 @@ class Reader
         //uso esta codificacion ya que dio problemas usando utf-8 directamente
         $this->excel->setOutputEncoding('ISO-8859-1');
         $this->excel->read($ruta);
-    	
     }
 
     /**
@@ -66,7 +65,6 @@ class Reader
                                 $valores['id_destination_int']='NULL';
                                 $id_destination_int=$valores['id_destination_int'];
                                 $id_destination=$valores['id_destination'];
-                                
                             }
                             else
                             {
@@ -220,13 +218,16 @@ class Reader
             if($i<$archivo->excel->sheets[0]['numRows'])
             {
             	$values.=",";
-             }
+            }
         }//fin de for de $i
-        if( $values!=""){
-          $var['values']=$values;
-          $var['id_destination']=$id_destination;
-          $var['id_destination_int']=$id_destination_int;
-        }else{
+        if($values!="")
+        {
+            $var['values']=$values;
+            $var['id_destination']=$id_destination;
+            $var['id_destination_int']=$id_destination_int;
+        }
+        else
+        {
         	$var="";
         }
         return $var;
@@ -234,26 +235,23 @@ class Reader
 
     /**
     * Funcion de carga de archivos hora
-      * @return boolean
+    * @return boolean
     */
     public static function hora($archivo)
     {
-    	 
-  		 /**
+        /**
         * Valido la estructura de horas
         */
     	//hora por mla cual inicia el archivo
-    	   $actual=$archivo->excel->sheets[0]['cells'][5][1];
-
-//        $actual=0;
+    	$actual=$archivo->excel->sheets[0]['cells'][5][1];
         $contador=0;
-         //Cuantos segundos
+        //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
         $segundos=$regAprox/2.8;
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
-        for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
+        for($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
         { 
             if($archivo->excel->sheets[0]['cells'][$i][1]!="Total" && $archivo->excel->sheets[0]['cells'][$i][1]!="Date" && $archivo->excel->sheets[0]['cells'][$i][1]!="Hour")
             {
@@ -292,10 +290,10 @@ class Reader
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
-//        ini_set("memory_limit","128M");
+        //ini_set("memory_limit","128M");
 
         
-      /**
+        /**
         * Verifico que la fecha del archivo sea correcta
         */
         $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
@@ -471,26 +469,21 @@ class Reader
                             $valuesNew.="'".$name_supplier."',";
                             $valuesNew.="'".$name_customer."',";
                             $valuesNew.="'".$name_destination."')";
-                             break;
-                   
-		            
-                 }
-        
-           
-          }
-          if($i<$archivo->excel->sheets[0]['numRows']-1)
-		   {
-		     $valuesNew.=",";
-	       }  
-	 
- 
+                            break;
+                }
+            }
+            if($i<$archivo->excel->sheets[0]['numRows']-1)
+        	{
+                $valuesNew.=",";
+            }
         }
-      if( $valuesNew!=""){
-          $var['regHora']=$valuesNew;
-           
-        }else{
-          $var="";
-        
+        if($valuesNew!="")
+        {
+            $var['regHora']=$valuesNew;
+        }
+        else
+        {
+            $var="";
         }
         return $var;
     }

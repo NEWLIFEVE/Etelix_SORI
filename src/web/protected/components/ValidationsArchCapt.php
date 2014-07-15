@@ -654,7 +654,6 @@ class ValidationsArchCapt
 			    
 		if($command->execute())
         {
-            echo "guarde";
             self::$error=self::ERROR_NONE;
             return true;
         }
@@ -685,7 +684,6 @@ class ValidationsArchCapt
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute())
 		{
-            echo "borre";
             self::$error=self::ERROR_NONE;
 		}
 	} 

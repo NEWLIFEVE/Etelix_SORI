@@ -217,24 +217,6 @@ public function actionGuardartemp()
 					'Carga Ruta External'=>'Ruta External Diario'
 					);
 			}
-			elseif($tipo=='hora')
-			{
-				//Nombres opcionales para los archivos horas
- 		    	$namesArch=array(
- 		    		'Carga Ruta Internal 4GMT'=>'Ruta Internal 4Hrs',
- 		    		'Carga Ruta Internal 8GMT'=>'Ruta Internal 8Hrs',
- 		    		'Carga Ruta Internal 12GMT'=>'Ruta Internal 12Hrs',
-					'Carga Ruta Internal 16GMT'=>'Ruta Internal 16Hrs',
-					'Carga Ruta Internal 20GMT'=>'Ruta Internal 20Hrs',
-					'Carga Ruta Internal 24GMT'=>'Ruta Internal 24Hrs',
-					'Carga Ruta External 4GMT'=>'Ruta External 4Hrs',
-					'Carga Ruta External 8GMT'=>'Ruta External 8Hrs',
-					'Carga Ruta External 12GMT'=>'Ruta External 12Hrs',
-					'Carga Ruta External 16GMT'=>'Ruta External 16Hrs',
-					'Carga Ruta External 20GMT'=>'Ruta External 20Hrs',
-					'Carga Ruta External 24GMT'=>'Ruta External 24Hrs'
-					);
-			}
 			//Primero: verifico que archivos estan
 		  	$existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
 		  	$countExistentes=0;
@@ -253,12 +235,9 @@ public function actionGuardartemp()
 				   	//validaciones 
 				   //	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	//{
-
+				 		// se toma la fecha del archivo. 
 				 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
-
 				 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
-
-				 		echo "---> ".$date;
 
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
 					 	{
@@ -268,12 +247,7 @@ public function actionGuardartemp()
 					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
 						 		$var=Reader::diario($date, $nombre, $archivo);
 					   		}
-					   		elseif($tipo=='hora')
-							{
-
-						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
-						 		$var=Reader::hora($archivo);
-					    	}
+		
 					   		if($var!="") 
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
@@ -294,14 +268,7 @@ public function actionGuardartemp()
 						 	     		{
 								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
 							     		}
-							     		elseif($tipo=='hora')
-							      		{
-							        		$numero = explode("Hrs", $nombre);
-				     						$numero = explode(" ", $numero[0]);
-				   							$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
-				   							$nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
-								    		Log::registrarLog(LogAction::getId($nombre));
-										}
+						
 										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
 							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
 							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
@@ -320,11 +287,7 @@ public function actionGuardartemp()
 					    $nombres[]=$nombre;
 			    		$nombreArc=implode(",",  $nombres); 
 					}
-					elseif($tipo=='hora')
-					{
-						$nombres[]=$nombre2;
-					    $nombreArc=implode(" , ",  $nombres); 
-					}
+
 				}
 
 				if($this->error!=ValidationsArchCapt::$error)
@@ -343,17 +306,6 @@ public function actionGuardartemp()
 						{
 							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
 						}     	
-					}
-				  	elseif($tipo=='hora')
-				  	{
-				  		if($countExistentes==1)
-				  		{
-				  			$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";
-				  	    }
-				  	    elseif($countExistentes>=1)
-				  	    {
-							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
-						}
 					}
 				}
 			 
