@@ -1,5 +1,5 @@
 <?php
-echo CHtml::beginForm('/balance/guardartemp','post',array('name'=>'monto'));
+echo CHtml::beginForm('/balance/Guardartemp','post',array('name'=>'monto'));
 ?>
 <h1>Carga de Archivos</h1>
 <div id="archivo">
@@ -39,7 +39,7 @@ array(
   <h3>ESTATUS CARGA</h3>
   <p>Archivos Cargados:</p>
   <ul>
-      <?php
+      <?php/*
       $existe=false;
       for ($i=5; $i<=28; $i++)
       { 
@@ -51,7 +51,7 @@ array(
       if(!$existe)
       {
         echo "<li class='nocargados'>No se han cargado archivos</li>";
-      }
+      }*/
       ?>
   </ul>
 </div>

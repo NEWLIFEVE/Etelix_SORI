@@ -163,7 +163,6 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
-
 	/**
 	 *
 	 */
@@ -187,66 +186,135 @@ class BalanceController extends Controller
 	/**
 	 *
 	 */
+
+
+
+	
 	public function actionGuardartemp()
 	{
-		//Delclarando variables utiles para el codigo
-		$ruta=Yii::getPathOfAlias('webroot.uploads.temp').DIRECTORY_SEPARATOR;
+		
+		$date=date('Y-m-d');
+		$yesterday=strtotime('-1 day',strtotime($date));
+		$yesterday=date('Y-m-d',$yesterday);
+
+		//capturo el nombre del usuario logueado
+		$user_carpeta_temp=Yii::app()->user->getState('username').'';
+		 
+		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
+		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
         $fallas="<h3> Fallas</h3>";
-		//instancio el componente
-		$this->lector=new Reader;
-		//Nombres opcionales para los archivos diarios
-		$diarios=array(
-			'Carga Ruta Internal'=>'Ruta Internal Diario',
-			'Carga Ruta External'=>'Ruta External Diario'
-			);
 
-		//Primero: verifico que archivos están
-		$existentes=$this->lector->getNombreArchivos($ruta,$diarios,array('xls','XLS'));
-		if(count($existentes)<=0)
+        //Verfico si el arreglo post esta seteado
+		if(isset($_POST['tipo']))
 		{
-			$this->lector->error=4;
-			$this->lector->errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de diario,<br> verifique que el nombre de los archivos sea Ruta Internal y Ruta External.<h5>";
-		}
-		//Si la primera condicion se cumple, no deberian haber errores
-		if($this->lector->error==0)
-		{
-			foreach($existentes as $key => $diario)
-			{
-				$this->lector->setName($diario);
-				//Defino variables internas
-				$this->lector->define($diario);
-				//cargo el archivo en memoria
-				$this->lector->carga($ruta.$diario);
-				//Tercero: verifico la fecha que sea correcta
-				$this->lector->fecha=Utility::formatDate($this->lector->excel->sheets[0]['cells'][1][4]);
-				//Cuarto: valido el orden de las columnas
-				$this->lector->validarColumnas($this->lista($diario));
-				if($this->lector->error==0)
-				{
-					$this->lector->diario();
+			$tipo=$_POST['tipo'];
+				//Nombres opcionales para los archivos diarios
+				$namesArch=array(
+					'Carga Ruta Internal'=>'Ruta Internal Diario',
+					'Carga Ruta External'=>'Ruta External Diario'
+					);
+			
+			//Primero: verifico que archivos estan
+		  	$existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
+		  	$countExistentes=0;
+		  	//Si la primera condicion se cumple, no deberian haber errores
+		  	if($this->error==ValidationsArchCapt::ERROR_NONE)
+		  	{
+		  		$nombres=array();
+			 	$nombreArc="";
+				foreach($existentes as $key => $nombre)
+			    {
+			    	$countExistentes=$countExistentes+1;	
+				 	//cargo el archivo en memoria
+				 	$ruta=$path.$nombre;
+				 	$archivo=new Reader($ruta);
+
+				   	//validaciones 
+				 	if(ValidationsArchCapt::validarColumnas(ValidationsArchCapt::lista($nombre,$tipo),$path,$nombre,$archivo,$tipo))
+			   		{
+				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
+					 	{
+					   		$var=array();
+					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+						 		$var=Reader::diario($yesterday, $nombre, $archivo);
+					   		
+							 if($var!="") 
+					   		{	
+		                 		//Si se genero el string nuevo, guardo el log
+					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+					     		{	 
+					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo);
+
+						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
+						     		{
+										// mando el string de horas que vienen en el excel para borrar las viejas
+							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+						     		}
+						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
+						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+						   			{
+							   			if($tipo=='dia')
+						 	     		{
+								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
+							     		}
+										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
+							     		{
+								   			// mando el string preliminar para eliminar la data de diario
+								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+							     		}
+						   			}
+					     		}
+					    	}
+						}
+					}
+			
+					if($tipo=='dia')
+					{
+					    $nombres[]=$nombre;
+			    		$nombreArc=implode(",",  $nombres); 
+					}
 				}
-				if($this->lector->error>0)
+
+				if($this->error!=ValidationsArchCapt::$error)
 				{
-					$fallas.=$this->lector->errorComment;
+					$fallas.=ValidationsArchCapt::$errorComment;
 				}
-				if($this->lector->error==0)
+				if($this->error==ValidationsArchCapt::$error)
 				{
-					$exitos.="<h5 class='cargados'> El arhivo '".$diario."' se guardo con exito </h5> <br/>";
+			
+						if($countExistentes==1)
+						{
+							$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
+						}
+						elseif($countExistentes>=1)
+						{
+							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+						}     	
+					
 				}
-				$this->lector->error=0;
-				$this->lector->errorComment=NULL;
+			 
+				$this->error=ValidationsArchCapt::ERROR_NONE;
+				$this->errorComment=NULL;
 			}
-		}
-		if($this->lector->error>0)
-		{
-			$fallas.=$this->lector->errorComment;
-		}
-		$resultado.=$exitos."</br>".$fallas."</div>";
-       	$this->render('guardar',array('data'=>$resultado));
+		   	/********* resultado de la carga*************/
+		 	$resultado.=$exitos."</br>".$fallas."</div>";
+		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
+		   	
+		   	/********* resultado de la carga*************/
+		
+		}	
 	}
+
+
+		
+
+
 
 	/**
 	 * Muestra el detalle de un balance
