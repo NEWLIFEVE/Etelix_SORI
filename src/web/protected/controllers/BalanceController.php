@@ -163,6 +163,7 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
+
 	/**
 	 *
 	 */
@@ -186,20 +187,11 @@ class BalanceController extends Controller
 	/**
 	 *
 	 */
-
-
-
-	
 	public function actionGuardartemp()
 	{
-		
-		$date=date('Y-m-d');
-		$yesterday=strtotime('-1 day',strtotime($date));
-		$yesterday=date('Y-m-d',$yesterday);
-
-		//capturo el nombre del usuario logueado
-		$user_carpeta_temp=Yii::app()->user->getState('username').'';
-		 
+		ini_set('max_execution_time', 2000);
+        ini_set('memory_limit', -1);
+				 
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
 		
 		//html preparado para mostrar resultados
@@ -310,11 +302,6 @@ class BalanceController extends Controller
 		
 		}	
 	}
-
-
-		
-
-
 
 	/**
 	 * Muestra el detalle de un balance
@@ -492,9 +479,9 @@ class BalanceController extends Controller
 		$yesterday=date('Y-m-d',$yesterday);
 
 		//capturo el nombre del usuario logueado
-		$user_carpeta_temp=Yii::app()->user->getState('username').'';
+		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		 
-		$path=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
+		$path=Yii::getPathOfAlias('webroot')."/uploads/".$userTemporaryFolder."/";
 		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
@@ -505,7 +492,6 @@ class BalanceController extends Controller
 		if(isset($_POST['tipo']))
 		{
 			$tipo=$_POST['tipo'];
-
 			if($tipo=='dia')
 			{
 				//Nombres opcionales para los archivos diarios
