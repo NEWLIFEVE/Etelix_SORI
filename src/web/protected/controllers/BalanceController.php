@@ -66,8 +66,7 @@ class BalanceController extends Controller
 					'guardartemp'
 					),
 				'users'=>array(
-					'fabianar',
-					'edwin'
+					'fabianar'
 					)
 				),
 			array('deny',  // deny all users
@@ -569,7 +568,6 @@ public function actionGuardartemp()
 							{
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
 						 		$var=Reader::hora($archivo,$nombre);
-						 		var_dump($var);
 					    	}
 
 					   		if($var!="") 
@@ -578,15 +576,15 @@ public function actionGuardartemp()
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var[0],$tipo,$archivo,$nombre);
 
-						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
-						     		{
-										// mando el string de horas que vienen en el excel para borrar las viejas
-							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-						     		}
+						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo,$var['hora']);	
+						    //  		if(($stringDataPreliminary!="")&&($tipo=='hora'))
+						    //  		{
+										// // mando el string de horas que vienen en el excel para borrar las viejas
+							   // 			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+						    //  		}
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
-						   			if(ValidationsArchCapt::saveDataArchDayHours($var[0],$tipo)) 
+						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 						   			{
 							   			if($tipo=='dia')
 						 	     		{
@@ -597,18 +595,22 @@ public function actionGuardartemp()
 							        		$numero = explode("Hrs", $nombre);
 				     						$numero = explode(" ", $numero[0]);
 				   							//$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."Hrs";
-				   							$nombre="Carga Ruta ".$numero[1]." ".$var[1]."Hrs";
+				   							$nombre="Carga Ruta ".$numero[1]." ".$var['hora']."Hrs";
 				   							$nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
 				   							//echo $nombre;
 								    		Log::registrarLog(LogAction::getId($nombre));
 										}
 										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
 							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
-							     		{
+							     /*		if(($stringDataPreliminary!="")&&($tipo=='dia'))
+							     		{*/
 								   			// mando el string preliminar para eliminar la data de diario
-								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-							     		}
+								   			if($stringDataPreliminary!="") 
+								   			{
+								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
+								   			}
+								   			
+							     	/*	}*/
 						   			}
 					     		}
 					    	}

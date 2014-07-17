@@ -485,25 +485,21 @@ class Reader
 
            }
         }
-
-
-         $valuesNew=substr($valuesNew, 0, - 1); 
-
-
-      if( $valuesNew!=""){
+        $barra = substr($valuesNew, -1, 1);
+        if($barra==",") 
+        {
+            $valuesNew=substr($valuesNew, 0, - 1);     
+        }
+       if($valuesNew!="")
+       {
           $var['regHora']=$valuesNew;
+          $var['hora']=$time;
            
         }else{
           $var="";
-        
         }
-        
         return $var;
     }
-
-
-
-
 
 
     /*
