@@ -496,18 +496,13 @@ class Reader
 
       if( $valuesNew!=""){
           $var['regHora']=$valuesNew;
+          $var['hora']=$time;
            
         }else{
           $var="";
         
         }
-
-        $todo=array();
-        array_push($todo,$var);
-        array_push($todo,$time);
-
-
-        return $todo;
+        return $var;
     }
 
     /*

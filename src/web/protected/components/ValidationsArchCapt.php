@@ -559,7 +559,7 @@ class ValidationsArchCapt
       * @param array $var
       * @return string 
       */
-	public static function loadArchTemp($fecha,$var,$tipo,$archivo)
+	public static function loadArchTemp($fecha,$var,$tipo,$archivo,$maxHour)
     {
     	if($tipo=='dia')
     	{
@@ -601,34 +601,34 @@ class ValidationsArchCapt
       	}
         elseif($tipo=='hora')
     	{
-		     	
+            if($maxHour>3)
+            {
+                $top=$maxHour-4;
+                $botton=$maxHour-7;
+            }
+            else
+            {
+                $top=3;
+                $botton=0;
+            }
 		    //hora inicial para buscar y borrar para luego agregar las actualizadas
 	        $horas=$archivo->excel->sheets[0]['cells'][5][1];
-
 	        $date=date('Y-m-d');
-	        $total=0;
-		    $total= BalanceTime::model()->count('date_balance_time=:fecha',array(':fecha'=>$date));
-		   
-		    if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
-		    {
-		    	$results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora ',array(':fecha'=>$date, ':hora'=>$horas));
-		        $v=array();
-				$values="";
-			  	foreach($results as $x=>$row)
+	    	$results=BalanceTime::model()->findAll('date_balance_time=:fecha AND time>=:botton AND time<=:top ',array(':fecha'=>$date, ':botton'=>$botton, ':top'=>$top));
+	        $v=array();
+			$values="";
+            if($results!=null)
+            {
+                foreach($results as $x=>$row)
                 {
-				    $v[]=$row->id;
-				}
-
-				$values=implode(",", $v);  //convierto el array en un string con los id separados por (,)
-				if($values=="")
-                {
-                    $values="";
+                    $v[]=$row->id;
                 }
-			}
+                $values=implode(",", $v); 
+            }
             else
             {
                 $values="";
-			}
+            }
 			return  $values;
 		}
  	}
