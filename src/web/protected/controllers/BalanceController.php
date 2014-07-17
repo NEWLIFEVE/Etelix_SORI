@@ -569,6 +569,7 @@ public function actionGuardartemp()
 							{
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
 						 		$var=Reader::hora($archivo,$nombre);
+						 		var_dump($var);
 					    	}
 
 					   		if($var!="") 
@@ -577,7 +578,7 @@ public function actionGuardartemp()
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var[0],$tipo,$archivo);
+						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var[0],$tipo,$archivo,$nombre);
 
 						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
 						     		{

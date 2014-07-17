@@ -486,13 +486,9 @@ class Reader
            }
         }
 
-        //Last guarda el ultimo caracter del string
-        $last = substr($valuesNew, -1, 1);
-        // echo "ANTES: ".$last;
-        if($last==",")
-        {
-            $valuesNew=substr($valuesNew, 0, - 1);
-        }
+
+         $valuesNew=substr($valuesNew, 0, - 1); 
+
 
       if( $valuesNew!=""){
           $var['regHora']=$valuesNew;
@@ -501,14 +497,14 @@ class Reader
           $var="";
         
         }
-
-        $todo=array();
-        array_push($todo,$var);
-        array_push($todo,$time);
-
-
-        return $todo;
+        
+        return $var;
     }
+
+
+
+
+
 
     /*
     * Funcion de carga de archivos de rerate

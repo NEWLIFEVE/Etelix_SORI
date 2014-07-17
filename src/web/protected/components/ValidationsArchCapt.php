@@ -559,7 +559,7 @@ class ValidationsArchCapt
       * @param array $var
       * @return string 
       */
-	public static function loadArchTemp($fecha,$var,$tipo,$archivo)
+	public static function loadArchTemp($fecha,$var,$tipo,$archivo,$nombre)
     {
     	if($tipo=='dia')
     	{
@@ -601,19 +601,40 @@ class ValidationsArchCapt
       	}
         elseif($tipo=='hora')
     	{
-		     	
-		    //hora inicial para buscar y borrar para luego agregar las actualizadas
-	        $horas=$archivo->excel->sheets[0]['cells'][5][1];
-
+		  
 	        $date=date('Y-m-d');
 	        $total=0;
 		    $total= BalanceTime::model()->count('date_balance_time=:fecha',array(':fecha'=>$date));
 		   
 		    if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
 		    {
-		    	$results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora ',array(':fecha'=>$date, ':hora'=>$horas));
-		        $v=array();
-				$values="";
+                $v=array();
+                $values="";
+                //se verifica que tipo de archivo se esta subiendo para realizar la consulta adecuada
+                if(strcmp($nombre,"Ruta Internal 7Hrs.xls")==0)
+                {
+                    // se trae todo de la tabla
+                    $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora ',array(':fecha'=>$date, ':hora'=>$horas));
+                }elseif(strcmp($nombre,"Ruta Internal 11Hrs.xls")==0) 
+                {
+                    $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora and time<=:hora2 ',array(':fecha'=>$date, ':hora'=>4, 'hora2'=>7));
+                }elseif(strcmp($nombre,"Ruta Internal 15Hrs.xls")==0) 
+                {
+                    $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora and time<=:hora2 ',array(':fecha'=>$date, ':hora'=>8, 'hora2'=>11));
+                }elseif(strcmp($nombre,"Ruta Internal 19Hrs.xls")==0) 
+                {
+                    $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora and time<=:hora2 ',array(':fecha'=>$date, ':hora'=>12, 'hora2'=>15));
+                }elseif(strcmp($nombre,"Ruta Internal 23Hrs.xls")==0) 
+                {
+                    $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora and time<=:hora2 ',array(':fecha'=>$date, ':hora'=>14, 'hora2'=>19));
+                }else
+                {
+                  //hora inicial para buscar y borrar para luego agregar las actualizadas, solo en el caso
+                  // de que sea el de 3Hrs.
+                  $horas=$archivo->excel->sheets[0]['cells'][5][1];
+                  $results=BalanceTime::model()->findAll('date_balance_time=:fecha and time>=:hora ',array(':fecha'=>$date, ':hora'=>$horas));
+                }
+                     
 			  	foreach($results as $x=>$row)
                 {
 				    $v[]=$row->id;
