@@ -23,13 +23,14 @@ class Reader
     function __construct($ruta)
     {
        //importo la extension
-    	Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
+        Yii::import("ext.Excel.Spreadsheet_Excel_Reader");
         //oculto errores
         error_reporting(E_ALL ^ E_NOTICE);
-		$this->excel = new Spreadsheet_Excel_Reader();
+        $this->excel = new Spreadsheet_Excel_Reader();
         //uso esta codificacion ya que dio problemas usando utf-8 directamente
         $this->excel->setOutputEncoding('ISO-8859-1');
         $this->excel->read($ruta);
+        
     }
 
     /**
@@ -39,13 +40,13 @@ class Reader
     */
     public static function diario($fecha_diario,$nombre,$archivo)
     {
-    	$values='';
-    	$var=array();
-	    ini_set('max_execution_time', 1200);
+        $values='';
+        $var=array();
+        ini_set('max_execution_time', 1200);
 
-		for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
+        for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
         {
-			$valores=array();
+            $valores=array();
             for($j=1;$j<=$archivo->excel->sheets[0]['numCols'];$j++)
             {
                 switch($j)
@@ -58,17 +59,18 @@ class Reader
                         }
                         else
                         {
-                        	if(ValidationsArchCapt::define($nombre)=="external")
+                            if(ValidationsArchCapt::define($nombre)=="external")
                             {
-                            	//Obtengo el id de destino externo
+                                //Obtengo el id de destino externo
                                 $valores['id_destination']=Destination::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                                 $valores['id_destination_int']='NULL';
                                 $id_destination_int=$valores['id_destination_int'];
                                 $id_destination=$valores['id_destination'];
+                                
                             }
                             else
                             {
-                            	//obtengo el id del destino interno
+                                //obtengo el id del destino interno
                                 $valores['id_destination_int']=DestinationInt::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                                 $valores['id_destination']='NULL';
                                 $id_destination_int=$valores['id_destination_int'];
@@ -183,7 +185,7 @@ class Reader
                         $valores['margin']=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                     case 25:
-                    	$values.="(";
+                        $values.="(";
                         $values.="'".$fecha_diario."',";
                         $values.=$valores['minutes'].",";
                         $values.=$valores['acd'].",";
@@ -217,41 +219,40 @@ class Reader
             }//fin de for de $j
             if($i<$archivo->excel->sheets[0]['numRows'])
             {
-            	$values.=",";
-            }
+                $values.=",";
+             }
         }//fin de for de $i
-        if($values!="")
-        {
-            $var['values']=$values;
-            $var['id_destination']=$id_destination;
-            $var['id_destination_int']=$id_destination_int;
-        }
-        else
-        {
-        	$var="";
+        if( $values!=""){
+          $var['values']=$values;
+          $var['id_destination']=$id_destination;
+          $var['id_destination_int']=$id_destination_int;
+        }else{
+            $var="";
         }
         return $var;
-	}
+    }
 
     /**
     * Funcion de carga de archivos hora
-    * @return boolean
+      * @return boolean
     */
-    public static function hora($archivo)
-    {
-        /**
+ 
+        public static function hora ($archivo)
+        {
+         /**
         * Valido la estructura de horas
         */
-    	//hora por mla cual inicia el archivo
-    	$actual=$archivo->excel->sheets[0]['cells'][5][1];
+        //hora por mla cual inicia el archivo
+           $actual=$archivo->excel->sheets[0]['cells'][5][1];
+//        $actual=0;
         $contador=0;
-        //Cuantos segundos
+         //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
         $segundos=$regAprox/2.8;
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
-        for($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
+        for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
         { 
             if($archivo->excel->sheets[0]['cells'][$i][1]!="Total" && $archivo->excel->sheets[0]['cells'][$i][1]!="Date" && $archivo->excel->sheets[0]['cells'][$i][1]!="Hour")
             {
@@ -290,10 +291,10 @@ class Reader
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
-        //ini_set("memory_limit","128M");
+//        ini_set("memory_limit","128M");
 
         
-        /**
+      /**
         * Verifico que la fecha del archivo sea correcta
         */
         $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
@@ -301,7 +302,7 @@ class Reader
         * Comienzo a leer el archivo
         */
         $valuesNew='';
-    	$var=array();
+        $var=array();
         for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
         {
             for($j=1;$j<=$archivo->excel->sheets[0]['numCols'];$j++)
@@ -329,7 +330,9 @@ class Reader
                         }
                         else
                         {
-                            $name_destination=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            // $name_destination=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            $name_destination=Destination::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
+                          
                         }
                         break;
                     case 3:
@@ -342,7 +345,9 @@ class Reader
                         else
                         {
                             //Aqui encodeo el nombre del carrier a utf-8
-                            $name_customer=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            // $name_customer=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            $name_customer=Carrier::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
+
                         }
                         break;
                     case 4:
@@ -353,7 +358,9 @@ class Reader
                         }
                         else
                         {
-                            $name_supplier=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            // $name_supplier=utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]);
+                            $name_supplier=Carrier::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
+                            
                         }
                         break;
                     case 5;
@@ -440,7 +447,7 @@ class Reader
                         $margin=Utility::notNull($archivo->excel->sheets[0]['cellsInfo'][$i][$j]['raw']);
                         break;
                      case 26;
-                   			$valuesNew.="(";
+                            $valuesNew.="(";
                             $valuesNew.="'".$date_balance_time."',";
                             $valuesNew.=$time.",";
                             $valuesNew.=$minutes.",";
@@ -469,23 +476,38 @@ class Reader
                             $valuesNew.="'".$name_supplier."',";
                             $valuesNew.="'".$name_customer."',";
                             $valuesNew.="'".$name_destination."')";
-                            break;
-                }
-            }
-            if($i<$archivo->excel->sheets[0]['numRows']-1)
-        	{
-                $valuesNew.=",";
-            }
+                             break;  
+                 }
+          }
+          if($i<$archivo->excel->sheets[0]['numRows']-1)
+           {
+             $valuesNew.=",";
+
+           }
         }
-        if($valuesNew!="")
+
+        //Last guarda el ultimo caracter del string
+        $last = substr($valuesNew, -1, 1);
+        // echo "ANTES: ".$last;
+        if($last==",")
         {
-            $var['regHora']=$valuesNew;
+            $valuesNew=substr($valuesNew, 0, - 1);
         }
-        else
-        {
-            $var="";
+
+      if( $valuesNew!=""){
+          $var['regHora']=$valuesNew;
+           
+        }else{
+          $var="";
+        
         }
-        return $var;
+
+        $todo=array();
+        array_push($todo,$var);
+        array_push($todo,$time);
+
+
+        return $todo;
     }
 
     /*

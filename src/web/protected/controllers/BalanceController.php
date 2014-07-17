@@ -187,7 +187,6 @@ class BalanceController extends Controller
 	/**
 	 *
 	 */
-
 public function actionGuardartemp()
 	{
 		$date=date('Y-m-d');
@@ -525,18 +524,18 @@ public function actionGuardartemp()
 			{
 				//Nombres opcionales para los archivos horas
  		    	$namesArch=array(
- 		    		'Carga Ruta Internal 4GMT'=>'Ruta Internal 4Hrs',
- 		    		'Carga Ruta Internal 8GMT'=>'Ruta Internal 8Hrs',
- 		    		'Carga Ruta Internal 12GMT'=>'Ruta Internal 12Hrs',
-					'Carga Ruta Internal 16GMT'=>'Ruta Internal 16Hrs',
-					'Carga Ruta Internal 20GMT'=>'Ruta Internal 20Hrs',
-					'Carga Ruta Internal 24GMT'=>'Ruta Internal 24Hrs',
+ 		    		'Carga Ruta Internal 3GMT'=>'Ruta Internal 3Hrs',
+ 		    		'Carga Ruta Internal 7GMT'=>'Ruta Internal 7Hrs',
+ 		    		'Carga Ruta Internal 11GMT'=>'Ruta Internal 11Hrs',
+					'Carga Ruta Internal 15GMT'=>'Ruta Internal 15Hrs',
+					'Carga Ruta Internal 19GMT'=>'Ruta Internal 19Hrs',
+					'Carga Ruta Internal 23GMT'=>'Ruta Internal 23Hrs',
 					'Carga Ruta External 4GMT'=>'Ruta External 4Hrs',
 					'Carga Ruta External 8GMT'=>'Ruta External 8Hrs',
 					'Carga Ruta External 12GMT'=>'Ruta External 12Hrs',
 					'Carga Ruta External 16GMT'=>'Ruta External 16Hrs',
 					'Carga Ruta External 20GMT'=>'Ruta External 20Hrs',
-					'Carga Ruta External 24GMT'=>'Ruta External 24Hrs'
+					'Carga Ruta External 24GMT'=>'Ruta External 23Hrs'
 					);
 			}
 			//Primero: verifico que archivos estan
@@ -554,6 +553,7 @@ public function actionGuardartemp()
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
 
+				 	//echo "NOMBRE: ".$nombre;
 				   	//validaciones 
 				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	{
@@ -567,11 +567,8 @@ public function actionGuardartemp()
 					   		}
 					   		elseif($tipo=='hora')
 							{
-
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
-						 		$var=Reader::hora($archivo);
-
-
+						 		$var=Reader::hora($archivo,$nombre);
 					    	}
 
 					   		if($var!="") 
@@ -580,7 +577,7 @@ public function actionGuardartemp()
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo);
+						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var[0],$tipo,$archivo);
 
 						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
 						     		{
@@ -588,7 +585,7 @@ public function actionGuardartemp()
 							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
 						     		}
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
-						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+						   			if(ValidationsArchCapt::saveDataArchDayHours($var[0],$tipo)) 
 						   			{
 							   			if($tipo=='dia')
 						 	     		{
@@ -598,8 +595,10 @@ public function actionGuardartemp()
 							      		{
 							        		$numero = explode("Hrs", $nombre);
 				     						$numero = explode(" ", $numero[0]);
-				   							$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
+				   							//$nombre="Carga Ruta ".$numero[1]." ".$numero[2]."Hrs";
+				   							$nombre="Carga Ruta ".$numero[1]." ".$var[1]."Hrs";
 				   							$nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
+				   							//echo $nombre;
 								    		Log::registrarLog(LogAction::getId($nombre));
 										}
 										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 

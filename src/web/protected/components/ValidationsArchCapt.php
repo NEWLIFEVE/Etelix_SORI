@@ -204,7 +204,7 @@ class ValidationsArchCapt
     		$numero = explode("Hrs", $key);
 		    $numero = explode(" ", $numero[0]);
 		    //nombre del archivo para buscar su id 
-		    $nombre="Carga Ruta ".$numero[1]." ".$numero[2]."GMT";
+		    $nombre="Carga Ruta ".$numero[1]." ".$numero[2]."Hrs";
 		    //nombre a mostrar en pantalla
 		    $nombre2="Ruta ".$numero[1]." ".$numero[2]."Hrs";
 		    //nombre archivo faltante anterior
@@ -214,9 +214,9 @@ class ValidationsArchCapt
 
 		    $idActual= LogAction::getId($nombre);
 
-            if($idActual==LogAction::getId('Carga Ruta Internal 4GMT'))
+            if($idActual==LogAction::getId('Carga Ruta Internal 3Hrs'))
             {
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 4GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 3Hrs')))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
@@ -227,15 +227,15 @@ class ValidationsArchCapt
                     return true;
                 }
             }
-            elseif($idActual==LogAction::getId('Carga Ruta Internal 8GMT')) 
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 7Hrs')) 
             {
-                if((Log::existe(LogAction::getId('Carga Ruta Internal 8GMT'))==true))
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 7Hrs'))==true))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
                     return false; 
                 }
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 4GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 3Hrs')))
                 {
                    return true;
                 }
@@ -247,15 +247,15 @@ class ValidationsArchCapt
                     return false;      
                 }
             }
-            elseif($idActual==LogAction::getId('Carga Ruta Internal 12GMT')) 
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 11Hrs')) 
             {
-                if((Log::existe(LogAction::getId('Carga Ruta Internal 12GMT'))==true))
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 11Hrs'))==true))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
                     return false; 
                 }
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 8GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 7Hrs')))
                 {
                    return true;
                 }
@@ -267,15 +267,15 @@ class ValidationsArchCapt
                     return false;      
                 }
             }
-            elseif($idActual==LogAction::getId('Carga Ruta Internal 16GMT')) 
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 15Hrs')) 
             {
-                if((Log::existe(LogAction::getId('Carga Ruta Internal 16GMT'))==true))
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 15Hrs'))==true))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
                     return false; 
                 }
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 12GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 11Hrs')))
                 {
                    return true;
                 }
@@ -287,15 +287,15 @@ class ValidationsArchCapt
                     return false;      
                 }
             }
-            elseif($idActual==LogAction::getId('Carga Ruta Internal 20GMT')) 
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 19Hrs')) 
             {
-                if((Log::existe(LogAction::getId('Carga Ruta Internal 20GMT'))==true))
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 19Hrs'))==true))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
                     return false; 
                 }
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 16GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 15Hrs')))
                 {
                    return true;
                 }
@@ -307,15 +307,15 @@ class ValidationsArchCapt
                     return false;      
                 }
             }
-            elseif($idActual==LogAction::getId('Carga Ruta Internal 24GMT')) 
+            elseif($idActual==LogAction::getId('Carga Ruta Internal 23Hrs')) 
             {
-                if((Log::existe(LogAction::getId('Carga Ruta Internal 24GMT'))==true))
+                if((Log::existe(LogAction::getId('Carga Ruta Internal 23Hrs'))==true))
                 {
                     self::$error=self::ERROR_EXISTS;
                     self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre2."' ya esta almacenado </h5> <br/> ";
                     return false; 
                 }
-                if(Log::existe(LogAction::getId('Carga Ruta Internal 20GMT')))
+                if(Log::existe(LogAction::getId('Carga Ruta Internal 19Hrs')))
                 {
                    return true;
                 }
@@ -536,12 +536,12 @@ class ValidationsArchCapt
 			$nombre=$primero.$segundo.$numero[2]."Hrs";
      
         $lista=array(
-        	'Ruta Internal 4Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        	'Ruta Internal 8Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        	'Ruta Internal 12Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        	'Ruta Internal 16Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        	'Ruta Internal 20Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
-        	'Ruta Internal 24Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 3Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 7Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 11Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 15Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 19Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
+        	'Ruta Internal 23Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
        		'Ruta External 4Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	'Ruta External 8Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
         	'Ruta External 12Hrs'=>array('Hour','Int. Dest','Customer','Supplier','Minutes','ACD','ASR','Margin %','Margin per Min','Cost per Min','Revenue per Min','PDD','Incomplete Calls','Incomplete Calls NER','Complete Calls NER','Complete Calls','Call Attempts','Duration Real','Duration Cost','NER02 Efficient','NER02 Seizure','PDDCalls','Revenue','Cost','Margin'),
@@ -648,8 +648,9 @@ class ValidationsArchCapt
         elseif($tipo=='hora')
 		{ 
             $values=$var['regHora'];
-            $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,name_supplier,name_customer,name_destination) VALUES ".$values;
+            $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,id_carrier_supplier,id_carrier_customer,id_destination) VALUES ".$values;
 		}
+
 	 	$command = Yii::app()->db->createCommand($sql);
 			    
 		if($command->execute())

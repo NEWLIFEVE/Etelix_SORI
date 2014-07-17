@@ -310,66 +310,117 @@ class Log extends CActiveRecord
 	public static function loghours()
 	{
 		$cargados="<h3>ESTATUS CARGA</h3>
-  <p>Archivos Cargados:</p><ul>";
-  $nocargados="</ul>
-  <p>Archivos Faltantes:</p>
-  <ul>";
-//		if(self::existe(9))
-//		{
-	if(self::existe(9))
+		  <p>Archivos Cargados:</p><ul>";
+		  $nocargados="</ul>
+		  <p>Archivos Faltantes:</p>
+		  <ul>";
+
+ 		if(self::existe(8))
 			{
-				$cargados.="<li class='cargados' name='hora'>Ruta Internal 4Hrs</li>";
+				$cargados.="<li class='cargados' name='hora'>Ruta Internal 3Hrs</li>";
 			}
 			else
 			{
 				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 4Hrs</li>";
-			}
-	if(self::existe(13))
+				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 3Hrs</li>";
+			} 	
+
+		// if(self::existe(9))
+		// 		{
+		// 			$cargados.="<li class='cargados' name='hora'>Ruta Internal 4Hrs</li>";
+		// 		}
+		// 		else
+		// 		{
+					
+		// 			$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 4Hrs</li>";
+		// 		}
+
+		if(self::existe(12))
 			{
-				$cargados.="<li class='cargados' name='hora'>Ruta Internal 8Hrs</li>";
+				$cargados.="<li class='cargados' name='hora'>Ruta Internal 7Hrs</li>";
 			}
 			else
 			{
 				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 8Hrs</li>";
-			}
-	if(self::existe(17))
-			{
-				$cargados.="<li  class='cargados' name='hora'>Ruta Internal 12Hrs</li>";
-			}
-			else
-			{
-				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 12Hrs</li>";
-			}
-	if(self::existe(21))
-			{
-				$cargados.="<li  class='cargados' name='hora'>Ruta Internal 16Hrs</li>";
-			}
-			else
-			{
-				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 16Hrs</li>";
-			}
-	if(self::existe(25))
-			{
-				$cargados.="<li  class='cargados' name='hora'>Ruta Internal 20Hrs</li>";
-			}
-			else
-			{
-				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 20Hrs</li>";
-			}
-	if(self::existe(59))
-			{
-				$cargados.="<li  class='cargados' name='hora'>Ruta Internal 24Hrs</li>";
-			}
-			else
-			{
-				
-				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 24Hrs</li>";
-			}
+				$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 7Hrs</li>";
+			}		
+		// if(self::existe(13))
+		// 		{
+		// 			$cargados.="<li class='cargados' name='hora'>Ruta Internal 8Hrs</li>";
+		// 		}
+		// 		else
+		// 		{
+					
+		// 			$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 8Hrs</li>";
+		// 		}
+
+		if(self::existe(16))
+				{
+					$cargados.="<li  class='cargados' name='hora'>Ruta Internal 11Hrs</li>";
+				}
+				else
+				{
+					
+					$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 11Hrs</li>";
+				}		
+
+		// if(self::existe(17))
+		// 		{
+		// 			$cargados.="<li  class='cargados' name='hora'>Ruta Internal 12Hrs</li>";
+		// 		}
+		// 		else
+		// 		{
+					
+		// 			$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 12Hrs</li>";
+		// 		}
+		if(self::existe(20))
+				{
+					$cargados.="<li  class='cargados' name='hora'>Ruta Internal 15Hrs</li>";
+				}
+				else
+				{
+					
+					$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 15Hrs</li>";
+				}		
+		// if(self::existe(21))
+		// 		{
+		// 			$cargados.="<li  class='cargados' name='hora'>Ruta Internal 16Hrs</li>";
+		// 		}
+		// 		else
+		// 		{
+					
+		// 			$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 16Hrs</li>";
+		// 		}
+
+		if(self::existe(24))
+				{
+					$cargados.="<li  class='cargados' name='hora'>Ruta Internal 19Hrs</li>";
+				}
+				else
+				{
+					
+					$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 19Hrs</li>";
+				}		
+
+		// if(self::existe(25))
+		// 		{
+		// 			$cargados.="<li  class='cargados' name='hora'>Ruta Internal 20Hrs</li>";
+		// 		}
+		// 		else
+		// 		{
+					
+		// 			$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 20Hrs</li>";
+		// 		}
+
+		if(self::existe(28))
+				{
+					$cargados.="<li  class='cargados' name='hora'>Ruta Internal 23Hrs</li>";
+				}
+				else
+				{
+					
+					$nocargados.="<li class='nocargados' name='hora'>Ruta Internal 23Hrs</li>";
+				}
 		
 		$cargados.="</ul>";
 		$nocargados.="</ul>";
