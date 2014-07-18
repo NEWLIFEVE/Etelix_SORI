@@ -55,7 +55,7 @@ class Reader
                         if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total es que ya se termino el archivo
-                            break 3;
+                            break 2;
                         }
                         else
                         {
