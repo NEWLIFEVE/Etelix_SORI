@@ -41,7 +41,7 @@ class Reader
     public static function diario($fecha_diario,$nombre,$archivo)
     {
         $values='';
-        $var=array();
+        $var=null;
         ini_set('max_execution_time', 1200);
 
         for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
@@ -222,29 +222,27 @@ class Reader
                 $values.=",";
              }
         }//fin de for de $i
-        if( $values!=""){
-          $var['values']=$values;
-          $var['id_destination']=$id_destination;
-          $var['id_destination_int']=$id_destination_int;
-        }else{
-            $var="";
+        if($values!="")
+        {
+            $var['values']=$values;
+            $var['id_destination']=$id_destination;
+            $var['id_destination_int']=$id_destination_int;
         }
         return $var;
     }
 
     /**
-    * Funcion de carga de archivos hora
-      * @return boolean
-    */
- 
-        public static function hora ($archivo)
-        {
+     * Funcion de carga de archivos hora
+     * @return boolean
+     */
+    public static function hora ($archivo)
+    {
          /**
         * Valido la estructura de horas
         */
         //hora por mla cual inicia el archivo
-           $actual=$archivo->excel->sheets[0]['cells'][5][1];
-//        $actual=0;
+        $actual=$archivo->excel->sheets[0]['cells'][5][1];
+//      $actual=0;
         $contador=0;
          //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
