@@ -570,7 +570,7 @@ public function actionGuardartemp()
 						 		$var=Reader::hora($archivo,$nombre);
 					    	}
 
-					   		if($var!="") 
+					   		if($var!=null) 
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
