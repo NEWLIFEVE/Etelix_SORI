@@ -100,10 +100,10 @@ class BalanceController extends Controller
 	public function actionUpload()
 	{
 		//capturo el nombre del usuario logueado
-        $user_carpeta_temp=Yii::app()->user->getState('username').'';
+        $userTemporaryFolder=Yii::app()->user->getState('username').'';
         
 		//Cada vez que el usuario llegue al upload se verificaran si hay archivos en la carpeta uploads y se eliminaran
-		$ruta=Yii::getPathOfAlias('webroot.uploads.'.Yii::app()->user->username).DIRECTORY_SEPARATOR;
+		$ruta=Yii::getPathOfAlias('webroot.uploads.'.$userTemporaryFolder).DIRECTORY_SEPARATOR;
 		$archivos=0;
 		if(is_dir($ruta))
 		{
@@ -111,7 +111,7 @@ class BalanceController extends Controller
 		}
 		else
 		{
-			mkdir("uploads/".Yii::app()->user->username."/", 0775, true);
+			mkdir("uploads/".$userTemporaryFolder."/", 0775, true);
 		}
 		if(count($archivos)>1)
 		{
@@ -127,10 +127,10 @@ class BalanceController extends Controller
 				}
 			}
 		
-			$ruta2=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
+			$ruta2=Yii::getPathOfAlias('webroot')."/uploads/".$userTemporaryFolder."/";
 			if($ruta==$ruta2){
 			 //al borrar todos loos archivos de la carpeta procedo a borrar la carpeta
-             rmdir(Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/");
+             rmdir(Yii::getPathOfAlias('webroot')."/uploads/".$userTemporaryFolder."/");
 			}
        
 		}
@@ -193,7 +193,7 @@ public function actionGuardartemp()
 		$yesterday=date('Y-m-d',$yesterday);
 
 		//capturo el nombre del usuario logueado
-		$user_carpeta_temp=Yii::app()->user->getState('username').'';
+		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		 
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
 		
@@ -393,17 +393,17 @@ public function actionGuardartemp()
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
 
 		//capturo el nombre del usuario logueado
-        $user_carpeta_temp=Yii::app()->user->getState('username').'/';
-        $ruta='uploads/'.$user_carpeta_temp.'/';
+        $userTemporaryFolder=Yii::app()->user->getState('username').'/';
+        $ruta='uploads/'.$userTemporaryFolder.'/';
         
         if(file_exists($ruta)){
          //no la crea solo sube el siguiente archivo a la misma carpeta
         }else{
 		 //creo el directorio dependiendo del usuario logueado, sino existe la carpeta
-         mkdir("uploads/".$user_carpeta_temp."", 0775);
+         mkdir("uploads/".$userTemporaryFolder."", 0775);
         }
         //concateno la carpeta temp para la carga
-		$folder='uploads/'.$user_carpeta_temp.'/';// folder for uploaded files
+		$folder='uploads/'.$userTemporaryFolder.'/';// folder for uploaded files
 //		$folder='uploads/';// folder for uploaded files
 
         $allowedExtensions = array("xls", "xlsx");//array("jpg","jpeg","gif","exe","mov" and etc...
@@ -497,9 +497,9 @@ public function actionGuardartemp()
 		$yesterday=date('Y-m-d',$yesterday);
 
 		//capturo el nombre del usuario logueado
-		$user_carpeta_temp=Yii::app()->user->getState('username').'';
+		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		 
-		$path=Yii::getPathOfAlias('webroot')."/uploads/".$user_carpeta_temp."/";
+		$path=Yii::getPathOfAlias('webroot')."/uploads/".$userTemporaryFolder."/";
 		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
