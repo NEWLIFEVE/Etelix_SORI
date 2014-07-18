@@ -563,7 +563,6 @@ public function actionGuardartemp()
 					   		{
 					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
 						 		$var=Reader::diario($yesterday, $nombre, $archivo);
-						 		
 					   		}
 					   		elseif($tipo=='hora')
 							{
@@ -579,11 +578,7 @@ public function actionGuardartemp()
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
 
 						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo,$var['hora']);	
-						    //  		if(($stringDataPreliminary!="")&&($tipo=='hora'))
-						    //  		{
-										// // mando el string de horas que vienen en el excel para borrar las viejas
-							   // 			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-						    //  		}
+
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
 						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 						   			{
@@ -601,11 +596,6 @@ public function actionGuardartemp()
 				   							//echo $nombre;
 								    		Log::registrarLog(LogAction::getId($nombre));
 										}
-										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
-							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-							     /*		if(($stringDataPreliminary!="")&&($tipo=='dia'))
-							     		{*/
-								   			// mando el string preliminar para eliminar la data de diario
 								   			if($stringDataPreliminary!="") 
 								   			{
 								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	

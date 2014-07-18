@@ -602,6 +602,7 @@ class ValidationsArchCapt
       	}
         elseif($tipo=='hora')
     	{
+            /* Si la hora es mayor a tres, no es el primer archivo */
             if($maxHour>3)
             {
                 $top=$maxHour-4;
@@ -652,9 +653,7 @@ class ValidationsArchCapt
             $values=$var['regHora'];
             $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,id_carrier_supplier,id_carrier_customer,id_destination) VALUES ".$values;
 		}
-
-	 	$command = Yii::app()->db->createCommand($sql);
-			    
+	 	$command = Yii::app()->db->createCommand($sql);	    
 		if($command->execute())
         {
             self::$error=self::ERROR_NONE;

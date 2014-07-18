@@ -43,7 +43,6 @@ class Reader
         $values='';
         $var=null;
         ini_set('max_execution_time', 1200);
-
         for($i=5;$i<=$archivo->excel->sheets[0]['numRows'];$i++)
         {
             $valores=array();
@@ -217,11 +216,24 @@ class Reader
                         break;
                 }
             }//fin de for de $j
-            if($i<$archivo->excel->sheets[0]['numRows'])
-            {
-                $values.=",";
-             }
+        
+        /* verifico que la linea leida no sea total, para colocar la coma despues de armar la cadena  */   
+        if($i<$archivo->excel->sheets[0]['numRows'] && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
+        {
+            $values.=",";
+        }
+
         }//fin de for de $i
+
+        // obtengo el ultimo caracter de la cadena
+        $barra = substr($values, -1, 1);
+        /*Verifico el ultimo caracter de la cadena es (,) */
+        if($barra==",") 
+        {
+            // se elimina la coma.
+            $values=substr($values, 0, - 1);     
+        }
+
         if($values!="")
         {
             $var['values']=$values;
