@@ -333,7 +333,6 @@ class Log extends CActiveRecord
 				    5=>  28,
 				    );
 
-		   $j=count($rows);
 		  foreach ($rows as $row)
 		  {
 		  	for ($i=0; $i<=5; $i++) { 
