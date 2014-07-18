@@ -1,4 +1,4 @@
-﻿Etelix_SORI
+Etelix_SORI
 ===========
 
 Sistema de Origen
@@ -8,6 +8,10 @@ Sistema de Origen
 - Detalles solucionados en condiciones comerciales: se estabilizo el comportamiento del input start date termino pago contenido dentro de los fancybox, ahora se actualiza al momento de guardar los cambios, se cambio el cursor de exit, se agrego guardada de logs al momento d eliminar historial de termino pago.
 - Condiciones comerciales: se implemento fancybox para administrar los terminos pago actuales, adicionalmente se muestra una tabla resumen con el historial de todos los contrato termino pago customer/supplier
   y ofrece la opcion de modificar cualquiera de los terminos pagos pasados para por ejemplo hacer coincidir las fechas de inicio y fin segun las fechas indicadas en las facturas y asi lograr hacer coincidir las provisiones.
+
+
+
+
 
 Release 1.5.7.6
 - Corrección de metodo encargado de guadar documentos contables final donde dejaba guardar dos banck fee, esto se debia a que solo estaba seteado para los cobros y no para pagos. 

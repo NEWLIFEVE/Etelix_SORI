@@ -563,6 +563,7 @@ public function actionGuardartemp()
 					   		{
 					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
 						 		$var=Reader::diario($yesterday, $nombre, $archivo);
+						 		
 					   		}
 					   		elseif($tipo=='hora')
 							{
