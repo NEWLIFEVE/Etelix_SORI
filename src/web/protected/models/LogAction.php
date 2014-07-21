@@ -94,28 +94,21 @@ class LogAction extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
 	/*
 	*Funcion que devuelve el id del log_action consultado
 	*/
 	public static function getId($nombre)
 	{
-		//echo "<br>NOMBRE PARAMETRO: ".$nombre."  ";
-
 		$model=self::model()->find('name=:nombre',array('nombre'=>$nombre));
-
 		if($model!=null)
 		{
-			//echo "ID DEL TIPO ARCHIVO: ".$model->id;
 			return $model->id;
 		}
 		else
 		{
-			//echo "ENTRE EN GET ID FALSE";
 			return false;
 		}
 	}
-
 	/**
 	* Funcion que devuelve el id del log_action consultado pero por like
 	*/
@@ -127,12 +120,10 @@ class LogAction extends CActiveRecord
 			return $model->id;
 		}
 		else
-		{ 
+		{
 			return false;
 		}
-		 exit();
 	}
-	
 	/**
 	* Funcion que devuelve el nombre del id consultado
 	*/

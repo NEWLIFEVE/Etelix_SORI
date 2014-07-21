@@ -186,5 +186,4 @@ class Balance extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
 }

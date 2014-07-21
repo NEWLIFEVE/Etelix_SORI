@@ -1,5 +1,7 @@
 <?php
-
+/**
+ *
+ */
 class BalanceController extends Controller
 {
 	/**
@@ -36,7 +38,7 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
+				'actions'=>array('uploadtemp','cargatemp','guardartemp','index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
@@ -188,13 +190,10 @@ class BalanceController extends Controller
 	 */
 public function actionGuardartemp()
 	{
-		$date=date('Y-m-d');
-		$yesterday=strtotime('-1 day',strtotime($date));
-		$yesterday=date('Y-m-d',$yesterday);
-
+		ini_set('max_execution_time', 2000);
+        ini_set('memory_limit', -1);
 		//capturo el nombre del usuario logueado
 		$userTemporaryFolder=Yii::app()->user->getState('username').'';
-		 
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
 		
 		//html preparado para mostrar resultados
@@ -396,11 +395,10 @@ public function actionGuardartemp()
         $userTemporaryFolder=Yii::app()->user->getState('username').'/';
         $ruta='uploads/'.$userTemporaryFolder.'/';
         
-        if(file_exists($ruta)){
-         //no la crea solo sube el siguiente archivo a la misma carpeta
-        }else{
-		 //creo el directorio dependiendo del usuario logueado, sino existe la carpeta
-         mkdir("uploads/".$userTemporaryFolder."", 0775);
+        if(!file_exists($ruta))
+        {
+        	//creo el directorio dependiendo del usuario logueado, sino existe la carpeta
+         	mkdir("uploads/".$userTemporaryFolder."", 0775);
         }
         //concateno la carpeta temp para la carga
 		$folder='uploads/'.$userTemporaryFolder.'/';// folder for uploaded files

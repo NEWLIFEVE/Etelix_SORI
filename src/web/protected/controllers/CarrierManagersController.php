@@ -229,49 +229,56 @@ class CarrierManagersController extends Controller
         $manager = $_GET['manager'];
         $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
         $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.   
-        if ($manager>0){
-        if (count($asignados)==0){
-        }else{
+        if ($manager>0)
+        {
             $asigNames="";    
             $noasigNames="";  
             $managerName= Managers::getName($manager);
-           foreach ($asignados as $key => $value) {
-               $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
-               if ($model){
-               }else{
-                   $modelAsignar = new CarrierManagers;
-                   $modelAsignar->start_date = date("Y-m-d");
-                   $modelAsignar->id_carrier = $asignados[$key];
-                   $modelAsignar->id_managers = $manager;
+            if (count($asignados)>=1){
+                if ($asignados[0]!="null"){
+                    foreach ($asignados as $key => $value) {
+                        $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
+                        if ($model){
+                        }else{
+                            $modelAsignar = new CarrierManagers;
+                            $modelAsignar->start_date = date("Y-m-d");
+                            $modelAsignar->id_carrier = $asignados[$key];
+                            $modelAsignar->id_managers = $manager;
 
-                   $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
-                   $modelDesasignar->end_date = date("Y-m-d");
+                            $modelDesasignar = CarrierManagers::checkCarrierManager(8, $asignados[$key]);
+                            $modelDesasignar->end_date = date("Y-m-d");
 
-                if($modelAsignar->save() && $modelDesasignar->save()){                
-                   $asigNames.= Carrier::getName($asignados[$key]).",";
-                   }else{
-                   }
-               }
-           }
-           foreach ($noasignados as $key => $value) {
-               $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
-               if ($model){
-                   $modelSinAsignar = new CarrierManagers;
-                   $model->end_date = date("Y-m-d");
-                   $modelSinAsignar->start_date = date("Y-m-d");
-                   $modelSinAsignar->id_carrier = $noasignados[$key];
-                   $modelSinAsignar->id_managers = 8;
-                   if($model->save() && $modelSinAsignar->save()){
-                       $noasigNames.=Carrier::getName($noasignados[$key]).",";
-                   }else{
-                   }  
-               }
-           }
-               $params['managerName']=$managerName;    
-               $params['asigNames']=$asigNames;    
-               $params['noasigNames']=$noasigNames;    
-                 echo json_encode($params);
-           }
+                         if($modelAsignar->save() && $modelDesasignar->save()){                
+                            $asigNames.= Carrier::getName($asignados[$key]).",";
+                            }else{
+                            }
+                        }
+                    }
+                }
+            }
+            if (count($noasignados)>=1){
+                if ($noasignados[0]!="null"){
+                    foreach ($noasignados as $key => $value) {
+                        $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
+                        if ($model){
+                            $modelSinAsignar = new CarrierManagers;
+                            $model->end_date = date("Y-m-d");
+                            $modelSinAsignar->start_date = date("Y-m-d");
+                            $modelSinAsignar->id_carrier = $noasignados[$key];
+                            $modelSinAsignar->id_managers = 8;
+                            if($model->save() && $modelSinAsignar->save()){
+                                $noasigNames.=Carrier::getName($noasignados[$key]).",";
+                            }else{
+                            }  
+                        }
+                    }
+                }
+            }
+            $params['managerName']=$managerName;    
+            $params['asigNames']=$asigNames;    
+            $params['noasigNames']=$noasigNames;    
+              echo json_encode($params);
+           
         }else{
             echo "Debe seleccionar un Manager";
         }
@@ -280,34 +287,42 @@ class CarrierManagersController extends Controller
     {
         $manager = $_GET['manager'];
         $asignados = explode(',', $_GET['asignados']); // convierto el string a un array.
-        $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.          
-        if ($manager>0){
-        if (count($asignados)==0){
-        }else{
+        $noasignados = explode(',', $_GET['noasignados']); // convierto el string a un array.   
+        if ($manager!=null)
+        {
             $asigNames="";    
             $noasigNames="";
             $managerName= Managers::getName($manager);
-            foreach ($asignados as $key => $value) {
-                $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
-                if ($model){
-                    $asigNames.="";
-                }else{
-                    $asigNames.= Carrier::getName($asignados[$key]).",";
+            if (count($asignados)>=1){
+                if ($asignados[0]!="null"){
+                    foreach ($asignados as $key => $value) {
+
+                        $model = CarrierManagers::checkCarrierManager($manager, $asignados[$key]);
+                        if ($model){
+                            $asigNames.="";
+                        }else{
+                            $asigNames.= Carrier::getName($asignados[$key]).",";
+                        }
+                    }
                 }
             }
-            foreach ($noasignados as $key => $value) {
-                $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
-                if ($model){
-                    $noasigNames.=Carrier::getName($noasignados[$key]).",";   
-                }else{
-                    $noasigNames.="";
+            if (count($noasignados)>=1){
+                if ($noasignados[0]!="null"){
+                    foreach ($noasignados as $key => $value) {
+                        $model = CarrierManagers::checkCarrierManager($manager, $noasignados[$key]);
+                        if ($model){
+                            $noasigNames.=Carrier::getName($noasignados[$key]).",";   
+                        }else{
+                            $noasigNames.="";
+                        }
+                    }
                 }
             }
             $params['managerName']=$managerName;    
             $params['asigNames']=$asigNames;    
             $params['noasigNames']=$noasigNames;    
               echo json_encode($params);
-            }
+
         }else{
             echo "Debe seleccionar un Manager";
         }

@@ -32,7 +32,6 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-
 				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec','UpdateDisp'),
 				'users'=>array('*'),
 			),
@@ -78,8 +77,9 @@ class AccountingDocumentTempController extends Controller
 		$lista_DispEnv=AccountingDocumentTemp::lista_DispEnv(Yii::app()->user->id);
 		$lista_NotCredEnv=AccountingDocumentTemp::lista_NotCredEnv(Yii::app()->user->id);
 		$lista_NotCredRec=AccountingDocumentTemp::lista_NotCredRec(Yii::app()->user->id);
+		$lista_dep_seg_pago=AccountingDocumentTemp::listaDepSegPago(Yii::app()->user->id);
+		$lista_dep_seg_cobro=AccountingDocumentTemp::listaDepSegCobro(Yii::app()->user->id);
 		
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -99,7 +99,9 @@ class AccountingDocumentTempController extends Controller
             'lista_DispRec'=>$lista_DispRec,
             'lista_DispEnv'=>$lista_DispEnv,
             'lista_NotCredEnv'=>$lista_NotCredEnv,
-            'lista_NotCredRec'=>$lista_NotCredRec
+            'lista_NotCredRec'=>$lista_NotCredRec,
+            'lista_dep_seg_pago'=>$lista_dep_seg_pago,
+            'lista_dep_seg_cobro'=>$lista_dep_seg_cobro
 		));
 	}
 
@@ -152,37 +154,32 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionGuardarListaFinal()
     {
-        if(!Yii::app()->user->isGuest)
+        $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
+        $idUsers = Yii::app()->user->id;
+        $modelLog = Log::model()->findAll('id_log_action=:idAction AND id_users=:idUsers', array(":idAction" => $idAction, ":idUsers" => $idUsers));
+        if($modelLog != null)
         {
-            $idAction = LogAction::getLikeId('Crear Documento Contable Temp');
-            $idUsers = Yii::app()->user->id;
-            $modelLog = Log::model()->findAll('id_log_action=:idAction AND id_users=:idUsers', array(":idAction" => $idAction, ":idUsers" => $idUsers));
-            if($modelLog != null)
+            $count = 0;
+            foreach($modelLog as $key => $Log)
             {
-                $count = 0;
-                foreach($modelLog as $key => $Log)
+                $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
+                if($modelADT != null && $modelADT->id_type_accounting_document != "14"&& $modelADT->id_type_accounting_document != "15")
                 {
-                    $modelADT = AccountingDocumentTemp::model()->findByPk($Log->id_esp);
-                    if($modelADT != null && $modelADT->id_type_accounting_document != "14"&& $modelADT->id_type_accounting_document != "15")
+                    $modelAD = new AccountingDocument;
+                    $modelAD->setAttributes($modelADT->getAttributes());
+                    if($modelAD->save())
                     {
-                        $modelAD = new AccountingDocument;
-                        $modelAD->setAttributes($modelADT->getAttributes());
-                        if($modelAD->save())
-                        {
-                            AccountingDocument::UpdateProv($modelAD);
-                            $this->saveBankFeeFinal($modelADT,$modelAD);                            
-                            $modelADT->deleteByPk($Log->id_esp);
-                            $idAction = LogAction::getLikeId('Crear Documento Contable Final');
-                            Log::registrarLog($idAction, NULL, $modelAD->id);
-                            Log::updateDocLog($Log, $modelAD->id);
-                            $count++;
-                        }
+                        AccountingDocument::UpdateProv($modelAD);
+                        $this->saveBankFeeFinal($modelADT,$modelAD);                            
+                        $modelADT->deleteByPk($Log->id_esp);
+                        $idAction = LogAction::getLikeId('Crear Documento Contable Final');
+                        Log::registrarLog($idAction, NULL, $modelAD->id);
+                        Log::updateDocLog($Log, $modelAD->id);
+                        $count++;
                     }
                 }
-                echo $count;
             }
-        }else{
-            echo null;
+            echo $count;
         }
     }
 
@@ -248,7 +245,8 @@ class AccountingDocumentTempController extends Controller
                 echo "Algo salio mal";
             }
         }
-        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4){                                                
+        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
+        {                                                
             $this->updateBackFee($id);
         }
     }
@@ -260,10 +258,10 @@ class AccountingDocumentTempController extends Controller
     public function updateBackFee($id)
     {
         $bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
-        if($bank_fee!==NULL)
+        if($bank_fee!=NULL)
         {
             $model=$this->loadModel($bank_fee->id);     
-            if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
+            if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee'])) $model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
             if($model->save())
             {
                 echo " y id: ".$model->id;
@@ -306,26 +304,21 @@ class AccountingDocumentTempController extends Controller
      */
     public function actionBorrar($id)
     {
-        if(!Yii::app()->user->isGuest)
-        {
-            $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
-            if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
-            {                                                 
-                $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
+        $type_doc=AccountingDocumentTemp::getTypeDoc($id); 
+        $id_bank_fee=NULL;
+        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
+        {                                                 
+            $id_bank_fee=AccountingDocumentTemp::getid_bank_fee($id); 
 
-                if($id_bank_fee!==NULL)
-                    $this->loadModel($id_bank_fee->id)->delete();
-            }
-            $this->loadModel($id)->delete();
-            //esto se usa para ver si elimino los documentos
-            if($id_bank_fee!==NULL)         
-                var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
-            else
-                var_dump("elimino el documento: ".$id." y bank fee: NULL");
-            echo true;
-        }else{
-            echo null;
+            if($id_bank_fee!==NULL)
+                $this->loadModel($id_bank_fee->id)->delete();
         }
+        $this->loadModel($id)->delete();
+        //esto se usa para ver si elimino los documentos
+        if($id_bank_fee!==NULL)         
+            var_dump("elimino el documento: ".$id." y bank fee: ".$id_bank_fee->id);
+        else
+            var_dump("elimino el documento: ".$id." y bank fee: NULL");
     }
 
 	/**

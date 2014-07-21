@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is the model class for table "log".
  *
@@ -103,6 +102,7 @@ class Log extends CActiveRecord
                     'sort'=>array('defaultOrder'=>'date DESC, hour DESC'),
 		));
 	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -113,6 +113,7 @@ class Log extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
 	/**
 	* Encargada de registrar el evento pasado como id
 	*/
@@ -132,6 +133,10 @@ class Log extends CActiveRecord
 			error_log('Ocurrió una excepcion al guardar en el log '.$e->getMessage());
 		}
 	}
+
+	/**
+	 *
+	 */
 	public static function updateDocLog($model,$id_espNew)
 	{
 		$model->id_esp=$id_espNew;
@@ -177,12 +182,12 @@ class Log extends CActiveRecord
 			}
 		}
 	}
+
 	/*
 	* Funcion que devuelve true si la accion ya fue realizada
 	*/
 	public static function existe($id,$date=null,$hour=null)
 	{
-		//echo "ID PARAMETRO: ".$id;
 		if($date==null) $date=date("Y-m-d");
 		if($hour==null) $hour=date("H:i:s");
 
@@ -196,15 +201,20 @@ class Log extends CActiveRecord
 		}
 	}
 
+	/**
+	 *
+	 */
 	public static function name($id)
 	{
 		if($date==null) $date=date("Y-m-d");
 		if($hour==null) $hour=date("H:i:s");
 		$model=self::model()->find('id_log_action=:id AND date=:fecha AND hour<=:hora', array(':id'=>$id, ':fecha'=>$date, ':hora'=>$hour));
-		if($model!=null){
+		if($model!=null)
+		{
 			return $model;
 		}
-		else{
+		else
+		{
 			return false;
 		}
 	}
@@ -235,6 +245,7 @@ class Log extends CActiveRecord
 			return false;
 		}
 	}
+
 	/**
 	* Funcion que se encarga de mostrar si un rerate ya esta listo
 	*/
@@ -265,10 +276,10 @@ class Log extends CActiveRecord
 	public static function logDiario()
 	{
 		$cargados="<h3>ESTATUS CARGA</h3>
-	  <p>Archivos Cargados:</p><ul>";
-	  $nocargados="</ul>
-	  <p>Archivos Faltantes:</p>
-	  <ul>";
+	  				<p>Archivos Cargados:</p><ul>";
+	  	$nocargados="</ul>
+	  				<p>Archivos Faltantes:</p>
+	  				<ul>";
 		if(self::existe(1))
 		{
 			if(self::existe(3))
@@ -307,56 +318,54 @@ class Log extends CActiveRecord
 		return $cargados.$nocargados;
 	}
 	
-
+	/**
+	 *
+	 */
 	public static function search_id_log()
 	{
 		$model=LogAction::model()->findAll(" id>=5 AND id<=28");
 		return $model;
 	}
 
-
-	
+	/**
+	 *
+	 */
 	public static function loghours()
 	{
 		$cargados="<h3>ESTATUS CARGA</h3>
-		  <p>Archivos Cargados:</p><ul>";
-		  $nocargados="</ul>
-		  <p>Archivos Faltantes:</p>
-		  <ul>";
-		  $rows=self::search_id_log();
-		   $ids= array(
-				    0 => 8,
-				  	1 => 12,
-				    2=>  16,
-				    3=>  20,
-				    4=>  24,
-				    5=>  28,
-				    );
-
-		  foreach ($rows as $row)
-		  {
-		  	for ($i=0; $i<=5; $i++) { 
-		  	if($row['id']==$ids[$i])
-		  	{
-		  		if(self::existe($row['id']))
-				{
-					$cargados.="<li class='cargados' name='hora'> '".$row['name']."' </li>";
-				}else
-				{
-					$nocargados.="<li class='nocargados' name='hora'>'".$row['name']."'</li>";
-				}
-				
-		  	}	
-		  	}
-		  }
+				   <p>Archivos Cargados:</p><ul>";
+		$nocargados="</ul>
+		            <p>Archivos Faltantes:</p>
+		  			<ul>";
+		$rows=self::search_id_log();
+		$ids=array(
+			0 => 8,
+			1 => 12,
+			2=>  16,
+			3=>  20,
+			4=>  24,
+			5=>  28,
+			);
+		foreach ($rows as $row)
+		{
+			for($i=0; $i<=5; $i++)
+			{
+				if($row['id']==$ids[$i])
+		  		{
+		  			if(self::existe($row['id']))
+					{
+						$cargados.="<li class='cargados' name='hora'> '".$row['name']."' </li>";
+					}
+					else
+					{
+						$nocargados.="<li class='nocargados' name='hora'>'".$row['name']."'</li>";
+					}
+				}	
+			}
+		}
 		
 		$cargados.="</ul>";
 		$nocargados.="</ul>";
 		return $cargados.$nocargados;
 	}
-   
-
-
-
-
 }

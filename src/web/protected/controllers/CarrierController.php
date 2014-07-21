@@ -1,5 +1,7 @@
 <?php
-
+/** 
+ *
+ */
 class CarrierController extends Controller
 {
 	/**
@@ -125,11 +127,7 @@ class CarrierController extends Controller
 	 */
 	public function actionIndex()
 	{
-//		$dataProvider=new CActiveDataProvider('Carrier');
-//		$this->render('index',array(
-//			'dataProvider'=>$dataProvider,
-//		));
-            		$model=new Carrier('search');
+   		$model=new Carrier('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Carrier']))
 			$model->attributes=$_GET['Carrier'];
@@ -181,10 +179,11 @@ class CarrierController extends Controller
 			Yii::app()->end();
 		}
 	}
-         /**
-         *solo rebnderiza a la vista de nuevogrupocarrier
+
+	/**
+	 * Solo rebnderiza a la vista de nuevogrupocarrier
 	 */
-        public function actionNewGroupCarrier()
+	public function actionNewGroupCarrier()
 	{
 		$model=new Carrier;
 		
@@ -192,104 +191,127 @@ class CarrierController extends Controller
 			'model'=>$model,
 		));
 	}
-         /**
-	 *  recibe el valor de $grupo $asignados $noasignados
-         *  va a ejecutar una de las consultas al modelo
-         * guarda la asignacion de carriers a los grupos, y asigna el valor de principal al grupo, si ya esta asignado, solo actualiza y devuelve a views .js para ser vistos en la vista
-	 */
-        public function actionSaveCarrierGroup()
-	{
-            if($_GET['grupo']!=""||$_GET['grupo']!=null){
-                $grupo=$_GET['grupo'];
-             }else{
-                 $grupo= CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
-             }
-            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
-            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
-            $asigSave="";
-            $noasigSave="";
-            foreach ($asignados as $key => $value) {
-                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
-                $modelAsig->id_carrier_groups = $grupo;
-                if($modelAsig->save()){                  
-                    $asigSave= $modelAsig->name.", ";   
-                }               
-            }
-            foreach ($noasignados as $key => $value) {
-                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
-                $modelNoAsig->id_carrier_groups = NULL;
-                $modelNoAsig->group_leader = NULL;
-                if($modelNoAsig->save()){
-                $noasigSave=$modelNoAsig->name.", ";
-                }
-            }
-            $buscaUno=Carrier::getSerchOne($grupo);            //busca si hay algun carrier con el id_carrier_group sea igual a $grupo y carrier_Leader sea igual a'1' 
-            if($buscaUno==NULL){
-                $grupoCarrier = Carrier::getID_G($grupo);      //* con la id de grupo, busca el id carrier donde el id_carrier_groups sea igual a $grupo
-                $model=$this->loadModel($grupoCarrier);        //* carga la fila donde el id sea igual a $grupoCarrier para actualizarlo y colocarle en
-                                                               //group_leader el valor 1, solo lo agregara al primero que consiga...
-                $model->group_leader = '1';
-                $model->save();
-            }
-            $params['grupo']=CarrierGroups::getName($grupo);;    
-            $params['asignados']=$asigSave;    
-            $params['noasignados']=$noasigSave;    
-               echo json_encode($params);
-	}
-         /**
-	 *  recibe el valor de $grupo $asignados $noasignados
-         *  va a ejecutar una de las consultas al modelo
-         * trae los nombres pertenecientes a views .js para ser vistos en la vista
-	 */
-         public function actionBuscaNombres()
-	{
-             if($_GET['grupo']!=""||$_GET['grupo']!=null){
-                $grupo=$_GET['grupo'];
-             }else{
-                 $grupo= CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
-             }
-            $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
-            $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
 
-            $asigNames="";
-            $noasigNames="";
-            foreach ($asignados as $key => $value) {
-                $modelAsig = Carrier::model()->findByPk($asignados[$key]); 
-                if ($modelAsig->id_carrier_groups != $grupo)
-                    $asigNames.= $modelAsig->name.", ";      
-            }
-            foreach ($noasignados as $key => $value) {
-                $modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
-                if ($modelNoAsig->id_carrier_groups != NULL)  
-                $noasigNames.=$modelNoAsig->name.", ";
-            }
- 
-                    $params['grupo']=CarrierGroups::getName($grupo);;    
-                    $params['asignados']=$asigNames;    
-                    $params['noasignados']=$noasigNames;    
-                       echo json_encode($params);
-	}
-        public function actionNombres()
+	/**
+	 * Recibe el valor de $grupo $asignados $noasignados, va a ejecutar una de las consultas al modelo
+	 * guarda la asignacion de carriers a los grupos, y asigna el valor de principal al grupo, si ya esta asignado, 
+	 * solo actualiza y devuelve a views .js para ser vistos en la vista.
+	 */
+	public function actionSaveCarrierGroup()
 	{
-            $model=Carrier::getNames();
-            $array=array();
-            $pos=0;
-            foreach ($model as $key => $value)
-            {
-                    $array[$pos]['id']=$value->id;
-                    $array[$pos]['name']=$value->name;
-                    $pos=$pos+1;
-            }
-            echo json_encode($array);
-	}
-
-        public function actionUpdateIdCarrier()
-        {
-            $model= CarrierGroups::getCarrierGroups(strtoupper($_GET['Carrier_new_groups']));
-            if($model!=null){
-                echo $model->id;
-            }else{
-                echo null;
-            }     
+		if($_GET['grupo']!=""||$_GET['grupo']!=null)
+		{
+			$grupo=$_GET['grupo'];
+		}
+		else
+		{
+			$grupo=CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
         }
+        $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+        $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+        $asigSave="";
+        $noasigSave="";
+        
+        foreach($asignados as $key => $value)
+        {
+        	$modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+            $modelAsig->id_carrier_groups = $grupo;
+            if($modelAsig->save())
+            {
+            	$asigSave= $modelAsig->name.", ";   
+            }               
+        }
+        foreach($noasignados as $key => $value)
+        {
+        	$modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+            $modelNoAsig->id_carrier_groups = NULL;
+            $modelNoAsig->group_leader = NULL;
+            if($modelNoAsig->save())
+            {
+            	$noasigSave=$modelNoAsig->name.", ";
+            }
+        }
+        $buscaUno=Carrier::getSerchOne($grupo);            //busca si hay algun carrier con el id_carrier_group sea igual a $grupo y carrier_Leader sea igual a'1' 
+        if($buscaUno==NULL)
+        {
+        	$grupoCarrier = Carrier::getID_G($grupo);      //* con la id de grupo, busca el id carrier donde el id_carrier_groups sea igual a $grupo
+            $model=$this->loadModel($grupoCarrier);        //* carga la fila donde el id sea igual a $grupoCarrier para actualizarlo y colocarle en
+                                                           //group_leader el valor 1, solo lo agregara al primero que consiga...
+            $model->group_leader = '1';
+            $model->save();
+        }
+        $params['grupo']=CarrierGroups::getName($grupo);;    
+        $params['asignados']=$asigSave;    
+        $params['noasignados']=$noasigSave;    
+        echo json_encode($params);
+	}
+
+	/**
+	 * Recibe el valor de $grupo $asignados $noasignados
+	 * va a ejecutar una de las consultas al modelo
+	 * trae los nombres pertenecientes a views .js para ser vistos en la vista
+	 */
+	public function actionBuscaNombres()
+	{
+		if($_GET['grupo']!=""||$_GET['grupo']!=null)
+		{
+			$grupo=$_GET['grupo'];
+        }
+        else
+        {
+        	$grupo= CarrierGroups::GetIdGroup(strtoupper($_GET['new_grupo']));
+        }
+        $asignados=explode(',', $_GET['asignados']); // convierto el string a un array.
+        $noasignados=explode(',', $_GET['noasignados']); // convierto el string a un array.  
+
+        $asigNames="";
+        $noasigNames="";
+        foreach ($asignados as $key => $value)
+        {
+        	$modelAsig = Carrier::model()->findByPk($asignados[$key]); 
+            if($modelAsig->id_carrier_groups != $grupo) $asigNames.= $modelAsig->name.", ";      
+        }
+        foreach($noasignados as $key => $value)
+        {
+        	$modelNoAsig = Carrier::model()->findByPk($noasignados[$key]);
+            if($modelNoAsig->id_carrier_groups != NULL) $noasigNames.=$modelNoAsig->name.", ";
+        }
+        $params['grupo']=CarrierGroups::getName($grupo);;    
+        $params['asignados']=$asigNames;    
+        $params['noasignados']=$noasigNames;    
+        echo json_encode($params);
+	}
+
+	/**
+	 *
+	 */
+	public function actionNombres()
+	{
+		$model=Carrier::getNames();
+        $array=array();
+        $pos=0;
+        foreach ($model as $key => $value)
+        {
+        	$array[$pos]['id']=$value->id;
+            $array[$pos]['name']=$value->name;
+            $pos=$pos+1;
+        }
+        echo json_encode($array);
+	}
+
+	/**
+	 *
+	 */
+	public function actionUpdateIdCarrier()
+    {
+    	$model= CarrierGroups::getCarrierGroups(strtoupper($_GET['Carrier_new_groups']));
+        if($model!=null)
+        {
+        	echo $model->id;
+        }
+        else
+        {
+        	echo null;
+        }
+    }
 }
