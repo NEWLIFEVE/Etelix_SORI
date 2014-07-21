@@ -217,11 +217,11 @@ class Reader
                 }
             }//fin de for de $j
         
-        /* verifico que la linea leida no sea total, para colocar la coma despues de armar la cadena  */   
-        if($i<$archivo->excel->sheets[0]['numRows'] && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
-        {
-            $values.=",";
-        }
+            /* verifico que la linea leida no sea total, para colocar la coma despues de armar la cadena  */   
+            if($i<$archivo->excel->sheets[0]['numRows'] && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
+            {
+                $values.=",";
+            }
 
         }//fin de for de $i
 
@@ -487,26 +487,26 @@ class Reader
                             $valuesNew.="'".$name_customer."',";
                             $valuesNew.="'".$name_destination."')";
                              break;  
-                 }
-          }
-          if($i<$archivo->excel->sheets[0]['numRows']-1)
-           {
-             $valuesNew.=",";
-
-           }
+                }
+            }
+            if($i<=$archivo->excel->sheets[0]['numRows']-1)
+            {
+                $valuesNew.=",";
+            }
         }
         $barra = substr($valuesNew, -1, 1);
         if($barra==",") 
         {
             $valuesNew=substr($valuesNew, 0, - 1);     
         }
-       if($valuesNew!="")
-       {
-          $var['regHora']=$valuesNew;
-          $var['hora']=$time;
-           
-        }else{
-          $var="";
+        if($valuesNew!="")
+        {
+            $var['regHora']=$valuesNew;
+            $var['hora']=$time;
+        }
+        else
+        {
+            $var="";
         }
         return $var;
     }
@@ -718,17 +718,17 @@ class Reader
         if(stripos($nombre,"internal"))
         {
             $segundo="Internal ";
-             $nuevoNombre=$primero.$segundo.$tercero;
+            $nuevoNombre=$primero.$segundo.$tercero;
         }
         if(stripos($nombre,"external"))
         {
             $segundo="External ";
-             $nuevoNombre=$primero.$segundo.$tercero;
+            $nuevoNombre=$primero.$segundo.$tercero;
         }
         if(stripos($nombre,'rerate') || stripos($nombre, "RR"))
         {
             $tercero="RR";
-             $nuevoNombre=$primero.$segundo.$tercero;
+            $nuevoNombre=$primero.$segundo.$tercero;
         }
         if(stripos($nombre,'GMT'))
         {
@@ -739,7 +739,6 @@ class Reader
         {
             $nuevoNombre=$nombre;
         }
-        
 //        $nuevoNombre=$primero.$segundo.$tercero;
         return $nuevoNombre;     
     }
