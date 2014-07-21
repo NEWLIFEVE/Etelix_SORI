@@ -55,7 +55,7 @@ $(document).on('ready',function()
             $("div.diario").fadeOut("slow");
             $("div.rerate").fadeOut("slow");
             $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-        });
+        };
         //Muestra mensaje con el nombre de los archivos rerates guardados
         $('input[value="rerate"]').on('click',function()
         {
