@@ -72,13 +72,14 @@ class BalanceController extends Controller
 			array('deny',  // deny all users
 				'users'=>array('*'),
 				),
+
 			);
 	}
 
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-    public function actionCompras()
+        public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -121,6 +122,7 @@ class BalanceController extends Controller
 					if($value!='index.html' && $value!='temp')
 					{
 						unlink($ruta.$value);
+					   
 					}
 				}
 			}
@@ -161,7 +163,6 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
-
 	/**
 	 *
 	 */
@@ -185,7 +186,7 @@ class BalanceController extends Controller
 	/**
 	 *
 	 */
-	public function actionGuardartemp()
+public function actionGuardartemp()
 	{
 		$date=date('Y-m-d');
 		$yesterday=strtotime('-1 day',strtotime($date));
@@ -316,6 +317,10 @@ class BalanceController extends Controller
 		}	
 	}//fin actionGuardar
 
+		
+
+
+
 	/**
 	 * Muestra el detalle de un balance
 	 * @param $id el id del balance que va a mostrar
@@ -380,9 +385,9 @@ class BalanceController extends Controller
 		));
 	}
         
-    /**
-     *
-     */
+        /**
+         *
+         */
     public function actionCarga()
 	{
 		Yii::import("ext.EAjaxUpload.qqFileUploader");
@@ -591,10 +596,12 @@ class BalanceController extends Controller
 				   							//echo $nombre;
 								    		Log::registrarLog(LogAction::getId($nombre));
 										}
-							   			if($stringDataPreliminary!="") 
-							   			{
-							   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
-							   			}
+								   			if($stringDataPreliminary!="") 
+								   			{
+								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
+								   			}
+								   			
+							     	/*	}*/
 						   			}
 					     		}
 					    	}
