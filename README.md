@@ -2,6 +2,14 @@
 ===========
 
 ##Sistema de Origen
+- Nueva version de carga de archivos por hora:
+	* 12:00 am - 0 a 3 Hrs
+	* 04:00 am - 0 a 7 Hrs
+	* 08:00 am - 4 a 11 Hrs
+	* 12:00 pm - 8 a 15 Hrs
+	* 04:00 pm - 12 a 19 Hrs
+	* 08:00 pm - 16 a 23 Hrs 
+- Mejorada carga de archivos diarios, ahora se pueden cargar los archivos de forma individual, sin que la carga individual de archivos definitivos borre la data de Ruta internal/external preliminares.
 
 ###Release 1.6.1
 - Fix en validacion de login
@@ -9,6 +17,8 @@
 - Nuevo Modulo para Administrar Disputas, ahora se puede declarar si las disputan proceden o no.
 
 ###Release 1.6
+- Correccion de error en guardada de condiciones comerciales, ademas del comportamiento de ciertos casos del select periodo defacturacion para el termino pago 7/7.
+- Modificacion del action BuscaNombres en carrierControler, no se estaban concatenando los nombres de los carriers al momento de asignarlos o desasignarlos al grupo.
 - Mejora en css, se agrego una nueva hoja de estilos para organizar todos los responsive.
 - Detalles solucionados en condiciones comerciales: se estabilizo el comportamiento del input start date termino pago contenido dentro de los fancybox, ahora se actualiza al momento de guardar los cambios, se cambio el cursor de exit, se agrego guardada de logs al momento d eliminar historial de termino pago.
 - Condiciones comerciales: se implemento fancybox para administrar los terminos pago actuales, adicionalmente se muestra una tabla resumen con el historial de todos los contrato termino pago customer/supplier y ofrece la opcion de modificar cualquiera de los terminos pagos pasados para por ejemplo hacer coincidir las fechas de inicio y fin segun las fechas indicadas en las facturas y asi lograr hacer coincidir las provisiones.
@@ -50,7 +60,7 @@
 ###Release 1.5.7.1
 - Mejoras en javascript.
 - Nueva opcion para agregar grupos en admin groups
-- En condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica". 
+- En condiciones comerciales, si se selecciono termino pago supplier algunos de los typos mensuales, el periodo de facturacion queda como "no aplica".
 
 ###Release 1.5.6
 - Se arreglo la guardada del bank fee, eliminado id_charge y se agrego id_accounting_document_temp.
@@ -110,7 +120,7 @@
 - Vista de print arreglada, se agregaron las tablas de Notas de C que no estaban incluidas.
 
 ###Release 1.4.1
-	/***FALTA***/
+/***FALTA***/
 
 ###Release 1.4.0
 - Status en modelo Carrier.

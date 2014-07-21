@@ -1,57 +1,87 @@
 $(document).on('ready',function()
-    {
-        $SORI.AJAX.init();
-        $SORI.UI.init();
-     /**
+{
+    $SORI.AJAX.init();
+    $SORI.UI.init();
+    /**
      *
      */
-        var msj=new mensajes();
-        /**
+    var msj=new mensajes();
+    /**
 	* Deshabilita el boton de "Grabar en base de datos" si todos los archivos de diario estan cargados,
 	* ademas de mostrar un mensaje con el nombre de los archivos
 	*/
-        $('input[value="dia"]').on('click',function()
-        {
-            //Cuento cuantos archivos ya se han cargado
-            msj.contar('li[name="diario"]');
-            $("div.diario").fadeIn("slow").css({
-                'display':'block'
-            });
-            $("div.horas").fadeOut("slow");
-            $("div.rerate").fadeOut("slow");
-            console.log(msj.acumulador);
-            if(msj.acumulador>=2)
+    $('input[value="dia"]').on('click',function()
+    {
+    	var control=0;
+        $("div.diario").fadeIn("slow").css({
+            'display':'block'
+        });
+        $("div.horas").fadeOut("slow");
+        $("div.rerate").fadeOut("slow");
+
+      //valida qsi estan cargados todos los diarios
+    	var f = new Date();
+    	fecha=( f.getFullYear()+ "-" + (f.getMonth() +1) + "-" +f.getDate() );
+    	$.ajax({
+            type: "POST",
+            url: "/balance/disableddaily",
+            data: ({fecha:fecha}),
+            success: function(data)
             {
-                //$('input[type="file"], input[type="submit"]').attr('disabled','disabled');
-                $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
+                var obj=JSON.parse(data);
+                if(obj.error=="si")
+                {
+                	control=1;
+				    var html="<p>Ya se cargaron todos los archivos diarios</p>";
+		            var estilo={};
+		            msj.interna="error";
+		            msj.lightbox(html,estilo,2000);
+		            $('input[type="file"], input[type="submit"]').filter(function(){return $(this).attr('name')!='grabartemp'}).attr('disabled','disabled');
+		        }
             }
-            else
-            {
-                $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-            }
         });
-        //Muestra mensaje con el nombre de los archivos por hora guardados en el dia
-        $('input[value="hora"]').on('click',function()
-        {
-            $("div.horas").fadeIn("slow").css({
-                'display':'block'
-            });
-            $("div.diario").fadeOut("slow");
-            $("div.rerate").fadeOut("slow");
-            $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-        });
-        //Muestra mensaje con el nombre de los archivos rerates guardados
-        $('input[value="rerate"]').on('click',function()
-        {
-            $("div.rerate").fadeIn("slow").css({
-                'display':'block'
-            });
-            $("div.diario").fadeOut("slow");
-            $("div.horas").fadeOut('slow');
-            $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-        });
-        valForm(msj);
+
+
     });
+    $("div.horas").fadeOut("slow");
+    $("div.rerate").fadeOut("slow");
+    if(msj.acumulador>=2)
+    {
+    	$("div.horas").fadeIn("slow").css({
+            'display':'block'
+        });
+        $("div.diario").fadeOut("slow");
+        $("div.rerate").fadeOut("slow");
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
+    };
+    //Muestra mensaje con el nombre de los archivos rerates guardados
+    $('input[value="rerate"]').on('click',function()
+    {
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
+
+    });
+    //Muestra mensaje con el nombre de los archivos por hora guardados en el dia
+    $('input[value="hora"]').on('click',function()
+    {
+        $("div.horas").fadeIn("slow").css({
+            'display':'block'
+        });
+        $("div.diario").fadeOut("slow");
+        $("div.rerate").fadeOut("slow");
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
+    });
+    //Muestra mensaje con el nombre de los archivos rerates guardados
+    $('input[value="rerate"]').on('click',function()
+    {
+        $("div.rerate").fadeIn("slow").css({
+            'display':'block'
+        });
+        $("div.diario").fadeOut("slow");
+        $("div.horas").fadeOut('slow');
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
+    });
+    valForm(msj);
+});
 
 /**
  *
@@ -60,6 +90,7 @@ function valForm(objeto)
 {
     $('input[name="grabar"],input[name="grabartemp"]').on('click',function(e)
     {
+    	
         e.preventDefault();
         if($("input:checked").val()==undefined)
         {
@@ -70,7 +101,7 @@ function valForm(objeto)
         }
         else
         {
-            var html="<p>Este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
+        	var html="<p>Este proceso es irreversible </br> ¿Esta seguro de los Archivos a Cargar?</p><button name='aceptar'><b>Aceptar</b></button><button name='cancelar'>Cancelar</button>";
             var estilo={};
             objeto.interna="confirm";
             objeto.lightbox(html,estilo);
@@ -90,6 +121,7 @@ function valForm(objeto)
                     objeto.elimina();
                 }
             });
+            
         }
     });
 }
@@ -222,7 +254,8 @@ $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fac
             $SORI.UI.resuelveTP($("#Contrato_id_termino_pago_supplier").val()); 
             $(".startDateTpSupp").hide("fast");$("#Contrato_start_date_TP_supplier").val("");
         }       
-    }else
+    }
+    else
     {
         $SORI.UI.resuelvePeriodo($(this).val());
     }
@@ -230,7 +263,8 @@ $("#Contrato_id_termino_pago,#Contrato_id_termino_pago_supplier,#Contrato_id_fac
 
 $("input#Contrato_start_date_TP_customer, input#Contrato_start_date_TP_supplier").focusout(function() 
 {  
-     switch ($(this).attr("id")){
+     switch ($(this).attr("id"))
+     {
        case "Contrato_start_date_TP_customer":
             setTimeout(function() { $SORI.AJAX.send("GET","/Contrato/UpdateStartDateCTP",$("#contrato-form").serialize(), "date"); }, 2000);
            break;
@@ -242,22 +276,25 @@ $("input#Contrato_start_date_TP_customer, input#Contrato_start_date_TP_supplier"
 
 $('#paymentTermnS, #paymentTermnC').on("click", function()
 {
-      $(".emergingBackground").remove();
-      var msj=$("<div class='emergingBackground'></div>").hide(); 
-      $("body").append(msj);
-      msj.slideDown('slow');
-      if($(this).attr("id")=="paymentTermnC"){
+    $(".emergingBackground").remove();
+    var msj=$("<div class='emergingBackground'></div>").hide(); 
+    $("body").append(msj);
+    msj.slideDown('slow');
+    if($(this).attr("id")=="paymentTermnC")
+    {
           $(".formPaymentTermnsCustomer").slideDown("slow");
           $SORI.AJAX.send("GET","/ContratoTerminoPago/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), false); 
           if($("#Contrato_start_date_TP_customer").val()=="")$(".startDateTpCust").hide("fast");
           else  $(".startDateTpCust").show("fast"); 
-      }else{
-          $(".formPaymentTermnsSupplier").slideDown("slow");
-          $SORI.AJAX.send("GET","/ContratoTerminoPagoSupplier/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), true); 
-          if($("#Contrato_start_date_TP_supplier").val()=="")$(".startDateTpSupp").hide("fast");
-          else $(".startDateTpSupp").show("fast");
-      }
-      $(".emergingBackground").click(function(){  $(".formPaymentTermnsSupplier, .formPaymentTermnsCustomer,.emergingBackground").fadeOut("slow");});
+    }
+    else
+    {
+        $(".formPaymentTermnsSupplier").slideDown("slow");
+        $SORI.AJAX.send("GET","/ContratoTerminoPagoSupplier/PaymentTermHistory",$("#Contrato_id_carrier").serialize(), true); 
+        if($("#Contrato_start_date_TP_supplier").val()=="") $(".startDateTpSupp").hide("fast");
+        else $(".startDateTpSupp").show("fast");
+    }
+    $(".emergingBackground").click(function(){  $(".formPaymentTermnsSupplier, .formPaymentTermnsCustomer,.emergingBackground").fadeOut("slow");});
 });
 
 $('#botAsignarContrato').click('on',function(e)
@@ -277,20 +314,28 @@ $('#botAsignarContrato').click('on',function(e)
             success: function(data) 
             {
                 var obj=JSON.parse(data);
-                if(obj.termino_pNameO == "" && obj.monetizableNameO == ""){
+                if(obj.termino_pNameO == "" && obj.monetizableNameO == "")
+                {
                     var guardoEdito=" Se guardo con exito el Contrato";
                     var finalidad="<h4>Esta a punto de crear un nuevo Contrato: <br><b>( "+obj.carrierName+" / "+obj.companyName+" )</b></h4><h6>Con las siguientes condiciones comerciales:</h6>";
-                }else{   
+                }
+                else
+                {   
                     guardoEdito=" Todos los cambios fueron efectuados con exito en el Contrato"; 
                     finalidad="<h4>Esta a punto de realizar los siguientes cambios en el Contrato :<br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>";
                 }  
                     var cambio_bank_fee="";
-                if(obj.bank_feeName != obj.bank_feeNameO) {cambio_bank_fee="<p class='bank_fee_note'><b>Nota:</b> Esta a punto de definir que <b>"+obj.companyName+"</b> "+obj.bank_feeName+" asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</p>";}
-                          
-                if($("#Contrato_end_date").val()!=""){
+                if(obj.bank_feeName != obj.bank_feeNameO)
+                {
+                    cambio_bank_fee="<p class='bank_fee_note'><b>Nota:</b> Esta a punto de definir que <b>"+obj.companyName+"</b> "+obj.bank_feeName+" asumira el <b>bank fee</b> para este carrier, recuerde que esta opcion se aplicara para los demas carrier pertenecientes al mismo grupo</p>";
+                }
+                if($("#Contrato_end_date").val()!="")
+                {
                     var advertencia="<h4>Esta a punto de finalizar el Contrato<br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>";
-                }else{
-                       advertencia=""+finalidad+"<h6><div><table class='table_contrato'>\n\
+                }
+                else
+                {
+                    advertencia=""+finalidad+"<h6><div><table class='table_contrato'>\n\
                                     <tr class='tr_contrato'>\n\
                                       <td>"+$SORI.UI.resultadoContrato($("#F_Firma_Contrato_Oculto").val(),$("#Contrato_sign_date").val(),"Fecha de firma de contrato de: "+$("#F_Firma_Contrato_Oculto").val()+" a ","Fecha de firma de contrato: ")+" </td><td class='sign_date td_basic_contr'>"+$("#Contrato_sign_date").val()+"</td> \n\
                                       <td>"+$SORI.UI.resultadoContrato($("#F_P_produccion_Oculto").val(),$("#Contrato_production_date").val(),"Fecha de Puesta en Produccion de: "+$("#F_P_produccion_Oculto").val()+" a ","Fecha de Puesta en Produccion: ")+" </td><td class='production_date td_basic_contr'>"+$("#Contrato_production_date").val()+"</td> \n\
@@ -324,11 +369,11 @@ $('#botAsignarContrato').click('on',function(e)
                                       <td></td><td></td>\n\
                                     </tr>\n\
                                    </table></div></h6>"+cambio_bank_fee+"<p>";
-                    }
-                    $SORI.UI.msj_confirm(advertencia);
-                    $('.mensaje').css('width','654px').css('margin-left','25%');$('.cancelar').css('margin-left','236px');$('.confirma').css('margin-left','334px');
-                    $SORI.UI.coloursIfChange();
-                    if(cambio_bank_fee!="")$SORI.UI.changeCss($('.mensaje'),'top','6%!important');
+                }
+                $SORI.UI.msj_confirm(advertencia);
+                $('.mensaje').css('width','654px').css('margin-left','25%');$('.cancelar').css('margin-left','236px');$('.confirma').css('margin-left','334px');
+                $SORI.UI.coloursIfChange();
+                if(cambio_bank_fee!="") $SORI.UI.changeCss($('.mensaje'),'top','6%!important');
                 
                 $('#confirma,#cancelar').on('click',function()
                 {
@@ -343,8 +388,8 @@ $('#botAsignarContrato').click('on',function(e)
                             {  
                                 $SORI.UI.formChange('#Contrato_id_carrier');
                                 console.log(data);$('.mensaje').css('width','490px').css('margin-left','30%');
-                                if($("#Contrato_end_date").val()!="")$SORI.UI.msj_change("<h4>El Contrato: <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+$("#Contrato_end_date").val()+"</h6>","si.png","1000","width:90px; height:90px;");
-                                  else          $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");
+                                if($("#Contrato_end_date").val()!="") $SORI.UI.msj_change("<h4>El Contrato: <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4><h6><p>Fue Finalizado con exito en la fecha: "+$("#Contrato_end_date").val()+"</h6>","si.png","1000","width:90px; height:90px;");
+                                else $SORI.UI.msj_change("<h4>"+guardoEdito+": <br><b>("+obj.carrierName+" / "+obj.companyName+")</b></h4>","si.png","1500","width:90px; height:90px;");
 
                                 $("#monetizable_Oculto").val($("#Contrato_id_monetizable").val());$("#TerminoP_Oculto").val($("#Contrato_id_termino_pago").val()); $("#bank_feeOculto").val($("#Contrato_bank_fee").val());
                             }
@@ -503,10 +548,11 @@ $('#AccountingDocumentTemp_carrier_groups').change(function()
             data: 'id_group='+$(this).val(),
             success: function(data) 
             {
-               if($('#AccountingDocumentTemp_id_type_accounting_document').val()=="4" || $('#AccountingDocumentTemp_id_type_accounting_document').val()=="3"){
-               if(data==1)  $(".bank_fee").show("slow");
-                else        $(".bank_fee").hide("slow"); 
-               }
+                if($('#AccountingDocumentTemp_id_type_accounting_document').val()=="4" || $('#AccountingDocumentTemp_id_type_accounting_document').val()=="3")
+                {
+                    if(data==1) $(".bank_fee").show("slow");
+                    else $(".bank_fee").hide("slow");
+                }
             }
     });
 });
@@ -529,16 +575,21 @@ $('#botAgregarDatosContable').click('on',function(e)
             url: "GuardarDoc_ContTemp",
             data: str,
             success: function(data) 
-            {console.log(data);
+            {
                 obj = JSON.parse(data);
-                if((obj.valid==1)){
+                if((obj.valid==1))
+                {
                     $SORI.UTILS.updateMontoAprobadoDisp();
                     $SORI.UI.llenarTabla(obj);
                     $SORI.UI.init();
                     $SORI.UI.emptyFields();
-                }else if((obj.valid==0)){
+                }
+                else if((obj.valid==0))
+                {
                     $SORI.UI.MensajeYaExiste(obj);
-                }else{
+                }
+                else
+                {
                     $SORI.UI.sesionCerrada();
                 }
             }          
@@ -558,13 +609,23 @@ $('#botAgregarDatosContableFinal').click('on',function(e)
                 type: "GET",
                 url: "guardarListaFinal",
                 success: function(data) 
-                {  
-                    $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.LabelDepSegPago,.LabelDepSegCobro,.botonesParaExportar').fadeOut('fast');
-                    $('.vistaTemp').remove();
-                    $SORI.UI.msj_change("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4>","si.png","1000","width:95px; height:95px;"); 
+                {
+                    console.log(data);
+                    if(data=="" || data==null)
+                    {
+                        $SORI.UI.sesionCerrada();
+                    }
+                    else
+                    {
+                        $('.tablaVistDocTemporales, #botAgregarDatosContableFinal, .Label_F_Env, .Label_F_Rec, .LabelPagos, .LabelCobros, .Label_DispRec, .Label_DispEnv,.Label_NotCredEnv,.Label_NotCredRec,.botonesParaExportar').fadeOut('fast');
+                        $('.vistaTemp').remove();
+                        $SORI.UI.msj_change("<h4>Se almacenaron <b> "+data+"</b>  documentos contables de forma definitiva</h4>","si.png","1000","width:95px; height:95px;"); 
+                    }
                 }  
             });
-        }else{
+        }
+        else
+        {
             $(".cargando, .mensaje").fadeOut('fast');
         }
     });
@@ -655,15 +716,17 @@ $(function($)
 //*
 $('#GeographicZone_acciones, input#color_zona, select#GeographicZone_name_zona').change(function()
 {
-    switch ($(this).attr('id'))
-        {
+    switch($(this).attr('id'))
+    {
         case "GeographicZone_acciones":
             $('.acciones').html('Acciones');
-            if ($(this).val()==1){
+            if($(this).val()==1)
+            {
                 $('div.valoresDocumento, input#GeographicZone_name_zona').slideDown('slow');
                 $('select#GeographicZone_name_zona').hide('slow');
             }
-            if ($(this).val()==2){
+            if($(this).val()==2)
+            {
                 $('div.valoresDocumento, select#GeographicZone_name_zona').slideDown('slow');
                 $('input#GeographicZone_name_zona').hide('slow');
             } 
@@ -695,38 +758,43 @@ $('.botGuardarZonaColor').click('on',function(e)
     if(acciones=='' || color=='')
     {  
         $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Faltan datos por agregar</h3>","aguanta.png","1000","width:40px; height:90px;"); 
-    }else
+    }
+    else
+    {
+        if(acciones==1)
         {
-            if (acciones==1){var Action="GuardarZoneColor";}
-            if(acciones==2){ Action="UpdateZoneColor";}
-            $.ajax({
-                type: "GET",
-                url: Action,
-                data: "name_zona="+$('input#GeographicZone_name_zona').val()+"&color_zona="+color.replace('#','')+"&name_zonaSelect="+$('select#GeographicZone_name_zona').val(),
-    
-                success: function(data) 
-                {
-                    console.log(data);
-                    obj = JSON.parse(data);
-                    $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>La zona geografica <p><b>"+obj.name_zonaG+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+obj.color_zonaG+";width:25%;margin-left: 36%;'>"+obj.color_zonaG+"</div>","si.png","3000","width:95px; height:95px;"); 
-                    $("select#GeographicZone_acciones,input#GeographicZone_name_zona,select#GeographicZone_name_zona,input#color_zona_hidden").val('');
-                    $( "input#color_zona" ).css( "background-color","white" );
-                }
-            });
+            var Action="GuardarZoneColor";
         }
+        if(acciones==2)
+        {
+            Action="UpdateZoneColor";
+        }
+        $.ajax({
+            type: "GET",
+            url: Action,
+            data: "name_zona="+$('input#GeographicZone_name_zona').val()+"&color_zona="+color.replace('#','')+"&name_zonaSelect="+$('select#GeographicZone_name_zona').val(),
+            success: function(data) 
+            {
+                obj = JSON.parse(data);
+                $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>La zona geografica <p><b>"+obj.name_zonaG+"</b></h3><p>Fue guardada con exito y se le asigno el color<div style='background-color: #"+obj.color_zonaG+";width:25%;margin-left: 36%;'>"+obj.color_zonaG+"</div>","si.png","3000","width:95px; height:95px;"); 
+                $("select#GeographicZone_acciones,input#GeographicZone_name_zona,select#GeographicZone_name_zona,input#color_zona_hidden").val('');
+                $( "input#color_zona" ).css( "background-color","white" );
+            }
+        });
+    }
 });
-//**
-//fin modulo de colores por zona geografica
-//**
+/**
+ * fin modulo de colores por zona geografica
+ */
 
-//**
-//modulo de grupo carriers
-//**
+/**
+ * modulo de grupo carriers
+ */
 
 $('div.newGroup, div.cancelarnewGroup').click('on',function()
 {
-     switch ($(this).attr('class'))
-        {
+    switch($(this).attr('class'))
+    {
         case "newGroup":
             $(this).hide('fast');
             $('div.cancelarnewGroup').show('fast');
@@ -748,7 +816,7 @@ $('div.newGroup, div.cancelarnewGroup').click('on',function()
             $('.labelGrupos').html("Grupos");
             $('.NoteGrupos').hide("fast");
             break;
-        } 
+    } 
 });
 $('#Carrier_id').change(function()
 {
@@ -772,7 +840,8 @@ $(".AsignarCarrierGroup").on( "click",function(e)
     {
         $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>No ha seleccionado ningun grupo</h3>","aguanta.png","1000","width:40px; height:90px;"); 
         $("#carriers select option").prop("selected",false);
-    }else 
+    }
+    else 
     {
         $.ajax({
             type: "GET",
@@ -807,7 +876,9 @@ $(".AsignarCarrierGroup").on( "click",function(e)
 //                                    if(obj.newGroup!=null)  $("#Carrier_id").append("<option value="+obj.newGroup+">"+$("#Carrier_new_groups").val().toUpperCase()+"</option>");
                                 }
                             });
-                        }else{
+                        }
+                        else
+                        {
                             $(".cargando,.mensaje").fadeOut();
                         }
                     });
@@ -816,12 +887,12 @@ $(".AsignarCarrierGroup").on( "click",function(e)
         });
     }
 });
-//**
-//fin modulo de grupo carriers
-//**
-//**
-//agregar managers
-//**
+/**
+ * fin modulo de grupo carriers
+ */
+/**
+ * agregar managers
+ */
 $(".G_ManagerNuevo").on( "click",function(e)
 {
     e.preventDefault();
@@ -837,13 +908,13 @@ $(".G_ManagerNuevo").on( "click",function(e)
         }
     });
 });
-//**
-//fin agregar managers
-//**
+/**
+ * fin agregar managers
+ */
 
-//**
-//check marcar 
-//**
+/**
+ * check marcar 
+ */
 function marcar(source)
 {
     checkboxes = document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
@@ -858,8 +929,8 @@ function marcar(source)
 
 $("#AccountingDocument_id_carrier").change(function()
 {
-    console.log($(this).parent().parent().attr("id"));
-    switch ($(this).attr("id")) {
+    switch($(this).attr("id"))
+    {
         case "AccountingDocument_id_carrier":
             $("img#filterForPeriod").css("display","none");
             $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");$("div.filterForPeriod").hide("slow");
@@ -874,19 +945,25 @@ $("img#filterForPeriod,img#updateGetDispute").click(function()
     switch ($(this).attr("id")) 
     {
         case "filterForPeriod":
-            if($("div.filterForPeriod").css("display")=="none"){
+            if($("div.filterForPeriod").css("display")=="none")
+            {
                 $("div.filterForPeriod").show("slow");$("img#filterForPeriod").css("background","rgba(226, 168, 140, 1");
-            }else{
+            }
+            else
+            {
                 $("div.filterForPeriod").hide("slow");
                 $("img#filterForPeriod").css("background","rgba(111,204,187,1");
                 $("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val("");
                 $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
-                }
+            }
             break;
         case "updateGetDispute":
-            if($("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val()==""){
+            if($("input#AccountingDocument_from_date,input#AccountingDocument_to_date").val()=="")
+            {
                 $SORI.UI.msj_cargando("","");$SORI.UI.msj_change("<h3>Debe seleccionar las dos fechas que conforman el periodo</h3>","aguanta.png","2000","width:40px; height:90px;"); 
-            }else{
+            }
+            else
+            {
                 $SORI.AJAX.send("GET", "/AccountingDocument/getDispute",$("#accounting-document-form").serialize(), null);
             }
             break;

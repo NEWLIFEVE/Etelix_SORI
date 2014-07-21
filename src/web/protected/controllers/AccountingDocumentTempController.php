@@ -32,7 +32,6 @@ class AccountingDocumentTempController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-
 				'actions'=>array('index','view','EnviarEmail','GuardarDoc_ContTemp','GuardarListaFinal','delete', 'borrar','update','GuardarFac_RecTemp','GuardarFac_EnvTemp','GuardarPagoTemp','GuardarCobroTemp','BuscaFactura','GuardarDisp_RecTemp','GuardarNotaC_Env','GuardarDisp_EnvTemp','DestinosSuppAsignados','print','BuscaDisputaRec','BuscaDisputaEnv','GuardarNotaC_Rec','UpdateDisp'),
 				'users'=>array('*'),
 			),
@@ -81,7 +80,6 @@ class AccountingDocumentTempController extends Controller
 		$lista_dep_seg_pago=AccountingDocumentTemp::listaDepSegPago(Yii::app()->user->id);
 		$lista_dep_seg_cobro=AccountingDocumentTemp::listaDepSegCobro(Yii::app()->user->id);
 		
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -247,7 +245,8 @@ class AccountingDocumentTempController extends Controller
                 echo "Algo salio mal";
             }
         }
-        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4){                                                
+        if($type_doc->id_type_accounting_document==3||$type_doc->id_type_accounting_document==4)
+        {                                                
             $this->updateBackFee($id);
         }
     }
@@ -262,7 +261,7 @@ class AccountingDocumentTempController extends Controller
         if($bank_fee!=NULL)
         {
             $model=$this->loadModel($bank_fee->id);     
-            if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee']))$model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
+            if(isset($_POST['AccountingDocumentTemp']['amount_bank_fee'])) $model->amount=Utility::snull(Utility::ComaPorPunto($_POST['AccountingDocumentTemp']['amount_bank_fee'])); 
             if($model->save())
             {
                 echo " y id: ".$model->id;

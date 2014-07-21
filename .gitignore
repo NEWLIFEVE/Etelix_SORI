@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 src/web/protected/config/db.php
 src/web/protected/config/gii.php
 src/web/protected/runtime/*
@@ -24,3 +25,36 @@ Desktop.ini
 $RECYCLE.BIN/
 
 src/web/uploads/*.xls
+
+#Eclipse
+.buildpath
+.project
+.settings/*
+=======
+src/web/protected/config/db.php
+src/web/protected/config/gii.php
+src/web/protected/runtime/*
+src/web/assets/*
+
+#sublimetext
+/*.sublime-project
+*.sublime-workspace
+
+# netbeans
+nbproject/*
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# -- Sistemas Operativos ------------------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+src/web/uploads/*.xls
+>>>>>>> adminDispute
