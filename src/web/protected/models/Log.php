@@ -273,6 +273,14 @@ class Log extends CActiveRecord
 	/**
 	 *
 	 */
+	public static function search_Id_Daily()
+	{
+		$model=LogAction::model()->findAll("id>=1 AND id<=2 order by id");
+		return $model;
+	}
+	/**
+	 *
+	 */
 	public static function logDiario()
 	{
 		$cargados="<h3>ESTATUS CARGA</h3>
@@ -280,39 +288,50 @@ class Log extends CActiveRecord
 	  	$nocargados="</ul>
 	  				<p>Archivos Faltantes:</p>
 	  				<ul>";
-		if(self::existe(1))
-		{
-			if(self::existe(3))
-			{
-				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta External Definitivo</li>";
-			}
-			else
-			{
-				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta External Preliminar</li>";
-				$nocargados.="<li class='nocargados' name='diario'>Ruta External Definitivo</li>";
-			}
-		}
-		else
-		{
-			$nocargados.="<li class='nocargados'>Ruta External</li>";
-		}
-		if(self::existe(2))
-		{
-			if(self::existe(4))
-			{
-				$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal Definitivo</li>";
-			}
-			else
-			{
-				$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta Internal Preliminar</li>";
-				$nocargados.="<li class='nocargados' name='diario'>Ruta Internal Definitivo</li>";
-			}
-		}
-		else
-		{
-			$nocargados.="<li class='nocargados'>Ruta Internal</li>";
-		}
 		
+		$rows=self::search_Id_Daily();
+	  	foreach ($rows as $row)
+	  	{
+			if($row['id']==1)
+			{
+				if(self::existe($row['id']))
+				{
+					if(self::existe($row['id']+2))
+					{
+						$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta External Definitivo</li>";
+					}
+					else
+					{
+						$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta External Preliminar</li>";
+						$nocargados.="<li class='nocargados' name='diario'>Ruta External Definitivo</li>";
+					}
+				}
+				else
+				{
+					$nocargados.="<li class='nocargados'>Ruta External</li>";
+				}
+			}
+			if($row['id']==2)
+			{
+				if(self::existe($row['id']))
+				{
+					if(self::existe($row['id']+2))
+					{
+						$cargados.="<li id='definitivo' class='cargados' name='diario'>Ruta Internal Definitivo</li>";
+					}
+					else
+					{
+						$cargados.="<li id='preliminar' class='cargados' name='diario'>Ruta Internal Preliminar</li>";
+						$nocargados.="<li class='nocargados' name='diario'>Ruta Internal Definitivo</li>";
+					}
+				}
+				else
+				{
+					$nocargados.="<li class='nocargados'>Ruta Internal</li>";
+				}
+			}
+	  	}				
+
 		$cargados.="</ul>";
 		$nocargados.="</ul>";
 		return $cargados.$nocargados;
