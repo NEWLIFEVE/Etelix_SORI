@@ -81,7 +81,7 @@ class BalanceController extends Controller
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-        public function actionCompras()
+    public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -165,6 +165,7 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
+	
 	/**
 	 *
 	 */
@@ -188,14 +189,12 @@ class BalanceController extends Controller
 	/**
 	 *
 	 */
-public function actionGuardartemp()
+	public function actionGuardartemp()
 	{
-		ini_set('max_execution_time', 2000);
         ini_set('memory_limit', -1);
 		//capturo el nombre del usuario logueado
 		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
-		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
