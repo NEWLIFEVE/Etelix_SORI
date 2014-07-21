@@ -94,6 +94,7 @@ class LogAction extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
 	/*
 	*Funcion que devuelve el id del log_action consultado
 	*/
@@ -114,6 +115,7 @@ class LogAction extends CActiveRecord
 			return false;
 		}
 	}
+
 	/**
 	* Funcion que devuelve el id del log_action consultado pero por like
 	*/
@@ -130,6 +132,7 @@ class LogAction extends CActiveRecord
 		}
 		 exit();
 	}
+	
 	/**
 	* Funcion que devuelve el nombre del id consultado
 	*/

@@ -14,7 +14,7 @@ Sistema de Origen
 - Modificación de la funcion loadArchTemp en hora para eliminar los registros en ciertas horas.
 - Corrección en el metodo de lectura del archivo diario, para no leer los totales de los archivos diarios.
 - Modificación en el metodo en el cual se imprimen archivos subidos y los faltantes de los archivos horas. 
-- Completación de la funcion de carga temporal. 
+- completada funcion de carga temporal. 
 
 Release 1.5.7.6
 - Corrección de metodo encargado de guadar documentos contables final donde dejaba guardar dos banck fee, esto se debia a que solo estaba seteado para los cobros y no para pagos. 
