@@ -87,9 +87,7 @@ class Reader
                             {
                                 //Obtengo el id de destino externo
                                 $valores['id_destination']=Destination::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
-                                $valores['id_destination_int']='NULL';
-                                $id_destination_int=$valores['id_destination_int'];
-                                $id_destination=$valores['id_destination'];                                
+                                $valores['id_destination_int']='NULL';                              
                             }
                             else
                             {
@@ -97,6 +95,8 @@ class Reader
                                 $valores['id_destination_int']=DestinationInt::getId(utf8_encode($archivo->excel->sheets[0]['cells'][$i][$j]));
                                 $valores['id_destination']='NULL';
                             }
+                            $id_destination_int=$valores['id_destination_int'];
+                            $id_destination=$valores['id_destination'];  
                         }
                         break;
                     case 2:
