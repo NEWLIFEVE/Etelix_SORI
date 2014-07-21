@@ -2,6 +2,8 @@
 ===========
 
 ##Sistema de Origen
+
+###Release 1.7
 - Nueva version de carga de archivos por hora:
 	* 12:00 am - 0 a 3 Hrs
 	* 04:00 am - 0 a 7 Hrs
