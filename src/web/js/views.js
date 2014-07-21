@@ -29,7 +29,6 @@ $(document).on('ready',function()
             success: function(data)
             {
                 var obj=JSON.parse(data);
-              
                 if(obj.error=="si")
                 {
                 	control=1;
@@ -43,24 +42,22 @@ $(document).on('ready',function()
         });
 
 
+    });
+    $("div.horas").fadeOut("slow");
+    $("div.rerate").fadeOut("slow");
+    if(msj.acumulador>=2)
+    {
+    	$("div.horas").fadeIn("slow").css({
+            'display':'block'
         });
-        $("div.horas").fadeOut("slow");
+        $("div.diario").fadeOut("slow");
         $("div.rerate").fadeOut("slow");
-        console.log(msj.acumulador);
-        if(msj.acumulador>=2)
-        {
-        	$("div.horas").fadeIn("slow").css({
-                'display':'block'
-            });
-            $("div.diario").fadeOut("slow");
-            $("div.rerate").fadeOut("slow");
-            $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-        });
-        //Muestra mensaje con el nombre de los archivos rerates guardados
-        $('input[value="rerate"]').on('click',function()
-        {
-            $('input[type="file"], input[type="submit"]').removeAttr('disabled');
-        }
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
+    };
+    //Muestra mensaje con el nombre de los archivos rerates guardados
+    $('input[value="rerate"]').on('click',function()
+    {
+        $('input[type="file"], input[type="submit"]').removeAttr('disabled');
     });
     //Muestra mensaje con el nombre de los archivos por hora guardados en el dia
     $('input[value="hora"]').on('click',function()
