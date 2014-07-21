@@ -568,11 +568,11 @@ class ValidationsArchCapt
 	    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
             $id_destination=$var['id_destination'];
             $id_destination_int=$var['id_destination_int'];
-            if($id_destination=="NULL")
+            if($id_destination=='NULL')
             { // ES interno 
                 $name_destination='id_destination';
 		    }
-            elseif($id_destination_int=="NULL")
+            elseif($id_destination_int=='NULL')
             { //es externo 
                 $name_destination='id_destination_int';
             }
