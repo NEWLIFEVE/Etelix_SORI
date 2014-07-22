@@ -229,7 +229,7 @@ class BalanceController extends Controller
 				 	$archivo=new Reader($ruta);
 
 				   	//validaciones 
-				   //	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
+				    //if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	//{
 				 		// se toma la fecha del archivo. 
 				 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
@@ -237,33 +237,33 @@ class BalanceController extends Controller
 
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
 					 	{
-					   		$var=array();
+					   		$var=null;
 	                   		if($tipo=='dia')
 					   		{
 					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
 						 		$var=Reader::diario($date, $nombre, $archivo);
 					   		}
 		
-					   		if($var!="") 
+					   		if($var!=null) 
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
 					     		/*if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	*/ 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
+						     		$stringDataPreliminary=ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
 
-						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
+						     		/*if(($stringDataPreliminary!="")&&($tipo=='hora'))
 						     		{
 										// mando el string de horas que vienen en el excel para borrar las viejas
 							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-						     		}
+						     		}*/
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
 						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 						   			{
-							   			if($tipo=='dia')
-						 	     		{
-								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
-							     		}
+							   			/*if($tipo=='dia')
+						 	     		{*/
+								    		/*Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));*/
+							     		/*}*/
 						
 										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
 							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
