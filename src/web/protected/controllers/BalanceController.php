@@ -251,39 +251,42 @@ public function actionGuardartemp()
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo);
+						     		// $stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
 
-						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
-						     		{
-										// mando el string de horas que vienen en el excel para borrar las viejas
-							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-						     		}
-						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
-						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
-						   			{
-							   			if($tipo=='dia')
-						 	     		{
-								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
-							     		}
-						
-										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
-							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
-							     		{
-								   			// mando el string preliminar para eliminar la data de diario
-								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-							     		}
-						   			}
+						    //  		if(($stringDataPreliminary!="")&&($tipo=='hora'))
+						    //  		{
+										// // mando el string de horas que vienen en el excel para borrar las viejas
+							   // 			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+						    //  		}
+						 
+						 			// Funcion que borra la data en la BD para luego guardar la nueva. 
+					     			ValidationsArchCapt::deleteDataTemp($date);
+					     			
+										if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+							   			{
+								   			// if($tipo=='dia')
+							 	     // 		{
+									    		// Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
+								     		// }
+							
+											//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+								     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+								     		// if(($stringDataPreliminary!="")&&($tipo=='dia'))
+								     		// {
+									   			// mando el string preliminar para eliminar la data de diario
+									   			// ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+								     		// }
+							   			}
 					     		}
 					    	}
 						//}
 					}
 			
-					if($tipo=='dia')
-					{
+					// if($tipo=='dia')
+					// {
 					    $nombres[]=$nombre;
 			    		$nombreArc=implode(",",  $nombres); 
-					}
+					// }
 
 				}
 
@@ -293,8 +296,8 @@ public function actionGuardartemp()
 				}
 				if($this->error==ValidationsArchCapt::$error)
 				{
-					if($tipo=='dia')
-					{
+					// if($tipo=='dia')
+					// {
 						if($countExistentes==1)
 						{
 							$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
@@ -303,7 +306,7 @@ public function actionGuardartemp()
 						{
 							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
 						}     	
-					}
+					// }
 				}
 			 
 				$this->error=ValidationsArchCapt::ERROR_NONE;
