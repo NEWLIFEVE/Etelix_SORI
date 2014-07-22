@@ -262,8 +262,9 @@ public function actionGuardartemp()
 						 			// Funcion que borra la data en la BD para luego guardar la nueva. 
 					     			ValidationsArchCapt::deleteDataTemp($date);
 					     			
-										if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
-							   			{
+					     			// Funcion que guarda en la tabla Balance todo el contenido del Archivo
+									ValidationsArchCapt::saveDataArchDayHours($var,$tipo);
+							   			
 								   			// if($tipo=='dia')
 							 	     // 		{
 									    		// Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
@@ -276,7 +277,7 @@ public function actionGuardartemp()
 									   			// mando el string preliminar para eliminar la data de diario
 									   			// ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
 								     		// }
-							   			}
+							   			
 					     		}
 					    	}
 						//}
