@@ -39,20 +39,7 @@ echo Log::logDiario();
     <h3>ESTATUS CARGA</h3>
     <p>Archivos Cargados:</p>
     <ul>
-      <?php/*
-      $existe=false;
-      for ($i=5; $i<=28; $i++)
-      { 
-        if(Log::existe($i))
-        {
-          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
-          $existe=true;
-      }
-      if(!$existe)
-      {
-        echo "<li class='nocargados'>No se han cargado archivos</li>";
-      }*/
-      ?>
+
     </ul>
 </div>
 <div class="rerate oculta">
