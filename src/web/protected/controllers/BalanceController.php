@@ -247,8 +247,8 @@ class BalanceController extends Controller
 					   		if($var!="") 
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
-					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
-					     		{	 
+					     		/*if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+					     		{	*/ 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
 						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
 
@@ -273,7 +273,7 @@ class BalanceController extends Controller
 								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
 							     		}
 						   			}
-					     		}
+					     		/*}*/
 					    	}
 						//}
 					}
@@ -663,17 +663,26 @@ class BalanceController extends Controller
   	public function actionDisableddaily()
 	{
 	 	$fecha = $_POST['fecha'];
-	    $resultado=array();
-		$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
-		if($model>=4)
-		{
-			//ya se cargaron los 4 archivos diarios
-			$resultado['error'] = "si";
-		}
-		else
-		{
-			$resultado['error'] = "no";
-		}
+	 	$action=$_POST['action'];
+	 	$action=explode('/',$action);
+	 	if($action[1]!=='uploadtemp')
+	 	{
+	 		$resultado=array();
+			$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
+			if($model>=4)
+			{
+				//ya se cargaron los 4 archivos diarios
+				$resultado['error'] = "si";
+			}
+			else
+			{
+				$resultado['error'] = "no";
+			}
+	 	}
+	 	else
+	 	{
+	 		$resultado['error'] = "no";
+	 	}
 		echo json_encode($resultado);
 	}
 }

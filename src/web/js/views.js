@@ -21,11 +21,12 @@ $(document).on('ready',function()
 
       //valida qsi estan cargados todos los diarios
     	var f = new Date();
-    	fecha=( f.getFullYear()+ "-" + (f.getMonth() +1) + "-" +f.getDate() );
+        var action=location.pathname;
+    	var fecha=( f.getFullYear()+ "-" + (f.getMonth() +1) + "-" +f.getDate() );
     	$.ajax({
             type: "POST",
             url: "/balance/disableddaily",
-            data: ({fecha:fecha}),
+            data: ({fecha:fecha,action:action}),
             success: function(data)
             {
                 var obj=JSON.parse(data);
