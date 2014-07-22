@@ -32,29 +32,10 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
 ?>
 <div class="diario oculta">
 <?php
-echo Log::logDiario();
+//echo Log::logDiario();
 ?>
 </div>
-<div class="horas oculta">
-    <h3>ESTATUS CARGA</h3>
-    <p>Archivos Cargados:</p>
-    <ul>
-      <?php/*
-      $existe=false;
-      for ($i=5; $i<=28; $i++)
-      { 
-        if(Log::existe($i))
-        {
-          echo "<li class='cargados'>".LogAction::getName($i)."</li>";
-          $existe=true;
-      }
-      if(!$existe)
-      {
-        echo "<li class='nocargados'>No se han cargado archivos</li>";
-      }*/
-      ?>
-    </ul>
-</div>
+
 <div class="rerate oculta">
     <h3>ESTATUS CARGA</h3>
     <p>Rango del Re-Rate:</p>
@@ -68,7 +49,7 @@ echo Log::logDiario();
     <p>Ultimo Rango Cargado:</p>
     <ul>
     <?php
-    /*$fechas=Log::getRerate();
+    $fechas=Log::getRerate();
     if($fechas)
     {
        echo "<li class='cargados'>".$fechas."</li>";
@@ -77,7 +58,7 @@ echo Log::logDiario();
     {
         echo "<li class='nocargados'>No se ha cargado ningun rango</li>";
     }
-    */?>
+    ?>
         <li><?php
             $listo=Log::getListo();
             /*if($listo == "procesando")
