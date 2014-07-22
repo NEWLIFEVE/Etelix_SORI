@@ -79,7 +79,7 @@ echo Log::logDiario();
     }
     */?>
         <li><?php
-            $listo=Log::getListo();
+            //$listo=Log::getListo();
             /*if($listo == "procesando")
             {
                 echo "Procesando <img src='/images/gif-load.gif'>";
