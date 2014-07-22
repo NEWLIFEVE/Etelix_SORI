@@ -688,6 +688,20 @@ class ValidationsArchCapt
 		{
             self::$error=self::ERROR_NONE;
 		}
-	} 
+	}
+
+    /**
+     * funcion que borra la data de la BD en la fecha que se suben los archivos temporales
+     * @param fecha $date
+     * @return boolean
+     */
+    public static function deleteDataTemp($date)
+    {   
+        $delete=Yii::app()->db->createCommand("DELETE FROM balance WHERE date_balance='".$date."'")->execute();
+    }
+
+
+
+
 }
 ?>
