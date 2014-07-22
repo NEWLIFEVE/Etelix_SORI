@@ -3,6 +3,9 @@
 
 ##Sistema de Origen
 
+###Release 1.7.1
+- Cambiado carga de archivos anteriores, ahora borra los registros que tengan la fecha del archivo subido.
+
 ###Release 1.7
 - Nueva version de carga de archivos por hora:
 	* 12:00 am - 0 a 3 Hrs
