@@ -310,7 +310,7 @@ class BalanceController extends Controller
 			}
 		   	/********* resultado de la carga*************/
 			$resultado.=$exitos."</br>".$fallas."</div>";
-		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
+		   	$this->render('guardar',array('data'=>$resultado/*, 'fechas'=>$yesterday*/));
 		   	/********* resultado de la carga*************/
 		}	
 	}//fin actionGuardar

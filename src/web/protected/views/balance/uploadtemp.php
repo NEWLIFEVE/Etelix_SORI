@@ -32,7 +32,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
 ?>
 <div class="diario oculta">
 <?php
-echo Log::logDiario();
+//echo Log::logDiario();
 ?>
 </div>
 <div class="horas oculta">
