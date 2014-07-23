@@ -280,9 +280,11 @@ class Reader
         $contador=0;
          //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
+
         $segundos=$regAprox/2.8;
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
+        ini_set('memory_limit', '999M');
         ini_set('max_execution_time', $segundos);
         for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
         { 
