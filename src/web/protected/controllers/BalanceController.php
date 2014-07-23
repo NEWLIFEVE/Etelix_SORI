@@ -184,7 +184,6 @@ class BalanceController extends Controller
  
         echo $return;// it's array
 	}
-
 	/**
 	 *
 	 */
@@ -228,39 +227,35 @@ class BalanceController extends Controller
 				 	//cargo el archivo en memoria
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
-			 		// se toma la fecha del archivo. 
-			 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
-			 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
+				 		// se toma la fecha del archivo. 
+				 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
+				 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
 
-				   	if($this->error==ValidationsArchCapt::ERROR_NONE)
-					{
-						$var=null;
-	                   	if($tipo=='dia')
-					   	{
-					   		// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
-							$var=Reader::diario($date, $nombre, $archivo);
-					   	}
-		
-				   		if($var!=null) 
-				   		{
-			                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-				     		$stringDataPreliminary=ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
-
-				 		    //guardo en BD el string con los nuevos datos del excel diario u Hora
-							if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
-							{
-								//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
-					     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-					     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
-					     		{
-						   			// mando el string preliminar para eliminar la data de diario
-						   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
+					 	{
+					   		$var=array();
+					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+						 		$var=Reader::diario($date, $nombre, $archivo);
+					   		
+					   		if($var!="") 
+					   		{
+					   			// obtengo lo que esta en la BD de la fecha del archivo subido
+					   			$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
+		 			   			
+		 			   			if($stringDataPreliminary!="") 
+					   			{
+					   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
+					   			}
+		                 		//Si se genero el string nuevo, guardo el log
+					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+					     		{	
+					     			// Funcion que guarda en la tabla Balance todo el contenido del Archivo
+									ValidationsArchCapt::saveDataArchDayHours($var,$tipo);	
 					     		}
-							}
+					    	}
 						}
-					}
-					$nombres[]=$nombre;
-			    	$nombreArc=implode(",",  $nombres); 
+					    $nombres[]=$nombre;
+			    		$nombreArc=implode(",",  $nombres); 
 				}
 
 				if($this->error!=ValidationsArchCapt::$error)
@@ -269,15 +264,17 @@ class BalanceController extends Controller
 				}
 				if($this->error==ValidationsArchCapt::$error)
 				{
-					if($countExistentes==1)
-					{
-						$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
-					}
-					elseif($countExistentes>=1)
-					{
-						$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
-					}     	
+
+						if($countExistentes==1)
+						{
+							$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
+						}
+						elseif($countExistentes>=1)
+						{
+							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+						}     	
 				}
+			 
 				$this->error=ValidationsArchCapt::ERROR_NONE;
 				$this->errorComment=NULL;
 			}
@@ -639,26 +636,17 @@ class BalanceController extends Controller
   	public function actionDisableddaily()
 	{
 	 	$fecha = $_POST['fecha'];
-	 	$action=$_POST['action'];
-	 	$action=explode('/',$action);
-	 	if($action[1]!=='uploadtemp')
-	 	{
-	 		$resultado=array();
-			$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
-			if($model>=4)
-			{
-				//ya se cargaron los 4 archivos diarios
-				$resultado['error'] = "si";
-			}
-			else
-			{
-				$resultado['error'] = "no";
-			}
-	 	}
-	 	else
-	 	{
-	 		$resultado['error'] = "no";
-	 	}
+	    $resultado=array();
+		$model=Log::model()->count("date=:fecha AND id_log_action>=1 AND id_log_action<=4", array(':fecha'=>$fecha));
+		if($model>=4)
+		{
+			//ya se cargaron los 4 archivos diarios
+			$resultado['error'] = "si";
+		}
+		else
+		{
+			$resultado['error'] = "no";
+		}
 		echo json_encode($resultado);
 	}
 }
