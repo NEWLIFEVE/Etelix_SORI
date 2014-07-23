@@ -576,6 +576,11 @@ class ValidationsArchCapt
             { //es externo 
                 $name_destination='id_destination_int';
             }
+
+            // var_dump($var['id_destination']);
+            // var_dump($var['id_destination_int']);
+            // exit();
+
             $total=0;
             $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
             if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
