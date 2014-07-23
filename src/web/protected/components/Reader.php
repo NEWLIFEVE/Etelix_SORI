@@ -78,7 +78,7 @@ class Reader
                     case 1:
                         if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
-                            //si es total es que ya se termino el archivo
+                            //si es total no lo guardo en base de datos
                             break 2;
                         }
                         else
@@ -274,7 +274,7 @@ class Reader
          /**
         * Valido la estructura de horas
         */
-        //hora por mla cual inicia el archivo
+        //hora por la cual inicia el archivo
         $actual=$archivo->excel->sheets[0]['cells'][5][1];
 //      $actual=0;
         $contador=0;

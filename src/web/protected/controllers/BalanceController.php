@@ -81,7 +81,7 @@ class BalanceController extends Controller
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-        public function actionCompras()
+    public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -165,6 +165,7 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
+	
 	/**
 	 *
 	 */
@@ -189,12 +190,10 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardartemp()
 	{
-		ini_set('max_execution_time', 2000);
         ini_set('memory_limit', -1);
 		//capturo el nombre del usuario logueado
 		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
-		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
@@ -243,12 +242,31 @@ class BalanceController extends Controller
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
-					     		{	
-						 			// Funcion que borra la data en la BD para luego guardar la nueva. 
-					     			ValidationsArchCapt::deleteDataTemp($date);
-					     			
-					     			// Funcion que guarda en la tabla Balance todo el contenido del Archivo
-									ValidationsArchCapt::saveDataArchDayHours($var,$tipo);	
+					     		{	 
+					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
+
+						     		if(($stringDataPreliminary!="")&&($tipo=='hora'))
+						     		{
+										// mando el string de horas que vienen en el excel para borrar las viejas
+							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+						     		}
+						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
+						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+						   			{
+							   			if($tipo=='dia')
+						 	     		{
+								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
+							     		}
+						
+										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
+							     		{
+								   			// mando el string preliminar para eliminar la data de diario
+								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+							     		}
+						   			}
 					     		}
 					    	}
 					}
@@ -278,7 +296,7 @@ class BalanceController extends Controller
 			}
 		   	/********* resultado de la carga*************/
 			$resultado.=$exitos."</br>".$fallas."</div>";
-		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
+		   	$this->render('guardar',array('data'=>$resultado/*, 'fechas'=>$yesterday*/));
 		   	/********* resultado de la carga*************/
 		}	
 	}//fin actionGuardar

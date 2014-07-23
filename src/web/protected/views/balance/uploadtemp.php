@@ -36,6 +36,13 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
 ?>
 </div>
 
+<div class="horas oculta">
+    <h3>ESTATUS CARGA</h3>
+    <p>Archivos Cargados:</p>
+    <ul>
+
+    </ul>
+</div>
 <div class="rerate oculta">
     <h3>ESTATUS CARGA</h3>
     <p>Rango del Re-Rate:</p>
@@ -60,7 +67,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
     }
     ?>
         <li><?php
-            $listo=Log::getListo();
+            //$listo=Log::getListo();
             /*if($listo == "procesando")
             {
                 echo "Procesando <img src='/images/gif-load.gif'>";
