@@ -10,6 +10,11 @@
 - Condiciones comerciales: se implemento fancybox para administrar los terminos pago actuales, adicionalmente se muestra una tabla resumen con el historial de todos los contrato termino pago customer/supplier y ofrece la opcion de modificar cualquiera de los terminos pagos pasados para por ejemplo hacer coincidir las fechas de inicio y fin segun las fechas indicadas en las facturas y asi lograr hacer coincidir las provisiones.
 - Agregados nuevos documentos contables en interfaz de documentos contables, (depositos de seguridad pagos y depositos de seguridad cobros).
 
+
+
+22/07/2014
+- Modificada la Función hora para no leer del archivo las lineas que no son necesarias leer.
+
 ###Release 1.6
 - Fix en validacion de login
 - Fix en condiciones comerciales para casos 30/7

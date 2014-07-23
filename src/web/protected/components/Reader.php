@@ -269,7 +269,7 @@ class Reader
      * Funcion de carga de archivos hora
      * @return boolean
      */
-    public static function hora ($archivo)
+    public static function hora ($archivo,$nombre,$ultima)
     {
          /**
         * Valido la estructura de horas
@@ -284,8 +284,9 @@ class Reader
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
+       
         for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
-        { 
+        {
             if($archivo->excel->sheets[0]['cells'][$i][1]!="Total" && $archivo->excel->sheets[0]['cells'][$i][1]!="Date" && $archivo->excel->sheets[0]['cells'][$i][1]!="Hour")
             {
                 //Verifico que sean secuenciales las horas
@@ -316,7 +317,7 @@ class Reader
                 }
             }
         }
-         
+
         //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
         $segundos=$regAprox/2.8;
@@ -347,11 +348,20 @@ class Reader
                         if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total es que se termino el archivo
-                            break 3;
+                            break 2;
                         }
                         else
                         {
                             $time=$archivo->excel->sheets[0]['cells'][$i][$j];
+
+                            if(strcmp($nombre,"Ruta Internal 3Hrs.xls")!=0 &&  strcmp($nombre,"Ruta External 3Hrs.xls")!=0)
+                                {
+                                    $ultima=$ultima-7;  
+                                    if($time<$ultima)
+                                    {
+                                        break 2;
+                                    }
+                                }
                         }
                         break;
                     case 2:
@@ -510,10 +520,11 @@ class Reader
                             break;  
                 }
             }
-            if($i<=$archivo->excel->sheets[0]['numRows']-1)
+            if( ($i<=$archivo->excel->sheets[0]['numRows']-1) && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
             {
                 $valuesNew.=",";
             }
+         
         }
         $barra = substr($valuesNew, -1, 1);
         if($barra==",") 
@@ -881,6 +892,7 @@ class Reader
     public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
+
         $this->fecha=$fecha;
         $fecha=strtotime($fecha);
         if($fecha==$date_balance)
@@ -891,7 +903,7 @@ class Reader
         else
         {
             $this->error=self::ERROR_DATE;
-            $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
+            $this->errorComment="<h5 class='nocargados'> El archivo 11 '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
             return false;
         }
     }

@@ -699,9 +699,5 @@ class ValidationsArchCapt
     {   
         $delete=Yii::app()->db->createCommand("DELETE FROM balance WHERE date_balance='".$date."'")->execute();
     }
-
-
-
-
 }
 ?>
