@@ -271,7 +271,16 @@ class Reader
      */
     public static function hora ($archivo,$nombre,$ultima)
     {
-         /**
+        /*Organizo los que debe leer*/
+        if($ultima==3 && $ultima==7)
+        {
+            $botton=0;
+        }
+        else
+        {
+            $botton=$ultima-7;
+        }
+        /**
         * Valido la estructura de horas
         */
         //hora por la cual inicia el archivo
@@ -349,18 +358,13 @@ class Reader
                             //si es total es que se termino el archivo
                             break 2;
                         }
+                        elseif ($archivo->excel->sheets[0]['cells'][$i][$j]<$botton)
+                        {
+                            break 2;
+                        }
                         else
                         {
                             $time=$archivo->excel->sheets[0]['cells'][$i][$j];
-                                
-                                if($nombre!="Ruta Internal 3Hrs.xls")
-                                {
-                                    $ultima=$ultima-7;  
-                                    if($time<$ultima)
-                                    {
-                                        break 2;
-                                    }
-                                }
                         }
                         break;
                     case 2:

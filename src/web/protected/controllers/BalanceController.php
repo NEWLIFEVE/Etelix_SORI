@@ -519,10 +519,12 @@ class BalanceController extends Controller
 				 	//cargo el archivo en memoria
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
-
-				 	$total=$archivo->excel->sheets[0]['numRows']-1;
-				 	$ultima=$archivo->excel->sheets[0]['cells'][$total][1];
-       				
+				 	if($tipo=='hora')
+				 	{
+				 		$total=$archivo->excel->sheets[0]['numRows']-1;
+				 		$ultima=$archivo->excel->sheets[0]['cells'][$total][1];
+				 	}
+				 	       				
 				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	{
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
