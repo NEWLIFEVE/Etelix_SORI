@@ -81,7 +81,7 @@ class BalanceController extends Controller
 	/**
 	 * Muestra una vista con los balances especificados por compras
 	 */
-    public function actionCompras()
+        public function actionCompras()
 	{
 		$model=new Balance;
 		$this->render('compras',array('model'=>$model));
@@ -165,7 +165,6 @@ class BalanceController extends Controller
 		}
 		$this->render('uploadtemp');               
 	}
-	
 	/**
 	 *
 	 */
@@ -191,10 +190,12 @@ class BalanceController extends Controller
 	 */
 	public function actionGuardartemp()
 	{
+		ini_set('max_execution_time', 2000);
         ini_set('memory_limit', -1);
 		//capturo el nombre del usuario logueado
 		$userTemporaryFolder=Yii::app()->user->getState('username').'';
 		$path=Yii::getPathOfAlias('webroot')."/uploads/temp/";
+		
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
@@ -227,63 +228,39 @@ class BalanceController extends Controller
 				 	//cargo el archivo en memoria
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
+			 		// se toma la fecha del archivo. 
+			 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
+			 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
 
-				   	//validaciones 
-				    //if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
-				   	//{
-				 		// se toma la fecha del archivo. 
-				 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
-				 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
-
-				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
-					 	{
-					   		$var=null;
-	                   		if($tipo=='dia')
-					   		{
-					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
-						 		$var=Reader::diario($date, $nombre, $archivo);
-					   		}
-		
-					   		if($var!=null) 
-					   		{
-		                 		//Si se genero el string nuevo, guardo el log
-					     		/*if (ValidationsArchCapt::logDayHours($nombre,$tipo))
-					     		{	*/ 
-					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-						     		$stringDataPreliminary=ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
-
-						     		/*if(($stringDataPreliminary!="")&&($tipo=='hora'))
-						     		{
-										// mando el string de horas que vienen en el excel para borrar las viejas
-							   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-						     		}*/
-						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
-						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
-						   			{
-							   			/*if($tipo=='dia')
-						 	     		{*/
-								    		/*Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));*/
-							     		/*}*/
-						
-										//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
-							     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
-							     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
-							     		{
-								   			// mando el string preliminar para eliminar la data de diario
-								   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
-							     		}
-						   			}
-					     		/*}*/
-					    	}
-						//}
-					}
-			
-					if($tipo=='dia')
+				   	if($this->error==ValidationsArchCapt::ERROR_NONE)
 					{
-					    $nombres[]=$nombre;
-			    		$nombreArc=implode(",",  $nombres); 
-					}
+						$var=null;
+	                   	if($tipo=='dia')
+					   	{
+					   		// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+							$var=Reader::diario($date, $nombre, $archivo);
+					   	}
+		
+				   		if($var!=null) 
+				   		{
+			                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+				     		$stringDataPreliminary=ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
 
+				 		    //guardo en BD el string con los nuevos datos del excel diario u Hora
+							if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+							{
+								//si fue exitoso la insercion verifico si el strind prelimiar viene con datos 
+					     		//si el string viene vacio no elmino nada, es la primera carga de interna o externa 
+					     		if(($stringDataPreliminary!="")&&($tipo=='dia'))
+					     		{
+						   			// mando el string preliminar para eliminar la data de diario
+						   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+					     		}
+							}
+						}
+					}
+					$nombres[]=$nombre;
+			    	$nombreArc=implode(",",  $nombres); 
 				}
 
 				if($this->error!=ValidationsArchCapt::$error)
@@ -292,33 +269,26 @@ class BalanceController extends Controller
 				}
 				if($this->error==ValidationsArchCapt::$error)
 				{
-					if($tipo=='dia')
+					if($countExistentes==1)
 					{
-						if($countExistentes==1)
-						{
-							$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
-						}
-						elseif($countExistentes>=1)
-						{
-							$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
-						}     	
+						$exitos.="<h5 class='cargados'> El arhivo '".$nombreArc."' se guardo con exito </h5> <br/>";	 	
 					}
+					elseif($countExistentes>=1)
+					{
+						$exitos.="<h5 class='cargados'> Los archivos '".$nombreArc."' se guardaron con exito </h5> <br/>";	
+					}     	
 				}
-			 
 				$this->error=ValidationsArchCapt::ERROR_NONE;
 				$this->errorComment=NULL;
 			}
 		   	/********* resultado de la carga*************/
 			$resultado.=$exitos."</br>".$fallas."</div>";
-		   	$this->render('guardar',array('data'=>$resultado/*, 'fechas'=>$yesterday*/));
+		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
 		   	/********* resultado de la carga*************/
 		}	
 	}//fin actionGuardar
 
-		
-
-
-
+	
 	/**
 	 * Muestra el detalle de un balance
 	 * @param $id el id del balance que va a mostrar
@@ -487,6 +457,7 @@ class BalanceController extends Controller
 	/**
 	 * Action encargada de guardar en base de datos los archivos cargados
 	 */
+
 	public function actionGuardar()
 	{
 		$date=date('Y-m-d');
@@ -495,9 +466,9 @@ class BalanceController extends Controller
 
 		//capturo el nombre del usuario logueado
 		$userTemporaryFolder=Yii::app()->user->getState('username').'';
-		 
+
 		$path=Yii::getPathOfAlias('webroot')."/uploads/".$userTemporaryFolder."/";
-		
+
 		//html preparado para mostrar resultados
 		$resultado="<h2> Resultados de Carga</h2><div class='detallecarga'>";
 		$exitos="<h3> Exitos</h3>";
@@ -549,8 +520,10 @@ class BalanceController extends Controller
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
 
-				 	//echo "NOMBRE: ".$nombre;
-				   	//validaciones 
+				 	for ($i=5; $i<$archivo->excel->sheets[0]['numRows']-1; $i++)
+       				{
+       					$ultima=$archivo->excel->sheets[0]['cells'][$i][1];
+       				}
 				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	{
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
@@ -564,7 +537,7 @@ class BalanceController extends Controller
 					   		elseif($tipo=='hora')
 							{
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
-						 		$var=Reader::hora($archivo,$nombre);
+						 		$var=Reader::hora($archivo,$nombre,$ultima);
 					    	}
 
 					   		if($var!=null) 
@@ -597,14 +570,14 @@ class BalanceController extends Controller
 								   			{
 								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
 								   			}
-								   			
+
 							     	/*	}*/
 						   			}
 					     		}
 					    	}
 						}
 					}
-			
+
 					if($tipo=='dia')
 					{
 					    $nombres[]=$nombre;
@@ -646,7 +619,7 @@ class BalanceController extends Controller
 						}
 					}
 				}
-			 
+
 				$this->error=ValidationsArchCapt::ERROR_NONE;
 				$this->errorComment=NULL;
 			}
@@ -655,7 +628,10 @@ class BalanceController extends Controller
 		   	$this->render('guardar',array('data'=>$resultado, 'fechas'=>$yesterday));
 		   	/********* resultado de la carga*************/
 		}	
+	
+
 	}//fin actionGuardar
+
 	
 	/**
 	 *

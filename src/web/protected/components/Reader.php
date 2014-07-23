@@ -269,7 +269,7 @@ class Reader
      * Funcion de carga de archivos hora
      * @return boolean
      */
-    public static function hora ($archivo)
+    public static function hora ($archivo,$nombre,$ultima)
     {
          /**
         * Valido la estructura de horas
@@ -347,11 +347,20 @@ class Reader
                         if($archivo->excel->sheets[0]['cells'][$i][$j]=='Total')
                         {
                             //si es total es que se termino el archivo
-                            break 3;
+                            break 2;
                         }
                         else
                         {
                             $time=$archivo->excel->sheets[0]['cells'][$i][$j];
+                                
+                                if($nombre!="Ruta Internal 3Hrs.xls")
+                                {
+                                    $ultima=$ultima-7;  
+                                    if($time<$ultima)
+                                    {
+                                        break 2;
+                                    }
+                                }
                         }
                         break;
                     case 2:
@@ -510,7 +519,7 @@ class Reader
                             break;  
                 }
             }
-            if($i<=$archivo->excel->sheets[0]['numRows']-1)
+            if( ($i<=$archivo->excel->sheets[0]['numRows']-1) && ($archivo->excel->sheets[0]['cells'][$i][$j]!='Total') )
             {
                 $valuesNew.=",";
             }
@@ -881,6 +890,7 @@ class Reader
     public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
+
         $this->fecha=$fecha;
         $fecha=strtotime($fecha);
         if($fecha==$date_balance)
@@ -891,7 +901,7 @@ class Reader
         else
         {
             $this->error=self::ERROR_DATE;
-            $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
+            $this->errorComment="<h5 class='nocargados'> El archivo 11 '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
             return false;
         }
     }

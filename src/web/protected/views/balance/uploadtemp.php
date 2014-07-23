@@ -35,6 +35,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
 //echo Log::logDiario();
 ?>
 </div>
+
 <div class="horas oculta">
     <h3>ESTATUS CARGA</h3>
     <p>Archivos Cargados:</p>
@@ -55,7 +56,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
     <p>Ultimo Rango Cargado:</p>
     <ul>
     <?php
-    /*$fechas=Log::getRerate();
+    $fechas=Log::getRerate();
     if($fechas)
     {
        echo "<li class='cargados'>".$fechas."</li>";
@@ -64,7 +65,7 @@ $this->widget('ext.EAjaxUpload.EAjaxUpload',array(
     {
         echo "<li class='nocargados'>No se ha cargado ningun rango</li>";
     }
-    */?>
+    ?>
         <li><?php
             //$listo=Log::getListo();
             /*if($listo == "procesando")

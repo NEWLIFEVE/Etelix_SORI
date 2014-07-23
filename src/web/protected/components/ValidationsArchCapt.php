@@ -568,14 +568,19 @@ class ValidationsArchCapt
 	    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
             $id_destination=$var['id_destination'];
             $id_destination_int=$var['id_destination_int'];
-            if($id_destination=="NULL")
+            if($id_destination=='NULL')
             { // ES interno 
                 $name_destination='id_destination';
 		    }
-            elseif($id_destination_int=="NULL")
+            elseif($id_destination_int=='NULL')
             { //es externo 
                 $name_destination='id_destination_int';
             }
+
+            // var_dump($var['id_destination']);
+            // var_dump($var['id_destination_int']);
+            // exit();
+
             $total=0;
             $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
             if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
@@ -688,6 +693,6 @@ class ValidationsArchCapt
 		{
             self::$error=self::ERROR_NONE;
 		}
-	} 
+	}
 }
 ?>
