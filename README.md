@@ -3,13 +3,9 @@
 
 ##Sistema de Origen
 
-<<<<<<< HEAD
 ###Release 1.7.1
 - Cambiado carga de archivos anteriores, ahora borra los registros que tengan la fecha del archivo subido.
-=======
-22/07/2014
-- Modificada la Función hora para no leer del archivo las lineas que no son necesarias leer.
->>>>>>> b81d8de024cd828795ee49590494f2cb1b036b39
+
 
 ###Release 1.7
 - Nueva version de carga de archivos por hora:

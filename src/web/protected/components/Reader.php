@@ -339,7 +339,6 @@ class Reader
          * Verifico que la fecha del archivo sea correcta
          */
         $date_balance_time=Utility::formatDate($data->sheets[0]['cells'][1][5]);
-        
         /**
          * Comienzo a leer el archivo
          */

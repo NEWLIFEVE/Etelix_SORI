@@ -564,6 +564,7 @@ class ValidationsArchCapt
     {
     	if($tipo=='dia')
     	{
+
 	    	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
 	    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
             $id_destination=$var['id_destination'];
@@ -585,7 +586,13 @@ class ValidationsArchCapt
             $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
             if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
             {
-                $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));
+                if($maxHour==null)
+                {
+                    $results=Balance::model()->findAll('date_balance=:fecha',array(':fecha'=>$fecha));
+                }else
+                {
+                    $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha)); 
+                }
                 $v=array();
                 $values="";
                 foreach($results as $x=>$row)
