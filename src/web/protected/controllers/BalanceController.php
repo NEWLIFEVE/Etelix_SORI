@@ -520,10 +520,9 @@ class BalanceController extends Controller
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
 
-				 	for ($i=5; $i<$archivo->excel->sheets[0]['numRows']-1; $i++)
-       				{
-       					$ultima=$archivo->excel->sheets[0]['cells'][$i][1];
-       				}
+				 	$total=$archivo->excel->sheets[0]['numRows']-1;
+				 	$ultima=$archivo->excel->sheets[0]['cells'][$total][1];
+       				
 				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
 				   	{
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
