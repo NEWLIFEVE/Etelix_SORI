@@ -269,12 +269,12 @@ class Reader
      * Funcion de carga de archivos hora
      * @return boolean
      */
-    public static function hora ($archivo,$nombre,$ultima)
+    public static function hora ($archivo)
     {
          /**
         * Valido la estructura de horas
         */
-        //hora por mla cual inicia el archivo
+        //hora por la cual inicia el archivo
         $actual=$archivo->excel->sheets[0]['cells'][5][1];
 //      $actual=0;
         $contador=0;
@@ -284,9 +284,8 @@ class Reader
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
         ini_set('max_execution_time', $segundos);
-       
         for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
-        {
+        { 
             if($archivo->excel->sheets[0]['cells'][$i][1]!="Total" && $archivo->excel->sheets[0]['cells'][$i][1]!="Date" && $archivo->excel->sheets[0]['cells'][$i][1]!="Hour")
             {
                 //Verifico que sean secuenciales las horas
@@ -317,7 +316,7 @@ class Reader
                 }
             }
         }
-
+         
         //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
         $segundos=$regAprox/2.8;
@@ -353,15 +352,6 @@ class Reader
                         else
                         {
                             $time=$archivo->excel->sheets[0]['cells'][$i][$j];
-
-                            if(strcmp($nombre,"Ruta Internal 3Hrs.xls")!=0 &&  strcmp($nombre,"Ruta External 3Hrs.xls")!=0)
-                                {
-                                    $ultima=$ultima-7;  
-                                    if($time<$ultima)
-                                    {
-                                        break 2;
-                                    }
-                                }
                         }
                         break;
                     case 2:
@@ -520,11 +510,10 @@ class Reader
                             break;  
                 }
             }
-            if( ($i<=$archivo->excel->sheets[0]['numRows']-1) && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
+            if($i<=$archivo->excel->sheets[0]['numRows']-1 && $archivo->excel->sheets[0]['cells'][$i][$j]!='Total')
             {
                 $valuesNew.=",";
             }
-         
         }
         $barra = substr($valuesNew, -1, 1);
         if($barra==",") 
