@@ -38,7 +38,7 @@ class BalanceController extends Controller
 	{
 		return array(
 			array('allow', // Vistas para Administrador
-				'actions'=>array('uploadtemp','cargatemp','guardartemp','index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily'),
+				'actions'=>array('uploadtemp','cargatemp','guardartemp','index','view','admin','delete','create','update','ventas','compras','carga', 'guardar', 'ver', 'memoria','upload','delete','disabledDaily','fecha'),
 				'users'=>array_merge(Users::usersByType(1)),
 				),
 			array('allow', // Vistas para NOC
@@ -642,4 +642,17 @@ class BalanceController extends Controller
 		}
 		echo json_encode($resultado);
 	}
+
+
+	// public function actionFecha()
+	// {
+	// 	$present=date('Y-m-d');
+	// 	// restandole la cantidad de dias
+	// 	$present=DateManagement::calculateDate('-15',$present);
+	// 	echo $present."<br>";
+	// 	$rows=BalanceTime::model()->deleteAll("date_balance_time='".$present."' ");
+	// 	echo "-> ".$rows;
+		
+	// }
+
 }
