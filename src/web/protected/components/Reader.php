@@ -261,6 +261,7 @@ class Reader
             $var['values']=$values;
             $var['id_destination']=$id_destination;
             $var['id_destination_int']=$id_destination_int;
+            $var['hora']=" ";
         }
         return $var;
     }
@@ -910,6 +911,6 @@ class Reader
             return false;
         }
     }*/
-    
+
 }
 ?>
