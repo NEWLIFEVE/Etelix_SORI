@@ -642,17 +642,4 @@ class BalanceController extends Controller
 		}
 		echo json_encode($resultado);
 	}
-
-
-	// public function actionFecha()
-	// {
-	// 	$present=date('Y-m-d');
-	// 	// restandole la cantidad de dias
-	// 	$present=DateManagement::calculateDate('-15',$present);
-	// 	echo $present."<br>";
-	// 	$rows=BalanceTime::model()->deleteAll("date_balance_time='".$present."' ");
-	// 	echo "-> ".$rows;
-		
-	// }
-
 }
