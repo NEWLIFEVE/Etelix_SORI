@@ -242,14 +242,13 @@ class BalanceController extends Controller
 
 				   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 				   			{
-				   				if($stringDataPreliminary!="")
+				   				if($stringDataPreliminary!=" ")
 				   				{
 						   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
 				   				}
 				   			}
 				    	}
 					}
-			
 				    $nombres[]=$nombre;
 		    		$nombreArc=implode(",",  $nombres); 
 				}
