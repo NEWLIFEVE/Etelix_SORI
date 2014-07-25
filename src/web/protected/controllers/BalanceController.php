@@ -558,10 +558,10 @@ class BalanceController extends Controller
 				   							//echo $nombre;
 								    		Log::registrarLog(LogAction::getId($nombre));
 										}
-								   			if($stringDataPreliminary!="") 
-								   			{
-								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
-								   			}
+							   			if($stringDataPreliminary!="") 
+							   			{
+							   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
+							   			}
 						   			}
 					     		}
 					    	}
