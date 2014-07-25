@@ -289,9 +289,11 @@ class Reader
         $contador=0;
          //Cuantos segundos
         $regAprox=1500*$archivo->excel->sheets[0]['cells']['numRows'][1];
+
         $segundos=$regAprox/2.8;
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
+        ini_set('memory_limit', '999M');
         ini_set('max_execution_time', $segundos);
         for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
         { 
@@ -890,7 +892,7 @@ class Reader
     /**
     *
     */
-    public function validarFecha($fecha)
+/*    public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
 
@@ -907,6 +909,6 @@ class Reader
             $this->errorComment="<h5 class='nocargados'> El archivo 11 '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
             return false;
         }
-    }
+    }*/
 }
 ?>

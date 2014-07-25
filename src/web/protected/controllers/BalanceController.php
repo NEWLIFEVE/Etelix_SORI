@@ -227,35 +227,33 @@ class BalanceController extends Controller
 				 	//cargo el archivo en memoria
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
-				 		// se toma la fecha del archivo. 
-				 		$fecha_arch=explode("/",$archivo->excel->sheets[0]['cells'][1][4]); 
-				 		$date=$fecha_arch[2]."/".$fecha_arch[0]."/".$fecha_arch[1];
 
-				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
-					 	{
-					   		$var=array();
-					   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
-						 		$var=Reader::diario($date, $nombre, $archivo);
-					   		
-					   		if($var!="") 
-					   		{
-					   			// obtengo lo que esta en la BD de la fecha del archivo subido
-					   			$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
-		 			   			
-		 			   			if($stringDataPreliminary!="") 
-					   			{
-					   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
-					   			}
-		                 		//Si se genero el string nuevo, guardo el log
-					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
-					     		{	
-					     			// Funcion que guarda en la tabla Balance todo el contenido del Archivo
-									ValidationsArchCapt::saveDataArchDayHours($var,$tipo);	
-					     		}
-					    	}
-						}
-					    $nombres[]=$nombre;
-			    		$nombreArc=implode(",",  $nombres); 
+				 	// se toma la fecha del archivo. 
+			 		$date=Utility::formatDate($archivo->excel->sheets[0]['cells'][1][4]);
+
+			   		if($this->error==ValidationsArchCapt::ERROR_NONE)
+				 	{
+				   		$var=null;
+                   		if($tipo=='dia')
+				   		{
+				   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+					 		$var=Reader::diario($date, $nombre, $archivo);
+				   		}
+	
+				   		if($var!=null) 
+				   		{
+			                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+				     		$stringDataPreliminary=ValidationsArchCapt::loadArchTemp($date,$var,$tipo,$archivo,null);
+
+				   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
+				   			{
+						   		ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+				   			}
+				    	}
+					}
+			
+				    $nombres[]=$nombre;
+		    		$nombreArc=implode(",",  $nombres); 
 				}
 
 				if($this->error!=ValidationsArchCapt::$error)
