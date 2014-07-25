@@ -622,7 +622,6 @@ class BalanceController extends Controller
 
 	}//fin actionGuardar
 
-	
 	/**
 	 *
 	 */
