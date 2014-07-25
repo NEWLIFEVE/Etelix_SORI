@@ -880,7 +880,7 @@ class Reader
     /**
     *
     */
-    public function validarFecha($fecha)
+/*    public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
         $this->fecha=$fecha;
@@ -896,6 +896,6 @@ class Reader
             $this->errorComment="<h5 class='nocargados'> El archivo '".$this->nombreArchivo."' tiene una fecha incorrecta </h5> <br/> ";
             return false;
         }
-    }
+    }*/
 }
 ?>
