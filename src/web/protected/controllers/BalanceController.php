@@ -233,13 +233,8 @@ class BalanceController extends Controller
 
 			   		if($this->error==ValidationsArchCapt::ERROR_NONE)
 				 	{
-				   		$var=null;
-                   		if($tipo=='dia')
-				   		{
-				   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
-					 		$var=Reader::diario($date, $nombre, $archivo);
-				   		}
-	
+			   			// genero un array con los datos del excel para guardarlo en BD y saber si es interno o externo
+				 		$var=Reader::diario($date, $nombre, $archivo);
 				   		if($var!=null) 
 				   		{
 			                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
@@ -247,7 +242,10 @@ class BalanceController extends Controller
 
 				   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 				   			{
-						   		ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+				   				if($stringDataPreliminary!="")
+				   				{
+						   			ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);
+				   				}
 				   			}
 				    	}
 					}

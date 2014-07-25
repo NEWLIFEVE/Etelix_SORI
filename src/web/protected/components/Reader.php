@@ -892,7 +892,7 @@ class Reader
     /**
     *
     */
-/*    public function validarFecha($fecha)
+ /*   public function validarFecha($fecha)
     {
         $date_balance=strtotime(Utility::formatDate($this->excel->sheets[0]['cells'][1][4]));
 
@@ -910,5 +910,6 @@ class Reader
             return false;
         }
     }*/
+    
 }
 ?>
