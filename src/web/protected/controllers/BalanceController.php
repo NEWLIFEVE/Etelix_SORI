@@ -540,7 +540,6 @@ class BalanceController extends Controller
 					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
 					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-
 						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo,$var['hora']);	
 
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
@@ -564,8 +563,6 @@ class BalanceController extends Controller
 								   			{
 								   				ValidationsArchCapt::deleteArchTempDayHours($stringDataPreliminary,$tipo);	
 								   			}
-
-							     	/*	}*/
 						   			}
 					     		}
 					    	}
