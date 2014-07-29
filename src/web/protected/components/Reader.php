@@ -284,7 +284,7 @@ class Reader
         $segundos=$regAprox/2.8;
         $segundos=substr($segundos,0,4);
         //Aumento el tiempo de ejecucion
-        ini_set('memory_limit', '999M');
+        ini_set('memory_limit', -1);
         ini_set('max_execution_time', $segundos);
         for ($i=5; $i<$archivo->excel->sheets[0]['numRows']; $i++)
         { 
