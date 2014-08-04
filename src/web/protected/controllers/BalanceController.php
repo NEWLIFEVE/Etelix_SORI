@@ -478,7 +478,7 @@ class BalanceController extends Controller
 		{
 			$tipo=$_POST['tipo'];
 
-			if($tipo=='dia')
+			if($tipo=='dia' || $tipo="rerate")
 			{
 				//Nombres opcionales para los archivos diarios
 				$namesArch=array(
@@ -504,24 +504,39 @@ class BalanceController extends Controller
 					'Carga Ruta External 24GMT'=>'Ruta External 23Hrs'
 					);
 			}
+
+			$fechaFin=null;
+			$fechaInicio=null;
+			if(isset($_POST['fechaInicio']) && isset($_POST['fechaFin']))
+			{
+				$fechaInicio=$_POST['fechaInicio'];
+				$fechaFin=$_POST['fechaFin'];
+				
+				$total_arch=ValidationsArchCapt::calcular_dias($fechaInicio,$fechaFin)
+				echo date('Y-m-d',$total_arch);
+				exit();
+				//$dias=DateManagement::howManyDaysBetween($fechaInicio,$fechaFin);
+
+			}
 			//Primero: verifico que archivos estan
 		  	$existentes=ValidationsArchCapt::getNombreArchivos($path,$namesArch,array('xls','XLS'));
 		  	$countExistentes=0;
+
 		  	//Si la primera condicion se cumple, no deberian haber errores
 		  	if($this->error==ValidationsArchCapt::ERROR_NONE)
 		  	{
 		  		$nombres=array();
 			 	$nombreArc="";
+
 				foreach($existentes as $key => $nombre)
 			    {
 			    	$countExistentes=$countExistentes+1;	
 				 	//cargo el archivo en memoria
 				 	$ruta=$path.$nombre;
 				 	$archivo=new Reader($ruta);
+				 	$fecha_rerate=$date=Utility::formatDate($archivo->excel->sheets[0]['cells'][1][4]);
 
-				 	//echo "NOMBRE: ".$nombre;
-				   	//validaciones 
-				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo))
+				   	if(ValidationsArchCapt::validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo,$fechaInicio,$fechaFin))
 				   	{
 				   		if($this->error==ValidationsArchCapt::ERROR_NONE)
 					 	{
@@ -535,20 +550,28 @@ class BalanceController extends Controller
 							{
 						 		//genero un string con los datos cargados del dia para luego borrarlos y agregar los actualizados	
 						 		$var=Reader::hora($archivo,$nombre);
+					    	}else //Re-Rate
+					    	{
+					    		$var=Reader::diario($fecha_rerate, $nombre, $archivo);
 					    	}
 
 					   		if($var!=null) 
 					   		{
 		                 		//Si se genero el string nuevo, guardo el log
-					     		if (ValidationsArchCapt::logDayHours($nombre,$tipo))
+					     		if(ValidationsArchCapt::logDayHours($nombre,$tipo))
 					     		{	 
-					                //genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
-
-						     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo,$var['hora']);	
-
+					                //Verifico que tipo de Archivo es y genero un string con los datos premilinares external o internal antes de insertar los nuevos y borrar los actuales
+					     			if($tipo=='hora' || $tipo=='diario')
+					     			{
+							     		$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($yesterday,$var,$tipo,$archivo,$var['hora']);	
+					     			}else
+					     			{
+					     				$stringDataPreliminary= ValidationsArchCapt::loadArchTemp($fecha_rerate,$var,$tipo,$archivo,null);
+					     			}
 						 		   //guardo en BD el string con los nuevos datos del excel diario u Hora
 						   			if(ValidationsArchCapt::saveDataArchDayHours($var,$tipo)) 
 						   			{
+						   				//echo "guarde data"; exit();
 							   			if($tipo=='dia')
 						 	     		{
 								    		Log::registrarLog(LogAction::getId(ValidationsArchCapt::logDayHours($nombre,$tipo)));
@@ -575,7 +598,7 @@ class BalanceController extends Controller
 						}
 					}
 			
-					if($tipo=='dia')
+					if($tipo=='dia' || $tipo=='rerate')
 					{
 					    $nombres[]=$nombre;
 			    		$nombreArc=implode(",",  $nombres); 
@@ -593,7 +616,7 @@ class BalanceController extends Controller
 				}
 				if($this->error==ValidationsArchCapt::$error)
 				{
-					if($tipo=='dia')
+					if($tipo=='dia' || $tipo=='rerate')
 					{
 						if($countExistentes==1)
 						{
@@ -655,4 +678,7 @@ class BalanceController extends Controller
 	 	}
 		echo json_encode($resultado);
 	}
+
 }
+
+

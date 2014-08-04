@@ -47,7 +47,7 @@ class ValidationsArchCapt
      * @param unknown_type $existentes
      * @param unknown_type $yesterday
      */
-    public static function validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo) 
+    public static function validar($path,$nombre,$existentes,$yesterday,$archivo,$tipo,$fechaInicio,$fechaFin) 
     {
     	//Primero: verifico que archivos estan
 		if(count($existentes)<=0)
@@ -61,12 +61,15 @@ class ValidationsArchCapt
             {
 				self::$errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de horas,<br> verifique que el nombre de los archivos sea Ruta Internal cant_horas y Ruta External cant_horas.<h5>";
 			}
+            else{
+                self::$errorComment="<h5 class='nocargados'>No se encontraron archivos para la carga de Re-Rate,<br> verifique que el nombre de los archivos.<h5>";
+            }
 		}
 		
 		//Seguno: verifico el log de archivos diarios, si no esta asigno la variable log para su guardado
 		self::logDayHours($nombre,$archivo,$tipo);
 		
-		if(self::validarFecha($yesterday,$path,$nombre,$archivo,$tipo))
+		if(self::validarFecha($yesterday,$path,$nombre,$archivo,$tipo,$fechaInicio,$fechaFin))
 		{
 			//Tercero: verifico la fecha que sea correcta
    			if(self::validarColumnas(self::lista($nombre,$tipo),$path,$nombre,$archivo,$tipo))
@@ -419,7 +422,7 @@ class ValidationsArchCapt
      * @param $fecha
      * @param $directorio
      */
-    public static function validarFecha($fecha,$path,$nombre,$archivo,$tipo)
+    public static function validarFecha($fecha,$path,$nombre,$archivo,$tipo,$fechaInicio,$fechaFin)
     {
     	if($tipo=='dia')
     	{
@@ -432,16 +435,41 @@ class ValidationsArchCapt
     		$date_balance=strtotime(Utility::formatDate($archivo->excel->sheets[0]['cells'][1][5]));
 			$fecha=strtotime($date);
     	}
-        if($fecha==$date_balance)
-        {
-            self::$error=self::ERROR_NONE;
-            return true;
-        }
         else
         {
-            self:: $error=self::ERROR_DATE;
-			self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' tiene una fecha incorrecta </h5> <br/> ";
-			return false;
+            $date_balance=Utility::formatDate($archivo->excel->sheets[0]['cells'][1][4]);
+            $fechaInicio=Utility::formatDate($fechaInicio);
+            $fechaFin=Utility::formatDate($fechaFin);
+            //echo $date_balance." -".$fechaInicio." -".$fechaFin."<br>";
+            //echo "tipo: ".$tipo;
+        }
+
+        if($tipo=="hora" || $tipo=="dia")
+        {
+            if($fecha==$date_balance)
+            {
+                self::$error=self::ERROR_NONE;
+                return true;
+            }
+            else
+            {
+                self:: $error=self::ERROR_DATE;
+                self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' tiene una fecha incorrecta </h5> <br/> ";
+                return false;
+            }
+        }elseif($tipo=="rerate")
+        {
+            if($date_balance>=$fechaInicio && $date_balance<=$fechaFin)
+            {
+                self::$error=self::ERROR_NONE;
+                return true;
+            }
+            else
+            {
+                self:: $error=self::ERROR_DATE;
+                self::$errorComment="<h5 class='nocargados'> El archivo '".$nombre."' no esta en el Rango de Fecha. </h5> <br/> ";
+                return false;
+            } 
         }
     }
 
@@ -496,7 +524,7 @@ class ValidationsArchCapt
 	*/ 
 	 public static function lista($archivo,$tipo)
 	{
-		if($tipo=='dia')
+		if($tipo=='dia' || $tipo=="rerate")
 		{
 			$primero="Ruta ";
 	        $segundo="External ";
@@ -562,7 +590,7 @@ class ValidationsArchCapt
 
 	public static function loadArchTemp($fecha,$var,$tipo,$archivo,$maxHour)
     {
-    	if($tipo=='dia')
+    	if($tipo=='dia' || $tipo=='rerate')
     	{
 	    	// busco y lleno un array con los datos que estan en bd antes de eliminrlos
 	    	//le mando $id_destination,$id_destination_int para saber cual se esta guardando si internal o external
@@ -577,10 +605,23 @@ class ValidationsArchCapt
                 $name_destination='id_destination_int';
             }
             $total=0;
-            $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
+            if($tipo=='dia')
+            {
+                $total= Balance::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
+            }
+            elseif($tipo=='rerate')
+            {
+                 $total= BalanceTemp::model()->count('date_balance=:fecha',array(':fecha'=>$fecha));
+            }
             if($total>0)//si ya hay registros del dia, guardo sus id en un string para borrarlos luego de insertar los nuevos
             {
-                $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));
+                if($tipo=='dia')
+                {
+                    $results=Balance::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));                   
+                }elseif($tipo=='rerate')
+                {
+                    $results=BalanceTemp::model()->findAll('date_balance=:fecha and '.$name_destination.' is NULL',array(':fecha'=>$fecha));                   
+                }
                 $v=array();
                 $values="";
                 foreach($results as $x=>$row)
@@ -633,8 +674,8 @@ class ValidationsArchCapt
                 $values="";
             }
 			return $values;
-		}
- 	}
+		}}
+ 	
 	
 	/**
 	 * guarda la data nueva del archivo
@@ -652,7 +693,11 @@ class ValidationsArchCapt
 		{ 
             $values=$var['regHora'];
             $sql="INSERT INTO balance_time(date_balance_time,time, minutes,acd,asr,margin_percentage,margin_per_minute,cost_per_minute,revenue_per_minute,pdd,incomplete_calls,incomplete_calls_ner,complete_calls,complete_calls_ner,calls_attempts,duration_real,duration_cost,ner02_efficient,ner02_seizure,pdd_calls,revenue,cost,margin,date_change,time_change,id_carrier_supplier,id_carrier_customer,id_destination) VALUES ".$values;
-		}
+		}else
+        { //Re-Rate
+             $values=$var['values'];
+             $sql="INSERT INTO balance_temp(date_balance, minutes, acd, asr, margin_percentage, margin_per_minute, cost_per_minute, revenue_per_minute, pdd, incomplete_calls, incomplete_calls_ner, complete_calls, complete_calls_ner, calls_attempts, duration_real, duration_cost, ner02_efficient, ner02_seizure, pdd_calls, revenue, cost, margin, date_change, id_carrier_supplier, id_destination, id_destination_int, status, id_carrier_customer) VALUES ".$values;    
+        }
 	 	$command = Yii::app()->db->createCommand($sql);	    
 		if($command->execute())
         {
@@ -682,12 +727,22 @@ class ValidationsArchCapt
 		{
 			// borro los registros con el string formado anteriormente
 			$sql="DELETE FROM balance_time where id IN (".$stringDataPreliminary.")";
-		}	
+		}else $sql="DELETE FROM balance_temp where id IN (".$stringDataPreliminary.")";
+        
+
 		$command = Yii::app()->db->createCommand($sql);
 		if($command->execute())
 		{
             self::$error=self::ERROR_NONE;
 		}
 	} 
+
+    public function calcular_dias($inicio,$fin)
+    {
+        $dias=DateManagement::howManyDaysBetween($inicio,$fin);
+        return $dias;
+    }
+
+
 }
 ?>

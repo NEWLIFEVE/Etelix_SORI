@@ -93,6 +93,11 @@ Class Utility
         {
             return false;
         }
+        
+           /* $dias   = (strtotime($fechainicio)-strtotime($fechafin))/86400;
+            $dias   = abs($dias); 
+            $dias = floor($dias);     
+            return $dias;*/
     }
     
     /**
