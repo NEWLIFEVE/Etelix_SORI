@@ -100,10 +100,11 @@ class DateManagement
      */
     public static function howManyDaysBetween($startDate,$endDate)
     {
-      
+        echo "1: ".$startDate;
         $i=strtotime($startDate);
         $f=strtotime($endDate);
         $cant=$f-$i;
+        echo "2: ".$i;
         return $cant/(60*60*24);
     }
 }
